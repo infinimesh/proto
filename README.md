@@ -2,6 +2,16 @@
 
 This repo containes protobuf files and Go generated code for the infinimesh APIs.
 
+## Install
+
+### Go
+
+At your project(where go.mod is):
+
+```shell
+go get github.com/infinimesh/proto@latest
+```
+
 ## How to use
 
 ### Generating
