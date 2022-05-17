@@ -19,6 +19,6 @@ COPY buf.* ./
 
 RUN buf mod update
 
-LABEL org.opencontainers.image.source https://github.com/infinimesh/infinimesh
+LABEL org.opencontainers.image.source https://github.com/infinimesh/proto
 
 ENTRYPOINT [ "buf", "generate" ]
