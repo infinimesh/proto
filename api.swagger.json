@@ -19,6 +19,9 @@
     },
     {
       "name": "ShadowService"
+    },
+    {
+      "name": "PluginsService"
     }
   ],
   "consumes": [
@@ -1232,6 +1235,12 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "plugin",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -1297,6 +1306,12 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "plugin",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -1338,6 +1353,9 @@
                 },
                 "access": {
                   "$ref": "#/definitions/accessAccess"
+                },
+                "plugin": {
+                  "type": "string"
                 }
               }
             }
@@ -1405,6 +1423,12 @@
           },
           {
             "name": "access.namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "plugin",
             "in": "query",
             "required": false,
             "type": "string"
@@ -1476,10 +1500,316 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "plugin",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
           "NamespacesService"
+        ]
+      }
+    },
+    "/plugins": {
+      "get": {
+        "operationId": "PluginsService_List",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pluginsPlugins"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "PluginsService"
+        ]
+      },
+      "put": {
+        "operationId": "PluginsService_Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pluginsPlugin"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "logo",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "public",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "UNKNOWN",
+              "EMBEDDED"
+            ],
+            "default": "UNKNOWN"
+          },
+          {
+            "name": "embeddedConf.frameUrl",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "PluginsService"
+        ]
+      }
+    },
+    "/plugins/{uuid}": {
+      "get": {
+        "operationId": "PluginsService_Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pluginsPlugin"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "logo",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "public",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "UNKNOWN",
+              "EMBEDDED"
+            ],
+            "default": "UNKNOWN"
+          },
+          {
+            "name": "embeddedConf.frameUrl",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "PluginsService"
+        ]
+      },
+      "delete": {
+        "operationId": "PluginsService_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pluginsPlugin"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "logo",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "public",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "UNKNOWN",
+              "EMBEDDED"
+            ],
+            "default": "UNKNOWN"
+          },
+          {
+            "name": "embeddedConf.frameUrl",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "PluginsService"
+        ]
+      },
+      "post": {
+        "operationId": "PluginsService_Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pluginsPlugin"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "logo",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "public",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "UNKNOWN",
+              "EMBEDDED"
+            ],
+            "default": "UNKNOWN"
+          },
+          {
+            "name": "embeddedConf.frameUrl",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "PluginsService"
         ]
       }
     },
@@ -1689,6 +2019,9 @@
         },
         "access": {
           "$ref": "#/definitions/accessAccess"
+        },
+        "plugin": {
+          "type": "string"
         }
       }
     },
@@ -1795,6 +2128,59 @@
       "properties": {
         "device": {
           "$ref": "#/definitions/devicesDevice"
+        }
+      }
+    },
+    "pluginsEmbededPluginConf": {
+      "type": "object",
+      "properties": {
+        "frameUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "pluginsPlugin": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string"
+        },
+        "logo": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "public": {
+          "type": "boolean"
+        },
+        "kind": {
+          "$ref": "#/definitions/pluginsPluginKind"
+        },
+        "embeddedConf": {
+          "$ref": "#/definitions/pluginsEmbededPluginConf"
+        }
+      }
+    },
+    "pluginsPluginKind": {
+      "type": "string",
+      "enum": [
+        "UNKNOWN",
+        "EMBEDDED"
+      ],
+      "default": "UNKNOWN"
+    },
+    "pluginsPlugins": {
+      "type": "object",
+      "properties": {
+        "pool": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pluginsPlugin"
+          }
         }
       }
     },
