@@ -53,7 +53,7 @@ service PluginsService {
     };
     rpc List(EmptyMessage) returns (Plugins) {
         option (google.api.http) = {
-            get: "/plugins/{uuid}"
+            get: "/plugins"
         };
     };
     rpc Create(Plugin) returns (Plugin) {

@@ -22,6 +22,7 @@ message Namespace {
   string uuid = 1;
   string title = 2;
   optional infinimesh.node.access.Access access = 3;
+  optional string plugin = 4;
 }
 
 message Namespaces {
