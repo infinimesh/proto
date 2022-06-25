@@ -34,10 +34,9 @@ message Plugin {
     optional infinimesh.node.access.Access access = 6;
     
     PluginKind kind = 7;
-    oneof conf {
-        EmbededPluginConf embedded_conf = 8;
-    }
+    optional EmbededPluginConf embedded_conf = 8;
 }
+
 message Plugins {
     repeated Plugin pool = 1;
 }
