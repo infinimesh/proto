@@ -17,6 +17,7 @@ syntax = "proto3";
 package infinimesh.plugins;
 
 import "google/api/annotations.proto";
+import "node/access/access.proto";
 
 enum PluginKind {
     UNKNOWN = 0;
@@ -29,10 +30,12 @@ message Plugin {
     string title = 3;
     string description = 4;
     bool public = 5;
-
-    PluginKind kind = 6;
+    
+    optional infinimesh.node.access.Access access = 6;
+    
+    PluginKind kind = 7;
     oneof conf {
-        EmbededPluginConf embedded_conf = 7;
+        EmbededPluginConf embedded_conf = 8;
     }
 }
 message Plugins {

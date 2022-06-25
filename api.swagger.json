@@ -1582,6 +1582,37 @@
             "type": "boolean"
           },
           {
+            "name": "access.level",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "NONE",
+              "READ",
+              "MGMT",
+              "ADMIN",
+              "ROOT"
+            ],
+            "default": "NONE"
+          },
+          {
+            "name": "access.role",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "UNSET",
+              "OWNER"
+            ],
+            "default": "UNSET"
+          },
+          {
+            "name": "access.namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "kind",
             "in": "query",
             "required": false,
@@ -1653,6 +1684,37 @@
             "type": "boolean"
           },
           {
+            "name": "access.level",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "NONE",
+              "READ",
+              "MGMT",
+              "ADMIN",
+              "ROOT"
+            ],
+            "default": "NONE"
+          },
+          {
+            "name": "access.role",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "UNSET",
+              "OWNER"
+            ],
+            "default": "UNSET"
+          },
+          {
+            "name": "access.namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "kind",
             "in": "query",
             "required": false,
@@ -1722,6 +1784,37 @@
             "type": "boolean"
           },
           {
+            "name": "access.level",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "NONE",
+              "READ",
+              "MGMT",
+              "ADMIN",
+              "ROOT"
+            ],
+            "default": "NONE"
+          },
+          {
+            "name": "access.role",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "UNSET",
+              "OWNER"
+            ],
+            "default": "UNSET"
+          },
+          {
+            "name": "access.namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "kind",
             "in": "query",
             "required": false,
@@ -1789,6 +1882,37 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "access.level",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "NONE",
+              "READ",
+              "MGMT",
+              "ADMIN",
+              "ROOT"
+            ],
+            "default": "NONE"
+          },
+          {
+            "name": "access.role",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "UNSET",
+              "OWNER"
+            ],
+            "default": "UNSET"
+          },
+          {
+            "name": "access.namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
           },
           {
             "name": "kind",
@@ -2156,6 +2280,9 @@
         },
         "public": {
           "type": "boolean"
+        },
+        "access": {
+          "$ref": "#/definitions/accessAccess"
         },
         "kind": {
           "$ref": "#/definitions/pluginsPluginKind"
