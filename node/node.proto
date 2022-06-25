@@ -24,6 +24,7 @@ message TokenRequest {
   infinimesh.node.accounts.Credentials auth = 1;
   int64 exp = 2;
   optional string uuid = 3;
+  optional bool inf = 4;
 }
 
 message TokenResponse {

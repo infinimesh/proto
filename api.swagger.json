@@ -1739,6 +1739,9 @@
         },
         "uuid": {
           "type": "string"
+        },
+        "inf": {
+          "type": "boolean"
         }
       }
     },
