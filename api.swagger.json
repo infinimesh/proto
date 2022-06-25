@@ -1590,6 +1590,12 @@
             "type": "boolean"
           },
           {
+            "name": "namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "access.level",
             "in": "query",
             "required": false,
@@ -1692,6 +1698,12 @@
             "type": "boolean"
           },
           {
+            "name": "namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "access.level",
             "in": "query",
             "required": false,
@@ -1792,6 +1804,12 @@
             "type": "boolean"
           },
           {
+            "name": "namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "access.level",
             "in": "query",
             "required": false,
@@ -1890,6 +1908,12 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
           },
           {
             "name": "access.level",
@@ -2288,6 +2312,9 @@
         },
         "public": {
           "type": "boolean"
+        },
+        "namespace": {
+          "type": "string"
         },
         "access": {
           "$ref": "#/definitions/accessAccess"

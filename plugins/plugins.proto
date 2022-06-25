@@ -31,10 +31,11 @@ message Plugin {
     string description = 4;
     bool public = 5;
     
-    optional infinimesh.node.access.Access access = 6;
+    optional string namespace = 6; // Required to get not-public Plugin
+    optional infinimesh.node.access.Access access = 7;
     
-    PluginKind kind = 7;
-    optional EmbededPluginConf embedded_conf = 8;
+    PluginKind kind = 8;
+    optional EmbededPluginConf embedded_conf = 9;
 }
 
 message Plugins {
