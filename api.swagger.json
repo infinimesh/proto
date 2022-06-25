@@ -1530,6 +1530,14 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
         "tags": [
           "PluginsService"
         ]

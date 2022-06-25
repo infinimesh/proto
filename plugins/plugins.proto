@@ -46,7 +46,9 @@ message EmbededPluginConf {
     string frame_url = 1;
 }
 
-message EmptyMessage {}
+message ListRequest {
+    optional string namespace = 1;
+}
 
 service PluginsService {
     rpc Get(Plugin) returns (Plugin){
@@ -54,7 +56,7 @@ service PluginsService {
             get: "/plugins/{uuid}"
         };
     };
-    rpc List(EmptyMessage) returns (Plugins) {
+    rpc List(ListRequest) returns (Plugins) {
         option (google.api.http) = {
             get: "/plugins"
         };

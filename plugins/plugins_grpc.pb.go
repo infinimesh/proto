@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PluginsServiceClient interface {
 	Get(ctx context.Context, in *Plugin, opts ...grpc.CallOption) (*Plugin, error)
-	List(ctx context.Context, in *EmptyMessage, opts ...grpc.CallOption) (*Plugins, error)
+	List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*Plugins, error)
 	Create(ctx context.Context, in *Plugin, opts ...grpc.CallOption) (*Plugin, error)
 	Update(ctx context.Context, in *Plugin, opts ...grpc.CallOption) (*Plugin, error)
 	Delete(ctx context.Context, in *Plugin, opts ...grpc.CallOption) (*Plugin, error)
@@ -46,7 +46,7 @@ func (c *pluginsServiceClient) Get(ctx context.Context, in *Plugin, opts ...grpc
 	return out, nil
 }
 
-func (c *pluginsServiceClient) List(ctx context.Context, in *EmptyMessage, opts ...grpc.CallOption) (*Plugins, error) {
+func (c *pluginsServiceClient) List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*Plugins, error) {
 	out := new(Plugins)
 	err := c.cc.Invoke(ctx, "/infinimesh.plugins.PluginsService/List", in, out, opts...)
 	if err != nil {
@@ -87,7 +87,7 @@ func (c *pluginsServiceClient) Delete(ctx context.Context, in *Plugin, opts ...g
 // for forward compatibility
 type PluginsServiceServer interface {
 	Get(context.Context, *Plugin) (*Plugin, error)
-	List(context.Context, *EmptyMessage) (*Plugins, error)
+	List(context.Context, *ListRequest) (*Plugins, error)
 	Create(context.Context, *Plugin) (*Plugin, error)
 	Update(context.Context, *Plugin) (*Plugin, error)
 	Delete(context.Context, *Plugin) (*Plugin, error)
@@ -101,7 +101,7 @@ type UnimplementedPluginsServiceServer struct {
 func (UnimplementedPluginsServiceServer) Get(context.Context, *Plugin) (*Plugin, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
 }
-func (UnimplementedPluginsServiceServer) List(context.Context, *EmptyMessage) (*Plugins, error) {
+func (UnimplementedPluginsServiceServer) List(context.Context, *ListRequest) (*Plugins, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
 }
 func (UnimplementedPluginsServiceServer) Create(context.Context, *Plugin) (*Plugin, error) {
@@ -145,7 +145,7 @@ func _PluginsService_Get_Handler(srv interface{}, ctx context.Context, dec func(
 }
 
 func _PluginsService_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EmptyMessage)
+	in := new(ListRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -157,7 +157,7 @@ func _PluginsService_List_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/infinimesh.plugins.PluginsService/List",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PluginsServiceServer).List(ctx, req.(*EmptyMessage))
+		return srv.(PluginsServiceServer).List(ctx, req.(*ListRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
