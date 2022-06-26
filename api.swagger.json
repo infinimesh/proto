@@ -1560,88 +1560,12 @@
         },
         "parameters": [
           {
-            "name": "uuid",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "logo",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "title",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "description",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "public",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "namespace",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "access.level",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "enum": [
-              "NONE",
-              "READ",
-              "MGMT",
-              "ADMIN",
-              "ROOT"
-            ],
-            "default": "NONE"
-          },
-          {
-            "name": "access.role",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "enum": [
-              "UNSET",
-              "OWNER"
-            ],
-            "default": "UNSET"
-          },
-          {
-            "name": "access.namespace",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "kind",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "enum": [
-              "UNKNOWN",
-              "EMBEDDED"
-            ],
-            "default": "UNKNOWN"
-          },
-          {
-            "name": "embeddedConf.frameUrl",
-            "in": "query",
-            "required": false,
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pluginsPlugin"
+            }
           }
         ],
         "tags": [
@@ -1886,82 +1810,38 @@
             "type": "string"
           },
           {
-            "name": "logo",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "title",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "description",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "public",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "namespace",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "access.level",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "enum": [
-              "NONE",
-              "READ",
-              "MGMT",
-              "ADMIN",
-              "ROOT"
-            ],
-            "default": "NONE"
-          },
-          {
-            "name": "access.role",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "enum": [
-              "UNSET",
-              "OWNER"
-            ],
-            "default": "UNSET"
-          },
-          {
-            "name": "access.namespace",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "kind",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "enum": [
-              "UNKNOWN",
-              "EMBEDDED"
-            ],
-            "default": "UNKNOWN"
-          },
-          {
-            "name": "embeddedConf.frameUrl",
-            "in": "query",
-            "required": false,
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "logo": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "public": {
+                  "type": "boolean"
+                },
+                "namespace": {
+                  "type": "string"
+                },
+                "access": {
+                  "$ref": "#/definitions/accessAccess"
+                },
+                "kind": {
+                  "$ref": "#/definitions/pluginsPluginKind"
+                },
+                "embeddedConf": {
+                  "$ref": "#/definitions/pluginsEmbededPluginConf"
+                }
+              }
+            }
           }
         ],
         "tags": [

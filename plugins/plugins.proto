@@ -64,11 +64,13 @@ service PluginsService {
     rpc Create(Plugin) returns (Plugin) {
         option (google.api.http) = {
             put: "/plugins"
+            body: "*"
         };
     };
     rpc Update(Plugin) returns (Plugin) {
         option (google.api.http) = {
             post: "/plugins/{uuid}"
+            body: "*"
         };
     };
     rpc Delete(Plugin) returns (Plugin) {
