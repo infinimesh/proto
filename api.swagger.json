@@ -1,10 +1,13 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "node/access/access.proto",
+    "title": "handsfree/handsfree.proto",
     "version": "version not set"
   },
   "tags": [
+    {
+      "name": "HandsfreeService"
+    },
     {
       "name": "ShadowService"
     },
@@ -1111,6 +1114,45 @@
         ]
       }
     },
+    "/handsfree/connection": {
+      "get": {
+        "operationId": "HandsfreeService_GetToken",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/handsfreeControlPacket"
+                },
+                "error": {
+                  "$ref": "#/definitions/rpcStatus"
+                }
+              },
+              "title": "Stream result of handsfreeControlPacket"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "appId",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "HandsfreeService"
+        ]
+      }
+    },
     "/i/ldapp": {
       "get": {
         "operationId": "InternalService_GetLDAPProviders",
@@ -2098,6 +2140,26 @@
           "items": {
             "$ref": "#/definitions/devicesDevice"
           }
+        }
+      }
+    },
+    "handsfreeCode": {
+      "type": "string",
+      "enum": [
+        "UNKNOWN",
+        "AUTH_CODE",
+        "TOKEN"
+      ],
+      "default": "UNKNOWN"
+    },
+    "handsfreeControlPacket": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/handsfreeCode"
+        },
+        "payload": {
+          "type": "string"
         }
       }
     },
