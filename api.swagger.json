@@ -579,6 +579,38 @@
         ]
       }
     },
+    "/devices/states/remove": {
+      "post": {
+        "operationId": "ShadowService_Remove",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/shadowShadow"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/shadowRemoveRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ShadowService"
+        ]
+      }
+    },
     "/devices/states/stream": {
       "get": {
         "operationId": "ShadowService_StreamShadow",
@@ -2272,6 +2304,20 @@
         }
       }
     },
+    "shadowRemoveRequest": {
+      "type": "object",
+      "properties": {
+        "device": {
+          "type": "string"
+        },
+        "stateKey": {
+          "$ref": "#/definitions/shadowStateKey"
+        },
+        "key": {
+          "type": "string"
+        }
+      }
+    },
     "shadowShadow": {
       "type": "object",
       "properties": {
@@ -2297,6 +2343,14 @@
           "type": "object"
         }
       }
+    },
+    "shadowStateKey": {
+      "type": "string",
+      "enum": [
+        "REPORTED",
+        "DESIRED"
+      ],
+      "default": "REPORTED"
     }
   }
 }

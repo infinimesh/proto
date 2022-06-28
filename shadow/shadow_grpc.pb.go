@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type ShadowServiceClient interface {
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	Patch(ctx context.Context, in *Shadow, opts ...grpc.CallOption) (*Shadow, error)
+	Remove(ctx context.Context, in *RemoveRequest, opts ...grpc.CallOption) (*Shadow, error)
 	StreamShadow(ctx context.Context, in *StreamShadowRequest, opts ...grpc.CallOption) (ShadowService_StreamShadowClient, error)
 }
 
@@ -47,6 +48,15 @@ func (c *shadowServiceClient) Get(ctx context.Context, in *GetRequest, opts ...g
 func (c *shadowServiceClient) Patch(ctx context.Context, in *Shadow, opts ...grpc.CallOption) (*Shadow, error) {
 	out := new(Shadow)
 	err := c.cc.Invoke(ctx, "/infinimesh.shadow.ShadowService/Patch", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *shadowServiceClient) Remove(ctx context.Context, in *RemoveRequest, opts ...grpc.CallOption) (*Shadow, error) {
+	out := new(Shadow)
+	err := c.cc.Invoke(ctx, "/infinimesh.shadow.ShadowService/Remove", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -91,6 +101,7 @@ func (x *shadowServiceStreamShadowClient) Recv() (*Shadow, error) {
 type ShadowServiceServer interface {
 	Get(context.Context, *GetRequest) (*GetResponse, error)
 	Patch(context.Context, *Shadow) (*Shadow, error)
+	Remove(context.Context, *RemoveRequest) (*Shadow, error)
 	StreamShadow(*StreamShadowRequest, ShadowService_StreamShadowServer) error
 	mustEmbedUnimplementedShadowServiceServer()
 }
@@ -104,6 +115,9 @@ func (UnimplementedShadowServiceServer) Get(context.Context, *GetRequest) (*GetR
 }
 func (UnimplementedShadowServiceServer) Patch(context.Context, *Shadow) (*Shadow, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Patch not implemented")
+}
+func (UnimplementedShadowServiceServer) Remove(context.Context, *RemoveRequest) (*Shadow, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Remove not implemented")
 }
 func (UnimplementedShadowServiceServer) StreamShadow(*StreamShadowRequest, ShadowService_StreamShadowServer) error {
 	return status.Errorf(codes.Unimplemented, "method StreamShadow not implemented")
@@ -157,6 +171,24 @@ func _ShadowService_Patch_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ShadowService_Remove_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShadowServiceServer).Remove(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/infinimesh.shadow.ShadowService/Remove",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShadowServiceServer).Remove(ctx, req.(*RemoveRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ShadowService_StreamShadow_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(StreamShadowRequest)
 	if err := stream.RecvMsg(m); err != nil {
@@ -192,6 +224,10 @@ var ShadowService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Patch",
 			Handler:    _ShadowService_Patch_Handler,
+		},
+		{
+			MethodName: "Remove",
+			Handler:    _ShadowService_Remove_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

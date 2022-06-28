@@ -41,6 +41,17 @@ message GetResponse {
   repeated Shadow shadows = 1;
 }
 
+enum StateKey {
+  REPORTED = 0;
+  DESIRED = 1;
+}
+
+message RemoveRequest {
+  string device = 1;
+  StateKey state_key = 2;
+  string key = 3;
+}
+
 message StreamShadowRequest {
   repeated string devices = 1;
   bool only_delta = 2;
@@ -49,6 +60,7 @@ message StreamShadowRequest {
 service ShadowService {
   rpc Get(GetRequest) returns (GetResponse);
   rpc Patch(Shadow) returns (Shadow);
+  rpc Remove(RemoveRequest) returns (Shadow);
   rpc StreamShadow(StreamShadowRequest)
       returns (stream Shadow);
 }

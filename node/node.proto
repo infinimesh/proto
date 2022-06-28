@@ -231,6 +231,12 @@ service ShadowService {
       body: "*"
     };
   };
+  rpc Remove(infinimesh.shadow.RemoveRequest) returns (infinimesh.shadow.Shadow) {
+    option (google.api.http) = {
+      post: "/devices/states/remove"
+      body: "*"
+    };
+  };
   rpc StreamShadow(infinimesh.shadow.StreamShadowRequest)
       returns (stream infinimesh.shadow.Shadow) {
     option (google.api.http) = {
