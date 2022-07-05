@@ -1370,3 +1370,89 @@ var ShadowService_ServiceDesc = grpc.ServiceDesc{
 	},
 	Metadata: "node/node.proto",
 }
+
+// InternalServiceClient is the client API for InternalService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type InternalServiceClient interface {
+	GetLDAPProviders(ctx context.Context, in *EmptyMessage, opts ...grpc.CallOption) (*LDAPProviders, error)
+}
+
+type internalServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewInternalServiceClient(cc grpc.ClientConnInterface) InternalServiceClient {
+	return &internalServiceClient{cc}
+}
+
+func (c *internalServiceClient) GetLDAPProviders(ctx context.Context, in *EmptyMessage, opts ...grpc.CallOption) (*LDAPProviders, error) {
+	out := new(LDAPProviders)
+	err := c.cc.Invoke(ctx, "/infinimesh.node.InternalService/GetLDAPProviders", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// InternalServiceServer is the server API for InternalService service.
+// All implementations must embed UnimplementedInternalServiceServer
+// for forward compatibility
+type InternalServiceServer interface {
+	GetLDAPProviders(context.Context, *EmptyMessage) (*LDAPProviders, error)
+	mustEmbedUnimplementedInternalServiceServer()
+}
+
+// UnimplementedInternalServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedInternalServiceServer struct {
+}
+
+func (UnimplementedInternalServiceServer) GetLDAPProviders(context.Context, *EmptyMessage) (*LDAPProviders, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetLDAPProviders not implemented")
+}
+func (UnimplementedInternalServiceServer) mustEmbedUnimplementedInternalServiceServer() {}
+
+// UnsafeInternalServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to InternalServiceServer will
+// result in compilation errors.
+type UnsafeInternalServiceServer interface {
+	mustEmbedUnimplementedInternalServiceServer()
+}
+
+func RegisterInternalServiceServer(s grpc.ServiceRegistrar, srv InternalServiceServer) {
+	s.RegisterService(&InternalService_ServiceDesc, srv)
+}
+
+func _InternalService_GetLDAPProviders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EmptyMessage)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InternalServiceServer).GetLDAPProviders(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/infinimesh.node.InternalService/GetLDAPProviders",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InternalServiceServer).GetLDAPProviders(ctx, req.(*EmptyMessage))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// InternalService_ServiceDesc is the grpc.ServiceDesc for InternalService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var InternalService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "infinimesh.node.InternalService",
+	HandlerType: (*InternalServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetLDAPProviders",
+			Handler:    _InternalService_GetLDAPProviders_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "node/node.proto",
+}

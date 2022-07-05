@@ -21,6 +21,9 @@
       "name": "ShadowService"
     },
     {
+      "name": "InternalService"
+    },
+    {
       "name": "PluginsService"
     }
   ],
@@ -1108,6 +1111,28 @@
         ]
       }
     },
+    "/i/ldapp": {
+      "get": {
+        "operationId": "InternalService_GetLDAPProviders",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/nodeLDAPProviders"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "InternalService"
+        ]
+      }
+    },
     "/namespaces": {
       "get": {
         "operationId": "NamespacesService_List",
@@ -2122,6 +2147,17 @@
         },
         "post": {
           "type": "boolean"
+        }
+      }
+    },
+    "nodeLDAPProviders": {
+      "type": "object",
+      "properties": {
+        "providers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       }
     },

@@ -237,10 +237,21 @@ service ShadowService {
       body: "*"
     };
   };
-  rpc StreamShadow(infinimesh.shadow.StreamShadowRequest)
-      returns (stream infinimesh.shadow.Shadow) {
+  rpc StreamShadow(infinimesh.shadow.StreamShadowRequest) returns (stream infinimesh.shadow.Shadow) {
     option (google.api.http) = {
-      get : "/devices/states/stream"
+      get: "/devices/states/stream"
+    };
+  }
+}
+
+message LDAPProviders {
+  map<string, string> providers = 1; // map of keys to titles (titles can be empty)
+}
+
+service InternalService { // not revenue
+  rpc GetLDAPProviders(EmptyMessage) returns (LDAPProviders) {
+    option (google.api.http) = {
+      get: "/i/ldapp"
     };
   }
 }
