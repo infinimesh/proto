@@ -22,7 +22,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type HandsfreeServiceClient interface {
-	GetToken(ctx context.Context, in *ConnectionRequest, opts ...grpc.CallOption) (HandsfreeService_GetTokenClient, error)
+	Send(ctx context.Context, in *ControlPacket, opts ...grpc.CallOption) (*ControlPacket, error)
+	Connect(ctx context.Context, in *ConnectionRequest, opts ...grpc.CallOption) (HandsfreeService_ConnectClient, error)
 }
 
 type handsfreeServiceClient struct {
@@ -33,12 +34,21 @@ func NewHandsfreeServiceClient(cc grpc.ClientConnInterface) HandsfreeServiceClie
 	return &handsfreeServiceClient{cc}
 }
 
-func (c *handsfreeServiceClient) GetToken(ctx context.Context, in *ConnectionRequest, opts ...grpc.CallOption) (HandsfreeService_GetTokenClient, error) {
-	stream, err := c.cc.NewStream(ctx, &HandsfreeService_ServiceDesc.Streams[0], "/infinimesh.handsfree.HandsfreeService/GetToken", opts...)
+func (c *handsfreeServiceClient) Send(ctx context.Context, in *ControlPacket, opts ...grpc.CallOption) (*ControlPacket, error) {
+	out := new(ControlPacket)
+	err := c.cc.Invoke(ctx, "/infinimesh.handsfree.HandsfreeService/Send", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &handsfreeServiceGetTokenClient{stream}
+	return out, nil
+}
+
+func (c *handsfreeServiceClient) Connect(ctx context.Context, in *ConnectionRequest, opts ...grpc.CallOption) (HandsfreeService_ConnectClient, error) {
+	stream, err := c.cc.NewStream(ctx, &HandsfreeService_ServiceDesc.Streams[0], "/infinimesh.handsfree.HandsfreeService/Connect", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &handsfreeServiceConnectClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -48,16 +58,16 @@ func (c *handsfreeServiceClient) GetToken(ctx context.Context, in *ConnectionReq
 	return x, nil
 }
 
-type HandsfreeService_GetTokenClient interface {
+type HandsfreeService_ConnectClient interface {
 	Recv() (*ControlPacket, error)
 	grpc.ClientStream
 }
 
-type handsfreeServiceGetTokenClient struct {
+type handsfreeServiceConnectClient struct {
 	grpc.ClientStream
 }
 
-func (x *handsfreeServiceGetTokenClient) Recv() (*ControlPacket, error) {
+func (x *handsfreeServiceConnectClient) Recv() (*ControlPacket, error) {
 	m := new(ControlPacket)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -69,7 +79,8 @@ func (x *handsfreeServiceGetTokenClient) Recv() (*ControlPacket, error) {
 // All implementations must embed UnimplementedHandsfreeServiceServer
 // for forward compatibility
 type HandsfreeServiceServer interface {
-	GetToken(*ConnectionRequest, HandsfreeService_GetTokenServer) error
+	Send(context.Context, *ControlPacket) (*ControlPacket, error)
+	Connect(*ConnectionRequest, HandsfreeService_ConnectServer) error
 	mustEmbedUnimplementedHandsfreeServiceServer()
 }
 
@@ -77,8 +88,11 @@ type HandsfreeServiceServer interface {
 type UnimplementedHandsfreeServiceServer struct {
 }
 
-func (UnimplementedHandsfreeServiceServer) GetToken(*ConnectionRequest, HandsfreeService_GetTokenServer) error {
-	return status.Errorf(codes.Unimplemented, "method GetToken not implemented")
+func (UnimplementedHandsfreeServiceServer) Send(context.Context, *ControlPacket) (*ControlPacket, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Send not implemented")
+}
+func (UnimplementedHandsfreeServiceServer) Connect(*ConnectionRequest, HandsfreeService_ConnectServer) error {
+	return status.Errorf(codes.Unimplemented, "method Connect not implemented")
 }
 func (UnimplementedHandsfreeServiceServer) mustEmbedUnimplementedHandsfreeServiceServer() {}
 
@@ -93,24 +107,42 @@ func RegisterHandsfreeServiceServer(s grpc.ServiceRegistrar, srv HandsfreeServic
 	s.RegisterService(&HandsfreeService_ServiceDesc, srv)
 }
 
-func _HandsfreeService_GetToken_Handler(srv interface{}, stream grpc.ServerStream) error {
+func _HandsfreeService_Send_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ControlPacket)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HandsfreeServiceServer).Send(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/infinimesh.handsfree.HandsfreeService/Send",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HandsfreeServiceServer).Send(ctx, req.(*ControlPacket))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _HandsfreeService_Connect_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(ConnectionRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(HandsfreeServiceServer).GetToken(m, &handsfreeServiceGetTokenServer{stream})
+	return srv.(HandsfreeServiceServer).Connect(m, &handsfreeServiceConnectServer{stream})
 }
 
-type HandsfreeService_GetTokenServer interface {
+type HandsfreeService_ConnectServer interface {
 	Send(*ControlPacket) error
 	grpc.ServerStream
 }
 
-type handsfreeServiceGetTokenServer struct {
+type handsfreeServiceConnectServer struct {
 	grpc.ServerStream
 }
 
-func (x *handsfreeServiceGetTokenServer) Send(m *ControlPacket) error {
+func (x *handsfreeServiceConnectServer) Send(m *ControlPacket) error {
 	return x.ServerStream.SendMsg(m)
 }
 
@@ -120,11 +152,16 @@ func (x *handsfreeServiceGetTokenServer) Send(m *ControlPacket) error {
 var HandsfreeService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "infinimesh.handsfree.HandsfreeService",
 	HandlerType: (*HandsfreeServiceServer)(nil),
-	Methods:     []grpc.MethodDesc{},
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Send",
+			Handler:    _HandsfreeService_Send_Handler,
+		},
+	},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "GetToken",
-			Handler:       _HandsfreeService_GetToken_Handler,
+			StreamName:    "Connect",
+			Handler:       _HandsfreeService_Connect_Handler,
 			ServerStreams: true,
 		},
 	},

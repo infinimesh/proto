@@ -24,8 +24,8 @@ message ConnectionRequest {
 
 enum Code {
     UNKNOWN = 0;
-    AUTH_CODE = 1;
-    TOKEN = 2;
+    AUTH = 1;
+    DATA = 2;
 }
 
 message ControlPacket {
@@ -34,7 +34,12 @@ message ControlPacket {
 }
 
 service HandsfreeService {
-    rpc GetToken(infinimesh.handsfree.ConnectionRequest) returns (stream infinimesh.handsfree.ControlPacket) {
+    rpc Send(infinimesh.handsfree.ControlPacket) returns (infinimesh.handsfree.ControlPacket) {
+        option (google.api.http) = {
+            post: "/handsfree"
+        };
+    }
+    rpc Connect(infinimesh.handsfree.ConnectionRequest) returns (stream infinimesh.handsfree.ControlPacket) {
         option (google.api.http) = {
             get: "/handsfree/connection"
         };

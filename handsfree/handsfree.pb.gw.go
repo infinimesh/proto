@@ -32,21 +32,57 @@ var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
 var (
-	filter_HandsfreeService_GetToken_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+	filter_HandsfreeService_Send_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
-func request_HandsfreeService_GetToken_0(ctx context.Context, marshaler runtime.Marshaler, client HandsfreeServiceClient, req *http.Request, pathParams map[string]string) (HandsfreeService_GetTokenClient, runtime.ServerMetadata, error) {
+func request_HandsfreeService_Send_0(ctx context.Context, marshaler runtime.Marshaler, client HandsfreeServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ControlPacket
+	var metadata runtime.ServerMetadata
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_HandsfreeService_Send_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.Send(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_HandsfreeService_Send_0(ctx context.Context, marshaler runtime.Marshaler, server HandsfreeServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ControlPacket
+	var metadata runtime.ServerMetadata
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_HandsfreeService_Send_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.Send(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+var (
+	filter_HandsfreeService_Connect_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+)
+
+func request_HandsfreeService_Connect_0(ctx context.Context, marshaler runtime.Marshaler, client HandsfreeServiceClient, req *http.Request, pathParams map[string]string) (HandsfreeService_ConnectClient, runtime.ServerMetadata, error) {
 	var protoReq ConnectionRequest
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_HandsfreeService_GetToken_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_HandsfreeService_Connect_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	stream, err := client.GetToken(ctx, &protoReq)
+	stream, err := client.Connect(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
 	}
@@ -65,7 +101,31 @@ func request_HandsfreeService_GetToken_0(ctx context.Context, marshaler runtime.
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterHandsfreeServiceHandlerFromEndpoint instead.
 func RegisterHandsfreeServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server HandsfreeServiceServer) error {
 
-	mux.Handle("GET", pattern_HandsfreeService_GetToken_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_HandsfreeService_Send_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/infinimesh.handsfree.HandsfreeService/Send", runtime.WithHTTPPathPattern("/handsfree"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_HandsfreeService_Send_0(ctx, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_HandsfreeService_Send_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_HandsfreeService_Connect_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
 		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -113,24 +173,45 @@ func RegisterHandsfreeServiceHandler(ctx context.Context, mux *runtime.ServeMux,
 // "HandsfreeServiceClient" to call the correct interceptors.
 func RegisterHandsfreeServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client HandsfreeServiceClient) error {
 
-	mux.Handle("GET", pattern_HandsfreeService_GetToken_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_HandsfreeService_Send_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/infinimesh.handsfree.HandsfreeService/GetToken", runtime.WithHTTPPathPattern("/handsfree/connection"))
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/infinimesh.handsfree.HandsfreeService/Send", runtime.WithHTTPPathPattern("/handsfree"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_HandsfreeService_GetToken_0(ctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_HandsfreeService_Send_0(ctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_HandsfreeService_GetToken_0(ctx, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
+		forward_HandsfreeService_Send_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_HandsfreeService_Connect_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/infinimesh.handsfree.HandsfreeService/Connect", runtime.WithHTTPPathPattern("/handsfree/connection"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_HandsfreeService_Connect_0(ctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_HandsfreeService_Connect_0(ctx, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -138,9 +219,13 @@ func RegisterHandsfreeServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 }
 
 var (
-	pattern_HandsfreeService_GetToken_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"handsfree", "connection"}, ""))
+	pattern_HandsfreeService_Send_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"handsfree"}, ""))
+
+	pattern_HandsfreeService_Connect_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"handsfree", "connection"}, ""))
 )
 
 var (
-	forward_HandsfreeService_GetToken_0 = runtime.ForwardResponseStream
+	forward_HandsfreeService_Send_0 = runtime.ForwardResponseMessage
+
+	forward_HandsfreeService_Connect_0 = runtime.ForwardResponseStream
 )
