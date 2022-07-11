@@ -30,7 +30,7 @@ enum Code {
 
 message ControlPacket {
     Code code = 1;
-    string payload = 2; // payload simply depends on returned code
+    repeated string payload = 2; // payload simply depends on returned code
 }
 
 service HandsfreeService {
