@@ -26,6 +26,8 @@ enum Code {
     UNKNOWN = 0;
     AUTH = 1;
     DATA = 2;
+    SUCCESS = 3;
+    ERROR = 4;
 }
 
 message ControlPacket {

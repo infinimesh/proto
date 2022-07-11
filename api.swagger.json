@@ -1140,7 +1140,9 @@
             "enum": [
               "UNKNOWN",
               "AUTH",
-              "DATA"
+              "DATA",
+              "SUCCESS",
+              "ERROR"
             ],
             "default": "UNKNOWN"
           },
@@ -2194,7 +2196,9 @@
       "enum": [
         "UNKNOWN",
         "AUTH",
-        "DATA"
+        "DATA",
+        "SUCCESS",
+        "ERROR"
       ],
       "default": "UNKNOWN"
     },
