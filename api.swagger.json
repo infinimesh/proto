@@ -1133,28 +1133,12 @@
         },
         "parameters": [
           {
-            "name": "code",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "enum": [
-              "UNKNOWN",
-              "AUTH",
-              "DATA",
-              "SUCCESS",
-              "ERROR"
-            ],
-            "default": "UNKNOWN"
-          },
-          {
-            "name": "payload",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "multi"
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/handsfreeControlPacket"
+            }
           }
         ],
         "tags": [

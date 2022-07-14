@@ -39,6 +39,7 @@ service HandsfreeService {
     rpc Send(infinimesh.handsfree.ControlPacket) returns (infinimesh.handsfree.ControlPacket) {
         option (google.api.http) = {
             post: "/handsfree"
+            body: "*"
         };
     }
     rpc Connect(infinimesh.handsfree.ConnectionRequest) returns (stream infinimesh.handsfree.ControlPacket) {
