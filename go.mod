@@ -3,10 +3,10 @@ module github.com/infinimesh/proto
 go 1.18
 
 require (
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.10.3
-	google.golang.org/genproto v0.0.0-20220627200112-0a929928cb33
-	google.golang.org/grpc v1.47.0
-	google.golang.org/protobuf v1.28.0
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.1
+	google.golang.org/genproto v0.0.0-20220728213248-dd149ef739b9
+	google.golang.org/grpc v1.48.0
+	google.golang.org/protobuf v1.28.1
 )
 
 require (
