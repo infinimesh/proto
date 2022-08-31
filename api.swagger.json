@@ -659,6 +659,12 @@
             "in": "query",
             "required": false,
             "type": "boolean"
+          },
+          {
+            "name": "sync",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
