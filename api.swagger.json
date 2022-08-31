@@ -617,7 +617,7 @@
         ]
       }
     },
-    "/devices/states/stream": {
+    "/devices/states/stream/{sync}": {
       "get": {
         "operationId": "ShadowService_StreamShadow",
         "responses": {
@@ -645,6 +645,13 @@
         },
         "parameters": [
           {
+            "name": "sync",
+            "in": "path",
+            "required": true,
+            "type": "boolean",
+            "pattern": "[^/]+"
+          },
+          {
             "name": "devices",
             "in": "query",
             "required": false,
@@ -656,12 +663,6 @@
           },
           {
             "name": "onlyDelta",
-            "in": "query",
-            "required": false,
-            "type": "boolean"
-          },
-          {
-            "name": "sync",
             "in": "query",
             "required": false,
             "type": "boolean"
