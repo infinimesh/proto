@@ -1538,29 +1538,12 @@ func local_request_ShadowService_Remove_0(ctx context.Context, marshaler runtime
 }
 
 var (
-	filter_ShadowService_StreamShadow_0 = &utilities.DoubleArray{Encoding: map[string]int{"sync": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+	filter_ShadowService_StreamShadow_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
 func request_ShadowService_StreamShadow_0(ctx context.Context, marshaler runtime.Marshaler, client ShadowServiceClient, req *http.Request, pathParams map[string]string) (ShadowService_StreamShadowClient, runtime.ServerMetadata, error) {
 	var protoReq shadow.StreamShadowRequest
 	var metadata runtime.ServerMetadata
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["sync"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "sync")
-	}
-
-	protoReq.Sync, err = runtime.Bool(val)
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "sync", err)
-	}
 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
@@ -1570,6 +1553,34 @@ func request_ShadowService_StreamShadow_0(ctx context.Context, marshaler runtime
 	}
 
 	stream, err := client.StreamShadow(ctx, &protoReq)
+	if err != nil {
+		return nil, metadata, err
+	}
+	header, err := stream.Header()
+	if err != nil {
+		return nil, metadata, err
+	}
+	metadata.HeaderMD = header
+	return stream, metadata, nil
+
+}
+
+var (
+	filter_ShadowService_StreamShadowSync_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+)
+
+func request_ShadowService_StreamShadowSync_0(ctx context.Context, marshaler runtime.Marshaler, client ShadowServiceClient, req *http.Request, pathParams map[string]string) (ShadowService_StreamShadowSyncClient, runtime.ServerMetadata, error) {
+	var protoReq shadow.StreamShadowRequest
+	var metadata runtime.ServerMetadata
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ShadowService_StreamShadowSync_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	stream, err := client.StreamShadowSync(ctx, &protoReq)
 	if err != nil {
 		return nil, metadata, err
 	}
@@ -2306,6 +2317,13 @@ func RegisterShadowServiceHandlerServer(ctx context.Context, mux *runtime.ServeM
 	})
 
 	mux.Handle("GET", pattern_ShadowService_StreamShadow_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
+		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+		return
+	})
+
+	mux.Handle("GET", pattern_ShadowService_StreamShadowSync_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		err := status.Error(codes.Unimplemented, "streaming calls are not yet supported in the in-process transport")
 		_, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
@@ -3214,7 +3232,7 @@ func RegisterShadowServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/infinimesh.node.ShadowService/StreamShadow", runtime.WithHTTPPathPattern("/devices/states/stream/{sync=*}"))
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/infinimesh.node.ShadowService/StreamShadow", runtime.WithHTTPPathPattern("/devices/states/stream"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -3230,6 +3248,27 @@ func RegisterShadowServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 
 	})
 
+	mux.Handle("GET", pattern_ShadowService_StreamShadowSync_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/infinimesh.node.ShadowService/StreamShadowSync", runtime.WithHTTPPathPattern("/devices/states/stream/sync"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_ShadowService_StreamShadowSync_0(ctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_ShadowService_StreamShadowSync_0(ctx, mux, outboundMarshaler, w, req, func() (proto.Message, error) { return resp.Recv() }, mux.GetForwardResponseOptions()...)
+
+	})
+
 	return nil
 }
 
@@ -3240,7 +3279,9 @@ var (
 
 	pattern_ShadowService_Remove_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"devices", "states", "remove"}, ""))
 
-	pattern_ShadowService_StreamShadow_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"devices", "states", "stream", "sync"}, ""))
+	pattern_ShadowService_StreamShadow_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"devices", "states", "stream"}, ""))
+
+	pattern_ShadowService_StreamShadowSync_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"devices", "states", "stream", "sync"}, ""))
 )
 
 var (
@@ -3251,6 +3292,8 @@ var (
 	forward_ShadowService_Remove_0 = runtime.ForwardResponseMessage
 
 	forward_ShadowService_StreamShadow_0 = runtime.ForwardResponseStream
+
+	forward_ShadowService_StreamShadowSync_0 = runtime.ForwardResponseStream
 )
 
 // RegisterInternalServiceHandlerFromEndpoint is same as RegisterInternalServiceHandler but

@@ -617,7 +617,7 @@
         ]
       }
     },
-    "/devices/states/stream/{sync}": {
+    "/devices/states/stream": {
       "get": {
         "operationId": "ShadowService_StreamShadow",
         "responses": {
@@ -645,12 +645,54 @@
         },
         "parameters": [
           {
-            "name": "sync",
-            "in": "path",
-            "required": true,
-            "type": "boolean",
-            "pattern": "[^/]+"
+            "name": "devices",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
           },
+          {
+            "name": "onlyDelta",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          }
+        ],
+        "tags": [
+          "ShadowService"
+        ]
+      }
+    },
+    "/devices/states/stream/sync": {
+      "get": {
+        "operationId": "ShadowService_StreamShadowSync",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/shadowShadow"
+                },
+                "error": {
+                  "$ref": "#/definitions/rpcStatus"
+                }
+              },
+              "title": "Stream result of shadowShadow"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
           {
             "name": "devices",
             "in": "query",

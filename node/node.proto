@@ -239,9 +239,14 @@ service ShadowService {
   };
   rpc StreamShadow(infinimesh.shadow.StreamShadowRequest) returns (stream infinimesh.shadow.Shadow) {
     option (google.api.http) = {
-      get: "/devices/states/stream/{sync=*}"
+      get: "/devices/states/stream"
     };
-  }
+  };
+  rpc StreamShadowSync(infinimesh.shadow.StreamShadowRequest) returns (stream infinimesh.shadow.Shadow) {
+    option (google.api.http) = {
+      get: "/devices/states/stream/sync"
+    };
+  };
 }
 
 message LDAPProviders {
