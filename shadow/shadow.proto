@@ -55,6 +55,7 @@ message RemoveRequest {
 message StreamShadowRequest {
   repeated string devices = 1;
   bool only_delta = 2;
+  bool sync = 3;
 }
 
 service ShadowService {
@@ -63,6 +64,4 @@ service ShadowService {
   rpc Remove(RemoveRequest) returns (Shadow);
   rpc StreamShadow(StreamShadowRequest)
       returns (stream Shadow);
-  rpc StreamShadowSync(StreamShadowRequest)
-    returns (stream Shadow);
 }

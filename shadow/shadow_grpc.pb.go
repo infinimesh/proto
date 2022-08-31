@@ -26,7 +26,6 @@ type ShadowServiceClient interface {
 	Patch(ctx context.Context, in *Shadow, opts ...grpc.CallOption) (*Shadow, error)
 	Remove(ctx context.Context, in *RemoveRequest, opts ...grpc.CallOption) (*Shadow, error)
 	StreamShadow(ctx context.Context, in *StreamShadowRequest, opts ...grpc.CallOption) (ShadowService_StreamShadowClient, error)
-	StreamShadowSync(ctx context.Context, in *StreamShadowRequest, opts ...grpc.CallOption) (ShadowService_StreamShadowSyncClient, error)
 }
 
 type shadowServiceClient struct {
@@ -96,38 +95,6 @@ func (x *shadowServiceStreamShadowClient) Recv() (*Shadow, error) {
 	return m, nil
 }
 
-func (c *shadowServiceClient) StreamShadowSync(ctx context.Context, in *StreamShadowRequest, opts ...grpc.CallOption) (ShadowService_StreamShadowSyncClient, error) {
-	stream, err := c.cc.NewStream(ctx, &ShadowService_ServiceDesc.Streams[1], "/infinimesh.shadow.ShadowService/StreamShadowSync", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &shadowServiceStreamShadowSyncClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type ShadowService_StreamShadowSyncClient interface {
-	Recv() (*Shadow, error)
-	grpc.ClientStream
-}
-
-type shadowServiceStreamShadowSyncClient struct {
-	grpc.ClientStream
-}
-
-func (x *shadowServiceStreamShadowSyncClient) Recv() (*Shadow, error) {
-	m := new(Shadow)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
 // ShadowServiceServer is the server API for ShadowService service.
 // All implementations must embed UnimplementedShadowServiceServer
 // for forward compatibility
@@ -136,7 +103,6 @@ type ShadowServiceServer interface {
 	Patch(context.Context, *Shadow) (*Shadow, error)
 	Remove(context.Context, *RemoveRequest) (*Shadow, error)
 	StreamShadow(*StreamShadowRequest, ShadowService_StreamShadowServer) error
-	StreamShadowSync(*StreamShadowRequest, ShadowService_StreamShadowSyncServer) error
 	mustEmbedUnimplementedShadowServiceServer()
 }
 
@@ -155,9 +121,6 @@ func (UnimplementedShadowServiceServer) Remove(context.Context, *RemoveRequest) 
 }
 func (UnimplementedShadowServiceServer) StreamShadow(*StreamShadowRequest, ShadowService_StreamShadowServer) error {
 	return status.Errorf(codes.Unimplemented, "method StreamShadow not implemented")
-}
-func (UnimplementedShadowServiceServer) StreamShadowSync(*StreamShadowRequest, ShadowService_StreamShadowSyncServer) error {
-	return status.Errorf(codes.Unimplemented, "method StreamShadowSync not implemented")
 }
 func (UnimplementedShadowServiceServer) mustEmbedUnimplementedShadowServiceServer() {}
 
@@ -247,27 +210,6 @@ func (x *shadowServiceStreamShadowServer) Send(m *Shadow) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func _ShadowService_StreamShadowSync_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(StreamShadowRequest)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(ShadowServiceServer).StreamShadowSync(m, &shadowServiceStreamShadowSyncServer{stream})
-}
-
-type ShadowService_StreamShadowSyncServer interface {
-	Send(*Shadow) error
-	grpc.ServerStream
-}
-
-type shadowServiceStreamShadowSyncServer struct {
-	grpc.ServerStream
-}
-
-func (x *shadowServiceStreamShadowSyncServer) Send(m *Shadow) error {
-	return x.ServerStream.SendMsg(m)
-}
-
 // ShadowService_ServiceDesc is the grpc.ServiceDesc for ShadowService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -292,11 +234,6 @@ var ShadowService_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "StreamShadow",
 			Handler:       _ShadowService_StreamShadow_Handler,
-			ServerStreams: true,
-		},
-		{
-			StreamName:    "StreamShadowSync",
-			Handler:       _ShadowService_StreamShadowSync_Handler,
 			ServerStreams: true,
 		},
 	},
