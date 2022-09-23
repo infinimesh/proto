@@ -1866,6 +1866,16 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "vars",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
           }
         ],
         "tags": [
@@ -1972,6 +1982,16 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "vars",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
           }
         ],
         "tags": [
@@ -2031,6 +2051,12 @@
                 },
                 "embeddedConf": {
                   "$ref": "#/definitions/pluginsEmbededPluginConf"
+                },
+                "vars": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 }
               }
             }
@@ -2432,6 +2458,12 @@
         },
         "embeddedConf": {
           "$ref": "#/definitions/pluginsEmbededPluginConf"
+        },
+        "vars": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
