@@ -18,11 +18,16 @@ package infinimesh.node.namespaces;
 
 import "node/access/access.proto";
 
+message Plugin {
+  string uuid = 1;
+  map<string, string> vars = 2;
+}
+
 message Namespace {
   string uuid = 1;
   string title = 2;
   optional infinimesh.node.access.Access access = 3;
-  optional string plugin = 4;
+  optional Plugin plugin = 4;
 }
 
 message Namespaces {
