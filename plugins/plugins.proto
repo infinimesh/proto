@@ -36,6 +36,8 @@ message Plugin {
     
     PluginKind kind = 8;
     optional EmbededPluginConf embedded_conf = 9;
+
+    repeated string vars = 10;
 }
 
 message Plugins {
