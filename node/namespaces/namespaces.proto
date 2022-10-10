@@ -30,6 +30,4 @@ message Namespace {
   optional Plugin plugin = 4;
 }
 
-message Namespaces {
-  repeated Namespace namespaces = 1;
-}
+message Namespaces { repeated Namespace namespaces = 1; }

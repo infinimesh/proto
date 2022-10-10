@@ -18,33 +18,33 @@ syntax = "proto3";
 package infinimesh.handsfree;
 import "google/api/annotations.proto";
 
-message ConnectionRequest {
-    string app_id = 1;    
-}
+message ConnectionRequest { string app_id = 1; }
 
 enum Code {
-    UNKNOWN = 0;
-    AUTH = 1;
-    DATA = 2;
-    SUCCESS = 3;
-    ERROR = 4;
+  UNKNOWN = 0;
+  AUTH = 1;
+  DATA = 2;
+  SUCCESS = 3;
+  ERROR = 4;
 }
 
 message ControlPacket {
-    Code code = 1;
-    repeated string payload = 2; // payload simply depends on returned code
+  Code code = 1;
+  repeated string payload = 2; // payload simply depends on returned code
 }
 
 service HandsfreeService {
-    rpc Send(infinimesh.handsfree.ControlPacket) returns (infinimesh.handsfree.ControlPacket) {
-        option (google.api.http) = {
-            post: "/handsfree"
-            body: "*"
-        };
-    }
-    rpc Connect(infinimesh.handsfree.ConnectionRequest) returns (stream infinimesh.handsfree.ControlPacket) {
-        option (google.api.http) = {
-            get: "/handsfree/connection"
-        };
-    }
+  rpc Send(infinimesh.handsfree.ControlPacket)
+      returns (infinimesh.handsfree.ControlPacket) {
+    option (google.api.http) = {
+      post : "/handsfree"
+      body : "*"
+    };
+  }
+  rpc Connect(infinimesh.handsfree.ConnectionRequest)
+      returns (stream infinimesh.handsfree.ControlPacket) {
+    option (google.api.http) = {
+      get : "/handsfree/connection"
+    };
+  }
 }

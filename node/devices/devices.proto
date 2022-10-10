@@ -35,19 +35,13 @@ message Certificate {
   bytes fingerprint = 3;
 }
 
-message Devices {
-  repeated Device devices = 1;
-}
+message Devices { repeated Device devices = 1; }
 
 message CreateRequest {
   Device device = 1;
   string namespace = 2; // Namespace to put device under
 }
 
-message CreateResponse {
-  Device device = 1;
-}
+message CreateResponse { Device device = 1; }
 
-message GetByFingerprintRequest {
-  bytes fingerprint = 1;
-}
+message GetByFingerprintRequest { bytes fingerprint = 1; }
