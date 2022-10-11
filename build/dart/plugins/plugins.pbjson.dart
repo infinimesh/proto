@@ -32,6 +32,7 @@ const Plugin$json = const {
     const {'1': 'access', '3': 7, '4': 1, '5': 11, '6': '.infinimesh.node.access.Access', '9': 1, '10': 'access', '17': true},
     const {'1': 'kind', '3': 8, '4': 1, '5': 14, '6': '.infinimesh.plugins.PluginKind', '10': 'kind'},
     const {'1': 'embedded_conf', '3': 9, '4': 1, '5': 11, '6': '.infinimesh.plugins.EmbededPluginConf', '9': 2, '10': 'embeddedConf', '17': true},
+    const {'1': 'vars', '3': 10, '4': 3, '5': 9, '10': 'vars'},
   ],
   '8': const [
     const {'1': '_namespace'},
@@ -41,7 +42,7 @@ const Plugin$json = const {
 };
 
 /// Descriptor for `Plugin`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List pluginDescriptor = $convert.base64Decode('CgZQbHVnaW4SEgoEdXVpZBgBIAEoCVIEdXVpZBISCgRsb2dvGAIgASgJUgRsb2dvEhQKBXRpdGxlGAMgASgJUgV0aXRsZRIgCgtkZXNjcmlwdGlvbhgEIAEoCVILZGVzY3JpcHRpb24SFgoGcHVibGljGAUgASgIUgZwdWJsaWMSIQoJbmFtZXNwYWNlGAYgASgJSABSCW5hbWVzcGFjZYgBARI7CgZhY2Nlc3MYByABKAsyHi5pbmZpbmltZXNoLm5vZGUuYWNjZXNzLkFjY2Vzc0gBUgZhY2Nlc3OIAQESMgoEa2luZBgIIAEoDjIeLmluZmluaW1lc2gucGx1Z2lucy5QbHVnaW5LaW5kUgRraW5kEk8KDWVtYmVkZGVkX2NvbmYYCSABKAsyJS5pbmZpbmltZXNoLnBsdWdpbnMuRW1iZWRlZFBsdWdpbkNvbmZIAlIMZW1iZWRkZWRDb25miAEBQgwKCl9uYW1lc3BhY2VCCQoHX2FjY2Vzc0IQCg5fZW1iZWRkZWRfY29uZg==');
+final $typed_data.Uint8List pluginDescriptor = $convert.base64Decode('CgZQbHVnaW4SEgoEdXVpZBgBIAEoCVIEdXVpZBISCgRsb2dvGAIgASgJUgRsb2dvEhQKBXRpdGxlGAMgASgJUgV0aXRsZRIgCgtkZXNjcmlwdGlvbhgEIAEoCVILZGVzY3JpcHRpb24SFgoGcHVibGljGAUgASgIUgZwdWJsaWMSIQoJbmFtZXNwYWNlGAYgASgJSABSCW5hbWVzcGFjZYgBARI7CgZhY2Nlc3MYByABKAsyHi5pbmZpbmltZXNoLm5vZGUuYWNjZXNzLkFjY2Vzc0gBUgZhY2Nlc3OIAQESMgoEa2luZBgIIAEoDjIeLmluZmluaW1lc2gucGx1Z2lucy5QbHVnaW5LaW5kUgRraW5kEk8KDWVtYmVkZGVkX2NvbmYYCSABKAsyJS5pbmZpbmltZXNoLnBsdWdpbnMuRW1iZWRlZFBsdWdpbkNvbmZIAlIMZW1iZWRkZWRDb25miAEBEhIKBHZhcnMYCiADKAlSBHZhcnNCDAoKX25hbWVzcGFjZUIJCgdfYWNjZXNzQhAKDl9lbWJlZGRlZF9jb25m');
 @$core.Deprecated('Use pluginsDescriptor instead')
 const Plugins$json = const {
   '1': 'Plugins',

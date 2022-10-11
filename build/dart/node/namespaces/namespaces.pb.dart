@@ -11,12 +11,67 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 import '../access/access.pb.dart' as $0;
 
+class Plugin extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Plugin', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'infinimesh.node.namespaces'), createEmptyInstance: create)
+    ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'uuid')
+    ..m<$core.String, $core.String>(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'vars', entryClassName: 'Plugin.VarsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OS, packageName: const $pb.PackageName('infinimesh.node.namespaces'))
+    ..hasRequiredFields = false
+  ;
+
+  Plugin._() : super();
+  factory Plugin({
+    $core.String? uuid,
+    $core.Map<$core.String, $core.String>? vars,
+  }) {
+    final _result = create();
+    if (uuid != null) {
+      _result.uuid = uuid;
+    }
+    if (vars != null) {
+      _result.vars.addAll(vars);
+    }
+    return _result;
+  }
+  factory Plugin.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Plugin.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  Plugin clone() => Plugin()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  Plugin copyWith(void Function(Plugin) updates) => super.copyWith((message) => updates(message as Plugin)) as Plugin; // ignore: deprecated_member_use
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Plugin create() => Plugin._();
+  Plugin createEmptyInstance() => create();
+  static $pb.PbList<Plugin> createRepeated() => $pb.PbList<Plugin>();
+  @$core.pragma('dart2js:noInline')
+  static Plugin getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Plugin>(create);
+  static Plugin? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get uuid => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set uuid($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasUuid() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearUuid() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.Map<$core.String, $core.String> get vars => $_getMap(1);
+}
+
 class Namespace extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'Namespace', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'infinimesh.node.namespaces'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'uuid')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'title')
     ..aOM<$0.Access>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'access', subBuilder: $0.Access.create)
-    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'plugin')
+    ..aOM<Plugin>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'plugin', subBuilder: Plugin.create)
     ..hasRequiredFields = false
   ;
 
@@ -25,7 +80,7 @@ class Namespace extends $pb.GeneratedMessage {
     $core.String? uuid,
     $core.String? title,
     $0.Access? access,
-    $core.String? plugin,
+    Plugin? plugin,
   }) {
     final _result = create();
     if (uuid != null) {
@@ -93,13 +148,15 @@ class Namespace extends $pb.GeneratedMessage {
   $0.Access ensureAccess() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  $core.String get plugin => $_getSZ(3);
+  Plugin get plugin => $_getN(3);
   @$pb.TagNumber(4)
-  set plugin($core.String v) { $_setString(3, v); }
+  set plugin(Plugin v) { setField(4, v); }
   @$pb.TagNumber(4)
   $core.bool hasPlugin() => $_has(3);
   @$pb.TagNumber(4)
   void clearPlugin() => clearField(4);
+  @$pb.TagNumber(4)
+  Plugin ensurePlugin() => $_ensure(3);
 }
 
 class Namespaces extends $pb.GeneratedMessage {

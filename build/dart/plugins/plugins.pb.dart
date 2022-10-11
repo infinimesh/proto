@@ -26,6 +26,7 @@ class Plugin extends $pb.GeneratedMessage {
     ..aOM<$1.Access>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'access', subBuilder: $1.Access.create)
     ..e<PluginKind>(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'kind', $pb.PbFieldType.OE, defaultOrMaker: PluginKind.UNKNOWN, valueOf: PluginKind.valueOf, enumValues: PluginKind.values)
     ..aOM<EmbededPluginConf>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'embeddedConf', subBuilder: EmbededPluginConf.create)
+    ..pPS(10, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'vars')
     ..hasRequiredFields = false
   ;
 
@@ -40,6 +41,7 @@ class Plugin extends $pb.GeneratedMessage {
     $1.Access? access,
     PluginKind? kind,
     EmbededPluginConf? embeddedConf,
+    $core.Iterable<$core.String>? vars,
   }) {
     final _result = create();
     if (uuid != null) {
@@ -68,6 +70,9 @@ class Plugin extends $pb.GeneratedMessage {
     }
     if (embeddedConf != null) {
       _result.embeddedConf = embeddedConf;
+    }
+    if (vars != null) {
+      _result.vars.addAll(vars);
     }
     return _result;
   }
@@ -176,6 +181,9 @@ class Plugin extends $pb.GeneratedMessage {
   void clearEmbeddedConf() => clearField(9);
   @$pb.TagNumber(9)
   EmbededPluginConf ensureEmbeddedConf() => $_ensure(8);
+
+  @$pb.TagNumber(10)
+  $core.List<$core.String> get vars => $_getList(9);
 }
 
 class Plugins extends $pb.GeneratedMessage {
