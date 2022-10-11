@@ -17,31 +17,29 @@ syntax = "proto3";
 package infinimesh.node.access;
 
 enum Level {
-    NONE = 0;
-    READ = 1;
-    MGMT = 2;
-    ADMIN = 3;
-    ROOT = 4;
+  NONE = 0;
+  READ = 1;
+  MGMT = 2;
+  ADMIN = 3;
+  ROOT = 4;
 }
 
 enum Role {
-    UNSET = 0;
-    OWNER = 1;
+  UNSET = 0;
+  OWNER = 1;
 }
 
 message Access {
-    Level level = 1;
-    Role role = 2;
-    optional string namespace = 3;
+  Level level = 1;
+  Role role = 2;
+  optional string namespace = 3;
 }
 
 message Node {
-    string node = 1;
-    string parent = 2;
+  string node = 1;
+  string parent = 2;
 
-    string edge = 3; // @private
+  string edge = 3; // @private
 }
 
-message Nodes {
-    repeated Node nodes = 1;
-}
+message Nodes { repeated Node nodes = 1; }

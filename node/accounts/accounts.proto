@@ -34,14 +34,10 @@ message Account {
 message CreateRequest {
   Account account = 1;
   Credentials credentials = 2; // Credentials for New Account
-  string namespace = 3; // Namespace to put Account under
-  optional int32 access = 4; // Account access level to parent namespace
+  string namespace = 3;        // Namespace to put Account under
+  optional int32 access = 4;   // Account access level to parent namespace
 }
 
-message CreateResponse {
-  Account account = 1;
-}
+message CreateResponse { Account account = 1; }
 
-message Accounts {
-  repeated Account accounts = 1;
-}
+message Accounts { repeated Account accounts = 1; }

@@ -27,9 +27,7 @@ message TokenRequest {
   optional bool inf = 4;
 }
 
-message TokenResponse {
-  string token = 1;
-}
+message TokenResponse { string token = 1; }
 
 message SetCredentialsRequest {
   string uuid = 1;
@@ -43,56 +41,61 @@ message EmptyMessage {}
 service AccountsService {
   rpc Token(TokenRequest) returns (TokenResponse) {
     option (google.api.http) = {
-      post: "/token"
-      body: "*"
+      post : "/token"
+      body : "*"
     };
   };
 
-  rpc Get(infinimesh.node.accounts.Account) returns (infinimesh.node.accounts.Account) {
+  rpc Get(infinimesh.node.accounts.Account)
+      returns (infinimesh.node.accounts.Account) {
     option (google.api.http) = {
-      get: "/accounts/{uuid}"
+      get : "/accounts/{uuid}"
     };
   };
   rpc List(EmptyMessage) returns (infinimesh.node.accounts.Accounts) {
     option (google.api.http) = {
-      get: "/accounts"
+      get : "/accounts"
     };
   };
 
-  rpc Create(infinimesh.node.accounts.CreateRequest) returns (infinimesh.node.accounts.CreateResponse) {
+  rpc Create(infinimesh.node.accounts.CreateRequest)
+      returns (infinimesh.node.accounts.CreateResponse) {
     option (google.api.http) = {
-      put: "/accounts"
-      body: "*"
+      put : "/accounts"
+      body : "*"
     };
   };
-  rpc Update(infinimesh.node.accounts.Account) returns (infinimesh.node.accounts.Account) {
+  rpc Update(infinimesh.node.accounts.Account)
+      returns (infinimesh.node.accounts.Account) {
     option (google.api.http) = {
-      patch: "/accounts/{uuid}"
-      body: "*"
+      patch : "/accounts/{uuid}"
+      body : "*"
     };
   };
-  rpc Toggle(infinimesh.node.accounts.Account) returns (infinimesh.node.accounts.Account) {
+  rpc Toggle(infinimesh.node.accounts.Account)
+      returns (infinimesh.node.accounts.Account) {
     option (google.api.http) = {
-      post: "/accounts/{uuid}/toggle"
-      body: "*"
+      post : "/accounts/{uuid}/toggle"
+      body : "*"
     };
-  };  
+  };
 
   rpc Delete(infinimesh.node.accounts.Account) returns (DeleteResponse) {
     option (google.api.http) = {
-      delete: "/accounts/{uuid}"
+      delete : "/accounts/{uuid}"
     };
   };
-  rpc Deletables(infinimesh.node.accounts.Account) returns (infinimesh.node.access.Nodes) {
+  rpc Deletables(infinimesh.node.accounts.Account)
+      returns (infinimesh.node.access.Nodes) {
     option (google.api.http) = {
-      get: "/accounts/{uuid}/deletables"
+      get : "/accounts/{uuid}/deletables"
     };
   };
 
   rpc SetCredentials(SetCredentialsRequest) returns (SetCredentialsResponse) {
     option (google.api.http) = {
-      post: "/accounts/{uuid}/credentials"
-      body: "*"
+      post : "/accounts/{uuid}/credentials"
+      body : "*"
     };
   };
 }
@@ -106,51 +109,57 @@ message JoinRequest {
 }
 
 service NamespacesService {
-  rpc Get(infinimesh.node.namespaces.Namespace) returns (infinimesh.node.namespaces.Namespace) {
+  rpc Get(infinimesh.node.namespaces.Namespace)
+      returns (infinimesh.node.namespaces.Namespace) {
     option (google.api.http) = {
-      get: "/namespaces/{uuid}"
+      get : "/namespaces/{uuid}"
     };
   };
   rpc List(EmptyMessage) returns (infinimesh.node.namespaces.Namespaces) {
     option (google.api.http) = {
-      get: "/namespaces"
+      get : "/namespaces"
     };
   };
 
-  rpc Create(infinimesh.node.namespaces.Namespace) returns (infinimesh.node.namespaces.Namespace) {
+  rpc Create(infinimesh.node.namespaces.Namespace)
+      returns (infinimesh.node.namespaces.Namespace) {
     option (google.api.http) = {
-      put: "/namespaces"
-      body: "*"
+      put : "/namespaces"
+      body : "*"
     };
   };
-  rpc Update(infinimesh.node.namespaces.Namespace) returns (infinimesh.node.namespaces.Namespace) {
+  rpc Update(infinimesh.node.namespaces.Namespace)
+      returns (infinimesh.node.namespaces.Namespace) {
     option (google.api.http) = {
-      patch: "/namespaces/{uuid}"
-      body: "*"
+      patch : "/namespaces/{uuid}"
+      body : "*"
     };
   };
   rpc Delete(infinimesh.node.namespaces.Namespace) returns (DeleteResponse) {
     option (google.api.http) = {
-      delete: "/namespaces/{uuid}"
+      delete : "/namespaces/{uuid}"
     };
   };
-  rpc Deletables(infinimesh.node.namespaces.Namespace) returns (infinimesh.node.access.Nodes) {
+  rpc Deletables(infinimesh.node.namespaces.Namespace)
+      returns (infinimesh.node.access.Nodes) {
     option (google.api.http) = {
-      get: "/namespaces/{uuid}/deletables"
+      get : "/namespaces/{uuid}/deletables"
     };
   };
 
   // Accounts having access to this namespace
-  rpc Joins(infinimesh.node.namespaces.Namespace) returns (infinimesh.node.accounts.Accounts) {
+  rpc Joins(infinimesh.node.namespaces.Namespace)
+      returns (infinimesh.node.accounts.Accounts) {
     option (google.api.http) = {
-      get: "/namespaces/{uuid}/joins"
+      get : "/namespaces/{uuid}/joins"
     };
   }
-  // Sets Access to this namespace for the given account(deletes if level is set to NONE(0))
+  // Sets Access to this namespace for the given account(deletes if level is set
+  // to NONE(0))
   rpc Join(JoinRequest) returns (infinimesh.node.accounts.Accounts) {
     option (google.api.http) = {
-      post: "/namespaces/{namespace}/join"
-      body: "*"
+      post : "/namespaces/{namespace}/join"
+      body : "*"
     };
   }
 }
@@ -164,99 +173,111 @@ message DevicesTokenRequest {
 }
 
 service DevicesService {
-  rpc Get(infinimesh.node.devices.Device) returns (infinimesh.node.devices.Device) {
+  rpc Get(infinimesh.node.devices.Device)
+      returns (infinimesh.node.devices.Device) {
     option (google.api.http) = {
-      get: "/devices/{uuid}"
+      get : "/devices/{uuid}"
     };
   };
   rpc List(EmptyMessage) returns (infinimesh.node.devices.Devices) {
     option (google.api.http) = {
-      get: "/devices"
+      get : "/devices"
     };
   };
 
-  rpc Create(infinimesh.node.devices.CreateRequest) returns (infinimesh.node.devices.CreateResponse) {
+  rpc Create(infinimesh.node.devices.CreateRequest)
+      returns (infinimesh.node.devices.CreateResponse) {
     option (google.api.http) = {
-      put: "/devices"
-      body: "*"
+      put : "/devices"
+      body : "*"
     };
   };
-  rpc Update(infinimesh.node.devices.Device) returns (infinimesh.node.devices.Device) {
+  rpc Update(infinimesh.node.devices.Device)
+      returns (infinimesh.node.devices.Device) {
     option (google.api.http) = {
-      patch: "/devices/{uuid}"
-      body: "*"
+      patch : "/devices/{uuid}"
+      body : "*"
     };
   };
   rpc Delete(infinimesh.node.devices.Device) returns (DeleteResponse) {
     option (google.api.http) = {
-      delete: "/devices/{uuid}"
+      delete : "/devices/{uuid}"
     };
   };
 
-  rpc Toggle(infinimesh.node.devices.Device) returns (infinimesh.node.devices.Device) {
+  rpc Toggle(infinimesh.node.devices.Device)
+      returns (infinimesh.node.devices.Device) {
     option (google.api.http) = {
-      post: "/devices/{uuid}/toggle"
-      body: "*"
+      post : "/devices/{uuid}/toggle"
+      body : "*"
     };
   };
-  rpc ToggleBasic(infinimesh.node.devices.Device) returns (infinimesh.node.devices.Device) {
+  rpc ToggleBasic(infinimesh.node.devices.Device)
+      returns (infinimesh.node.devices.Device) {
     option (google.api.http) = {
-      post: "/devices/{uuid}/toggle/basic"
-      body: "*"
+      post : "/devices/{uuid}/toggle/basic"
+      body : "*"
     };
   };
 
   rpc MakeDevicesToken(DevicesTokenRequest) returns (TokenResponse) {
     option (google.api.http) = {
-      post: "/devices/token"
-      body: "*"
+      post : "/devices/token"
+      body : "*"
     };
   };
 
-  rpc GetByToken(infinimesh.node.devices.Device) returns (infinimesh.node.devices.Device);
-  rpc GetByFingerprint(infinimesh.node.devices.GetByFingerprintRequest) returns (infinimesh.node.devices.Device);
+  rpc GetByToken(infinimesh.node.devices.Device)
+      returns (infinimesh.node.devices.Device);
+  rpc GetByFingerprint(infinimesh.node.devices.GetByFingerprintRequest)
+      returns (infinimesh.node.devices.Device);
 }
 
 import "shadow/shadow.proto";
 
 service ShadowService {
-  rpc Get(infinimesh.shadow.GetRequest) returns (infinimesh.shadow.GetResponse) {
+  rpc Get(infinimesh.shadow.GetRequest)
+      returns (infinimesh.shadow.GetResponse) {
     option (google.api.http) = {
-      get: "/devices/states"
+      get : "/devices/states"
     };
   };
   rpc Patch(infinimesh.shadow.Shadow) returns (infinimesh.shadow.Shadow) {
     option (google.api.http) = {
-      post: "/devices/states"
-      body: "*"
+      post : "/devices/states"
+      body : "*"
     };
   };
-  rpc Remove(infinimesh.shadow.RemoveRequest) returns (infinimesh.shadow.Shadow) {
+  rpc Remove(infinimesh.shadow.RemoveRequest)
+      returns (infinimesh.shadow.Shadow) {
     option (google.api.http) = {
-      post: "/devices/states/remove"
-      body: "*"
+      post : "/devices/states/remove"
+      body : "*"
     };
   };
-  rpc StreamShadow(infinimesh.shadow.StreamShadowRequest) returns (stream infinimesh.shadow.Shadow) {
+  rpc StreamShadow(infinimesh.shadow.StreamShadowRequest)
+      returns (stream infinimesh.shadow.Shadow) {
     option (google.api.http) = {
-      get: "/devices/states/stream"
+      get : "/devices/states/stream"
     };
   };
-  rpc StreamShadowSync(infinimesh.shadow.StreamShadowRequest) returns (stream infinimesh.shadow.Shadow) {
+  rpc StreamShadowSync(infinimesh.shadow.StreamShadowRequest)
+      returns (stream infinimesh.shadow.Shadow) {
     option (google.api.http) = {
-      get: "/devices/states/stream/sync"
+      get : "/devices/states/stream/sync"
     };
   };
 }
 
 message LDAPProviders {
-  map<string, string> providers = 1; // map of keys to titles (titles can be empty)
+  map<string, string> providers =
+      1; // map of keys to titles (titles can be empty)
 }
 
 service InternalService { // not revenue
   rpc GetLDAPProviders(EmptyMessage) returns (LDAPProviders) {
     option (google.api.http) = {
-      get: "/i/ldapp"
+      get : "/i/ldapp"
     };
   }
 }

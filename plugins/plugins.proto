@@ -20,62 +20,58 @@ import "google/api/annotations.proto";
 import "node/access/access.proto";
 
 enum PluginKind {
-    UNKNOWN = 0;
-    EMBEDDED = 1; // Plugin will be embedded into Console as Page
+  UNKNOWN = 0;
+  EMBEDDED = 1; // Plugin will be embedded into Console as Page
 }
 
 message Plugin {
-    string uuid = 1;
-    string logo = 2; // Plugin logo url in format supported by <img> tag
-    string title = 3;
-    string description = 4;
-    bool public = 5;
-    
-    optional string namespace = 6; // Required to get not-public Plugin
-    optional infinimesh.node.access.Access access = 7;
-    
-    PluginKind kind = 8;
-    optional EmbededPluginConf embedded_conf = 9;
+  string uuid = 1;
+  string logo = 2; // Plugin logo url in format supported by <img> tag
+  string title = 3;
+  string description = 4;
+  bool public = 5;
+
+  optional string namespace = 6; // Required to get not-public Plugin
+  optional infinimesh.node.access.Access access = 7;
+
+  PluginKind kind = 8;
+  optional EmbededPluginConf embedded_conf = 9;
+
+  repeated string vars = 10;
 }
 
-message Plugins {
-    repeated Plugin pool = 1;
-}
+message Plugins { repeated Plugin pool = 1; }
 
-message EmbededPluginConf {
-    string frame_url = 1;
-}
+message EmbededPluginConf { string frame_url = 1; }
 
-message ListRequest {
-    optional string namespace = 1;
-}
+message ListRequest { optional string namespace = 1; }
 
 service PluginsService {
-    rpc Get(Plugin) returns (Plugin){
-        option (google.api.http) = {
-            get: "/plugins/{uuid}"
-        };
+  rpc Get(Plugin) returns (Plugin) {
+    option (google.api.http) = {
+      get : "/plugins/{uuid}"
     };
-    rpc List(ListRequest) returns (Plugins) {
-        option (google.api.http) = {
-            get: "/plugins"
-        };
+  };
+  rpc List(ListRequest) returns (Plugins) {
+    option (google.api.http) = {
+      get : "/plugins"
     };
-    rpc Create(Plugin) returns (Plugin) {
-        option (google.api.http) = {
-            put: "/plugins"
-            body: "*"
-        };
+  };
+  rpc Create(Plugin) returns (Plugin) {
+    option (google.api.http) = {
+      put : "/plugins"
+      body : "*"
     };
-    rpc Update(Plugin) returns (Plugin) {
-        option (google.api.http) = {
-            post: "/plugins/{uuid}"
-            body: "*"
-        };
+  };
+  rpc Update(Plugin) returns (Plugin) {
+    option (google.api.http) = {
+      post : "/plugins/{uuid}"
+      body : "*"
     };
-    rpc Delete(Plugin) returns (Plugin) {
-        option (google.api.http) = {
-            delete: "/plugins/{uuid}"
-        };
+  };
+  rpc Delete(Plugin) returns (Plugin) {
+    option (google.api.http) = {
+      delete : "/plugins/{uuid}"
     };
+  };
 }
