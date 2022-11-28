@@ -21,7 +21,9 @@ import "node/access/access.proto";
 
 enum PluginKind {
   UNKNOWN = 0;
-  EMBEDDED = 1; // Plugin will be embedded into Console as Page
+  EMBEDDED = 1; // Plugin will be embedded into Console as Dashboard
+  DEVICE = 2; // Plugin entrypoint page will replace device State Card, and edit
+              // button will open plugin edit page in Modal
 }
 
 message Plugin {
@@ -29,20 +31,27 @@ message Plugin {
   string logo = 2; // Plugin logo url in format supported by <img> tag
   string title = 3;
   string description = 4;
-  bool public = 5;
+  // (optionally Markdown) long description Marketplace like
+
+  bool public = 5; // see Namespace field
 
   optional string namespace = 6; // Required to get not-public Plugin
   optional infinimesh.node.access.Access access = 7;
 
   PluginKind kind = 8;
-  optional EmbededPluginConf embedded_conf = 9;
+  repeated string vars = 9;
 
-  repeated string vars = 10;
+  optional EmbededPluginConf embedded_conf = 10;
+  optional DevicePluginConf device_conf = 11;
 }
 
 message Plugins { repeated Plugin pool = 1; }
 
 message EmbededPluginConf { string frame_url = 1; }
+message DevicePluginConf {
+  string view_url = 1;
+  string desired_url = 2;
+}
 
 message ListRequest { optional string namespace = 1; }
 

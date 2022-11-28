@@ -409,7 +409,8 @@ type NamespacesServiceClient interface {
 	Deletables(ctx context.Context, in *namespaces.Namespace, opts ...grpc.CallOption) (*access.Nodes, error)
 	// Accounts having access to this namespace
 	Joins(ctx context.Context, in *namespaces.Namespace, opts ...grpc.CallOption) (*accounts.Accounts, error)
-	// Sets Access to this namespace for the given account(deletes if level is set to NONE(0))
+	// Sets Access to this namespace for the given account(deletes if level is set
+	// to NONE(0))
 	Join(ctx context.Context, in *JoinRequest, opts ...grpc.CallOption) (*accounts.Accounts, error)
 }
 
@@ -505,7 +506,8 @@ type NamespacesServiceServer interface {
 	Deletables(context.Context, *namespaces.Namespace) (*access.Nodes, error)
 	// Accounts having access to this namespace
 	Joins(context.Context, *namespaces.Namespace) (*accounts.Accounts, error)
-	// Sets Access to this namespace for the given account(deletes if level is set to NONE(0))
+	// Sets Access to this namespace for the given account(deletes if level is set
+	// to NONE(0))
 	Join(context.Context, *JoinRequest) (*accounts.Accounts, error)
 	mustEmbedUnimplementedNamespacesServiceServer()
 }
