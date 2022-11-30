@@ -1791,6 +1791,7 @@
           },
           {
             "name": "logo",
+            "description": "Plugin logo url in format supported by \u003cimg\u003e tag",
             "in": "query",
             "required": false,
             "type": "string"
@@ -1803,18 +1804,21 @@
           },
           {
             "name": "description",
+            "description": "(optionally Markdown) long description Marketplace like",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
             "name": "public",
+            "description": "see Namespace field",
             "in": "query",
             "required": false,
             "type": "boolean"
           },
           {
             "name": "namespace",
+            "description": "Required to get not-public Plugin",
             "in": "query",
             "required": false,
             "type": "string"
@@ -1852,6 +1856,7 @@
           },
           {
             "name": "kind",
+            "description": " - EMBEDDED: Plugin will be embedded into Console as Dashboard\n - DEVICE: Plugin entrypoint page will replace device State Card, and edit",
             "in": "query",
             "required": false,
             "type": "string",
@@ -1920,6 +1925,7 @@
           },
           {
             "name": "logo",
+            "description": "Plugin logo url in format supported by \u003cimg\u003e tag",
             "in": "query",
             "required": false,
             "type": "string"
@@ -1932,18 +1938,21 @@
           },
           {
             "name": "description",
+            "description": "(optionally Markdown) long description Marketplace like",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
             "name": "public",
+            "description": "see Namespace field",
             "in": "query",
             "required": false,
             "type": "boolean"
           },
           {
             "name": "namespace",
+            "description": "Required to get not-public Plugin",
             "in": "query",
             "required": false,
             "type": "string"
@@ -1981,6 +1990,7 @@
           },
           {
             "name": "kind",
+            "description": " - EMBEDDED: Plugin will be embedded into Console as Dashboard\n - DEVICE: Plugin entrypoint page will replace device State Card, and edit",
             "in": "query",
             "required": false,
             "type": "string",
@@ -2055,19 +2065,23 @@
               "type": "object",
               "properties": {
                 "logo": {
-                  "type": "string"
+                  "type": "string",
+                  "title": "Plugin logo url in format supported by \u003cimg\u003e tag"
                 },
                 "title": {
                   "type": "string"
                 },
                 "description": {
-                  "type": "string"
+                  "type": "string",
+                  "title": "(optionally Markdown) long description Marketplace like"
                 },
                 "public": {
-                  "type": "boolean"
+                  "type": "boolean",
+                  "title": "see Namespace field"
                 },
                 "namespace": {
-                  "type": "string"
+                  "type": "string",
+                  "title": "Required to get not-public Plugin"
                 },
                 "access": {
                   "$ref": "#/definitions/accessAccess"
@@ -2165,7 +2179,8 @@
           "type": "string"
         },
         "edge": {
-          "type": "string"
+          "type": "string",
+          "title": "@private"
         }
       }
     },
@@ -2312,7 +2327,8 @@
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "title": "payload simply depends on returned code"
         }
       }
     },
@@ -2323,19 +2339,23 @@
           "type": "string"
         },
         "logo": {
-          "type": "string"
+          "type": "string",
+          "title": "Plugin logo url in format supported by \u003cimg\u003e tag"
         },
         "title": {
           "type": "string"
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "title": "(optionally Markdown) long description Marketplace like"
         },
         "public": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "see Namespace field"
         },
         "namespace": {
-          "type": "string"
+          "type": "string",
+          "title": "Required to get not-public Plugin"
         },
         "access": {
           "$ref": "#/definitions/accessAccess"
@@ -2413,7 +2433,8 @@
           "type": "object",
           "additionalProperties": {
             "type": "string"
-          }
+          },
+          "title": "map of keys to titles (titles can be empty)"
         }
       }
     },
@@ -2453,14 +2474,17 @@
           "$ref": "#/definitions/accountsAccount"
         },
         "credentials": {
-          "$ref": "#/definitions/accountsCredentials"
+          "$ref": "#/definitions/accountsCredentials",
+          "title": "Credentials for New Account"
         },
         "namespace": {
-          "type": "string"
+          "type": "string",
+          "title": "Namespace to put Account under"
         },
         "access": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "title": "Account access level to parent namespace"
         }
       }
     },
@@ -2479,7 +2503,8 @@
           "$ref": "#/definitions/devicesDevice"
         },
         "namespace": {
-          "type": "string"
+          "type": "string",
+          "title": "Namespace to put device under"
         }
       }
     },
@@ -2531,7 +2556,8 @@
         "EMBEDDED",
         "DEVICE"
       ],
-      "default": "UNKNOWN"
+      "default": "UNKNOWN",
+      "title": "- EMBEDDED: Plugin will be embedded into Console as Dashboard\n - DEVICE: Plugin entrypoint page will replace device State Card, and edit"
     },
     "pluginsPlugins": {
       "type": "object",
@@ -2579,6 +2605,18 @@
         }
       }
     },
+    "shadowConnectionState": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "connected": {
+          "type": "boolean"
+        }
+      }
+    },
     "shadowGetResponse": {
       "type": "object",
       "properties": {
@@ -2615,6 +2653,9 @@
         },
         "desired": {
           "$ref": "#/definitions/shadowState"
+        },
+        "connection": {
+          "$ref": "#/definitions/shadowConnectionState"
         }
       }
     },

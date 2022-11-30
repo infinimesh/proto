@@ -26,10 +26,16 @@ message State {
   google.protobuf.Struct data = 2;
 }
 
+message ConnectionState {
+  google.protobuf.Timestamp timestamp = 1;
+  bool connected = 2;
+}
+
 message Shadow {
   string device = 1;
   State reported = 2;
   State desired = 3;
+  ConnectionState connection = 4;
 }
 
 message GetRequest { repeated string pool = 1; }
