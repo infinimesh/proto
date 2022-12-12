@@ -45,6 +45,7 @@ message GetResponse { repeated Shadow shadows = 1; }
 enum StateKey {
   REPORTED = 0;
   DESIRED = 1;
+  CONNECTION = 2;
 }
 
 message RemoveRequest {

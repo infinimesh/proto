@@ -2724,7 +2724,8 @@
       "type": "string",
       "enum": [
         "REPORTED",
-        "DESIRED"
+        "DESIRED",
+        "CONNECTION"
       ],
       "default": "REPORTED"
     }
