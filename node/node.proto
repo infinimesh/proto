@@ -172,6 +172,13 @@ message DevicesTokenRequest {
   bool post = 3;
 }
 
+message MoveRequest {
+  repeated string devices =
+      1; // List of Devices UUIDs. Requestor must have access level ADMIN to all
+         // given devices and the given namespace
+  string namespace = 2; // Namespace devices must be moved to
+}
+
 service DevicesService {
   rpc Get(infinimesh.node.devices.Device)
       returns (infinimesh.node.devices.Device) {
@@ -223,6 +230,14 @@ service DevicesService {
   rpc MakeDevicesToken(DevicesTokenRequest) returns (TokenResponse) {
     option (google.api.http) = {
       post : "/devices/token"
+      body : "*"
+    };
+  };
+
+  // Moves Device(s) between Namespaces and returns updated Devices
+  rpc Move(MoveRequest) returns (infinimesh.node.devices.Devices) {
+    option (google.api.http) = {
+      post : "/devices/move/{namespace}"
       body : "*"
     };
   };

@@ -753,6 +753,8 @@ type DevicesServiceClient interface {
 	Toggle(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*devices.Device, error)
 	ToggleBasic(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*devices.Device, error)
 	MakeDevicesToken(ctx context.Context, in *DevicesTokenRequest, opts ...grpc.CallOption) (*TokenResponse, error)
+	// Moves Device(s) between Namespaces and returns updated Devices
+	Move(ctx context.Context, in *MoveRequest, opts ...grpc.CallOption) (*devices.Devices, error)
 	GetByToken(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*devices.Device, error)
 	GetByFingerprint(ctx context.Context, in *devices.GetByFingerprintRequest, opts ...grpc.CallOption) (*devices.Device, error)
 }
@@ -837,6 +839,15 @@ func (c *devicesServiceClient) MakeDevicesToken(ctx context.Context, in *Devices
 	return out, nil
 }
 
+func (c *devicesServiceClient) Move(ctx context.Context, in *MoveRequest, opts ...grpc.CallOption) (*devices.Devices, error) {
+	out := new(devices.Devices)
+	err := c.cc.Invoke(ctx, "/infinimesh.node.DevicesService/Move", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *devicesServiceClient) GetByToken(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*devices.Device, error) {
 	out := new(devices.Device)
 	err := c.cc.Invoke(ctx, "/infinimesh.node.DevicesService/GetByToken", in, out, opts...)
@@ -867,6 +878,8 @@ type DevicesServiceServer interface {
 	Toggle(context.Context, *devices.Device) (*devices.Device, error)
 	ToggleBasic(context.Context, *devices.Device) (*devices.Device, error)
 	MakeDevicesToken(context.Context, *DevicesTokenRequest) (*TokenResponse, error)
+	// Moves Device(s) between Namespaces and returns updated Devices
+	Move(context.Context, *MoveRequest) (*devices.Devices, error)
 	GetByToken(context.Context, *devices.Device) (*devices.Device, error)
 	GetByFingerprint(context.Context, *devices.GetByFingerprintRequest) (*devices.Device, error)
 	mustEmbedUnimplementedDevicesServiceServer()
@@ -899,6 +912,9 @@ func (UnimplementedDevicesServiceServer) ToggleBasic(context.Context, *devices.D
 }
 func (UnimplementedDevicesServiceServer) MakeDevicesToken(context.Context, *DevicesTokenRequest) (*TokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MakeDevicesToken not implemented")
+}
+func (UnimplementedDevicesServiceServer) Move(context.Context, *MoveRequest) (*devices.Devices, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Move not implemented")
 }
 func (UnimplementedDevicesServiceServer) GetByToken(context.Context, *devices.Device) (*devices.Device, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByToken not implemented")
@@ -1063,6 +1079,24 @@ func _DevicesService_MakeDevicesToken_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DevicesService_Move_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MoveRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DevicesServiceServer).Move(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/infinimesh.node.DevicesService/Move",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DevicesServiceServer).Move(ctx, req.(*MoveRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _DevicesService_GetByToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(devices.Device)
 	if err := dec(in); err != nil {
@@ -1137,6 +1171,10 @@ var DevicesService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "MakeDevicesToken",
 			Handler:    _DevicesService_MakeDevicesToken_Handler,
+		},
+		{
+			MethodName: "Move",
+			Handler:    _DevicesService_Move_Handler,
 		},
 		{
 			MethodName: "GetByToken",

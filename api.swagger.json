@@ -521,6 +521,55 @@
         ]
       }
     },
+    "/devices/move/{namespace}": {
+      "post": {
+        "summary": "Moves Device(s) between Namespaces and returns updated Devices",
+        "operationId": "DevicesService_Move",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/devicesDevices"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "description": "given devices and the given namespace\n\nNamespace devices must be moved to",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "devices": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "title": "List of Devices UUIDs. Requestor must have access level ADMIN to all"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "DevicesService"
+        ]
+      }
+    },
     "/devices/states": {
       "get": {
         "operationId": "ShadowService_Get",
