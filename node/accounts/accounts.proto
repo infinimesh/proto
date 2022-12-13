@@ -20,7 +20,8 @@ import "node/access/access.proto";
 
 message Credentials {
   string type = 1;
-  repeated string data = 2;
+  repeated string data = 2; // Important: first element of data is reaccessible
+                            // by Credentials Owner and Super-Admins
 }
 
 message Account {
