@@ -315,6 +315,7 @@
         "parameters": [
           {
             "name": "uuid",
+            "description": "Affected account",
             "in": "path",
             "required": true,
             "type": "string"
@@ -2293,7 +2294,8 @@
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "title": "Important: first element of data is reaccessible"
         }
       }
     },

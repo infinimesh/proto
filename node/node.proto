@@ -30,11 +30,23 @@ message TokenRequest {
 message TokenResponse { string token = 1; }
 
 message SetCredentialsRequest {
-  string uuid = 1;
+  string uuid = 1; // Affected account
   infinimesh.node.accounts.Credentials credentials = 2;
 }
-
 message SetCredentialsResponse {}
+
+message GetCredentialsRequest {
+  string uuid = 1; // Affected account
+}
+message GetCredentialsResponse {
+  repeated infinimesh.node.accounts.Credentials credentials = 1;
+}
+
+message DeleteCredentialsRequest {
+  string uuid = 1; // Affected account
+  string type = 2; // Credentials Type to Delete
+}
+
 message DeleteResponse {}
 message EmptyMessage {}
 

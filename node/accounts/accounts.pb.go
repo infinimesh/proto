@@ -42,7 +42,7 @@ type Credentials struct {
 	unknownFields protoimpl.UnknownFields
 
 	Type string   `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
-	Data []string `protobuf:"bytes,2,rep,name=data,proto3" json:"data,omitempty"`
+	Data []string `protobuf:"bytes,2,rep,name=data,proto3" json:"data,omitempty"` // Important: first element of data is reaccessible
 }
 
 func (x *Credentials) Reset() {
