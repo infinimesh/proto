@@ -35,7 +35,9 @@ type AccountsServiceClient interface {
 	Toggle(ctx context.Context, in *accounts.Account, opts ...grpc.CallOption) (*accounts.Account, error)
 	Delete(ctx context.Context, in *accounts.Account, opts ...grpc.CallOption) (*DeleteResponse, error)
 	Deletables(ctx context.Context, in *accounts.Account, opts ...grpc.CallOption) (*access.Nodes, error)
+	GetCredentials(ctx context.Context, in *GetCredentialsRequest, opts ...grpc.CallOption) (*GetCredentialsResponse, error)
 	SetCredentials(ctx context.Context, in *SetCredentialsRequest, opts ...grpc.CallOption) (*SetCredentialsResponse, error)
+	DelCredentials(ctx context.Context, in *DeleteCredentialsRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
 }
 
 type accountsServiceClient struct {
@@ -118,9 +120,27 @@ func (c *accountsServiceClient) Deletables(ctx context.Context, in *accounts.Acc
 	return out, nil
 }
 
+func (c *accountsServiceClient) GetCredentials(ctx context.Context, in *GetCredentialsRequest, opts ...grpc.CallOption) (*GetCredentialsResponse, error) {
+	out := new(GetCredentialsResponse)
+	err := c.cc.Invoke(ctx, "/infinimesh.node.AccountsService/GetCredentials", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *accountsServiceClient) SetCredentials(ctx context.Context, in *SetCredentialsRequest, opts ...grpc.CallOption) (*SetCredentialsResponse, error) {
 	out := new(SetCredentialsResponse)
 	err := c.cc.Invoke(ctx, "/infinimesh.node.AccountsService/SetCredentials", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountsServiceClient) DelCredentials(ctx context.Context, in *DeleteCredentialsRequest, opts ...grpc.CallOption) (*DeleteResponse, error) {
+	out := new(DeleteResponse)
+	err := c.cc.Invoke(ctx, "/infinimesh.node.AccountsService/DelCredentials", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -139,7 +159,9 @@ type AccountsServiceServer interface {
 	Toggle(context.Context, *accounts.Account) (*accounts.Account, error)
 	Delete(context.Context, *accounts.Account) (*DeleteResponse, error)
 	Deletables(context.Context, *accounts.Account) (*access.Nodes, error)
+	GetCredentials(context.Context, *GetCredentialsRequest) (*GetCredentialsResponse, error)
 	SetCredentials(context.Context, *SetCredentialsRequest) (*SetCredentialsResponse, error)
+	DelCredentials(context.Context, *DeleteCredentialsRequest) (*DeleteResponse, error)
 	mustEmbedUnimplementedAccountsServiceServer()
 }
 
@@ -171,8 +193,14 @@ func (UnimplementedAccountsServiceServer) Delete(context.Context, *accounts.Acco
 func (UnimplementedAccountsServiceServer) Deletables(context.Context, *accounts.Account) (*access.Nodes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Deletables not implemented")
 }
+func (UnimplementedAccountsServiceServer) GetCredentials(context.Context, *GetCredentialsRequest) (*GetCredentialsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCredentials not implemented")
+}
 func (UnimplementedAccountsServiceServer) SetCredentials(context.Context, *SetCredentialsRequest) (*SetCredentialsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetCredentials not implemented")
+}
+func (UnimplementedAccountsServiceServer) DelCredentials(context.Context, *DeleteCredentialsRequest) (*DeleteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DelCredentials not implemented")
 }
 func (UnimplementedAccountsServiceServer) mustEmbedUnimplementedAccountsServiceServer() {}
 
@@ -331,6 +359,24 @@ func _AccountsService_Deletables_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccountsService_GetCredentials_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCredentialsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountsServiceServer).GetCredentials(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/infinimesh.node.AccountsService/GetCredentials",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountsServiceServer).GetCredentials(ctx, req.(*GetCredentialsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _AccountsService_SetCredentials_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(SetCredentialsRequest)
 	if err := dec(in); err != nil {
@@ -345,6 +391,24 @@ func _AccountsService_SetCredentials_Handler(srv interface{}, ctx context.Contex
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AccountsServiceServer).SetCredentials(ctx, req.(*SetCredentialsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AccountsService_DelCredentials_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteCredentialsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountsServiceServer).DelCredentials(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/infinimesh.node.AccountsService/DelCredentials",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountsServiceServer).DelCredentials(ctx, req.(*DeleteCredentialsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -389,8 +453,16 @@ var AccountsService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AccountsService_Deletables_Handler,
 		},
 		{
+			MethodName: "GetCredentials",
+			Handler:    _AccountsService_GetCredentials_Handler,
+		},
+		{
 			MethodName: "SetCredentials",
 			Handler:    _AccountsService_SetCredentials_Handler,
+		},
+		{
+			MethodName: "DelCredentials",
+			Handler:    _AccountsService_DelCredentials_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

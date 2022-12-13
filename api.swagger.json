@@ -296,6 +296,35 @@
       }
     },
     "/accounts/{uuid}/credentials": {
+      "get": {
+        "operationId": "AccountsService_GetCredentials",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/nodeGetCredentialsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "description": "Affected account",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AccountsService"
+        ]
+      },
       "post": {
         "operationId": "AccountsService_SetCredentials",
         "responses": {
@@ -332,6 +361,44 @@
                 }
               }
             }
+          }
+        ],
+        "tags": [
+          "AccountsService"
+        ]
+      }
+    },
+    "/accounts/{uuid}/credentials/{type}": {
+      "delete": {
+        "operationId": "AccountsService_DelCredentials",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/nodeDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "description": "Affected account",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "type",
+            "description": "Credentials Type to Delete",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "tags": [
@@ -2474,6 +2541,17 @@
         },
         "post": {
           "type": "boolean"
+        }
+      }
+    },
+    "nodeGetCredentialsResponse": {
+      "type": "object",
+      "properties": {
+        "credentials": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/accountsCredentials"
+          }
         }
       }
     },

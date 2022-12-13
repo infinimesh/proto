@@ -104,10 +104,20 @@ service AccountsService {
     };
   };
 
+  rpc GetCredentials(GetCredentialsRequest) returns (GetCredentialsResponse) {
+    option (google.api.http) = {
+      get : "/accounts/{uuid}/credentials"
+    };
+  };
   rpc SetCredentials(SetCredentialsRequest) returns (SetCredentialsResponse) {
     option (google.api.http) = {
       post : "/accounts/{uuid}/credentials"
       body : "*"
+    };
+  };
+  rpc DelCredentials(DeleteCredentialsRequest) returns (DeleteResponse) {
+    option (google.api.http) = {
+      delete : "/accounts/{uuid}/credentials/{type}"
     };
   };
 }
