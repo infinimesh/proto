@@ -315,7 +315,6 @@
         "parameters": [
           {
             "name": "uuid",
-            "description": "Affected account",
             "in": "path",
             "required": true,
             "type": "string"
@@ -344,7 +343,6 @@
         "parameters": [
           {
             "name": "uuid",
-            "description": "Affected account",
             "in": "path",
             "required": true,
             "type": "string"
@@ -388,14 +386,12 @@
         "parameters": [
           {
             "name": "uuid",
-            "description": "Affected account",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
             "name": "type",
-            "description": "Credentials Type to Delete",
             "in": "path",
             "required": true,
             "type": "string"
@@ -610,7 +606,7 @@
         "parameters": [
           {
             "name": "namespace",
-            "description": "given devices and the given namespace\n\nNamespace devices must be moved to",
+            "description": "given devices and the given namespace",
             "in": "path",
             "required": true,
             "type": "string"
@@ -626,8 +622,7 @@
                   "type": "array",
                   "items": {
                     "type": "string"
-                  },
-                  "title": "List of Devices UUIDs. Requestor must have access level ADMIN to all"
+                  }
                 }
               }
             }
@@ -1908,7 +1903,6 @@
           },
           {
             "name": "logo",
-            "description": "Plugin logo url in format supported by \u003cimg\u003e tag",
             "in": "query",
             "required": false,
             "type": "string"
@@ -1921,21 +1915,18 @@
           },
           {
             "name": "description",
-            "description": "(optionally Markdown) long description Marketplace like",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
             "name": "public",
-            "description": "see Namespace field",
             "in": "query",
             "required": false,
             "type": "boolean"
           },
           {
             "name": "namespace",
-            "description": "Required to get not-public Plugin",
             "in": "query",
             "required": false,
             "type": "string"
@@ -1973,7 +1964,6 @@
           },
           {
             "name": "kind",
-            "description": " - EMBEDDED: Plugin will be embedded into Console as Dashboard\n - DEVICE: Plugin entrypoint page will replace device State Card, and edit",
             "in": "query",
             "required": false,
             "type": "string",
@@ -2042,7 +2032,6 @@
           },
           {
             "name": "logo",
-            "description": "Plugin logo url in format supported by \u003cimg\u003e tag",
             "in": "query",
             "required": false,
             "type": "string"
@@ -2055,21 +2044,18 @@
           },
           {
             "name": "description",
-            "description": "(optionally Markdown) long description Marketplace like",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
             "name": "public",
-            "description": "see Namespace field",
             "in": "query",
             "required": false,
             "type": "boolean"
           },
           {
             "name": "namespace",
-            "description": "Required to get not-public Plugin",
             "in": "query",
             "required": false,
             "type": "string"
@@ -2107,7 +2093,6 @@
           },
           {
             "name": "kind",
-            "description": " - EMBEDDED: Plugin will be embedded into Console as Dashboard\n - DEVICE: Plugin entrypoint page will replace device State Card, and edit",
             "in": "query",
             "required": false,
             "type": "string",
@@ -2182,23 +2167,19 @@
               "type": "object",
               "properties": {
                 "logo": {
-                  "type": "string",
-                  "title": "Plugin logo url in format supported by \u003cimg\u003e tag"
+                  "type": "string"
                 },
                 "title": {
                   "type": "string"
                 },
                 "description": {
-                  "type": "string",
-                  "title": "(optionally Markdown) long description Marketplace like"
+                  "type": "string"
                 },
                 "public": {
-                  "type": "boolean",
-                  "title": "see Namespace field"
+                  "type": "boolean"
                 },
                 "namespace": {
-                  "type": "string",
-                  "title": "Required to get not-public Plugin"
+                  "type": "string"
                 },
                 "access": {
                   "$ref": "#/definitions/accessAccess"
@@ -2296,8 +2277,7 @@
           "type": "string"
         },
         "edge": {
-          "type": "string",
-          "title": "@private"
+          "type": "string"
         }
       }
     },
@@ -2361,8 +2341,7 @@
           "type": "array",
           "items": {
             "type": "string"
-          },
-          "title": "Important: first element of data is reaccessible"
+          }
         }
       }
     },
@@ -2445,8 +2424,7 @@
           "type": "array",
           "items": {
             "type": "string"
-          },
-          "title": "payload simply depends on returned code"
+          }
         }
       }
     },
@@ -2457,23 +2435,19 @@
           "type": "string"
         },
         "logo": {
-          "type": "string",
-          "title": "Plugin logo url in format supported by \u003cimg\u003e tag"
+          "type": "string"
         },
         "title": {
           "type": "string"
         },
         "description": {
-          "type": "string",
-          "title": "(optionally Markdown) long description Marketplace like"
+          "type": "string"
         },
         "public": {
-          "type": "boolean",
-          "title": "see Namespace field"
+          "type": "boolean"
         },
         "namespace": {
-          "type": "string",
-          "title": "Required to get not-public Plugin"
+          "type": "string"
         },
         "access": {
           "$ref": "#/definitions/accessAccess"
@@ -2562,8 +2536,7 @@
           "type": "object",
           "additionalProperties": {
             "type": "string"
-          },
-          "title": "map of keys to titles (titles can be empty)"
+          }
         }
       }
     },
@@ -2603,17 +2576,14 @@
           "$ref": "#/definitions/accountsAccount"
         },
         "credentials": {
-          "$ref": "#/definitions/accountsCredentials",
-          "title": "Credentials for New Account"
+          "$ref": "#/definitions/accountsCredentials"
         },
         "namespace": {
-          "type": "string",
-          "title": "Namespace to put Account under"
+          "type": "string"
         },
         "access": {
           "type": "integer",
-          "format": "int32",
-          "title": "Account access level to parent namespace"
+          "format": "int32"
         }
       }
     },
@@ -2632,8 +2602,7 @@
           "$ref": "#/definitions/devicesDevice"
         },
         "namespace": {
-          "type": "string",
-          "title": "Namespace to put device under"
+          "type": "string"
         }
       }
     },
@@ -2685,8 +2654,7 @@
         "EMBEDDED",
         "DEVICE"
       ],
-      "default": "UNKNOWN",
-      "title": "- EMBEDDED: Plugin will be embedded into Console as Dashboard\n - DEVICE: Plugin entrypoint page will replace device State Card, and edit"
+      "default": "UNKNOWN"
     },
     "pluginsPlugins": {
       "type": "object",
