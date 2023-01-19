@@ -18,7 +18,10 @@ syntax = "proto3";
 package infinimesh.handsfree;
 import "google/api/annotations.proto";
 
-message ConnectionRequest { string app_id = 1; }
+message ConnectionRequest {
+  string app_id = 1;
+  repeated string payload = 2; // anything you want to share with the Console
+}
 
 enum Code {
   UNKNOWN = 0;
