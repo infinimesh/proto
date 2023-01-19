@@ -37,9 +37,16 @@ message Certificate {
 
 message Devices { repeated Device devices = 1; }
 
+message HandsfreeCreate {
+  string code = 1;
+  repeated string payload = 2;
+}
+
 message CreateRequest {
   Device device = 1;
-  string namespace = 2; // Namespace to put device under
+  string namespace = 2;                   // Namespace to put device under
+  optional HandsfreeCreate handsfree = 3; // if present, will attempt to obtain
+                                          // cert from handsfree control packet
 }
 
 message CreateResponse { Device device = 1; }

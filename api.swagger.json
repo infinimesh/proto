@@ -2413,6 +2413,20 @@
         }
       }
     },
+    "devicesHandsfreeCreate": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "payload": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "handsfreeCode": {
       "type": "string",
       "enum": [
@@ -2613,6 +2627,9 @@
         },
         "namespace": {
           "type": "string"
+        },
+        "handsfree": {
+          "$ref": "#/definitions/devicesHandsfreeCreate"
         }
       }
     },
