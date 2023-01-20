@@ -34,6 +34,7 @@ enum Code {
 message ControlPacket {
   Code code = 1;
   repeated string payload = 2; // payload simply depends on returned code
+  optional string app_id = 3;
 }
 
 service HandsfreeService {

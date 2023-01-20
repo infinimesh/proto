@@ -2449,6 +2449,9 @@
           "items": {
             "type": "string"
           }
+        },
+        "appId": {
+          "type": "string"
         }
       }
     },
