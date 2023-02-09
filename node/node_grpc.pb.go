@@ -35,6 +35,7 @@ type AccountsServiceClient interface {
 	Toggle(ctx context.Context, in *accounts.Account, opts ...grpc.CallOption) (*accounts.Account, error)
 	Delete(ctx context.Context, in *accounts.Account, opts ...grpc.CallOption) (*DeleteResponse, error)
 	Deletables(ctx context.Context, in *accounts.Account, opts ...grpc.CallOption) (*access.Nodes, error)
+	Move(ctx context.Context, in *MoveRequest, opts ...grpc.CallOption) (*EmptyMessage, error)
 	GetCredentials(ctx context.Context, in *GetCredentialsRequest, opts ...grpc.CallOption) (*GetCredentialsResponse, error)
 	SetCredentials(ctx context.Context, in *SetCredentialsRequest, opts ...grpc.CallOption) (*SetCredentialsResponse, error)
 	DelCredentials(ctx context.Context, in *DeleteCredentialsRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
@@ -120,6 +121,15 @@ func (c *accountsServiceClient) Deletables(ctx context.Context, in *accounts.Acc
 	return out, nil
 }
 
+func (c *accountsServiceClient) Move(ctx context.Context, in *MoveRequest, opts ...grpc.CallOption) (*EmptyMessage, error) {
+	out := new(EmptyMessage)
+	err := c.cc.Invoke(ctx, "/infinimesh.node.AccountsService/Move", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *accountsServiceClient) GetCredentials(ctx context.Context, in *GetCredentialsRequest, opts ...grpc.CallOption) (*GetCredentialsResponse, error) {
 	out := new(GetCredentialsResponse)
 	err := c.cc.Invoke(ctx, "/infinimesh.node.AccountsService/GetCredentials", in, out, opts...)
@@ -159,6 +169,7 @@ type AccountsServiceServer interface {
 	Toggle(context.Context, *accounts.Account) (*accounts.Account, error)
 	Delete(context.Context, *accounts.Account) (*DeleteResponse, error)
 	Deletables(context.Context, *accounts.Account) (*access.Nodes, error)
+	Move(context.Context, *MoveRequest) (*EmptyMessage, error)
 	GetCredentials(context.Context, *GetCredentialsRequest) (*GetCredentialsResponse, error)
 	SetCredentials(context.Context, *SetCredentialsRequest) (*SetCredentialsResponse, error)
 	DelCredentials(context.Context, *DeleteCredentialsRequest) (*DeleteResponse, error)
@@ -192,6 +203,9 @@ func (UnimplementedAccountsServiceServer) Delete(context.Context, *accounts.Acco
 }
 func (UnimplementedAccountsServiceServer) Deletables(context.Context, *accounts.Account) (*access.Nodes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Deletables not implemented")
+}
+func (UnimplementedAccountsServiceServer) Move(context.Context, *MoveRequest) (*EmptyMessage, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Move not implemented")
 }
 func (UnimplementedAccountsServiceServer) GetCredentials(context.Context, *GetCredentialsRequest) (*GetCredentialsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCredentials not implemented")
@@ -359,6 +373,24 @@ func _AccountsService_Deletables_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccountsService_Move_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MoveRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountsServiceServer).Move(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/infinimesh.node.AccountsService/Move",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountsServiceServer).Move(ctx, req.(*MoveRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _AccountsService_GetCredentials_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetCredentialsRequest)
 	if err := dec(in); err != nil {
@@ -451,6 +483,10 @@ var AccountsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Deletables",
 			Handler:    _AccountsService_Deletables_Handler,
+		},
+		{
+			MethodName: "Move",
+			Handler:    _AccountsService_Move_Handler,
 		},
 		{
 			MethodName: "GetCredentials",
@@ -825,8 +861,8 @@ type DevicesServiceClient interface {
 	Toggle(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*devices.Device, error)
 	ToggleBasic(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*devices.Device, error)
 	MakeDevicesToken(ctx context.Context, in *DevicesTokenRequest, opts ...grpc.CallOption) (*TokenResponse, error)
-	// Moves Device(s) between Namespaces and returns updated Devices
-	Move(ctx context.Context, in *MoveRequest, opts ...grpc.CallOption) (*devices.Devices, error)
+	// Moves Device between Namespaces
+	Move(ctx context.Context, in *MoveRequest, opts ...grpc.CallOption) (*EmptyMessage, error)
 	GetByToken(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*devices.Device, error)
 	GetByFingerprint(ctx context.Context, in *devices.GetByFingerprintRequest, opts ...grpc.CallOption) (*devices.Device, error)
 }
@@ -911,8 +947,8 @@ func (c *devicesServiceClient) MakeDevicesToken(ctx context.Context, in *Devices
 	return out, nil
 }
 
-func (c *devicesServiceClient) Move(ctx context.Context, in *MoveRequest, opts ...grpc.CallOption) (*devices.Devices, error) {
-	out := new(devices.Devices)
+func (c *devicesServiceClient) Move(ctx context.Context, in *MoveRequest, opts ...grpc.CallOption) (*EmptyMessage, error) {
+	out := new(EmptyMessage)
 	err := c.cc.Invoke(ctx, "/infinimesh.node.DevicesService/Move", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -950,8 +986,8 @@ type DevicesServiceServer interface {
 	Toggle(context.Context, *devices.Device) (*devices.Device, error)
 	ToggleBasic(context.Context, *devices.Device) (*devices.Device, error)
 	MakeDevicesToken(context.Context, *DevicesTokenRequest) (*TokenResponse, error)
-	// Moves Device(s) between Namespaces and returns updated Devices
-	Move(context.Context, *MoveRequest) (*devices.Devices, error)
+	// Moves Device between Namespaces
+	Move(context.Context, *MoveRequest) (*EmptyMessage, error)
 	GetByToken(context.Context, *devices.Device) (*devices.Device, error)
 	GetByFingerprint(context.Context, *devices.GetByFingerprintRequest) (*devices.Device, error)
 	mustEmbedUnimplementedDevicesServiceServer()
@@ -985,7 +1021,7 @@ func (UnimplementedDevicesServiceServer) ToggleBasic(context.Context, *devices.D
 func (UnimplementedDevicesServiceServer) MakeDevicesToken(context.Context, *DevicesTokenRequest) (*TokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MakeDevicesToken not implemented")
 }
-func (UnimplementedDevicesServiceServer) Move(context.Context, *MoveRequest) (*devices.Devices, error) {
+func (UnimplementedDevicesServiceServer) Move(context.Context, *MoveRequest) (*EmptyMessage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Move not implemented")
 }
 func (UnimplementedDevicesServiceServer) GetByToken(context.Context, *devices.Device) (*devices.Device, error) {

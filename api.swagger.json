@@ -6,12 +6,6 @@
   },
   "tags": [
     {
-      "name": "HandsfreeService"
-    },
-    {
-      "name": "ShadowService"
-    },
-    {
       "name": "AccountsService"
     },
     {
@@ -24,10 +18,13 @@
       "name": "ShadowService"
     },
     {
-      "name": "InternalService"
+      "name": "HandsfreeService"
     },
     {
       "name": "PluginsService"
+    },
+    {
+      "name": "InternalService"
     }
   ],
   "consumes": [
@@ -481,6 +478,49 @@
         ]
       }
     },
+    "/accounts/{uuid}/namespace": {
+      "post": {
+        "operationId": "AccountsService_Move",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/nodeEmptyMessage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "namespace": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "AccountsService"
+        ]
+      }
+    },
     "/accounts/{uuid}/toggle": {
       "post": {
         "operationId": "AccountsService_Toggle",
@@ -577,54 +617,6 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/nodedevicesCreateRequest"
-            }
-          }
-        ],
-        "tags": [
-          "DevicesService"
-        ]
-      }
-    },
-    "/devices/move/{namespace}": {
-      "post": {
-        "summary": "Moves Device(s) between Namespaces and returns updated Devices",
-        "operationId": "DevicesService_Move",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/devicesDevices"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "namespace",
-            "description": "given devices and the given namespace",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "devices": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
             }
           }
         ],
@@ -1149,6 +1141,50 @@
                 },
                 "access": {
                   "$ref": "#/definitions/accessAccess"
+                }
+              }
+            }
+          }
+        ],
+        "tags": [
+          "DevicesService"
+        ]
+      }
+    },
+    "/devices/{uuid}/namespace": {
+      "post": {
+        "summary": "Moves Device between Namespaces",
+        "operationId": "DevicesService_Move",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/nodeEmptyMessage"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "namespace": {
+                  "type": "string"
                 }
               }
             }
@@ -2544,6 +2580,9 @@
           "type": "boolean"
         }
       }
+    },
+    "nodeEmptyMessage": {
+      "type": "object"
     },
     "nodeGetCredentialsResponse": {
       "type": "object",
