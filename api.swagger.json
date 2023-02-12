@@ -6,6 +6,12 @@
   },
   "tags": [
     {
+      "name": "HandsfreeService"
+    },
+    {
+      "name": "ShadowService"
+    },
+    {
       "name": "AccountsService"
     },
     {
@@ -18,13 +24,10 @@
       "name": "ShadowService"
     },
     {
-      "name": "HandsfreeService"
+      "name": "InternalService"
     },
     {
       "name": "PluginsService"
-    },
-    {
-      "name": "InternalService"
     }
   ],
   "consumes": [
@@ -285,6 +288,79 @@
                 }
               }
             }
+          }
+        ],
+        "tags": [
+          "AccountsService"
+        ]
+      }
+    },
+    "/accounts/{uuid}/accessibles": {
+      "get": {
+        "operationId": "AccountsService_Accessibles",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/accessNodes"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "access.level",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "NONE",
+              "READ",
+              "MGMT",
+              "ADMIN",
+              "ROOT"
+            ],
+            "default": "NONE"
+          },
+          {
+            "name": "access.role",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "UNSET",
+              "OWNER"
+            ],
+            "default": "UNSET"
+          },
+          {
+            "name": "access.namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "plugin.uuid",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -1709,6 +1785,79 @@
                 }
               }
             }
+          }
+        ],
+        "tags": [
+          "NamespacesService"
+        ]
+      }
+    },
+    "/namespaces/{uuid}/accessibles": {
+      "get": {
+        "operationId": "NamespacesService_Accessibles",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/accessNodes"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "access.level",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "NONE",
+              "READ",
+              "MGMT",
+              "ADMIN",
+              "ROOT"
+            ],
+            "default": "NONE"
+          },
+          {
+            "name": "access.role",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "UNSET",
+              "OWNER"
+            ],
+            "default": "UNSET"
+          },
+          {
+            "name": "access.namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "plugin.uuid",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [

@@ -34,6 +34,7 @@ type AccountsServiceClient interface {
 	Update(ctx context.Context, in *accounts.Account, opts ...grpc.CallOption) (*accounts.Account, error)
 	Toggle(ctx context.Context, in *accounts.Account, opts ...grpc.CallOption) (*accounts.Account, error)
 	Delete(ctx context.Context, in *accounts.Account, opts ...grpc.CallOption) (*DeleteResponse, error)
+	Accessibles(ctx context.Context, in *namespaces.Namespace, opts ...grpc.CallOption) (*access.Nodes, error)
 	Deletables(ctx context.Context, in *accounts.Account, opts ...grpc.CallOption) (*access.Nodes, error)
 	Move(ctx context.Context, in *MoveRequest, opts ...grpc.CallOption) (*EmptyMessage, error)
 	GetCredentials(ctx context.Context, in *GetCredentialsRequest, opts ...grpc.CallOption) (*GetCredentialsResponse, error)
@@ -112,6 +113,15 @@ func (c *accountsServiceClient) Delete(ctx context.Context, in *accounts.Account
 	return out, nil
 }
 
+func (c *accountsServiceClient) Accessibles(ctx context.Context, in *namespaces.Namespace, opts ...grpc.CallOption) (*access.Nodes, error) {
+	out := new(access.Nodes)
+	err := c.cc.Invoke(ctx, "/infinimesh.node.AccountsService/Accessibles", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *accountsServiceClient) Deletables(ctx context.Context, in *accounts.Account, opts ...grpc.CallOption) (*access.Nodes, error) {
 	out := new(access.Nodes)
 	err := c.cc.Invoke(ctx, "/infinimesh.node.AccountsService/Deletables", in, out, opts...)
@@ -168,6 +178,7 @@ type AccountsServiceServer interface {
 	Update(context.Context, *accounts.Account) (*accounts.Account, error)
 	Toggle(context.Context, *accounts.Account) (*accounts.Account, error)
 	Delete(context.Context, *accounts.Account) (*DeleteResponse, error)
+	Accessibles(context.Context, *namespaces.Namespace) (*access.Nodes, error)
 	Deletables(context.Context, *accounts.Account) (*access.Nodes, error)
 	Move(context.Context, *MoveRequest) (*EmptyMessage, error)
 	GetCredentials(context.Context, *GetCredentialsRequest) (*GetCredentialsResponse, error)
@@ -200,6 +211,9 @@ func (UnimplementedAccountsServiceServer) Toggle(context.Context, *accounts.Acco
 }
 func (UnimplementedAccountsServiceServer) Delete(context.Context, *accounts.Account) (*DeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedAccountsServiceServer) Accessibles(context.Context, *namespaces.Namespace) (*access.Nodes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Accessibles not implemented")
 }
 func (UnimplementedAccountsServiceServer) Deletables(context.Context, *accounts.Account) (*access.Nodes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Deletables not implemented")
@@ -355,6 +369,24 @@ func _AccountsService_Delete_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AccountsService_Accessibles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(namespaces.Namespace)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountsServiceServer).Accessibles(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/infinimesh.node.AccountsService/Accessibles",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountsServiceServer).Accessibles(ctx, req.(*namespaces.Namespace))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _AccountsService_Deletables_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(accounts.Account)
 	if err := dec(in); err != nil {
@@ -481,6 +513,10 @@ var AccountsService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AccountsService_Delete_Handler,
 		},
 		{
+			MethodName: "Accessibles",
+			Handler:    _AccountsService_Accessibles_Handler,
+		},
+		{
 			MethodName: "Deletables",
 			Handler:    _AccountsService_Deletables_Handler,
 		},
@@ -514,6 +550,7 @@ type NamespacesServiceClient interface {
 	Create(ctx context.Context, in *namespaces.Namespace, opts ...grpc.CallOption) (*namespaces.Namespace, error)
 	Update(ctx context.Context, in *namespaces.Namespace, opts ...grpc.CallOption) (*namespaces.Namespace, error)
 	Delete(ctx context.Context, in *namespaces.Namespace, opts ...grpc.CallOption) (*DeleteResponse, error)
+	Accessibles(ctx context.Context, in *namespaces.Namespace, opts ...grpc.CallOption) (*access.Nodes, error)
 	Deletables(ctx context.Context, in *namespaces.Namespace, opts ...grpc.CallOption) (*access.Nodes, error)
 	// Accounts having access to this namespace
 	Joins(ctx context.Context, in *namespaces.Namespace, opts ...grpc.CallOption) (*accounts.Accounts, error)
@@ -575,6 +612,15 @@ func (c *namespacesServiceClient) Delete(ctx context.Context, in *namespaces.Nam
 	return out, nil
 }
 
+func (c *namespacesServiceClient) Accessibles(ctx context.Context, in *namespaces.Namespace, opts ...grpc.CallOption) (*access.Nodes, error) {
+	out := new(access.Nodes)
+	err := c.cc.Invoke(ctx, "/infinimesh.node.NamespacesService/Accessibles", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *namespacesServiceClient) Deletables(ctx context.Context, in *namespaces.Namespace, opts ...grpc.CallOption) (*access.Nodes, error) {
 	out := new(access.Nodes)
 	err := c.cc.Invoke(ctx, "/infinimesh.node.NamespacesService/Deletables", in, out, opts...)
@@ -611,6 +657,7 @@ type NamespacesServiceServer interface {
 	Create(context.Context, *namespaces.Namespace) (*namespaces.Namespace, error)
 	Update(context.Context, *namespaces.Namespace) (*namespaces.Namespace, error)
 	Delete(context.Context, *namespaces.Namespace) (*DeleteResponse, error)
+	Accessibles(context.Context, *namespaces.Namespace) (*access.Nodes, error)
 	Deletables(context.Context, *namespaces.Namespace) (*access.Nodes, error)
 	// Accounts having access to this namespace
 	Joins(context.Context, *namespaces.Namespace) (*accounts.Accounts, error)
@@ -638,6 +685,9 @@ func (UnimplementedNamespacesServiceServer) Update(context.Context, *namespaces.
 }
 func (UnimplementedNamespacesServiceServer) Delete(context.Context, *namespaces.Namespace) (*DeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedNamespacesServiceServer) Accessibles(context.Context, *namespaces.Namespace) (*access.Nodes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Accessibles not implemented")
 }
 func (UnimplementedNamespacesServiceServer) Deletables(context.Context, *namespaces.Namespace) (*access.Nodes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Deletables not implemented")
@@ -751,6 +801,24 @@ func _NamespacesService_Delete_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _NamespacesService_Accessibles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(namespaces.Namespace)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NamespacesServiceServer).Accessibles(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/infinimesh.node.NamespacesService/Accessibles",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NamespacesServiceServer).Accessibles(ctx, req.(*namespaces.Namespace))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _NamespacesService_Deletables_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(namespaces.Namespace)
 	if err := dec(in); err != nil {
@@ -831,6 +899,10 @@ var NamespacesService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Delete",
 			Handler:    _NamespacesService_Delete_Handler,
+		},
+		{
+			MethodName: "Accessibles",
+			Handler:    _NamespacesService_Accessibles_Handler,
 		},
 		{
 			MethodName: "Deletables",

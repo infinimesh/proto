@@ -102,6 +102,12 @@ service AccountsService {
       delete : "/accounts/{uuid}"
     };
   };
+  rpc Accessibles(infinimesh.node.namespaces.Namespace)
+      returns (infinimesh.node.access.Nodes) {
+    option (google.api.http) = {
+      get : "/accounts/{uuid}/accessibles"
+    };
+  };
   rpc Deletables(infinimesh.node.accounts.Account)
       returns (infinimesh.node.access.Nodes) {
     option (google.api.http) = {
@@ -112,7 +118,7 @@ service AccountsService {
   rpc Move(MoveRequest) returns (EmptyMessage) {
     option (google.api.http) = {
       post : "/accounts/{uuid}/namespace"
-      body: "*"
+      body : "*"
     };
   };
 
@@ -172,6 +178,12 @@ service NamespacesService {
   rpc Delete(infinimesh.node.namespaces.Namespace) returns (DeleteResponse) {
     option (google.api.http) = {
       delete : "/namespaces/{uuid}"
+    };
+  };
+  rpc Accessibles(infinimesh.node.namespaces.Namespace)
+      returns (infinimesh.node.access.Nodes) {
+    option (google.api.http) = {
+      get : "/namespaces/{uuid}/accessibles"
     };
   };
   rpc Deletables(infinimesh.node.namespaces.Namespace)
@@ -265,7 +277,7 @@ service DevicesService {
   rpc Move(MoveRequest) returns (EmptyMessage) {
     option (google.api.http) = {
       post : "/devices/{uuid}/namespace"
-      body: "*"
+      body : "*"
     };
   };
 
