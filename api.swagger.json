@@ -701,6 +701,39 @@
         ]
       }
     },
+    "/devices/join": {
+      "post": {
+        "summary": "Sets Access to this namespace for the given Node(Account or Namespace) (deletes if level is set\nto NONE(0))\nNode is interpret as a Device and Join as an Account or Namespace (must be provided fully)",
+        "operationId": "DevicesService_Join",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/accessNode"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/nodeJoinGeneralRequest"
+            }
+          }
+        ],
+        "tags": [
+          "DevicesService"
+        ]
+      }
+    },
     "/devices/states": {
       "get": {
         "operationId": "ShadowService_Get",
@@ -1220,6 +1253,121 @@
                 }
               }
             }
+          }
+        ],
+        "tags": [
+          "DevicesService"
+        ]
+      }
+    },
+    "/devices/{uuid}/joins": {
+      "get": {
+        "summary": "Accounts and Namesapces having access to this Device",
+        "operationId": "DevicesService_Joins",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/accessNodes"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "enabled",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "certificate.pemData",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "certificate.algorithm",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "certificate.fingerprint",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "byte"
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "basicEnabled",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "access.level",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "NONE",
+              "READ",
+              "MGMT",
+              "ADMIN",
+              "ROOT"
+            ],
+            "default": "NONE"
+          },
+          {
+            "name": "access.role",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "UNSET",
+              "OWNER"
+            ],
+            "default": "UNSET"
+          },
+          {
+            "name": "access.namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -2473,6 +2621,9 @@
         },
         "edge": {
           "type": "string"
+        },
+        "access": {
+          "$ref": "#/definitions/accessAccess"
         }
       }
     },
@@ -2743,6 +2894,21 @@
           }
         }
       }
+    },
+    "nodeJoinGeneralRequest": {
+      "type": "object",
+      "properties": {
+        "node": {
+          "type": "string"
+        },
+        "join": {
+          "type": "string"
+        },
+        "access": {
+          "$ref": "#/definitions/accessLevel"
+        }
+      },
+      "title": "Generally, adds link like | join ---access---\u003e node |"
     },
     "nodeLDAPProviders": {
       "type": "object",

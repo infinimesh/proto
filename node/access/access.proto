@@ -40,6 +40,7 @@ message Node {
   string parent = 2;
 
   string edge = 3; // @private
+  optional Access access = 4;
 }
 
 message Nodes { repeated Node nodes = 1; }

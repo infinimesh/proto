@@ -935,6 +935,12 @@ type DevicesServiceClient interface {
 	MakeDevicesToken(ctx context.Context, in *DevicesTokenRequest, opts ...grpc.CallOption) (*TokenResponse, error)
 	// Moves Device between Namespaces
 	Move(ctx context.Context, in *MoveRequest, opts ...grpc.CallOption) (*EmptyMessage, error)
+	// Accounts and Namesapces having access to this Device
+	Joins(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*access.Nodes, error)
+	// Sets Access to this namespace for the given Node(Account or Namespace) (deletes if level is set
+	// to NONE(0))
+	// Node is interpret as a Device and Join as an Account or Namespace (must be provided fully)
+	Join(ctx context.Context, in *JoinGeneralRequest, opts ...grpc.CallOption) (*access.Node, error)
 	GetByToken(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*devices.Device, error)
 	GetByFingerprint(ctx context.Context, in *devices.GetByFingerprintRequest, opts ...grpc.CallOption) (*devices.Device, error)
 }
@@ -1028,6 +1034,24 @@ func (c *devicesServiceClient) Move(ctx context.Context, in *MoveRequest, opts .
 	return out, nil
 }
 
+func (c *devicesServiceClient) Joins(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*access.Nodes, error) {
+	out := new(access.Nodes)
+	err := c.cc.Invoke(ctx, "/infinimesh.node.DevicesService/Joins", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *devicesServiceClient) Join(ctx context.Context, in *JoinGeneralRequest, opts ...grpc.CallOption) (*access.Node, error) {
+	out := new(access.Node)
+	err := c.cc.Invoke(ctx, "/infinimesh.node.DevicesService/Join", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *devicesServiceClient) GetByToken(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*devices.Device, error) {
 	out := new(devices.Device)
 	err := c.cc.Invoke(ctx, "/infinimesh.node.DevicesService/GetByToken", in, out, opts...)
@@ -1060,6 +1084,12 @@ type DevicesServiceServer interface {
 	MakeDevicesToken(context.Context, *DevicesTokenRequest) (*TokenResponse, error)
 	// Moves Device between Namespaces
 	Move(context.Context, *MoveRequest) (*EmptyMessage, error)
+	// Accounts and Namesapces having access to this Device
+	Joins(context.Context, *devices.Device) (*access.Nodes, error)
+	// Sets Access to this namespace for the given Node(Account or Namespace) (deletes if level is set
+	// to NONE(0))
+	// Node is interpret as a Device and Join as an Account or Namespace (must be provided fully)
+	Join(context.Context, *JoinGeneralRequest) (*access.Node, error)
 	GetByToken(context.Context, *devices.Device) (*devices.Device, error)
 	GetByFingerprint(context.Context, *devices.GetByFingerprintRequest) (*devices.Device, error)
 	mustEmbedUnimplementedDevicesServiceServer()
@@ -1095,6 +1125,12 @@ func (UnimplementedDevicesServiceServer) MakeDevicesToken(context.Context, *Devi
 }
 func (UnimplementedDevicesServiceServer) Move(context.Context, *MoveRequest) (*EmptyMessage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Move not implemented")
+}
+func (UnimplementedDevicesServiceServer) Joins(context.Context, *devices.Device) (*access.Nodes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Joins not implemented")
+}
+func (UnimplementedDevicesServiceServer) Join(context.Context, *JoinGeneralRequest) (*access.Node, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Join not implemented")
 }
 func (UnimplementedDevicesServiceServer) GetByToken(context.Context, *devices.Device) (*devices.Device, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByToken not implemented")
@@ -1277,6 +1313,42 @@ func _DevicesService_Move_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DevicesService_Joins_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(devices.Device)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DevicesServiceServer).Joins(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/infinimesh.node.DevicesService/Joins",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DevicesServiceServer).Joins(ctx, req.(*devices.Device))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DevicesService_Join_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(JoinGeneralRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DevicesServiceServer).Join(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/infinimesh.node.DevicesService/Join",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DevicesServiceServer).Join(ctx, req.(*JoinGeneralRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _DevicesService_GetByToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(devices.Device)
 	if err := dec(in); err != nil {
@@ -1355,6 +1427,14 @@ var DevicesService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Move",
 			Handler:    _DevicesService_Move_Handler,
+		},
+		{
+			MethodName: "Joins",
+			Handler:    _DevicesService_Joins_Handler,
+		},
+		{
+			MethodName: "Join",
+			Handler:    _DevicesService_Join_Handler,
 		},
 		{
 			MethodName: "GetByToken",

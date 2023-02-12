@@ -148,6 +148,13 @@ message JoinRequest {
   infinimesh.node.access.Level access = 3;
 }
 
+// Generally, adds link like | join ---access---> node |
+message JoinGeneralRequest {
+  string node = 1; // Node to make Join to (can be interpret differenetly depending on Controller)
+  string join = 2; // Node to make Join from (can be interpret differenetly depending on Controller)
+  infinimesh.node.access.Level access = 3;
+}
+
 service NamespacesService {
   rpc Get(infinimesh.node.namespaces.Namespace)
       returns (infinimesh.node.namespaces.Namespace) {
@@ -280,6 +287,22 @@ service DevicesService {
       body : "*"
     };
   };
+  // Accounts and Namesapces having access to this Device
+  rpc Joins(infinimesh.node.devices.Device)
+      returns (infinimesh.node.access.Nodes) {
+    option (google.api.http) = {
+      get : "/devices/{uuid}/joins"
+    };
+  }
+  // Sets Access to this namespace for the given Node(Account or Namespace) (deletes if level is set
+  // to NONE(0))
+  // Node is interpret as a Device and Join as an Account or Namespace (must be provided fully)
+  rpc Join(JoinGeneralRequest) returns (infinimesh.node.access.Node) {
+    option (google.api.http) = {
+      post : "/devices/join"
+      body : "*"
+    };
+  }
 
   rpc GetByToken(infinimesh.node.devices.Device)
       returns (infinimesh.node.devices.Device);
