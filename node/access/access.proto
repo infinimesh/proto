@@ -27,6 +27,7 @@ enum Level {
 enum Role {
   UNSET = 0;
   OWNER = 1;
+  SHARED = 2;
 }
 
 message Access {

@@ -939,7 +939,7 @@ type DevicesServiceClient interface {
 	Joins(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*access.Nodes, error)
 	// Sets Access to this namespace for the given Node(Account or Namespace) (deletes if level is set
 	// to NONE(0))
-	// Node is interpret as a Device and Join as an Account or Namespace (must be provided fully)
+	// Node is interpret as a Device (uuid is enough) and Join as an Account or Namespace (must be provided fully)
 	Join(ctx context.Context, in *JoinGeneralRequest, opts ...grpc.CallOption) (*access.Node, error)
 	GetByToken(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*devices.Device, error)
 	GetByFingerprint(ctx context.Context, in *devices.GetByFingerprintRequest, opts ...grpc.CallOption) (*devices.Device, error)
@@ -1088,7 +1088,7 @@ type DevicesServiceServer interface {
 	Joins(context.Context, *devices.Device) (*access.Nodes, error)
 	// Sets Access to this namespace for the given Node(Account or Namespace) (deletes if level is set
 	// to NONE(0))
-	// Node is interpret as a Device and Join as an Account or Namespace (must be provided fully)
+	// Node is interpret as a Device (uuid is enough) and Join as an Account or Namespace (must be provided fully)
 	Join(context.Context, *JoinGeneralRequest) (*access.Node, error)
 	GetByToken(context.Context, *devices.Device) (*devices.Device, error)
 	GetByFingerprint(context.Context, *devices.GetByFingerprintRequest) (*devices.Device, error)

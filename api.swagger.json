@@ -152,7 +152,8 @@
             "type": "string",
             "enum": [
               "UNSET",
-              "OWNER"
+              "OWNER",
+              "SHARED"
             ],
             "default": "UNSET"
           },
@@ -229,7 +230,8 @@
             "type": "string",
             "enum": [
               "UNSET",
-              "OWNER"
+              "OWNER",
+              "SHARED"
             ],
             "default": "UNSET"
           },
@@ -346,7 +348,8 @@
             "type": "string",
             "enum": [
               "UNSET",
-              "OWNER"
+              "OWNER",
+              "SHARED"
             ],
             "default": "UNSET"
           },
@@ -538,7 +541,8 @@
             "type": "string",
             "enum": [
               "UNSET",
-              "OWNER"
+              "OWNER",
+              "SHARED"
             ],
             "default": "UNSET"
           },
@@ -703,7 +707,7 @@
     },
     "/devices/join": {
       "post": {
-        "summary": "Sets Access to this namespace for the given Node(Account or Namespace) (deletes if level is set\nto NONE(0))\nNode is interpret as a Device and Join as an Account or Namespace (must be provided fully)",
+        "summary": "Sets Access to this namespace for the given Node(Account or Namespace) (deletes if level is set\nto NONE(0))\nNode is interpret as a Device (uuid is enough) and Join as an Account or Namespace (must be provided fully)",
         "operationId": "DevicesService_Join",
         "responses": {
           "200": {
@@ -1070,7 +1074,8 @@
             "type": "string",
             "enum": [
               "UNSET",
-              "OWNER"
+              "OWNER",
+              "SHARED"
             ],
             "default": "UNSET"
           },
@@ -1182,7 +1187,8 @@
             "type": "string",
             "enum": [
               "UNSET",
-              "OWNER"
+              "OWNER",
+              "SHARED"
             ],
             "default": "UNSET"
           },
@@ -1359,7 +1365,8 @@
             "type": "string",
             "enum": [
               "UNSET",
-              "OWNER"
+              "OWNER",
+              "SHARED"
             ],
             "default": "UNSET"
           },
@@ -1800,7 +1807,8 @@
             "type": "string",
             "enum": [
               "UNSET",
-              "OWNER"
+              "OWNER",
+              "SHARED"
             ],
             "default": "UNSET"
           },
@@ -1871,7 +1879,8 @@
             "type": "string",
             "enum": [
               "UNSET",
-              "OWNER"
+              "OWNER",
+              "SHARED"
             ],
             "default": "UNSET"
           },
@@ -1991,7 +2000,8 @@
             "type": "string",
             "enum": [
               "UNSET",
-              "OWNER"
+              "OWNER",
+              "SHARED"
             ],
             "default": "UNSET"
           },
@@ -2064,7 +2074,8 @@
             "type": "string",
             "enum": [
               "UNSET",
-              "OWNER"
+              "OWNER",
+              "SHARED"
             ],
             "default": "UNSET"
           },
@@ -2138,7 +2149,8 @@
             "type": "string",
             "enum": [
               "UNSET",
-              "OWNER"
+              "OWNER",
+              "SHARED"
             ],
             "default": "UNSET"
           },
@@ -2295,7 +2307,8 @@
             "type": "string",
             "enum": [
               "UNSET",
-              "OWNER"
+              "OWNER",
+              "SHARED"
             ],
             "default": "UNSET"
           },
@@ -2424,7 +2437,8 @@
             "type": "string",
             "enum": [
               "UNSET",
-              "OWNER"
+              "OWNER",
+              "SHARED"
             ],
             "default": "UNSET"
           },
@@ -2642,7 +2656,8 @@
       "type": "string",
       "enum": [
         "UNSET",
-        "OWNER"
+        "OWNER",
+        "SHARED"
       ],
       "default": "UNSET"
     },

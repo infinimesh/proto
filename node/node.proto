@@ -296,7 +296,7 @@ service DevicesService {
   }
   // Sets Access to this namespace for the given Node(Account or Namespace) (deletes if level is set
   // to NONE(0))
-  // Node is interpret as a Device and Join as an Account or Namespace (must be provided fully)
+  // Node is interpret as a Device (uuid is enough) and Join as an Account or Namespace (must be provided fully)
   rpc Join(JoinGeneralRequest) returns (infinimesh.node.access.Node) {
     option (google.api.http) = {
       post : "/devices/join"
