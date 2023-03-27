@@ -607,7 +607,7 @@ func (UnimplementedNamespacesServiceHandler) Join(context.Context, *connect_go.R
 // DevicesServiceClient is a client for the infinimesh.node.DevicesService service.
 type DevicesServiceClient interface {
 	Get(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error)
-	List(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[devices.Devices], error)
+	List(context.Context, *connect_go.Request[node.QueryRequest]) (*connect_go.Response[devices.Devices], error)
 	Create(context.Context, *connect_go.Request[devices.CreateRequest]) (*connect_go.Response[devices.CreateResponse], error)
 	Update(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error)
 	Delete(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[node.DeleteResponse], error)
@@ -618,9 +618,9 @@ type DevicesServiceClient interface {
 	Move(context.Context, *connect_go.Request[node.MoveRequest]) (*connect_go.Response[node.EmptyMessage], error)
 	// Accounts and Namesapces having access to this Device
 	Joins(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[access.Nodes], error)
-	// Sets Access to this namespace for the given Node(Account or Namespace) (deletes if level is set
-	// to NONE(0))
-	// Node is interpret as a Device (uuid is enough) and Join as an Account or Namespace (must be provided fully)
+	// Sets Access to this namespace for the given Node(Account or Namespace)
+	// (deletes if level is set to NONE(0)) Node is interpret as a Device (uuid is
+	// enough) and Join as an Account or Namespace (must be provided fully)
 	Join(context.Context, *connect_go.Request[node.JoinGeneralRequest]) (*connect_go.Response[access.Node], error)
 	GetByToken(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error)
 	GetByFingerprint(context.Context, *connect_go.Request[devices.GetByFingerprintRequest]) (*connect_go.Response[devices.Device], error)
@@ -641,7 +641,7 @@ func NewDevicesServiceClient(httpClient connect_go.HTTPClient, baseURL string, o
 			baseURL+"/infinimesh.node.DevicesService/Get",
 			opts...,
 		),
-		list: connect_go.NewClient[node.EmptyMessage, devices.Devices](
+		list: connect_go.NewClient[node.QueryRequest, devices.Devices](
 			httpClient,
 			baseURL+"/infinimesh.node.DevicesService/List",
 			opts...,
@@ -707,7 +707,7 @@ func NewDevicesServiceClient(httpClient connect_go.HTTPClient, baseURL string, o
 // devicesServiceClient implements DevicesServiceClient.
 type devicesServiceClient struct {
 	get              *connect_go.Client[devices.Device, devices.Device]
-	list             *connect_go.Client[node.EmptyMessage, devices.Devices]
+	list             *connect_go.Client[node.QueryRequest, devices.Devices]
 	create           *connect_go.Client[devices.CreateRequest, devices.CreateResponse]
 	update           *connect_go.Client[devices.Device, devices.Device]
 	delete           *connect_go.Client[devices.Device, node.DeleteResponse]
@@ -727,7 +727,7 @@ func (c *devicesServiceClient) Get(ctx context.Context, req *connect_go.Request[
 }
 
 // List calls infinimesh.node.DevicesService.List.
-func (c *devicesServiceClient) List(ctx context.Context, req *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[devices.Devices], error) {
+func (c *devicesServiceClient) List(ctx context.Context, req *connect_go.Request[node.QueryRequest]) (*connect_go.Response[devices.Devices], error) {
 	return c.list.CallUnary(ctx, req)
 }
 
@@ -789,7 +789,7 @@ func (c *devicesServiceClient) GetByFingerprint(ctx context.Context, req *connec
 // DevicesServiceHandler is an implementation of the infinimesh.node.DevicesService service.
 type DevicesServiceHandler interface {
 	Get(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error)
-	List(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[devices.Devices], error)
+	List(context.Context, *connect_go.Request[node.QueryRequest]) (*connect_go.Response[devices.Devices], error)
 	Create(context.Context, *connect_go.Request[devices.CreateRequest]) (*connect_go.Response[devices.CreateResponse], error)
 	Update(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error)
 	Delete(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[node.DeleteResponse], error)
@@ -800,9 +800,9 @@ type DevicesServiceHandler interface {
 	Move(context.Context, *connect_go.Request[node.MoveRequest]) (*connect_go.Response[node.EmptyMessage], error)
 	// Accounts and Namesapces having access to this Device
 	Joins(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[access.Nodes], error)
-	// Sets Access to this namespace for the given Node(Account or Namespace) (deletes if level is set
-	// to NONE(0))
-	// Node is interpret as a Device (uuid is enough) and Join as an Account or Namespace (must be provided fully)
+	// Sets Access to this namespace for the given Node(Account or Namespace)
+	// (deletes if level is set to NONE(0)) Node is interpret as a Device (uuid is
+	// enough) and Join as an Account or Namespace (must be provided fully)
 	Join(context.Context, *connect_go.Request[node.JoinGeneralRequest]) (*connect_go.Response[access.Node], error)
 	GetByToken(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error)
 	GetByFingerprint(context.Context, *connect_go.Request[devices.GetByFingerprintRequest]) (*connect_go.Response[devices.Device], error)
@@ -890,7 +890,7 @@ func (UnimplementedDevicesServiceHandler) Get(context.Context, *connect_go.Reque
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.Get is not implemented"))
 }
 
-func (UnimplementedDevicesServiceHandler) List(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[devices.Devices], error) {
+func (UnimplementedDevicesServiceHandler) List(context.Context, *connect_go.Request[node.QueryRequest]) (*connect_go.Response[devices.Devices], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.List is not implemented"))
 }
 

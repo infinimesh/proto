@@ -926,7 +926,7 @@ var NamespacesService_ServiceDesc = grpc.ServiceDesc{
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DevicesServiceClient interface {
 	Get(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*devices.Device, error)
-	List(ctx context.Context, in *EmptyMessage, opts ...grpc.CallOption) (*devices.Devices, error)
+	List(ctx context.Context, in *QueryRequest, opts ...grpc.CallOption) (*devices.Devices, error)
 	Create(ctx context.Context, in *devices.CreateRequest, opts ...grpc.CallOption) (*devices.CreateResponse, error)
 	Update(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*devices.Device, error)
 	Delete(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*DeleteResponse, error)
@@ -937,9 +937,9 @@ type DevicesServiceClient interface {
 	Move(ctx context.Context, in *MoveRequest, opts ...grpc.CallOption) (*EmptyMessage, error)
 	// Accounts and Namesapces having access to this Device
 	Joins(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*access.Nodes, error)
-	// Sets Access to this namespace for the given Node(Account or Namespace) (deletes if level is set
-	// to NONE(0))
-	// Node is interpret as a Device (uuid is enough) and Join as an Account or Namespace (must be provided fully)
+	// Sets Access to this namespace for the given Node(Account or Namespace)
+	// (deletes if level is set to NONE(0)) Node is interpret as a Device (uuid is
+	// enough) and Join as an Account or Namespace (must be provided fully)
 	Join(ctx context.Context, in *JoinGeneralRequest, opts ...grpc.CallOption) (*access.Node, error)
 	GetByToken(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*devices.Device, error)
 	GetByFingerprint(ctx context.Context, in *devices.GetByFingerprintRequest, opts ...grpc.CallOption) (*devices.Device, error)
@@ -962,7 +962,7 @@ func (c *devicesServiceClient) Get(ctx context.Context, in *devices.Device, opts
 	return out, nil
 }
 
-func (c *devicesServiceClient) List(ctx context.Context, in *EmptyMessage, opts ...grpc.CallOption) (*devices.Devices, error) {
+func (c *devicesServiceClient) List(ctx context.Context, in *QueryRequest, opts ...grpc.CallOption) (*devices.Devices, error) {
 	out := new(devices.Devices)
 	err := c.cc.Invoke(ctx, "/infinimesh.node.DevicesService/List", in, out, opts...)
 	if err != nil {
@@ -1075,7 +1075,7 @@ func (c *devicesServiceClient) GetByFingerprint(ctx context.Context, in *devices
 // for forward compatibility
 type DevicesServiceServer interface {
 	Get(context.Context, *devices.Device) (*devices.Device, error)
-	List(context.Context, *EmptyMessage) (*devices.Devices, error)
+	List(context.Context, *QueryRequest) (*devices.Devices, error)
 	Create(context.Context, *devices.CreateRequest) (*devices.CreateResponse, error)
 	Update(context.Context, *devices.Device) (*devices.Device, error)
 	Delete(context.Context, *devices.Device) (*DeleteResponse, error)
@@ -1086,9 +1086,9 @@ type DevicesServiceServer interface {
 	Move(context.Context, *MoveRequest) (*EmptyMessage, error)
 	// Accounts and Namesapces having access to this Device
 	Joins(context.Context, *devices.Device) (*access.Nodes, error)
-	// Sets Access to this namespace for the given Node(Account or Namespace) (deletes if level is set
-	// to NONE(0))
-	// Node is interpret as a Device (uuid is enough) and Join as an Account or Namespace (must be provided fully)
+	// Sets Access to this namespace for the given Node(Account or Namespace)
+	// (deletes if level is set to NONE(0)) Node is interpret as a Device (uuid is
+	// enough) and Join as an Account or Namespace (must be provided fully)
 	Join(context.Context, *JoinGeneralRequest) (*access.Node, error)
 	GetByToken(context.Context, *devices.Device) (*devices.Device, error)
 	GetByFingerprint(context.Context, *devices.GetByFingerprintRequest) (*devices.Device, error)
@@ -1102,7 +1102,7 @@ type UnimplementedDevicesServiceServer struct {
 func (UnimplementedDevicesServiceServer) Get(context.Context, *devices.Device) (*devices.Device, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
 }
-func (UnimplementedDevicesServiceServer) List(context.Context, *EmptyMessage) (*devices.Devices, error) {
+func (UnimplementedDevicesServiceServer) List(context.Context, *QueryRequest) (*devices.Devices, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
 }
 func (UnimplementedDevicesServiceServer) Create(context.Context, *devices.CreateRequest) (*devices.CreateResponse, error) {
@@ -1170,7 +1170,7 @@ func _DevicesService_Get_Handler(srv interface{}, ctx context.Context, dec func(
 }
 
 func _DevicesService_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EmptyMessage)
+	in := new(QueryRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -1182,7 +1182,7 @@ func _DevicesService_List_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/infinimesh.node.DevicesService/List",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DevicesServiceServer).List(ctx, req.(*EmptyMessage))
+		return srv.(DevicesServiceServer).List(ctx, req.(*QueryRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

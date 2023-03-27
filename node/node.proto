@@ -50,6 +50,11 @@ message DeleteCredentialsRequest {
 message DeleteResponse {}
 message EmptyMessage {}
 
+message QueryRequest {
+  optional string namespace = 1;
+  optional string account = 2;
+}
+
 message MoveRequest {
   string uuid = 1;
   string namespace = 2;
@@ -150,8 +155,10 @@ message JoinRequest {
 
 // Generally, adds link like | join ---access---> node |
 message JoinGeneralRequest {
-  string node = 1; // Node to make Join to (can be interpret differenetly depending on Controller)
-  string join = 2; // Node to make Join from (can be interpret differenetly depending on Controller)
+  string node = 1; // Node to make Join to (can be interpret differenetly
+                   // depending on Controller)
+  string join = 2; // Node to make Join from (can be interpret differenetly
+                   // depending on Controller)
   infinimesh.node.access.Level access = 3;
 }
 
@@ -232,7 +239,7 @@ service DevicesService {
       get : "/devices/{uuid}"
     };
   };
-  rpc List(EmptyMessage) returns (infinimesh.node.devices.Devices) {
+  rpc List(QueryRequest) returns (infinimesh.node.devices.Devices) {
     option (google.api.http) = {
       get : "/devices"
     };
@@ -294,9 +301,9 @@ service DevicesService {
       get : "/devices/{uuid}/joins"
     };
   }
-  // Sets Access to this namespace for the given Node(Account or Namespace) (deletes if level is set
-  // to NONE(0))
-  // Node is interpret as a Device (uuid is enough) and Join as an Account or Namespace (must be provided fully)
+  // Sets Access to this namespace for the given Node(Account or Namespace)
+  // (deletes if level is set to NONE(0)) Node is interpret as a Device (uuid is
+  // enough) and Join as an Account or Namespace (must be provided fully)
   rpc Join(JoinGeneralRequest) returns (infinimesh.node.access.Node) {
     option (google.api.http) = {
       post : "/devices/join"

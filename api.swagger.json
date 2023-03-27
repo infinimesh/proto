@@ -670,6 +670,20 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "account",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
         "tags": [
           "DevicesService"
         ]
@@ -707,7 +721,7 @@
     },
     "/devices/join": {
       "post": {
-        "summary": "Sets Access to this namespace for the given Node(Account or Namespace) (deletes if level is set\nto NONE(0))\nNode is interpret as a Device (uuid is enough) and Join as an Account or Namespace (must be provided fully)",
+        "summary": "Sets Access to this namespace for the given Node(Account or Namespace)\n(deletes if level is set to NONE(0)) Node is interpret as a Device (uuid is\nenough) and Join as an Account or Namespace (must be provided fully)",
         "operationId": "DevicesService_Join",
         "responses": {
           "200": {
@@ -2917,10 +2931,12 @@
           "type": "string"
         },
         "join": {
-          "type": "string"
+          "type": "string",
+          "title": "depending on Controller)"
         },
         "access": {
-          "$ref": "#/definitions/accessLevel"
+          "$ref": "#/definitions/accessLevel",
+          "title": "depending on Controller)"
         }
       },
       "title": "Generally, adds link like | join ---access---\u003e node |"
