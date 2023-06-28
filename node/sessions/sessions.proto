@@ -23,6 +23,8 @@ message Session {
   string client = 2;
   optional google.protobuf.Timestamp expires = 3;
   google.protobuf.Timestamp created = 4;
+
+  optional bool current = 5;
 }
 
 message Activity {

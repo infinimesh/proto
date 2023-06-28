@@ -2730,6 +2730,12 @@
             "required": false,
             "type": "string",
             "format": "date-time"
+          },
+          {
+            "name": "current",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
           }
         ],
         "tags": [
@@ -3317,6 +3323,9 @@
         "created": {
           "type": "string",
           "format": "date-time"
+        },
+        "current": {
+          "type": "boolean"
         }
       }
     },

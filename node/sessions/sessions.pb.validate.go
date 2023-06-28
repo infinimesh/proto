@@ -122,6 +122,10 @@ func (m *Session) validate(all bool) error {
 
 	}
 
+	if m.Current != nil {
+		// no validation rules for Current
+	}
+
 	if len(errors) > 0 {
 		return SessionMultiError(errors)
 	}
