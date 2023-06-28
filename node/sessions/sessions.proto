@@ -21,7 +21,7 @@ import "google/protobuf/timestamp.proto";
 message Session {
   string id = 1;
   string client = 2;
-  google.protobuf.Timestamp expires = 3;
+  optional google.protobuf.Timestamp expires = 3;
   google.protobuf.Timestamp created = 4;
 }
 
