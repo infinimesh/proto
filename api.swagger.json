@@ -2712,20 +2712,20 @@
             "type": "string"
           },
           {
-            "name": "exp",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
-          },
-          {
             "name": "client",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
-            "name": "createdAt",
+            "name": "expires",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "created",
             "in": "query",
             "required": false,
             "type": "string",
@@ -3307,14 +3307,14 @@
         "id": {
           "type": "string"
         },
-        "exp": {
-          "type": "string",
-          "format": "int64"
-        },
         "client": {
           "type": "string"
         },
-        "createdAt": {
+        "expires": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "created": {
           "type": "string",
           "format": "date-time"
         }

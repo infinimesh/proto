@@ -58,16 +58,14 @@ func (m *Session) validate(all bool) error {
 
 	// no validation rules for Id
 
-	// no validation rules for Exp
-
 	// no validation rules for Client
 
 	if all {
-		switch v := interface{}(m.GetCreatedAt()).(type) {
+		switch v := interface{}(m.GetExpires()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
 				errors = append(errors, SessionValidationError{
-					field:  "CreatedAt",
+					field:  "Expires",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
@@ -75,16 +73,45 @@ func (m *Session) validate(all bool) error {
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
 				errors = append(errors, SessionValidationError{
-					field:  "CreatedAt",
+					field:  "Expires",
 					reason: "embedded message failed validation",
 					cause:  err,
 				})
 			}
 		}
-	} else if v, ok := interface{}(m.GetCreatedAt()).(interface{ Validate() error }); ok {
+	} else if v, ok := interface{}(m.GetExpires()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return SessionValidationError{
-				field:  "CreatedAt",
+				field:  "Expires",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if all {
+		switch v := interface{}(m.GetCreated()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, SessionValidationError{
+					field:  "Created",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, SessionValidationError{
+					field:  "Created",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetCreated()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return SessionValidationError{
+				field:  "Created",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
