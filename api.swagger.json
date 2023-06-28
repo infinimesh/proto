@@ -364,6 +364,13 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "plugin.vars",
+            "description": "This is a request variable of the map type. The query format is \"map_name[key]=value\", e.g. If the map name is Age, the key type is string, and the value type is integer, the query parameter is expressed as Age[\"bob\"]=18",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -391,6 +398,7 @@
         "parameters": [
           {
             "name": "uuid",
+            "description": "Affected account",
             "in": "path",
             "required": true,
             "type": "string"
@@ -419,6 +427,7 @@
         "parameters": [
           {
             "name": "uuid",
+            "description": "Affected account",
             "in": "path",
             "required": true,
             "type": "string"
@@ -462,12 +471,14 @@
         "parameters": [
           {
             "name": "uuid",
+            "description": "Affected account",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
             "name": "type",
+            "description": "Credentials Type to Delete",
             "in": "path",
             "required": true,
             "type": "string"
@@ -1635,6 +1646,7 @@
           },
           {
             "name": "payload",
+            "description": "anything you want to share with the Console",
             "in": "query",
             "required": false,
             "type": "array",
@@ -1837,6 +1849,13 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "plugin.vars",
+            "description": "This is a request variable of the map type. The query format is \"map_name[key]=value\", e.g. If the map name is Age, the key type is string, and the value type is integer, the query parameter is expressed as Age[\"bob\"]=18",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -1906,6 +1925,13 @@
           },
           {
             "name": "plugin.uuid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "plugin.vars",
+            "description": "This is a request variable of the map type. The query format is \"map_name[key]=value\", e.g. If the map name is Age, the key type is string, and the value type is integer, the query parameter is expressed as Age[\"bob\"]=18",
             "in": "query",
             "required": false,
             "type": "string"
@@ -2030,6 +2056,13 @@
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "plugin.vars",
+            "description": "This is a request variable of the map type. The query format is \"map_name[key]=value\", e.g. If the map name is Age, the key type is string, and the value type is integer, the query parameter is expressed as Age[\"bob\"]=18",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
@@ -2101,6 +2134,13 @@
           },
           {
             "name": "plugin.uuid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "plugin.vars",
+            "description": "This is a request variable of the map type. The query format is \"map_name[key]=value\", e.g. If the map name is Age, the key type is string, and the value type is integer, the query parameter is expressed as Age[\"bob\"]=18",
             "in": "query",
             "required": false,
             "type": "string"
@@ -2176,6 +2216,13 @@
           },
           {
             "name": "plugin.uuid",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "plugin.vars",
+            "description": "This is a request variable of the map type. The query format is \"map_name[key]=value\", e.g. If the map name is Age, the key type is string, and the value type is integer, the query parameter is expressed as Age[\"bob\"]=18",
             "in": "query",
             "required": false,
             "type": "string"
@@ -2272,6 +2319,7 @@
           },
           {
             "name": "logo",
+            "description": "Plugin logo url in format supported by \u003cimg\u003e tag",
             "in": "query",
             "required": false,
             "type": "string"
@@ -2284,18 +2332,21 @@
           },
           {
             "name": "description",
+            "description": "(optionally Markdown) long description Marketplace like",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
             "name": "public",
+            "description": "see Namespace field",
             "in": "query",
             "required": false,
             "type": "boolean"
           },
           {
             "name": "namespace",
+            "description": "Required to get not-public Plugin",
             "in": "query",
             "required": false,
             "type": "string"
@@ -2334,6 +2385,7 @@
           },
           {
             "name": "kind",
+            "description": " - EMBEDDED: Plugin will be embedded into Console as Dashboard\n - DEVICE: Plugin entrypoint page will replace device State Card, and edit",
             "in": "query",
             "required": false,
             "type": "string",
@@ -2402,6 +2454,7 @@
           },
           {
             "name": "logo",
+            "description": "Plugin logo url in format supported by \u003cimg\u003e tag",
             "in": "query",
             "required": false,
             "type": "string"
@@ -2414,18 +2467,21 @@
           },
           {
             "name": "description",
+            "description": "(optionally Markdown) long description Marketplace like",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
             "name": "public",
+            "description": "see Namespace field",
             "in": "query",
             "required": false,
             "type": "boolean"
           },
           {
             "name": "namespace",
+            "description": "Required to get not-public Plugin",
             "in": "query",
             "required": false,
             "type": "string"
@@ -2464,6 +2520,7 @@
           },
           {
             "name": "kind",
+            "description": " - EMBEDDED: Plugin will be embedded into Console as Dashboard\n - DEVICE: Plugin entrypoint page will replace device State Card, and edit",
             "in": "query",
             "required": false,
             "type": "string",
@@ -2538,19 +2595,23 @@
               "type": "object",
               "properties": {
                 "logo": {
-                  "type": "string"
+                  "type": "string",
+                  "title": "Plugin logo url in format supported by \u003cimg\u003e tag"
                 },
                 "title": {
                   "type": "string"
                 },
                 "description": {
-                  "type": "string"
+                  "type": "string",
+                  "title": "(optionally Markdown) long description Marketplace like"
                 },
                 "public": {
-                  "type": "boolean"
+                  "type": "boolean",
+                  "title": "see Namespace field"
                 },
                 "namespace": {
-                  "type": "string"
+                  "type": "string",
+                  "title": "Required to get not-public Plugin"
                 },
                 "access": {
                   "$ref": "#/definitions/accessAccess"
@@ -2648,7 +2709,8 @@
           "type": "string"
         },
         "edge": {
-          "type": "string"
+          "type": "string",
+          "title": "@private"
         },
         "access": {
           "$ref": "#/definitions/accessAccess"
@@ -2661,6 +2723,7 @@
         "nodes": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/accessNode"
           }
         }
@@ -2701,6 +2764,7 @@
         "accounts": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/accountsAccount"
           }
         }
@@ -2716,7 +2780,8 @@
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "title": "Important: first element of data is reaccessible"
         }
       }
     },
@@ -2773,6 +2838,7 @@
         "devices": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/devicesDevice"
           }
         }
@@ -2813,7 +2879,8 @@
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "title": "payload simply depends on returned code"
         },
         "appId": {
           "type": "string"
@@ -2827,19 +2894,23 @@
           "type": "string"
         },
         "logo": {
-          "type": "string"
+          "type": "string",
+          "title": "Plugin logo url in format supported by \u003cimg\u003e tag"
         },
         "title": {
           "type": "string"
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "title": "(optionally Markdown) long description Marketplace like"
         },
         "public": {
-          "type": "boolean"
+          "type": "boolean",
+          "title": "see Namespace field"
         },
         "namespace": {
-          "type": "string"
+          "type": "string",
+          "title": "Required to get not-public Plugin"
         },
         "access": {
           "$ref": "#/definitions/accessAccess"
@@ -2884,6 +2955,7 @@
         "namespaces": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/namespacesNamespace"
           }
         }
@@ -2919,6 +2991,7 @@
         "credentials": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/accountsCredentials"
           }
         }
@@ -2928,10 +3001,12 @@
       "type": "object",
       "properties": {
         "node": {
-          "type": "string"
+          "type": "string",
+          "title": "Node to make Join to (can be interpret differenetly"
         },
         "join": {
           "type": "string",
+          "description": "Node to make Join from (can be interpret differenetly",
           "title": "depending on Controller)"
         },
         "access": {
@@ -2948,7 +3023,8 @@
           "type": "object",
           "additionalProperties": {
             "type": "string"
-          }
+          },
+          "title": "map of keys to titles (titles can be empty)"
         }
       }
     },
@@ -2988,14 +3064,17 @@
           "$ref": "#/definitions/accountsAccount"
         },
         "credentials": {
-          "$ref": "#/definitions/accountsCredentials"
+          "$ref": "#/definitions/accountsCredentials",
+          "title": "Credentials for New Account"
         },
         "namespace": {
-          "type": "string"
+          "type": "string",
+          "title": "Namespace to put Account under"
         },
         "access": {
           "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "title": "Account access level to parent namespace"
         }
       }
     },
@@ -3014,10 +3093,12 @@
           "$ref": "#/definitions/devicesDevice"
         },
         "namespace": {
-          "type": "string"
+          "type": "string",
+          "title": "Namespace to put device under"
         },
         "handsfree": {
-          "$ref": "#/definitions/devicesHandsfreeCreate"
+          "$ref": "#/definitions/devicesHandsfreeCreate",
+          "title": "if present, will attempt to obtain"
         }
       }
     },
@@ -3069,7 +3150,8 @@
         "EMBEDDED",
         "DEVICE"
       ],
-      "default": "UNKNOWN"
+      "default": "UNKNOWN",
+      "title": "- EMBEDDED: Plugin will be embedded into Console as Dashboard\n - DEVICE: Plugin entrypoint page will replace device State Card, and edit"
     },
     "pluginsPlugins": {
       "type": "object",
@@ -3077,6 +3159,7 @@
         "pool": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/infinimeshpluginsPlugin"
           }
         }
@@ -3112,6 +3195,7 @@
         "details": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/protobufAny"
           }
         }
@@ -3126,6 +3210,10 @@
         },
         "connected": {
           "type": "boolean"
+        },
+        "clientId": {
+          "type": "string",
+          "title": "MQTT Client ID used for connection"
         }
       }
     },
@@ -3135,6 +3223,7 @@
         "shadows": {
           "type": "array",
           "items": {
+            "type": "object",
             "$ref": "#/definitions/shadowShadow"
           }
         }
