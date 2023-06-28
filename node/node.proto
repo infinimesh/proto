@@ -160,7 +160,7 @@ service SessionsService {
       delete : "/sessions/{id}"
     };
   };
-  rpc GetActivity(EmptyMessage) returns (infinimesh.node.sessions.Sessions) {
+  rpc GetActivity(EmptyMessage) returns (infinimesh.node.sessions.Activity) {
     option (google.api.http) = {
       get : "/sessions/activity"
     };

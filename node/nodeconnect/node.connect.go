@@ -500,7 +500,7 @@ func (UnimplementedAccountsServiceHandler) DelCredentials(context.Context, *conn
 type SessionsServiceClient interface {
 	Get(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Sessions], error)
 	Revoke(context.Context, *connect_go.Request[sessions.Session]) (*connect_go.Response[node.DeleteResponse], error)
-	GetActivity(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Sessions], error)
+	GetActivity(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Activity], error)
 }
 
 // NewSessionsServiceClient constructs a client for the infinimesh.node.SessionsService service. By
@@ -523,7 +523,7 @@ func NewSessionsServiceClient(httpClient connect_go.HTTPClient, baseURL string, 
 			baseURL+SessionsServiceRevokeProcedure,
 			opts...,
 		),
-		getActivity: connect_go.NewClient[node.EmptyMessage, sessions.Sessions](
+		getActivity: connect_go.NewClient[node.EmptyMessage, sessions.Activity](
 			httpClient,
 			baseURL+SessionsServiceGetActivityProcedure,
 			opts...,
@@ -535,7 +535,7 @@ func NewSessionsServiceClient(httpClient connect_go.HTTPClient, baseURL string, 
 type sessionsServiceClient struct {
 	get         *connect_go.Client[node.EmptyMessage, sessions.Sessions]
 	revoke      *connect_go.Client[sessions.Session, node.DeleteResponse]
-	getActivity *connect_go.Client[node.EmptyMessage, sessions.Sessions]
+	getActivity *connect_go.Client[node.EmptyMessage, sessions.Activity]
 }
 
 // Get calls infinimesh.node.SessionsService.Get.
@@ -549,7 +549,7 @@ func (c *sessionsServiceClient) Revoke(ctx context.Context, req *connect_go.Requ
 }
 
 // GetActivity calls infinimesh.node.SessionsService.GetActivity.
-func (c *sessionsServiceClient) GetActivity(ctx context.Context, req *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Sessions], error) {
+func (c *sessionsServiceClient) GetActivity(ctx context.Context, req *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Activity], error) {
 	return c.getActivity.CallUnary(ctx, req)
 }
 
@@ -557,7 +557,7 @@ func (c *sessionsServiceClient) GetActivity(ctx context.Context, req *connect_go
 type SessionsServiceHandler interface {
 	Get(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Sessions], error)
 	Revoke(context.Context, *connect_go.Request[sessions.Session]) (*connect_go.Response[node.DeleteResponse], error)
-	GetActivity(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Sessions], error)
+	GetActivity(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Activity], error)
 }
 
 // NewSessionsServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -596,7 +596,7 @@ func (UnimplementedSessionsServiceHandler) Revoke(context.Context, *connect_go.R
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.SessionsService.Revoke is not implemented"))
 }
 
-func (UnimplementedSessionsServiceHandler) GetActivity(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Sessions], error) {
+func (UnimplementedSessionsServiceHandler) GetActivity(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Activity], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.SessionsService.GetActivity is not implemented"))
 }
 

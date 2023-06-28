@@ -1046,7 +1046,7 @@ var file_node_node_proto_rawDesc = []byte{
 	0x65, 0x73, 0x68, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x4d, 0x65,
 	0x73, 0x73, 0x61, 0x67, 0x65, 0x1a, 0x22, 0x2e, 0x69, 0x6e, 0x66, 0x69, 0x6e, 0x69, 0x6d, 0x65,
 	0x73, 0x68, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x2e, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x73,
-	0x2e, 0x53, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x22, 0x1a, 0x82, 0xd3, 0xe4, 0x93, 0x02,
+	0x2e, 0x41, 0x63, 0x74, 0x69, 0x76, 0x69, 0x74, 0x79, 0x22, 0x1a, 0x82, 0xd3, 0xe4, 0x93, 0x02,
 	0x14, 0x12, 0x12, 0x2f, 0x73, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x73, 0x2f, 0x61, 0x63, 0x74,
 	0x69, 0x76, 0x69, 0x74, 0x79, 0x32, 0x9e, 0x08, 0x0a, 0x11, 0x4e, 0x61, 0x6d, 0x65, 0x73, 0x70,
 	0x61, 0x63, 0x65, 0x73, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x6f, 0x0a, 0x03, 0x47,
@@ -1302,11 +1302,12 @@ var file_node_node_proto_goTypes = []interface{}{
 	(*accounts.CreateResponse)(nil),         // 30: infinimesh.node.accounts.CreateResponse
 	(*access.Nodes)(nil),                    // 31: infinimesh.node.access.Nodes
 	(*sessions.Sessions)(nil),               // 32: infinimesh.node.sessions.Sessions
-	(*namespaces.Namespaces)(nil),           // 33: infinimesh.node.namespaces.Namespaces
-	(*devices.Devices)(nil),                 // 34: infinimesh.node.devices.Devices
-	(*devices.CreateResponse)(nil),          // 35: infinimesh.node.devices.CreateResponse
-	(*access.Node)(nil),                     // 36: infinimesh.node.access.Node
-	(*shadow.GetResponse)(nil),              // 37: infinimesh.shadow.GetResponse
+	(*sessions.Activity)(nil),               // 33: infinimesh.node.sessions.Activity
+	(*namespaces.Namespaces)(nil),           // 34: infinimesh.node.namespaces.Namespaces
+	(*devices.Devices)(nil),                 // 35: infinimesh.node.devices.Devices
+	(*devices.CreateResponse)(nil),          // 36: infinimesh.node.devices.CreateResponse
+	(*access.Node)(nil),                     // 37: infinimesh.node.access.Node
+	(*shadow.GetResponse)(nil),              // 38: infinimesh.shadow.GetResponse
 }
 var file_node_node_proto_depIdxs = []int32{
 	16, // 0: infinimesh.node.TokenRequest.auth:type_name -> infinimesh.node.accounts.Credentials
@@ -1374,9 +1375,9 @@ var file_node_node_proto_depIdxs = []int32{
 	7,  // 62: infinimesh.node.AccountsService.DelCredentials:output_type -> infinimesh.node.DeleteResponse
 	32, // 63: infinimesh.node.SessionsService.Get:output_type -> infinimesh.node.sessions.Sessions
 	7,  // 64: infinimesh.node.SessionsService.Revoke:output_type -> infinimesh.node.DeleteResponse
-	32, // 65: infinimesh.node.SessionsService.GetActivity:output_type -> infinimesh.node.sessions.Sessions
+	33, // 65: infinimesh.node.SessionsService.GetActivity:output_type -> infinimesh.node.sessions.Activity
 	20, // 66: infinimesh.node.NamespacesService.Get:output_type -> infinimesh.node.namespaces.Namespace
-	33, // 67: infinimesh.node.NamespacesService.List:output_type -> infinimesh.node.namespaces.Namespaces
+	34, // 67: infinimesh.node.NamespacesService.List:output_type -> infinimesh.node.namespaces.Namespaces
 	20, // 68: infinimesh.node.NamespacesService.Create:output_type -> infinimesh.node.namespaces.Namespace
 	20, // 69: infinimesh.node.NamespacesService.Update:output_type -> infinimesh.node.namespaces.Namespace
 	7,  // 70: infinimesh.node.NamespacesService.Delete:output_type -> infinimesh.node.DeleteResponse
@@ -1385,8 +1386,8 @@ var file_node_node_proto_depIdxs = []int32{
 	29, // 73: infinimesh.node.NamespacesService.Joins:output_type -> infinimesh.node.accounts.Accounts
 	29, // 74: infinimesh.node.NamespacesService.Join:output_type -> infinimesh.node.accounts.Accounts
 	22, // 75: infinimesh.node.DevicesService.Get:output_type -> infinimesh.node.devices.Device
-	34, // 76: infinimesh.node.DevicesService.List:output_type -> infinimesh.node.devices.Devices
-	35, // 77: infinimesh.node.DevicesService.Create:output_type -> infinimesh.node.devices.CreateResponse
+	35, // 76: infinimesh.node.DevicesService.List:output_type -> infinimesh.node.devices.Devices
+	36, // 77: infinimesh.node.DevicesService.Create:output_type -> infinimesh.node.devices.CreateResponse
 	22, // 78: infinimesh.node.DevicesService.Update:output_type -> infinimesh.node.devices.Device
 	7,  // 79: infinimesh.node.DevicesService.Delete:output_type -> infinimesh.node.DeleteResponse
 	22, // 80: infinimesh.node.DevicesService.Toggle:output_type -> infinimesh.node.devices.Device
@@ -1394,10 +1395,10 @@ var file_node_node_proto_depIdxs = []int32{
 	1,  // 82: infinimesh.node.DevicesService.MakeDevicesToken:output_type -> infinimesh.node.TokenResponse
 	8,  // 83: infinimesh.node.DevicesService.Move:output_type -> infinimesh.node.EmptyMessage
 	31, // 84: infinimesh.node.DevicesService.Joins:output_type -> infinimesh.node.access.Nodes
-	36, // 85: infinimesh.node.DevicesService.Join:output_type -> infinimesh.node.access.Node
+	37, // 85: infinimesh.node.DevicesService.Join:output_type -> infinimesh.node.access.Node
 	22, // 86: infinimesh.node.DevicesService.GetByToken:output_type -> infinimesh.node.devices.Device
 	22, // 87: infinimesh.node.DevicesService.GetByFingerprint:output_type -> infinimesh.node.devices.Device
-	37, // 88: infinimesh.node.ShadowService.Get:output_type -> infinimesh.shadow.GetResponse
+	38, // 88: infinimesh.node.ShadowService.Get:output_type -> infinimesh.shadow.GetResponse
 	26, // 89: infinimesh.node.ShadowService.Patch:output_type -> infinimesh.shadow.Shadow
 	26, // 90: infinimesh.node.ShadowService.Remove:output_type -> infinimesh.shadow.Shadow
 	26, // 91: infinimesh.node.ShadowService.StreamShadow:output_type -> infinimesh.shadow.Shadow

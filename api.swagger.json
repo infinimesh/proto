@@ -2672,7 +2672,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/sessionsSessions"
+              "$ref": "#/definitions/sessionsActivity"
             }
           },
           "default": {
@@ -3303,6 +3303,18 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "sessionsActivity": {
+      "type": "object",
+      "properties": {
+        "lastSeen": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       }

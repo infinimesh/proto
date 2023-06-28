@@ -585,7 +585,7 @@ const (
 type SessionsServiceClient interface {
 	Get(ctx context.Context, in *EmptyMessage, opts ...grpc.CallOption) (*sessions.Sessions, error)
 	Revoke(ctx context.Context, in *sessions.Session, opts ...grpc.CallOption) (*DeleteResponse, error)
-	GetActivity(ctx context.Context, in *EmptyMessage, opts ...grpc.CallOption) (*sessions.Sessions, error)
+	GetActivity(ctx context.Context, in *EmptyMessage, opts ...grpc.CallOption) (*sessions.Activity, error)
 }
 
 type sessionsServiceClient struct {
@@ -614,8 +614,8 @@ func (c *sessionsServiceClient) Revoke(ctx context.Context, in *sessions.Session
 	return out, nil
 }
 
-func (c *sessionsServiceClient) GetActivity(ctx context.Context, in *EmptyMessage, opts ...grpc.CallOption) (*sessions.Sessions, error) {
-	out := new(sessions.Sessions)
+func (c *sessionsServiceClient) GetActivity(ctx context.Context, in *EmptyMessage, opts ...grpc.CallOption) (*sessions.Activity, error) {
+	out := new(sessions.Activity)
 	err := c.cc.Invoke(ctx, SessionsService_GetActivity_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -629,7 +629,7 @@ func (c *sessionsServiceClient) GetActivity(ctx context.Context, in *EmptyMessag
 type SessionsServiceServer interface {
 	Get(context.Context, *EmptyMessage) (*sessions.Sessions, error)
 	Revoke(context.Context, *sessions.Session) (*DeleteResponse, error)
-	GetActivity(context.Context, *EmptyMessage) (*sessions.Sessions, error)
+	GetActivity(context.Context, *EmptyMessage) (*sessions.Activity, error)
 	mustEmbedUnimplementedSessionsServiceServer()
 }
 
@@ -643,7 +643,7 @@ func (UnimplementedSessionsServiceServer) Get(context.Context, *EmptyMessage) (*
 func (UnimplementedSessionsServiceServer) Revoke(context.Context, *sessions.Session) (*DeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Revoke not implemented")
 }
-func (UnimplementedSessionsServiceServer) GetActivity(context.Context, *EmptyMessage) (*sessions.Sessions, error) {
+func (UnimplementedSessionsServiceServer) GetActivity(context.Context, *EmptyMessage) (*sessions.Activity, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetActivity not implemented")
 }
 func (UnimplementedSessionsServiceServer) mustEmbedUnimplementedSessionsServiceServer() {}
