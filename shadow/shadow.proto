@@ -29,6 +29,7 @@ message State {
 message ConnectionState {
   google.protobuf.Timestamp timestamp = 1;
   bool connected = 2;
+  string client_id = 3; // MQTT Client ID used for connection
 }
 
 message Shadow {
