@@ -27,6 +27,7 @@ import (
 	accounts "github.com/infinimesh/proto/node/accounts"
 	devices "github.com/infinimesh/proto/node/devices"
 	namespaces "github.com/infinimesh/proto/node/namespaces"
+	sessions "github.com/infinimesh/proto/node/sessions"
 	shadow "github.com/infinimesh/proto/shadow"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
@@ -566,6 +567,170 @@ var AccountsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DelCredentials",
 			Handler:    _AccountsService_DelCredentials_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "node/node.proto",
+}
+
+const (
+	SessionsService_Get_FullMethodName         = "/infinimesh.node.SessionsService/Get"
+	SessionsService_Revoke_FullMethodName      = "/infinimesh.node.SessionsService/Revoke"
+	SessionsService_GetActivity_FullMethodName = "/infinimesh.node.SessionsService/GetActivity"
+)
+
+// SessionsServiceClient is the client API for SessionsService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type SessionsServiceClient interface {
+	Get(ctx context.Context, in *EmptyMessage, opts ...grpc.CallOption) (*sessions.Sessions, error)
+	Revoke(ctx context.Context, in *sessions.Session, opts ...grpc.CallOption) (*DeleteResponse, error)
+	GetActivity(ctx context.Context, in *EmptyMessage, opts ...grpc.CallOption) (*sessions.Sessions, error)
+}
+
+type sessionsServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewSessionsServiceClient(cc grpc.ClientConnInterface) SessionsServiceClient {
+	return &sessionsServiceClient{cc}
+}
+
+func (c *sessionsServiceClient) Get(ctx context.Context, in *EmptyMessage, opts ...grpc.CallOption) (*sessions.Sessions, error) {
+	out := new(sessions.Sessions)
+	err := c.cc.Invoke(ctx, SessionsService_Get_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sessionsServiceClient) Revoke(ctx context.Context, in *sessions.Session, opts ...grpc.CallOption) (*DeleteResponse, error) {
+	out := new(DeleteResponse)
+	err := c.cc.Invoke(ctx, SessionsService_Revoke_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sessionsServiceClient) GetActivity(ctx context.Context, in *EmptyMessage, opts ...grpc.CallOption) (*sessions.Sessions, error) {
+	out := new(sessions.Sessions)
+	err := c.cc.Invoke(ctx, SessionsService_GetActivity_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// SessionsServiceServer is the server API for SessionsService service.
+// All implementations must embed UnimplementedSessionsServiceServer
+// for forward compatibility
+type SessionsServiceServer interface {
+	Get(context.Context, *EmptyMessage) (*sessions.Sessions, error)
+	Revoke(context.Context, *sessions.Session) (*DeleteResponse, error)
+	GetActivity(context.Context, *EmptyMessage) (*sessions.Sessions, error)
+	mustEmbedUnimplementedSessionsServiceServer()
+}
+
+// UnimplementedSessionsServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedSessionsServiceServer struct {
+}
+
+func (UnimplementedSessionsServiceServer) Get(context.Context, *EmptyMessage) (*sessions.Sessions, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedSessionsServiceServer) Revoke(context.Context, *sessions.Session) (*DeleteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Revoke not implemented")
+}
+func (UnimplementedSessionsServiceServer) GetActivity(context.Context, *EmptyMessage) (*sessions.Sessions, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetActivity not implemented")
+}
+func (UnimplementedSessionsServiceServer) mustEmbedUnimplementedSessionsServiceServer() {}
+
+// UnsafeSessionsServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to SessionsServiceServer will
+// result in compilation errors.
+type UnsafeSessionsServiceServer interface {
+	mustEmbedUnimplementedSessionsServiceServer()
+}
+
+func RegisterSessionsServiceServer(s grpc.ServiceRegistrar, srv SessionsServiceServer) {
+	s.RegisterService(&SessionsService_ServiceDesc, srv)
+}
+
+func _SessionsService_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EmptyMessage)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SessionsServiceServer).Get(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SessionsService_Get_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SessionsServiceServer).Get(ctx, req.(*EmptyMessage))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SessionsService_Revoke_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(sessions.Session)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SessionsServiceServer).Revoke(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SessionsService_Revoke_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SessionsServiceServer).Revoke(ctx, req.(*sessions.Session))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SessionsService_GetActivity_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EmptyMessage)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SessionsServiceServer).GetActivity(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SessionsService_GetActivity_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SessionsServiceServer).GetActivity(ctx, req.(*EmptyMessage))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// SessionsService_ServiceDesc is the grpc.ServiceDesc for SessionsService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var SessionsService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "infinimesh.node.SessionsService",
+	HandlerType: (*SessionsServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Get",
+			Handler:    _SessionsService_Get_Handler,
+		},
+		{
+			MethodName: "Revoke",
+			Handler:    _SessionsService_Revoke_Handler,
+		},
+		{
+			MethodName: "GetActivity",
+			Handler:    _SessionsService_GetActivity_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

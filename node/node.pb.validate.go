@@ -100,6 +100,10 @@ func (m *TokenRequest) validate(all bool) error {
 		// no validation rules for Inf
 	}
 
+	if m.Client != nil {
+		// no validation rules for Client
+	}
+
 	if len(errors) > 0 {
 		return TokenRequestMultiError(errors)
 	}

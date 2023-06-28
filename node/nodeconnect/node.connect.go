@@ -28,6 +28,7 @@ import (
 	accounts "github.com/infinimesh/proto/node/accounts"
 	devices "github.com/infinimesh/proto/node/devices"
 	namespaces "github.com/infinimesh/proto/node/namespaces"
+	sessions "github.com/infinimesh/proto/node/sessions"
 	shadow "github.com/infinimesh/proto/shadow"
 	http "net/http"
 	strings "strings"
@@ -43,6 +44,8 @@ const _ = connect_go.IsAtLeastVersion0_1_0
 const (
 	// AccountsServiceName is the fully-qualified name of the AccountsService service.
 	AccountsServiceName = "infinimesh.node.AccountsService"
+	// SessionsServiceName is the fully-qualified name of the SessionsService service.
+	SessionsServiceName = "infinimesh.node.SessionsService"
 	// NamespacesServiceName is the fully-qualified name of the NamespacesService service.
 	NamespacesServiceName = "infinimesh.node.NamespacesService"
 	// DevicesServiceName is the fully-qualified name of the DevicesService service.
@@ -92,6 +95,13 @@ const (
 	// AccountsServiceDelCredentialsProcedure is the fully-qualified name of the AccountsService's
 	// DelCredentials RPC.
 	AccountsServiceDelCredentialsProcedure = "/infinimesh.node.AccountsService/DelCredentials"
+	// SessionsServiceGetProcedure is the fully-qualified name of the SessionsService's Get RPC.
+	SessionsServiceGetProcedure = "/infinimesh.node.SessionsService/Get"
+	// SessionsServiceRevokeProcedure is the fully-qualified name of the SessionsService's Revoke RPC.
+	SessionsServiceRevokeProcedure = "/infinimesh.node.SessionsService/Revoke"
+	// SessionsServiceGetActivityProcedure is the fully-qualified name of the SessionsService's
+	// GetActivity RPC.
+	SessionsServiceGetActivityProcedure = "/infinimesh.node.SessionsService/GetActivity"
 	// NamespacesServiceGetProcedure is the fully-qualified name of the NamespacesService's Get RPC.
 	NamespacesServiceGetProcedure = "/infinimesh.node.NamespacesService/Get"
 	// NamespacesServiceListProcedure is the fully-qualified name of the NamespacesService's List RPC.
@@ -484,6 +494,110 @@ func (UnimplementedAccountsServiceHandler) SetCredentials(context.Context, *conn
 
 func (UnimplementedAccountsServiceHandler) DelCredentials(context.Context, *connect_go.Request[node.DeleteCredentialsRequest]) (*connect_go.Response[node.DeleteResponse], error) {
 	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.DelCredentials is not implemented"))
+}
+
+// SessionsServiceClient is a client for the infinimesh.node.SessionsService service.
+type SessionsServiceClient interface {
+	Get(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Sessions], error)
+	Revoke(context.Context, *connect_go.Request[sessions.Session]) (*connect_go.Response[node.DeleteResponse], error)
+	GetActivity(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Sessions], error)
+}
+
+// NewSessionsServiceClient constructs a client for the infinimesh.node.SessionsService service. By
+// default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses,
+// and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
+// connect.WithGRPC() or connect.WithGRPCWeb() options.
+//
+// The URL supplied here should be the base URL for the Connect or gRPC server (for example,
+// http://api.acme.com or https://acme.com/grpc).
+func NewSessionsServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) SessionsServiceClient {
+	baseURL = strings.TrimRight(baseURL, "/")
+	return &sessionsServiceClient{
+		get: connect_go.NewClient[node.EmptyMessage, sessions.Sessions](
+			httpClient,
+			baseURL+SessionsServiceGetProcedure,
+			opts...,
+		),
+		revoke: connect_go.NewClient[sessions.Session, node.DeleteResponse](
+			httpClient,
+			baseURL+SessionsServiceRevokeProcedure,
+			opts...,
+		),
+		getActivity: connect_go.NewClient[node.EmptyMessage, sessions.Sessions](
+			httpClient,
+			baseURL+SessionsServiceGetActivityProcedure,
+			opts...,
+		),
+	}
+}
+
+// sessionsServiceClient implements SessionsServiceClient.
+type sessionsServiceClient struct {
+	get         *connect_go.Client[node.EmptyMessage, sessions.Sessions]
+	revoke      *connect_go.Client[sessions.Session, node.DeleteResponse]
+	getActivity *connect_go.Client[node.EmptyMessage, sessions.Sessions]
+}
+
+// Get calls infinimesh.node.SessionsService.Get.
+func (c *sessionsServiceClient) Get(ctx context.Context, req *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Sessions], error) {
+	return c.get.CallUnary(ctx, req)
+}
+
+// Revoke calls infinimesh.node.SessionsService.Revoke.
+func (c *sessionsServiceClient) Revoke(ctx context.Context, req *connect_go.Request[sessions.Session]) (*connect_go.Response[node.DeleteResponse], error) {
+	return c.revoke.CallUnary(ctx, req)
+}
+
+// GetActivity calls infinimesh.node.SessionsService.GetActivity.
+func (c *sessionsServiceClient) GetActivity(ctx context.Context, req *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Sessions], error) {
+	return c.getActivity.CallUnary(ctx, req)
+}
+
+// SessionsServiceHandler is an implementation of the infinimesh.node.SessionsService service.
+type SessionsServiceHandler interface {
+	Get(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Sessions], error)
+	Revoke(context.Context, *connect_go.Request[sessions.Session]) (*connect_go.Response[node.DeleteResponse], error)
+	GetActivity(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Sessions], error)
+}
+
+// NewSessionsServiceHandler builds an HTTP handler from the service implementation. It returns the
+// path on which to mount the handler and the handler itself.
+//
+// By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
+// and JSON codecs. They also support gzip compression.
+func NewSessionsServiceHandler(svc SessionsServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
+	mux := http.NewServeMux()
+	mux.Handle(SessionsServiceGetProcedure, connect_go.NewUnaryHandler(
+		SessionsServiceGetProcedure,
+		svc.Get,
+		opts...,
+	))
+	mux.Handle(SessionsServiceRevokeProcedure, connect_go.NewUnaryHandler(
+		SessionsServiceRevokeProcedure,
+		svc.Revoke,
+		opts...,
+	))
+	mux.Handle(SessionsServiceGetActivityProcedure, connect_go.NewUnaryHandler(
+		SessionsServiceGetActivityProcedure,
+		svc.GetActivity,
+		opts...,
+	))
+	return "/infinimesh.node.SessionsService/", mux
+}
+
+// UnimplementedSessionsServiceHandler returns CodeUnimplemented from all methods.
+type UnimplementedSessionsServiceHandler struct{}
+
+func (UnimplementedSessionsServiceHandler) Get(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Sessions], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.SessionsService.Get is not implemented"))
+}
+
+func (UnimplementedSessionsServiceHandler) Revoke(context.Context, *connect_go.Request[sessions.Session]) (*connect_go.Response[node.DeleteResponse], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.SessionsService.Revoke is not implemented"))
+}
+
+func (UnimplementedSessionsServiceHandler) GetActivity(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Sessions], error) {
+	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.SessionsService.GetActivity is not implemented"))
 }
 
 // NamespacesServiceClient is a client for the infinimesh.node.NamespacesService service.

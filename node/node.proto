@@ -25,6 +25,8 @@ message TokenRequest {
   int64 exp = 2;
   optional string uuid = 3;
   optional bool inf = 4;
+
+  optional string client = 5;
 }
 
 message TokenResponse { string token = 1; }
@@ -141,6 +143,26 @@ service AccountsService {
   rpc DelCredentials(DeleteCredentialsRequest) returns (DeleteResponse) {
     option (google.api.http) = {
       delete : "/accounts/{uuid}/credentials/{type}"
+    };
+  };
+}
+
+import "node/sessions/sessions.proto";
+
+service SessionsService {
+  rpc Get(EmptyMessage) returns (infinimesh.node.sessions.Sessions) {
+    option (google.api.http) = {
+      get : "/sessions"
+    };
+  };
+  rpc Revoke(infinimesh.node.sessions.Session) returns (DeleteResponse) {
+    option (google.api.http) = {
+      delete : "/sessions/{id}"
+    };
+  };
+  rpc GetActivity(EmptyMessage) returns (infinimesh.node.sessions.Sessions) {
+    option (google.api.http) = {
+      get : "/sessions/activity"
     };
   };
 }
