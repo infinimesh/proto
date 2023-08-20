@@ -3,7 +3,7 @@ module github.com/infinimesh/proto
 go 1.18
 
 require (
-	github.com/bufbuild/connect-go v1.10.0
+	connectrpc.com/connect v1.11.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.16.2
 	google.golang.org/genproto/googleapis/api v0.0.0-20230726155614-23370e0ffb3e
 	google.golang.org/grpc v1.57.0

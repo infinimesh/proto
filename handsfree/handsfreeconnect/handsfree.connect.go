@@ -20,9 +20,9 @@
 package handsfreeconnect
 
 import (
+	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	connect_go "github.com/bufbuild/connect-go"
 	handsfree "github.com/infinimesh/proto/handsfree"
 	http "net/http"
 	strings "strings"
@@ -33,7 +33,7 @@ import (
 // generated with a version of connect newer than the one compiled into your binary. You can fix the
 // problem by either regenerating this code with an older version of connect or updating the connect
 // version compiled into your binary.
-const _ = connect_go.IsAtLeastVersion0_1_0
+const _ = connect.IsAtLeastVersion0_1_0
 
 const (
 	// HandsfreeServiceName is the fully-qualified name of the HandsfreeService service.
@@ -57,8 +57,8 @@ const (
 
 // HandsfreeServiceClient is a client for the infinimesh.handsfree.HandsfreeService service.
 type HandsfreeServiceClient interface {
-	Send(context.Context, *connect_go.Request[handsfree.ControlPacket]) (*connect_go.Response[handsfree.ControlPacket], error)
-	Connect(context.Context, *connect_go.Request[handsfree.ConnectionRequest]) (*connect_go.ServerStreamForClient[handsfree.ControlPacket], error)
+	Send(context.Context, *connect.Request[handsfree.ControlPacket]) (*connect.Response[handsfree.ControlPacket], error)
+	Connect(context.Context, *connect.Request[handsfree.ConnectionRequest]) (*connect.ServerStreamForClient[handsfree.ControlPacket], error)
 }
 
 // NewHandsfreeServiceClient constructs a client for the infinimesh.handsfree.HandsfreeService
@@ -68,15 +68,15 @@ type HandsfreeServiceClient interface {
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewHandsfreeServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) HandsfreeServiceClient {
+func NewHandsfreeServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) HandsfreeServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &handsfreeServiceClient{
-		send: connect_go.NewClient[handsfree.ControlPacket, handsfree.ControlPacket](
+		send: connect.NewClient[handsfree.ControlPacket, handsfree.ControlPacket](
 			httpClient,
 			baseURL+HandsfreeServiceSendProcedure,
 			opts...,
 		),
-		connect: connect_go.NewClient[handsfree.ConnectionRequest, handsfree.ControlPacket](
+		connect: connect.NewClient[handsfree.ConnectionRequest, handsfree.ControlPacket](
 			httpClient,
 			baseURL+HandsfreeServiceConnectProcedure,
 			opts...,
@@ -86,25 +86,25 @@ func NewHandsfreeServiceClient(httpClient connect_go.HTTPClient, baseURL string,
 
 // handsfreeServiceClient implements HandsfreeServiceClient.
 type handsfreeServiceClient struct {
-	send    *connect_go.Client[handsfree.ControlPacket, handsfree.ControlPacket]
-	connect *connect_go.Client[handsfree.ConnectionRequest, handsfree.ControlPacket]
+	send    *connect.Client[handsfree.ControlPacket, handsfree.ControlPacket]
+	connect *connect.Client[handsfree.ConnectionRequest, handsfree.ControlPacket]
 }
 
 // Send calls infinimesh.handsfree.HandsfreeService.Send.
-func (c *handsfreeServiceClient) Send(ctx context.Context, req *connect_go.Request[handsfree.ControlPacket]) (*connect_go.Response[handsfree.ControlPacket], error) {
+func (c *handsfreeServiceClient) Send(ctx context.Context, req *connect.Request[handsfree.ControlPacket]) (*connect.Response[handsfree.ControlPacket], error) {
 	return c.send.CallUnary(ctx, req)
 }
 
 // Connect calls infinimesh.handsfree.HandsfreeService.Connect.
-func (c *handsfreeServiceClient) Connect(ctx context.Context, req *connect_go.Request[handsfree.ConnectionRequest]) (*connect_go.ServerStreamForClient[handsfree.ControlPacket], error) {
+func (c *handsfreeServiceClient) Connect(ctx context.Context, req *connect.Request[handsfree.ConnectionRequest]) (*connect.ServerStreamForClient[handsfree.ControlPacket], error) {
 	return c.connect.CallServerStream(ctx, req)
 }
 
 // HandsfreeServiceHandler is an implementation of the infinimesh.handsfree.HandsfreeService
 // service.
 type HandsfreeServiceHandler interface {
-	Send(context.Context, *connect_go.Request[handsfree.ControlPacket]) (*connect_go.Response[handsfree.ControlPacket], error)
-	Connect(context.Context, *connect_go.Request[handsfree.ConnectionRequest], *connect_go.ServerStream[handsfree.ControlPacket]) error
+	Send(context.Context, *connect.Request[handsfree.ControlPacket]) (*connect.Response[handsfree.ControlPacket], error)
+	Connect(context.Context, *connect.Request[handsfree.ConnectionRequest], *connect.ServerStream[handsfree.ControlPacket]) error
 }
 
 // NewHandsfreeServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -112,28 +112,36 @@ type HandsfreeServiceHandler interface {
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewHandsfreeServiceHandler(svc HandsfreeServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	mux := http.NewServeMux()
-	mux.Handle(HandsfreeServiceSendProcedure, connect_go.NewUnaryHandler(
+func NewHandsfreeServiceHandler(svc HandsfreeServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	handsfreeServiceSendHandler := connect.NewUnaryHandler(
 		HandsfreeServiceSendProcedure,
 		svc.Send,
 		opts...,
-	))
-	mux.Handle(HandsfreeServiceConnectProcedure, connect_go.NewServerStreamHandler(
+	)
+	handsfreeServiceConnectHandler := connect.NewServerStreamHandler(
 		HandsfreeServiceConnectProcedure,
 		svc.Connect,
 		opts...,
-	))
-	return "/infinimesh.handsfree.HandsfreeService/", mux
+	)
+	return "/infinimesh.handsfree.HandsfreeService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case HandsfreeServiceSendProcedure:
+			handsfreeServiceSendHandler.ServeHTTP(w, r)
+		case HandsfreeServiceConnectProcedure:
+			handsfreeServiceConnectHandler.ServeHTTP(w, r)
+		default:
+			http.NotFound(w, r)
+		}
+	})
 }
 
 // UnimplementedHandsfreeServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedHandsfreeServiceHandler struct{}
 
-func (UnimplementedHandsfreeServiceHandler) Send(context.Context, *connect_go.Request[handsfree.ControlPacket]) (*connect_go.Response[handsfree.ControlPacket], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.handsfree.HandsfreeService.Send is not implemented"))
+func (UnimplementedHandsfreeServiceHandler) Send(context.Context, *connect.Request[handsfree.ControlPacket]) (*connect.Response[handsfree.ControlPacket], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.handsfree.HandsfreeService.Send is not implemented"))
 }
 
-func (UnimplementedHandsfreeServiceHandler) Connect(context.Context, *connect_go.Request[handsfree.ConnectionRequest], *connect_go.ServerStream[handsfree.ControlPacket]) error {
-	return connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.handsfree.HandsfreeService.Connect is not implemented"))
+func (UnimplementedHandsfreeServiceHandler) Connect(context.Context, *connect.Request[handsfree.ConnectionRequest], *connect.ServerStream[handsfree.ControlPacket]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.handsfree.HandsfreeService.Connect is not implemented"))
 }

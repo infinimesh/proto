@@ -20,9 +20,9 @@
 package nodeconnect
 
 import (
+	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	connect_go "github.com/bufbuild/connect-go"
 	node "github.com/infinimesh/proto/node"
 	access "github.com/infinimesh/proto/node/access"
 	accounts "github.com/infinimesh/proto/node/accounts"
@@ -39,7 +39,7 @@ import (
 // generated with a version of connect newer than the one compiled into your binary. You can fix the
 // problem by either regenerating this code with an older version of connect or updating the connect
 // version compiled into your binary.
-const _ = connect_go.IsAtLeastVersion0_1_0
+const _ = connect.IsAtLeastVersion0_1_0
 
 const (
 	// AccountsServiceName is the fully-qualified name of the AccountsService service.
@@ -174,19 +174,19 @@ const (
 
 // AccountsServiceClient is a client for the infinimesh.node.AccountsService service.
 type AccountsServiceClient interface {
-	Token(context.Context, *connect_go.Request[node.TokenRequest]) (*connect_go.Response[node.TokenResponse], error)
-	Get(context.Context, *connect_go.Request[accounts.Account]) (*connect_go.Response[accounts.Account], error)
-	List(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[accounts.Accounts], error)
-	Create(context.Context, *connect_go.Request[accounts.CreateRequest]) (*connect_go.Response[accounts.CreateResponse], error)
-	Update(context.Context, *connect_go.Request[accounts.Account]) (*connect_go.Response[accounts.Account], error)
-	Toggle(context.Context, *connect_go.Request[accounts.Account]) (*connect_go.Response[accounts.Account], error)
-	Delete(context.Context, *connect_go.Request[accounts.Account]) (*connect_go.Response[node.DeleteResponse], error)
-	Accessibles(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[access.Nodes], error)
-	Deletables(context.Context, *connect_go.Request[accounts.Account]) (*connect_go.Response[access.Nodes], error)
-	Move(context.Context, *connect_go.Request[node.MoveRequest]) (*connect_go.Response[node.EmptyMessage], error)
-	GetCredentials(context.Context, *connect_go.Request[node.GetCredentialsRequest]) (*connect_go.Response[node.GetCredentialsResponse], error)
-	SetCredentials(context.Context, *connect_go.Request[node.SetCredentialsRequest]) (*connect_go.Response[node.SetCredentialsResponse], error)
-	DelCredentials(context.Context, *connect_go.Request[node.DeleteCredentialsRequest]) (*connect_go.Response[node.DeleteResponse], error)
+	Token(context.Context, *connect.Request[node.TokenRequest]) (*connect.Response[node.TokenResponse], error)
+	Get(context.Context, *connect.Request[accounts.Account]) (*connect.Response[accounts.Account], error)
+	List(context.Context, *connect.Request[node.EmptyMessage]) (*connect.Response[accounts.Accounts], error)
+	Create(context.Context, *connect.Request[accounts.CreateRequest]) (*connect.Response[accounts.CreateResponse], error)
+	Update(context.Context, *connect.Request[accounts.Account]) (*connect.Response[accounts.Account], error)
+	Toggle(context.Context, *connect.Request[accounts.Account]) (*connect.Response[accounts.Account], error)
+	Delete(context.Context, *connect.Request[accounts.Account]) (*connect.Response[node.DeleteResponse], error)
+	Accessibles(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[access.Nodes], error)
+	Deletables(context.Context, *connect.Request[accounts.Account]) (*connect.Response[access.Nodes], error)
+	Move(context.Context, *connect.Request[node.MoveRequest]) (*connect.Response[node.EmptyMessage], error)
+	GetCredentials(context.Context, *connect.Request[node.GetCredentialsRequest]) (*connect.Response[node.GetCredentialsResponse], error)
+	SetCredentials(context.Context, *connect.Request[node.SetCredentialsRequest]) (*connect.Response[node.SetCredentialsResponse], error)
+	DelCredentials(context.Context, *connect.Request[node.DeleteCredentialsRequest]) (*connect.Response[node.DeleteResponse], error)
 }
 
 // NewAccountsServiceClient constructs a client for the infinimesh.node.AccountsService service. By
@@ -196,70 +196,70 @@ type AccountsServiceClient interface {
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewAccountsServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) AccountsServiceClient {
+func NewAccountsServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) AccountsServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &accountsServiceClient{
-		token: connect_go.NewClient[node.TokenRequest, node.TokenResponse](
+		token: connect.NewClient[node.TokenRequest, node.TokenResponse](
 			httpClient,
 			baseURL+AccountsServiceTokenProcedure,
 			opts...,
 		),
-		get: connect_go.NewClient[accounts.Account, accounts.Account](
+		get: connect.NewClient[accounts.Account, accounts.Account](
 			httpClient,
 			baseURL+AccountsServiceGetProcedure,
 			opts...,
 		),
-		list: connect_go.NewClient[node.EmptyMessage, accounts.Accounts](
+		list: connect.NewClient[node.EmptyMessage, accounts.Accounts](
 			httpClient,
 			baseURL+AccountsServiceListProcedure,
 			opts...,
 		),
-		create: connect_go.NewClient[accounts.CreateRequest, accounts.CreateResponse](
+		create: connect.NewClient[accounts.CreateRequest, accounts.CreateResponse](
 			httpClient,
 			baseURL+AccountsServiceCreateProcedure,
 			opts...,
 		),
-		update: connect_go.NewClient[accounts.Account, accounts.Account](
+		update: connect.NewClient[accounts.Account, accounts.Account](
 			httpClient,
 			baseURL+AccountsServiceUpdateProcedure,
 			opts...,
 		),
-		toggle: connect_go.NewClient[accounts.Account, accounts.Account](
+		toggle: connect.NewClient[accounts.Account, accounts.Account](
 			httpClient,
 			baseURL+AccountsServiceToggleProcedure,
 			opts...,
 		),
-		delete: connect_go.NewClient[accounts.Account, node.DeleteResponse](
+		delete: connect.NewClient[accounts.Account, node.DeleteResponse](
 			httpClient,
 			baseURL+AccountsServiceDeleteProcedure,
 			opts...,
 		),
-		accessibles: connect_go.NewClient[namespaces.Namespace, access.Nodes](
+		accessibles: connect.NewClient[namespaces.Namespace, access.Nodes](
 			httpClient,
 			baseURL+AccountsServiceAccessiblesProcedure,
 			opts...,
 		),
-		deletables: connect_go.NewClient[accounts.Account, access.Nodes](
+		deletables: connect.NewClient[accounts.Account, access.Nodes](
 			httpClient,
 			baseURL+AccountsServiceDeletablesProcedure,
 			opts...,
 		),
-		move: connect_go.NewClient[node.MoveRequest, node.EmptyMessage](
+		move: connect.NewClient[node.MoveRequest, node.EmptyMessage](
 			httpClient,
 			baseURL+AccountsServiceMoveProcedure,
 			opts...,
 		),
-		getCredentials: connect_go.NewClient[node.GetCredentialsRequest, node.GetCredentialsResponse](
+		getCredentials: connect.NewClient[node.GetCredentialsRequest, node.GetCredentialsResponse](
 			httpClient,
 			baseURL+AccountsServiceGetCredentialsProcedure,
 			opts...,
 		),
-		setCredentials: connect_go.NewClient[node.SetCredentialsRequest, node.SetCredentialsResponse](
+		setCredentials: connect.NewClient[node.SetCredentialsRequest, node.SetCredentialsResponse](
 			httpClient,
 			baseURL+AccountsServiceSetCredentialsProcedure,
 			opts...,
 		),
-		delCredentials: connect_go.NewClient[node.DeleteCredentialsRequest, node.DeleteResponse](
+		delCredentials: connect.NewClient[node.DeleteCredentialsRequest, node.DeleteResponse](
 			httpClient,
 			baseURL+AccountsServiceDelCredentialsProcedure,
 			opts...,
@@ -269,101 +269,101 @@ func NewAccountsServiceClient(httpClient connect_go.HTTPClient, baseURL string, 
 
 // accountsServiceClient implements AccountsServiceClient.
 type accountsServiceClient struct {
-	token          *connect_go.Client[node.TokenRequest, node.TokenResponse]
-	get            *connect_go.Client[accounts.Account, accounts.Account]
-	list           *connect_go.Client[node.EmptyMessage, accounts.Accounts]
-	create         *connect_go.Client[accounts.CreateRequest, accounts.CreateResponse]
-	update         *connect_go.Client[accounts.Account, accounts.Account]
-	toggle         *connect_go.Client[accounts.Account, accounts.Account]
-	delete         *connect_go.Client[accounts.Account, node.DeleteResponse]
-	accessibles    *connect_go.Client[namespaces.Namespace, access.Nodes]
-	deletables     *connect_go.Client[accounts.Account, access.Nodes]
-	move           *connect_go.Client[node.MoveRequest, node.EmptyMessage]
-	getCredentials *connect_go.Client[node.GetCredentialsRequest, node.GetCredentialsResponse]
-	setCredentials *connect_go.Client[node.SetCredentialsRequest, node.SetCredentialsResponse]
-	delCredentials *connect_go.Client[node.DeleteCredentialsRequest, node.DeleteResponse]
+	token          *connect.Client[node.TokenRequest, node.TokenResponse]
+	get            *connect.Client[accounts.Account, accounts.Account]
+	list           *connect.Client[node.EmptyMessage, accounts.Accounts]
+	create         *connect.Client[accounts.CreateRequest, accounts.CreateResponse]
+	update         *connect.Client[accounts.Account, accounts.Account]
+	toggle         *connect.Client[accounts.Account, accounts.Account]
+	delete         *connect.Client[accounts.Account, node.DeleteResponse]
+	accessibles    *connect.Client[namespaces.Namespace, access.Nodes]
+	deletables     *connect.Client[accounts.Account, access.Nodes]
+	move           *connect.Client[node.MoveRequest, node.EmptyMessage]
+	getCredentials *connect.Client[node.GetCredentialsRequest, node.GetCredentialsResponse]
+	setCredentials *connect.Client[node.SetCredentialsRequest, node.SetCredentialsResponse]
+	delCredentials *connect.Client[node.DeleteCredentialsRequest, node.DeleteResponse]
 }
 
 // Token calls infinimesh.node.AccountsService.Token.
-func (c *accountsServiceClient) Token(ctx context.Context, req *connect_go.Request[node.TokenRequest]) (*connect_go.Response[node.TokenResponse], error) {
+func (c *accountsServiceClient) Token(ctx context.Context, req *connect.Request[node.TokenRequest]) (*connect.Response[node.TokenResponse], error) {
 	return c.token.CallUnary(ctx, req)
 }
 
 // Get calls infinimesh.node.AccountsService.Get.
-func (c *accountsServiceClient) Get(ctx context.Context, req *connect_go.Request[accounts.Account]) (*connect_go.Response[accounts.Account], error) {
+func (c *accountsServiceClient) Get(ctx context.Context, req *connect.Request[accounts.Account]) (*connect.Response[accounts.Account], error) {
 	return c.get.CallUnary(ctx, req)
 }
 
 // List calls infinimesh.node.AccountsService.List.
-func (c *accountsServiceClient) List(ctx context.Context, req *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[accounts.Accounts], error) {
+func (c *accountsServiceClient) List(ctx context.Context, req *connect.Request[node.EmptyMessage]) (*connect.Response[accounts.Accounts], error) {
 	return c.list.CallUnary(ctx, req)
 }
 
 // Create calls infinimesh.node.AccountsService.Create.
-func (c *accountsServiceClient) Create(ctx context.Context, req *connect_go.Request[accounts.CreateRequest]) (*connect_go.Response[accounts.CreateResponse], error) {
+func (c *accountsServiceClient) Create(ctx context.Context, req *connect.Request[accounts.CreateRequest]) (*connect.Response[accounts.CreateResponse], error) {
 	return c.create.CallUnary(ctx, req)
 }
 
 // Update calls infinimesh.node.AccountsService.Update.
-func (c *accountsServiceClient) Update(ctx context.Context, req *connect_go.Request[accounts.Account]) (*connect_go.Response[accounts.Account], error) {
+func (c *accountsServiceClient) Update(ctx context.Context, req *connect.Request[accounts.Account]) (*connect.Response[accounts.Account], error) {
 	return c.update.CallUnary(ctx, req)
 }
 
 // Toggle calls infinimesh.node.AccountsService.Toggle.
-func (c *accountsServiceClient) Toggle(ctx context.Context, req *connect_go.Request[accounts.Account]) (*connect_go.Response[accounts.Account], error) {
+func (c *accountsServiceClient) Toggle(ctx context.Context, req *connect.Request[accounts.Account]) (*connect.Response[accounts.Account], error) {
 	return c.toggle.CallUnary(ctx, req)
 }
 
 // Delete calls infinimesh.node.AccountsService.Delete.
-func (c *accountsServiceClient) Delete(ctx context.Context, req *connect_go.Request[accounts.Account]) (*connect_go.Response[node.DeleteResponse], error) {
+func (c *accountsServiceClient) Delete(ctx context.Context, req *connect.Request[accounts.Account]) (*connect.Response[node.DeleteResponse], error) {
 	return c.delete.CallUnary(ctx, req)
 }
 
 // Accessibles calls infinimesh.node.AccountsService.Accessibles.
-func (c *accountsServiceClient) Accessibles(ctx context.Context, req *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[access.Nodes], error) {
+func (c *accountsServiceClient) Accessibles(ctx context.Context, req *connect.Request[namespaces.Namespace]) (*connect.Response[access.Nodes], error) {
 	return c.accessibles.CallUnary(ctx, req)
 }
 
 // Deletables calls infinimesh.node.AccountsService.Deletables.
-func (c *accountsServiceClient) Deletables(ctx context.Context, req *connect_go.Request[accounts.Account]) (*connect_go.Response[access.Nodes], error) {
+func (c *accountsServiceClient) Deletables(ctx context.Context, req *connect.Request[accounts.Account]) (*connect.Response[access.Nodes], error) {
 	return c.deletables.CallUnary(ctx, req)
 }
 
 // Move calls infinimesh.node.AccountsService.Move.
-func (c *accountsServiceClient) Move(ctx context.Context, req *connect_go.Request[node.MoveRequest]) (*connect_go.Response[node.EmptyMessage], error) {
+func (c *accountsServiceClient) Move(ctx context.Context, req *connect.Request[node.MoveRequest]) (*connect.Response[node.EmptyMessage], error) {
 	return c.move.CallUnary(ctx, req)
 }
 
 // GetCredentials calls infinimesh.node.AccountsService.GetCredentials.
-func (c *accountsServiceClient) GetCredentials(ctx context.Context, req *connect_go.Request[node.GetCredentialsRequest]) (*connect_go.Response[node.GetCredentialsResponse], error) {
+func (c *accountsServiceClient) GetCredentials(ctx context.Context, req *connect.Request[node.GetCredentialsRequest]) (*connect.Response[node.GetCredentialsResponse], error) {
 	return c.getCredentials.CallUnary(ctx, req)
 }
 
 // SetCredentials calls infinimesh.node.AccountsService.SetCredentials.
-func (c *accountsServiceClient) SetCredentials(ctx context.Context, req *connect_go.Request[node.SetCredentialsRequest]) (*connect_go.Response[node.SetCredentialsResponse], error) {
+func (c *accountsServiceClient) SetCredentials(ctx context.Context, req *connect.Request[node.SetCredentialsRequest]) (*connect.Response[node.SetCredentialsResponse], error) {
 	return c.setCredentials.CallUnary(ctx, req)
 }
 
 // DelCredentials calls infinimesh.node.AccountsService.DelCredentials.
-func (c *accountsServiceClient) DelCredentials(ctx context.Context, req *connect_go.Request[node.DeleteCredentialsRequest]) (*connect_go.Response[node.DeleteResponse], error) {
+func (c *accountsServiceClient) DelCredentials(ctx context.Context, req *connect.Request[node.DeleteCredentialsRequest]) (*connect.Response[node.DeleteResponse], error) {
 	return c.delCredentials.CallUnary(ctx, req)
 }
 
 // AccountsServiceHandler is an implementation of the infinimesh.node.AccountsService service.
 type AccountsServiceHandler interface {
-	Token(context.Context, *connect_go.Request[node.TokenRequest]) (*connect_go.Response[node.TokenResponse], error)
-	Get(context.Context, *connect_go.Request[accounts.Account]) (*connect_go.Response[accounts.Account], error)
-	List(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[accounts.Accounts], error)
-	Create(context.Context, *connect_go.Request[accounts.CreateRequest]) (*connect_go.Response[accounts.CreateResponse], error)
-	Update(context.Context, *connect_go.Request[accounts.Account]) (*connect_go.Response[accounts.Account], error)
-	Toggle(context.Context, *connect_go.Request[accounts.Account]) (*connect_go.Response[accounts.Account], error)
-	Delete(context.Context, *connect_go.Request[accounts.Account]) (*connect_go.Response[node.DeleteResponse], error)
-	Accessibles(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[access.Nodes], error)
-	Deletables(context.Context, *connect_go.Request[accounts.Account]) (*connect_go.Response[access.Nodes], error)
-	Move(context.Context, *connect_go.Request[node.MoveRequest]) (*connect_go.Response[node.EmptyMessage], error)
-	GetCredentials(context.Context, *connect_go.Request[node.GetCredentialsRequest]) (*connect_go.Response[node.GetCredentialsResponse], error)
-	SetCredentials(context.Context, *connect_go.Request[node.SetCredentialsRequest]) (*connect_go.Response[node.SetCredentialsResponse], error)
-	DelCredentials(context.Context, *connect_go.Request[node.DeleteCredentialsRequest]) (*connect_go.Response[node.DeleteResponse], error)
+	Token(context.Context, *connect.Request[node.TokenRequest]) (*connect.Response[node.TokenResponse], error)
+	Get(context.Context, *connect.Request[accounts.Account]) (*connect.Response[accounts.Account], error)
+	List(context.Context, *connect.Request[node.EmptyMessage]) (*connect.Response[accounts.Accounts], error)
+	Create(context.Context, *connect.Request[accounts.CreateRequest]) (*connect.Response[accounts.CreateResponse], error)
+	Update(context.Context, *connect.Request[accounts.Account]) (*connect.Response[accounts.Account], error)
+	Toggle(context.Context, *connect.Request[accounts.Account]) (*connect.Response[accounts.Account], error)
+	Delete(context.Context, *connect.Request[accounts.Account]) (*connect.Response[node.DeleteResponse], error)
+	Accessibles(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[access.Nodes], error)
+	Deletables(context.Context, *connect.Request[accounts.Account]) (*connect.Response[access.Nodes], error)
+	Move(context.Context, *connect.Request[node.MoveRequest]) (*connect.Response[node.EmptyMessage], error)
+	GetCredentials(context.Context, *connect.Request[node.GetCredentialsRequest]) (*connect.Response[node.GetCredentialsResponse], error)
+	SetCredentials(context.Context, *connect.Request[node.SetCredentialsRequest]) (*connect.Response[node.SetCredentialsResponse], error)
+	DelCredentials(context.Context, *connect.Request[node.DeleteCredentialsRequest]) (*connect.Response[node.DeleteResponse], error)
 }
 
 // NewAccountsServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -371,136 +371,166 @@ type AccountsServiceHandler interface {
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewAccountsServiceHandler(svc AccountsServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	mux := http.NewServeMux()
-	mux.Handle(AccountsServiceTokenProcedure, connect_go.NewUnaryHandler(
+func NewAccountsServiceHandler(svc AccountsServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	accountsServiceTokenHandler := connect.NewUnaryHandler(
 		AccountsServiceTokenProcedure,
 		svc.Token,
 		opts...,
-	))
-	mux.Handle(AccountsServiceGetProcedure, connect_go.NewUnaryHandler(
+	)
+	accountsServiceGetHandler := connect.NewUnaryHandler(
 		AccountsServiceGetProcedure,
 		svc.Get,
 		opts...,
-	))
-	mux.Handle(AccountsServiceListProcedure, connect_go.NewUnaryHandler(
+	)
+	accountsServiceListHandler := connect.NewUnaryHandler(
 		AccountsServiceListProcedure,
 		svc.List,
 		opts...,
-	))
-	mux.Handle(AccountsServiceCreateProcedure, connect_go.NewUnaryHandler(
+	)
+	accountsServiceCreateHandler := connect.NewUnaryHandler(
 		AccountsServiceCreateProcedure,
 		svc.Create,
 		opts...,
-	))
-	mux.Handle(AccountsServiceUpdateProcedure, connect_go.NewUnaryHandler(
+	)
+	accountsServiceUpdateHandler := connect.NewUnaryHandler(
 		AccountsServiceUpdateProcedure,
 		svc.Update,
 		opts...,
-	))
-	mux.Handle(AccountsServiceToggleProcedure, connect_go.NewUnaryHandler(
+	)
+	accountsServiceToggleHandler := connect.NewUnaryHandler(
 		AccountsServiceToggleProcedure,
 		svc.Toggle,
 		opts...,
-	))
-	mux.Handle(AccountsServiceDeleteProcedure, connect_go.NewUnaryHandler(
+	)
+	accountsServiceDeleteHandler := connect.NewUnaryHandler(
 		AccountsServiceDeleteProcedure,
 		svc.Delete,
 		opts...,
-	))
-	mux.Handle(AccountsServiceAccessiblesProcedure, connect_go.NewUnaryHandler(
+	)
+	accountsServiceAccessiblesHandler := connect.NewUnaryHandler(
 		AccountsServiceAccessiblesProcedure,
 		svc.Accessibles,
 		opts...,
-	))
-	mux.Handle(AccountsServiceDeletablesProcedure, connect_go.NewUnaryHandler(
+	)
+	accountsServiceDeletablesHandler := connect.NewUnaryHandler(
 		AccountsServiceDeletablesProcedure,
 		svc.Deletables,
 		opts...,
-	))
-	mux.Handle(AccountsServiceMoveProcedure, connect_go.NewUnaryHandler(
+	)
+	accountsServiceMoveHandler := connect.NewUnaryHandler(
 		AccountsServiceMoveProcedure,
 		svc.Move,
 		opts...,
-	))
-	mux.Handle(AccountsServiceGetCredentialsProcedure, connect_go.NewUnaryHandler(
+	)
+	accountsServiceGetCredentialsHandler := connect.NewUnaryHandler(
 		AccountsServiceGetCredentialsProcedure,
 		svc.GetCredentials,
 		opts...,
-	))
-	mux.Handle(AccountsServiceSetCredentialsProcedure, connect_go.NewUnaryHandler(
+	)
+	accountsServiceSetCredentialsHandler := connect.NewUnaryHandler(
 		AccountsServiceSetCredentialsProcedure,
 		svc.SetCredentials,
 		opts...,
-	))
-	mux.Handle(AccountsServiceDelCredentialsProcedure, connect_go.NewUnaryHandler(
+	)
+	accountsServiceDelCredentialsHandler := connect.NewUnaryHandler(
 		AccountsServiceDelCredentialsProcedure,
 		svc.DelCredentials,
 		opts...,
-	))
-	return "/infinimesh.node.AccountsService/", mux
+	)
+	return "/infinimesh.node.AccountsService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case AccountsServiceTokenProcedure:
+			accountsServiceTokenHandler.ServeHTTP(w, r)
+		case AccountsServiceGetProcedure:
+			accountsServiceGetHandler.ServeHTTP(w, r)
+		case AccountsServiceListProcedure:
+			accountsServiceListHandler.ServeHTTP(w, r)
+		case AccountsServiceCreateProcedure:
+			accountsServiceCreateHandler.ServeHTTP(w, r)
+		case AccountsServiceUpdateProcedure:
+			accountsServiceUpdateHandler.ServeHTTP(w, r)
+		case AccountsServiceToggleProcedure:
+			accountsServiceToggleHandler.ServeHTTP(w, r)
+		case AccountsServiceDeleteProcedure:
+			accountsServiceDeleteHandler.ServeHTTP(w, r)
+		case AccountsServiceAccessiblesProcedure:
+			accountsServiceAccessiblesHandler.ServeHTTP(w, r)
+		case AccountsServiceDeletablesProcedure:
+			accountsServiceDeletablesHandler.ServeHTTP(w, r)
+		case AccountsServiceMoveProcedure:
+			accountsServiceMoveHandler.ServeHTTP(w, r)
+		case AccountsServiceGetCredentialsProcedure:
+			accountsServiceGetCredentialsHandler.ServeHTTP(w, r)
+		case AccountsServiceSetCredentialsProcedure:
+			accountsServiceSetCredentialsHandler.ServeHTTP(w, r)
+		case AccountsServiceDelCredentialsProcedure:
+			accountsServiceDelCredentialsHandler.ServeHTTP(w, r)
+		default:
+			http.NotFound(w, r)
+		}
+	})
 }
 
 // UnimplementedAccountsServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedAccountsServiceHandler struct{}
 
-func (UnimplementedAccountsServiceHandler) Token(context.Context, *connect_go.Request[node.TokenRequest]) (*connect_go.Response[node.TokenResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.Token is not implemented"))
+func (UnimplementedAccountsServiceHandler) Token(context.Context, *connect.Request[node.TokenRequest]) (*connect.Response[node.TokenResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.Token is not implemented"))
 }
 
-func (UnimplementedAccountsServiceHandler) Get(context.Context, *connect_go.Request[accounts.Account]) (*connect_go.Response[accounts.Account], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.Get is not implemented"))
+func (UnimplementedAccountsServiceHandler) Get(context.Context, *connect.Request[accounts.Account]) (*connect.Response[accounts.Account], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.Get is not implemented"))
 }
 
-func (UnimplementedAccountsServiceHandler) List(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[accounts.Accounts], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.List is not implemented"))
+func (UnimplementedAccountsServiceHandler) List(context.Context, *connect.Request[node.EmptyMessage]) (*connect.Response[accounts.Accounts], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.List is not implemented"))
 }
 
-func (UnimplementedAccountsServiceHandler) Create(context.Context, *connect_go.Request[accounts.CreateRequest]) (*connect_go.Response[accounts.CreateResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.Create is not implemented"))
+func (UnimplementedAccountsServiceHandler) Create(context.Context, *connect.Request[accounts.CreateRequest]) (*connect.Response[accounts.CreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.Create is not implemented"))
 }
 
-func (UnimplementedAccountsServiceHandler) Update(context.Context, *connect_go.Request[accounts.Account]) (*connect_go.Response[accounts.Account], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.Update is not implemented"))
+func (UnimplementedAccountsServiceHandler) Update(context.Context, *connect.Request[accounts.Account]) (*connect.Response[accounts.Account], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.Update is not implemented"))
 }
 
-func (UnimplementedAccountsServiceHandler) Toggle(context.Context, *connect_go.Request[accounts.Account]) (*connect_go.Response[accounts.Account], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.Toggle is not implemented"))
+func (UnimplementedAccountsServiceHandler) Toggle(context.Context, *connect.Request[accounts.Account]) (*connect.Response[accounts.Account], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.Toggle is not implemented"))
 }
 
-func (UnimplementedAccountsServiceHandler) Delete(context.Context, *connect_go.Request[accounts.Account]) (*connect_go.Response[node.DeleteResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.Delete is not implemented"))
+func (UnimplementedAccountsServiceHandler) Delete(context.Context, *connect.Request[accounts.Account]) (*connect.Response[node.DeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.Delete is not implemented"))
 }
 
-func (UnimplementedAccountsServiceHandler) Accessibles(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[access.Nodes], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.Accessibles is not implemented"))
+func (UnimplementedAccountsServiceHandler) Accessibles(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[access.Nodes], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.Accessibles is not implemented"))
 }
 
-func (UnimplementedAccountsServiceHandler) Deletables(context.Context, *connect_go.Request[accounts.Account]) (*connect_go.Response[access.Nodes], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.Deletables is not implemented"))
+func (UnimplementedAccountsServiceHandler) Deletables(context.Context, *connect.Request[accounts.Account]) (*connect.Response[access.Nodes], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.Deletables is not implemented"))
 }
 
-func (UnimplementedAccountsServiceHandler) Move(context.Context, *connect_go.Request[node.MoveRequest]) (*connect_go.Response[node.EmptyMessage], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.Move is not implemented"))
+func (UnimplementedAccountsServiceHandler) Move(context.Context, *connect.Request[node.MoveRequest]) (*connect.Response[node.EmptyMessage], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.Move is not implemented"))
 }
 
-func (UnimplementedAccountsServiceHandler) GetCredentials(context.Context, *connect_go.Request[node.GetCredentialsRequest]) (*connect_go.Response[node.GetCredentialsResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.GetCredentials is not implemented"))
+func (UnimplementedAccountsServiceHandler) GetCredentials(context.Context, *connect.Request[node.GetCredentialsRequest]) (*connect.Response[node.GetCredentialsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.GetCredentials is not implemented"))
 }
 
-func (UnimplementedAccountsServiceHandler) SetCredentials(context.Context, *connect_go.Request[node.SetCredentialsRequest]) (*connect_go.Response[node.SetCredentialsResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.SetCredentials is not implemented"))
+func (UnimplementedAccountsServiceHandler) SetCredentials(context.Context, *connect.Request[node.SetCredentialsRequest]) (*connect.Response[node.SetCredentialsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.SetCredentials is not implemented"))
 }
 
-func (UnimplementedAccountsServiceHandler) DelCredentials(context.Context, *connect_go.Request[node.DeleteCredentialsRequest]) (*connect_go.Response[node.DeleteResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.DelCredentials is not implemented"))
+func (UnimplementedAccountsServiceHandler) DelCredentials(context.Context, *connect.Request[node.DeleteCredentialsRequest]) (*connect.Response[node.DeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.AccountsService.DelCredentials is not implemented"))
 }
 
 // SessionsServiceClient is a client for the infinimesh.node.SessionsService service.
 type SessionsServiceClient interface {
-	Get(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Sessions], error)
-	Revoke(context.Context, *connect_go.Request[sessions.Session]) (*connect_go.Response[node.DeleteResponse], error)
-	GetActivity(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Activity], error)
+	Get(context.Context, *connect.Request[node.EmptyMessage]) (*connect.Response[sessions.Sessions], error)
+	Revoke(context.Context, *connect.Request[sessions.Session]) (*connect.Response[node.DeleteResponse], error)
+	GetActivity(context.Context, *connect.Request[node.EmptyMessage]) (*connect.Response[sessions.Activity], error)
 }
 
 // NewSessionsServiceClient constructs a client for the infinimesh.node.SessionsService service. By
@@ -510,20 +540,20 @@ type SessionsServiceClient interface {
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewSessionsServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) SessionsServiceClient {
+func NewSessionsServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) SessionsServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &sessionsServiceClient{
-		get: connect_go.NewClient[node.EmptyMessage, sessions.Sessions](
+		get: connect.NewClient[node.EmptyMessage, sessions.Sessions](
 			httpClient,
 			baseURL+SessionsServiceGetProcedure,
 			opts...,
 		),
-		revoke: connect_go.NewClient[sessions.Session, node.DeleteResponse](
+		revoke: connect.NewClient[sessions.Session, node.DeleteResponse](
 			httpClient,
 			baseURL+SessionsServiceRevokeProcedure,
 			opts...,
 		),
-		getActivity: connect_go.NewClient[node.EmptyMessage, sessions.Activity](
+		getActivity: connect.NewClient[node.EmptyMessage, sessions.Activity](
 			httpClient,
 			baseURL+SessionsServiceGetActivityProcedure,
 			opts...,
@@ -533,31 +563,31 @@ func NewSessionsServiceClient(httpClient connect_go.HTTPClient, baseURL string, 
 
 // sessionsServiceClient implements SessionsServiceClient.
 type sessionsServiceClient struct {
-	get         *connect_go.Client[node.EmptyMessage, sessions.Sessions]
-	revoke      *connect_go.Client[sessions.Session, node.DeleteResponse]
-	getActivity *connect_go.Client[node.EmptyMessage, sessions.Activity]
+	get         *connect.Client[node.EmptyMessage, sessions.Sessions]
+	revoke      *connect.Client[sessions.Session, node.DeleteResponse]
+	getActivity *connect.Client[node.EmptyMessage, sessions.Activity]
 }
 
 // Get calls infinimesh.node.SessionsService.Get.
-func (c *sessionsServiceClient) Get(ctx context.Context, req *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Sessions], error) {
+func (c *sessionsServiceClient) Get(ctx context.Context, req *connect.Request[node.EmptyMessage]) (*connect.Response[sessions.Sessions], error) {
 	return c.get.CallUnary(ctx, req)
 }
 
 // Revoke calls infinimesh.node.SessionsService.Revoke.
-func (c *sessionsServiceClient) Revoke(ctx context.Context, req *connect_go.Request[sessions.Session]) (*connect_go.Response[node.DeleteResponse], error) {
+func (c *sessionsServiceClient) Revoke(ctx context.Context, req *connect.Request[sessions.Session]) (*connect.Response[node.DeleteResponse], error) {
 	return c.revoke.CallUnary(ctx, req)
 }
 
 // GetActivity calls infinimesh.node.SessionsService.GetActivity.
-func (c *sessionsServiceClient) GetActivity(ctx context.Context, req *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Activity], error) {
+func (c *sessionsServiceClient) GetActivity(ctx context.Context, req *connect.Request[node.EmptyMessage]) (*connect.Response[sessions.Activity], error) {
 	return c.getActivity.CallUnary(ctx, req)
 }
 
 // SessionsServiceHandler is an implementation of the infinimesh.node.SessionsService service.
 type SessionsServiceHandler interface {
-	Get(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Sessions], error)
-	Revoke(context.Context, *connect_go.Request[sessions.Session]) (*connect_go.Response[node.DeleteResponse], error)
-	GetActivity(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Activity], error)
+	Get(context.Context, *connect.Request[node.EmptyMessage]) (*connect.Response[sessions.Sessions], error)
+	Revoke(context.Context, *connect.Request[sessions.Session]) (*connect.Response[node.DeleteResponse], error)
+	GetActivity(context.Context, *connect.Request[node.EmptyMessage]) (*connect.Response[sessions.Activity], error)
 }
 
 // NewSessionsServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -565,55 +595,65 @@ type SessionsServiceHandler interface {
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewSessionsServiceHandler(svc SessionsServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	mux := http.NewServeMux()
-	mux.Handle(SessionsServiceGetProcedure, connect_go.NewUnaryHandler(
+func NewSessionsServiceHandler(svc SessionsServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	sessionsServiceGetHandler := connect.NewUnaryHandler(
 		SessionsServiceGetProcedure,
 		svc.Get,
 		opts...,
-	))
-	mux.Handle(SessionsServiceRevokeProcedure, connect_go.NewUnaryHandler(
+	)
+	sessionsServiceRevokeHandler := connect.NewUnaryHandler(
 		SessionsServiceRevokeProcedure,
 		svc.Revoke,
 		opts...,
-	))
-	mux.Handle(SessionsServiceGetActivityProcedure, connect_go.NewUnaryHandler(
+	)
+	sessionsServiceGetActivityHandler := connect.NewUnaryHandler(
 		SessionsServiceGetActivityProcedure,
 		svc.GetActivity,
 		opts...,
-	))
-	return "/infinimesh.node.SessionsService/", mux
+	)
+	return "/infinimesh.node.SessionsService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case SessionsServiceGetProcedure:
+			sessionsServiceGetHandler.ServeHTTP(w, r)
+		case SessionsServiceRevokeProcedure:
+			sessionsServiceRevokeHandler.ServeHTTP(w, r)
+		case SessionsServiceGetActivityProcedure:
+			sessionsServiceGetActivityHandler.ServeHTTP(w, r)
+		default:
+			http.NotFound(w, r)
+		}
+	})
 }
 
 // UnimplementedSessionsServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedSessionsServiceHandler struct{}
 
-func (UnimplementedSessionsServiceHandler) Get(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Sessions], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.SessionsService.Get is not implemented"))
+func (UnimplementedSessionsServiceHandler) Get(context.Context, *connect.Request[node.EmptyMessage]) (*connect.Response[sessions.Sessions], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.SessionsService.Get is not implemented"))
 }
 
-func (UnimplementedSessionsServiceHandler) Revoke(context.Context, *connect_go.Request[sessions.Session]) (*connect_go.Response[node.DeleteResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.SessionsService.Revoke is not implemented"))
+func (UnimplementedSessionsServiceHandler) Revoke(context.Context, *connect.Request[sessions.Session]) (*connect.Response[node.DeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.SessionsService.Revoke is not implemented"))
 }
 
-func (UnimplementedSessionsServiceHandler) GetActivity(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[sessions.Activity], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.SessionsService.GetActivity is not implemented"))
+func (UnimplementedSessionsServiceHandler) GetActivity(context.Context, *connect.Request[node.EmptyMessage]) (*connect.Response[sessions.Activity], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.SessionsService.GetActivity is not implemented"))
 }
 
 // NamespacesServiceClient is a client for the infinimesh.node.NamespacesService service.
 type NamespacesServiceClient interface {
-	Get(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[namespaces.Namespace], error)
-	List(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[namespaces.Namespaces], error)
-	Create(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[namespaces.Namespace], error)
-	Update(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[namespaces.Namespace], error)
-	Delete(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[node.DeleteResponse], error)
-	Accessibles(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[access.Nodes], error)
-	Deletables(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[access.Nodes], error)
+	Get(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[namespaces.Namespace], error)
+	List(context.Context, *connect.Request[node.EmptyMessage]) (*connect.Response[namespaces.Namespaces], error)
+	Create(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[namespaces.Namespace], error)
+	Update(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[namespaces.Namespace], error)
+	Delete(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[node.DeleteResponse], error)
+	Accessibles(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[access.Nodes], error)
+	Deletables(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[access.Nodes], error)
 	// Accounts having access to this namespace
-	Joins(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[accounts.Accounts], error)
+	Joins(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[accounts.Accounts], error)
 	// Sets Access to this namespace for the given account(deletes if level is set
 	// to NONE(0))
-	Join(context.Context, *connect_go.Request[node.JoinRequest]) (*connect_go.Response[accounts.Accounts], error)
+	Join(context.Context, *connect.Request[node.JoinRequest]) (*connect.Response[accounts.Accounts], error)
 }
 
 // NewNamespacesServiceClient constructs a client for the infinimesh.node.NamespacesService service.
@@ -623,50 +663,50 @@ type NamespacesServiceClient interface {
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewNamespacesServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) NamespacesServiceClient {
+func NewNamespacesServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) NamespacesServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &namespacesServiceClient{
-		get: connect_go.NewClient[namespaces.Namespace, namespaces.Namespace](
+		get: connect.NewClient[namespaces.Namespace, namespaces.Namespace](
 			httpClient,
 			baseURL+NamespacesServiceGetProcedure,
 			opts...,
 		),
-		list: connect_go.NewClient[node.EmptyMessage, namespaces.Namespaces](
+		list: connect.NewClient[node.EmptyMessage, namespaces.Namespaces](
 			httpClient,
 			baseURL+NamespacesServiceListProcedure,
 			opts...,
 		),
-		create: connect_go.NewClient[namespaces.Namespace, namespaces.Namespace](
+		create: connect.NewClient[namespaces.Namespace, namespaces.Namespace](
 			httpClient,
 			baseURL+NamespacesServiceCreateProcedure,
 			opts...,
 		),
-		update: connect_go.NewClient[namespaces.Namespace, namespaces.Namespace](
+		update: connect.NewClient[namespaces.Namespace, namespaces.Namespace](
 			httpClient,
 			baseURL+NamespacesServiceUpdateProcedure,
 			opts...,
 		),
-		delete: connect_go.NewClient[namespaces.Namespace, node.DeleteResponse](
+		delete: connect.NewClient[namespaces.Namespace, node.DeleteResponse](
 			httpClient,
 			baseURL+NamespacesServiceDeleteProcedure,
 			opts...,
 		),
-		accessibles: connect_go.NewClient[namespaces.Namespace, access.Nodes](
+		accessibles: connect.NewClient[namespaces.Namespace, access.Nodes](
 			httpClient,
 			baseURL+NamespacesServiceAccessiblesProcedure,
 			opts...,
 		),
-		deletables: connect_go.NewClient[namespaces.Namespace, access.Nodes](
+		deletables: connect.NewClient[namespaces.Namespace, access.Nodes](
 			httpClient,
 			baseURL+NamespacesServiceDeletablesProcedure,
 			opts...,
 		),
-		joins: connect_go.NewClient[namespaces.Namespace, accounts.Accounts](
+		joins: connect.NewClient[namespaces.Namespace, accounts.Accounts](
 			httpClient,
 			baseURL+NamespacesServiceJoinsProcedure,
 			opts...,
 		),
-		join: connect_go.NewClient[node.JoinRequest, accounts.Accounts](
+		join: connect.NewClient[node.JoinRequest, accounts.Accounts](
 			httpClient,
 			baseURL+NamespacesServiceJoinProcedure,
 			opts...,
@@ -676,76 +716,76 @@ func NewNamespacesServiceClient(httpClient connect_go.HTTPClient, baseURL string
 
 // namespacesServiceClient implements NamespacesServiceClient.
 type namespacesServiceClient struct {
-	get         *connect_go.Client[namespaces.Namespace, namespaces.Namespace]
-	list        *connect_go.Client[node.EmptyMessage, namespaces.Namespaces]
-	create      *connect_go.Client[namespaces.Namespace, namespaces.Namespace]
-	update      *connect_go.Client[namespaces.Namespace, namespaces.Namespace]
-	delete      *connect_go.Client[namespaces.Namespace, node.DeleteResponse]
-	accessibles *connect_go.Client[namespaces.Namespace, access.Nodes]
-	deletables  *connect_go.Client[namespaces.Namespace, access.Nodes]
-	joins       *connect_go.Client[namespaces.Namespace, accounts.Accounts]
-	join        *connect_go.Client[node.JoinRequest, accounts.Accounts]
+	get         *connect.Client[namespaces.Namespace, namespaces.Namespace]
+	list        *connect.Client[node.EmptyMessage, namespaces.Namespaces]
+	create      *connect.Client[namespaces.Namespace, namespaces.Namespace]
+	update      *connect.Client[namespaces.Namespace, namespaces.Namespace]
+	delete      *connect.Client[namespaces.Namespace, node.DeleteResponse]
+	accessibles *connect.Client[namespaces.Namespace, access.Nodes]
+	deletables  *connect.Client[namespaces.Namespace, access.Nodes]
+	joins       *connect.Client[namespaces.Namespace, accounts.Accounts]
+	join        *connect.Client[node.JoinRequest, accounts.Accounts]
 }
 
 // Get calls infinimesh.node.NamespacesService.Get.
-func (c *namespacesServiceClient) Get(ctx context.Context, req *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[namespaces.Namespace], error) {
+func (c *namespacesServiceClient) Get(ctx context.Context, req *connect.Request[namespaces.Namespace]) (*connect.Response[namespaces.Namespace], error) {
 	return c.get.CallUnary(ctx, req)
 }
 
 // List calls infinimesh.node.NamespacesService.List.
-func (c *namespacesServiceClient) List(ctx context.Context, req *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[namespaces.Namespaces], error) {
+func (c *namespacesServiceClient) List(ctx context.Context, req *connect.Request[node.EmptyMessage]) (*connect.Response[namespaces.Namespaces], error) {
 	return c.list.CallUnary(ctx, req)
 }
 
 // Create calls infinimesh.node.NamespacesService.Create.
-func (c *namespacesServiceClient) Create(ctx context.Context, req *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[namespaces.Namespace], error) {
+func (c *namespacesServiceClient) Create(ctx context.Context, req *connect.Request[namespaces.Namespace]) (*connect.Response[namespaces.Namespace], error) {
 	return c.create.CallUnary(ctx, req)
 }
 
 // Update calls infinimesh.node.NamespacesService.Update.
-func (c *namespacesServiceClient) Update(ctx context.Context, req *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[namespaces.Namespace], error) {
+func (c *namespacesServiceClient) Update(ctx context.Context, req *connect.Request[namespaces.Namespace]) (*connect.Response[namespaces.Namespace], error) {
 	return c.update.CallUnary(ctx, req)
 }
 
 // Delete calls infinimesh.node.NamespacesService.Delete.
-func (c *namespacesServiceClient) Delete(ctx context.Context, req *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[node.DeleteResponse], error) {
+func (c *namespacesServiceClient) Delete(ctx context.Context, req *connect.Request[namespaces.Namespace]) (*connect.Response[node.DeleteResponse], error) {
 	return c.delete.CallUnary(ctx, req)
 }
 
 // Accessibles calls infinimesh.node.NamespacesService.Accessibles.
-func (c *namespacesServiceClient) Accessibles(ctx context.Context, req *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[access.Nodes], error) {
+func (c *namespacesServiceClient) Accessibles(ctx context.Context, req *connect.Request[namespaces.Namespace]) (*connect.Response[access.Nodes], error) {
 	return c.accessibles.CallUnary(ctx, req)
 }
 
 // Deletables calls infinimesh.node.NamespacesService.Deletables.
-func (c *namespacesServiceClient) Deletables(ctx context.Context, req *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[access.Nodes], error) {
+func (c *namespacesServiceClient) Deletables(ctx context.Context, req *connect.Request[namespaces.Namespace]) (*connect.Response[access.Nodes], error) {
 	return c.deletables.CallUnary(ctx, req)
 }
 
 // Joins calls infinimesh.node.NamespacesService.Joins.
-func (c *namespacesServiceClient) Joins(ctx context.Context, req *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[accounts.Accounts], error) {
+func (c *namespacesServiceClient) Joins(ctx context.Context, req *connect.Request[namespaces.Namespace]) (*connect.Response[accounts.Accounts], error) {
 	return c.joins.CallUnary(ctx, req)
 }
 
 // Join calls infinimesh.node.NamespacesService.Join.
-func (c *namespacesServiceClient) Join(ctx context.Context, req *connect_go.Request[node.JoinRequest]) (*connect_go.Response[accounts.Accounts], error) {
+func (c *namespacesServiceClient) Join(ctx context.Context, req *connect.Request[node.JoinRequest]) (*connect.Response[accounts.Accounts], error) {
 	return c.join.CallUnary(ctx, req)
 }
 
 // NamespacesServiceHandler is an implementation of the infinimesh.node.NamespacesService service.
 type NamespacesServiceHandler interface {
-	Get(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[namespaces.Namespace], error)
-	List(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[namespaces.Namespaces], error)
-	Create(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[namespaces.Namespace], error)
-	Update(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[namespaces.Namespace], error)
-	Delete(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[node.DeleteResponse], error)
-	Accessibles(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[access.Nodes], error)
-	Deletables(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[access.Nodes], error)
+	Get(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[namespaces.Namespace], error)
+	List(context.Context, *connect.Request[node.EmptyMessage]) (*connect.Response[namespaces.Namespaces], error)
+	Create(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[namespaces.Namespace], error)
+	Update(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[namespaces.Namespace], error)
+	Delete(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[node.DeleteResponse], error)
+	Accessibles(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[access.Nodes], error)
+	Deletables(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[access.Nodes], error)
 	// Accounts having access to this namespace
-	Joins(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[accounts.Accounts], error)
+	Joins(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[accounts.Accounts], error)
 	// Sets Access to this namespace for the given account(deletes if level is set
 	// to NONE(0))
-	Join(context.Context, *connect_go.Request[node.JoinRequest]) (*connect_go.Response[accounts.Accounts], error)
+	Join(context.Context, *connect.Request[node.JoinRequest]) (*connect.Response[accounts.Accounts], error)
 }
 
 // NewNamespacesServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -753,115 +793,137 @@ type NamespacesServiceHandler interface {
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewNamespacesServiceHandler(svc NamespacesServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	mux := http.NewServeMux()
-	mux.Handle(NamespacesServiceGetProcedure, connect_go.NewUnaryHandler(
+func NewNamespacesServiceHandler(svc NamespacesServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	namespacesServiceGetHandler := connect.NewUnaryHandler(
 		NamespacesServiceGetProcedure,
 		svc.Get,
 		opts...,
-	))
-	mux.Handle(NamespacesServiceListProcedure, connect_go.NewUnaryHandler(
+	)
+	namespacesServiceListHandler := connect.NewUnaryHandler(
 		NamespacesServiceListProcedure,
 		svc.List,
 		opts...,
-	))
-	mux.Handle(NamespacesServiceCreateProcedure, connect_go.NewUnaryHandler(
+	)
+	namespacesServiceCreateHandler := connect.NewUnaryHandler(
 		NamespacesServiceCreateProcedure,
 		svc.Create,
 		opts...,
-	))
-	mux.Handle(NamespacesServiceUpdateProcedure, connect_go.NewUnaryHandler(
+	)
+	namespacesServiceUpdateHandler := connect.NewUnaryHandler(
 		NamespacesServiceUpdateProcedure,
 		svc.Update,
 		opts...,
-	))
-	mux.Handle(NamespacesServiceDeleteProcedure, connect_go.NewUnaryHandler(
+	)
+	namespacesServiceDeleteHandler := connect.NewUnaryHandler(
 		NamespacesServiceDeleteProcedure,
 		svc.Delete,
 		opts...,
-	))
-	mux.Handle(NamespacesServiceAccessiblesProcedure, connect_go.NewUnaryHandler(
+	)
+	namespacesServiceAccessiblesHandler := connect.NewUnaryHandler(
 		NamespacesServiceAccessiblesProcedure,
 		svc.Accessibles,
 		opts...,
-	))
-	mux.Handle(NamespacesServiceDeletablesProcedure, connect_go.NewUnaryHandler(
+	)
+	namespacesServiceDeletablesHandler := connect.NewUnaryHandler(
 		NamespacesServiceDeletablesProcedure,
 		svc.Deletables,
 		opts...,
-	))
-	mux.Handle(NamespacesServiceJoinsProcedure, connect_go.NewUnaryHandler(
+	)
+	namespacesServiceJoinsHandler := connect.NewUnaryHandler(
 		NamespacesServiceJoinsProcedure,
 		svc.Joins,
 		opts...,
-	))
-	mux.Handle(NamespacesServiceJoinProcedure, connect_go.NewUnaryHandler(
+	)
+	namespacesServiceJoinHandler := connect.NewUnaryHandler(
 		NamespacesServiceJoinProcedure,
 		svc.Join,
 		opts...,
-	))
-	return "/infinimesh.node.NamespacesService/", mux
+	)
+	return "/infinimesh.node.NamespacesService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case NamespacesServiceGetProcedure:
+			namespacesServiceGetHandler.ServeHTTP(w, r)
+		case NamespacesServiceListProcedure:
+			namespacesServiceListHandler.ServeHTTP(w, r)
+		case NamespacesServiceCreateProcedure:
+			namespacesServiceCreateHandler.ServeHTTP(w, r)
+		case NamespacesServiceUpdateProcedure:
+			namespacesServiceUpdateHandler.ServeHTTP(w, r)
+		case NamespacesServiceDeleteProcedure:
+			namespacesServiceDeleteHandler.ServeHTTP(w, r)
+		case NamespacesServiceAccessiblesProcedure:
+			namespacesServiceAccessiblesHandler.ServeHTTP(w, r)
+		case NamespacesServiceDeletablesProcedure:
+			namespacesServiceDeletablesHandler.ServeHTTP(w, r)
+		case NamespacesServiceJoinsProcedure:
+			namespacesServiceJoinsHandler.ServeHTTP(w, r)
+		case NamespacesServiceJoinProcedure:
+			namespacesServiceJoinHandler.ServeHTTP(w, r)
+		default:
+			http.NotFound(w, r)
+		}
+	})
 }
 
 // UnimplementedNamespacesServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedNamespacesServiceHandler struct{}
 
-func (UnimplementedNamespacesServiceHandler) Get(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[namespaces.Namespace], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.NamespacesService.Get is not implemented"))
+func (UnimplementedNamespacesServiceHandler) Get(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[namespaces.Namespace], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.NamespacesService.Get is not implemented"))
 }
 
-func (UnimplementedNamespacesServiceHandler) List(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[namespaces.Namespaces], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.NamespacesService.List is not implemented"))
+func (UnimplementedNamespacesServiceHandler) List(context.Context, *connect.Request[node.EmptyMessage]) (*connect.Response[namespaces.Namespaces], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.NamespacesService.List is not implemented"))
 }
 
-func (UnimplementedNamespacesServiceHandler) Create(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[namespaces.Namespace], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.NamespacesService.Create is not implemented"))
+func (UnimplementedNamespacesServiceHandler) Create(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[namespaces.Namespace], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.NamespacesService.Create is not implemented"))
 }
 
-func (UnimplementedNamespacesServiceHandler) Update(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[namespaces.Namespace], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.NamespacesService.Update is not implemented"))
+func (UnimplementedNamespacesServiceHandler) Update(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[namespaces.Namespace], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.NamespacesService.Update is not implemented"))
 }
 
-func (UnimplementedNamespacesServiceHandler) Delete(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[node.DeleteResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.NamespacesService.Delete is not implemented"))
+func (UnimplementedNamespacesServiceHandler) Delete(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[node.DeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.NamespacesService.Delete is not implemented"))
 }
 
-func (UnimplementedNamespacesServiceHandler) Accessibles(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[access.Nodes], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.NamespacesService.Accessibles is not implemented"))
+func (UnimplementedNamespacesServiceHandler) Accessibles(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[access.Nodes], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.NamespacesService.Accessibles is not implemented"))
 }
 
-func (UnimplementedNamespacesServiceHandler) Deletables(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[access.Nodes], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.NamespacesService.Deletables is not implemented"))
+func (UnimplementedNamespacesServiceHandler) Deletables(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[access.Nodes], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.NamespacesService.Deletables is not implemented"))
 }
 
-func (UnimplementedNamespacesServiceHandler) Joins(context.Context, *connect_go.Request[namespaces.Namespace]) (*connect_go.Response[accounts.Accounts], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.NamespacesService.Joins is not implemented"))
+func (UnimplementedNamespacesServiceHandler) Joins(context.Context, *connect.Request[namespaces.Namespace]) (*connect.Response[accounts.Accounts], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.NamespacesService.Joins is not implemented"))
 }
 
-func (UnimplementedNamespacesServiceHandler) Join(context.Context, *connect_go.Request[node.JoinRequest]) (*connect_go.Response[accounts.Accounts], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.NamespacesService.Join is not implemented"))
+func (UnimplementedNamespacesServiceHandler) Join(context.Context, *connect.Request[node.JoinRequest]) (*connect.Response[accounts.Accounts], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.NamespacesService.Join is not implemented"))
 }
 
 // DevicesServiceClient is a client for the infinimesh.node.DevicesService service.
 type DevicesServiceClient interface {
-	Get(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error)
-	List(context.Context, *connect_go.Request[node.QueryRequest]) (*connect_go.Response[devices.Devices], error)
-	Create(context.Context, *connect_go.Request[devices.CreateRequest]) (*connect_go.Response[devices.CreateResponse], error)
-	Update(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error)
-	Delete(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[node.DeleteResponse], error)
-	Toggle(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error)
-	ToggleBasic(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error)
-	MakeDevicesToken(context.Context, *connect_go.Request[node.DevicesTokenRequest]) (*connect_go.Response[node.TokenResponse], error)
+	Get(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error)
+	List(context.Context, *connect.Request[node.QueryRequest]) (*connect.Response[devices.Devices], error)
+	Create(context.Context, *connect.Request[devices.CreateRequest]) (*connect.Response[devices.CreateResponse], error)
+	Update(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error)
+	Delete(context.Context, *connect.Request[devices.Device]) (*connect.Response[node.DeleteResponse], error)
+	Toggle(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error)
+	ToggleBasic(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error)
+	MakeDevicesToken(context.Context, *connect.Request[node.DevicesTokenRequest]) (*connect.Response[node.TokenResponse], error)
 	// Moves Device between Namespaces
-	Move(context.Context, *connect_go.Request[node.MoveRequest]) (*connect_go.Response[node.EmptyMessage], error)
+	Move(context.Context, *connect.Request[node.MoveRequest]) (*connect.Response[node.EmptyMessage], error)
 	// Accounts and Namesapces having access to this Device
-	Joins(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[access.Nodes], error)
+	Joins(context.Context, *connect.Request[devices.Device]) (*connect.Response[access.Nodes], error)
 	// Sets Access to this namespace for the given Node(Account or Namespace)
 	// (deletes if level is set to NONE(0)) Node is interpret as a Device (uuid is
 	// enough) and Join as an Account or Namespace (must be provided fully)
-	Join(context.Context, *connect_go.Request[node.JoinGeneralRequest]) (*connect_go.Response[access.Node], error)
-	GetByToken(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error)
-	GetByFingerprint(context.Context, *connect_go.Request[devices.GetByFingerprintRequest]) (*connect_go.Response[devices.Device], error)
+	Join(context.Context, *connect.Request[node.JoinGeneralRequest]) (*connect.Response[access.Node], error)
+	GetByToken(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error)
+	GetByFingerprint(context.Context, *connect.Request[devices.GetByFingerprintRequest]) (*connect.Response[devices.Device], error)
 }
 
 // NewDevicesServiceClient constructs a client for the infinimesh.node.DevicesService service. By
@@ -871,70 +933,70 @@ type DevicesServiceClient interface {
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewDevicesServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) DevicesServiceClient {
+func NewDevicesServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) DevicesServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &devicesServiceClient{
-		get: connect_go.NewClient[devices.Device, devices.Device](
+		get: connect.NewClient[devices.Device, devices.Device](
 			httpClient,
 			baseURL+DevicesServiceGetProcedure,
 			opts...,
 		),
-		list: connect_go.NewClient[node.QueryRequest, devices.Devices](
+		list: connect.NewClient[node.QueryRequest, devices.Devices](
 			httpClient,
 			baseURL+DevicesServiceListProcedure,
 			opts...,
 		),
-		create: connect_go.NewClient[devices.CreateRequest, devices.CreateResponse](
+		create: connect.NewClient[devices.CreateRequest, devices.CreateResponse](
 			httpClient,
 			baseURL+DevicesServiceCreateProcedure,
 			opts...,
 		),
-		update: connect_go.NewClient[devices.Device, devices.Device](
+		update: connect.NewClient[devices.Device, devices.Device](
 			httpClient,
 			baseURL+DevicesServiceUpdateProcedure,
 			opts...,
 		),
-		delete: connect_go.NewClient[devices.Device, node.DeleteResponse](
+		delete: connect.NewClient[devices.Device, node.DeleteResponse](
 			httpClient,
 			baseURL+DevicesServiceDeleteProcedure,
 			opts...,
 		),
-		toggle: connect_go.NewClient[devices.Device, devices.Device](
+		toggle: connect.NewClient[devices.Device, devices.Device](
 			httpClient,
 			baseURL+DevicesServiceToggleProcedure,
 			opts...,
 		),
-		toggleBasic: connect_go.NewClient[devices.Device, devices.Device](
+		toggleBasic: connect.NewClient[devices.Device, devices.Device](
 			httpClient,
 			baseURL+DevicesServiceToggleBasicProcedure,
 			opts...,
 		),
-		makeDevicesToken: connect_go.NewClient[node.DevicesTokenRequest, node.TokenResponse](
+		makeDevicesToken: connect.NewClient[node.DevicesTokenRequest, node.TokenResponse](
 			httpClient,
 			baseURL+DevicesServiceMakeDevicesTokenProcedure,
 			opts...,
 		),
-		move: connect_go.NewClient[node.MoveRequest, node.EmptyMessage](
+		move: connect.NewClient[node.MoveRequest, node.EmptyMessage](
 			httpClient,
 			baseURL+DevicesServiceMoveProcedure,
 			opts...,
 		),
-		joins: connect_go.NewClient[devices.Device, access.Nodes](
+		joins: connect.NewClient[devices.Device, access.Nodes](
 			httpClient,
 			baseURL+DevicesServiceJoinsProcedure,
 			opts...,
 		),
-		join: connect_go.NewClient[node.JoinGeneralRequest, access.Node](
+		join: connect.NewClient[node.JoinGeneralRequest, access.Node](
 			httpClient,
 			baseURL+DevicesServiceJoinProcedure,
 			opts...,
 		),
-		getByToken: connect_go.NewClient[devices.Device, devices.Device](
+		getByToken: connect.NewClient[devices.Device, devices.Device](
 			httpClient,
 			baseURL+DevicesServiceGetByTokenProcedure,
 			opts...,
 		),
-		getByFingerprint: connect_go.NewClient[devices.GetByFingerprintRequest, devices.Device](
+		getByFingerprint: connect.NewClient[devices.GetByFingerprintRequest, devices.Device](
 			httpClient,
 			baseURL+DevicesServiceGetByFingerprintProcedure,
 			opts...,
@@ -944,106 +1006,106 @@ func NewDevicesServiceClient(httpClient connect_go.HTTPClient, baseURL string, o
 
 // devicesServiceClient implements DevicesServiceClient.
 type devicesServiceClient struct {
-	get              *connect_go.Client[devices.Device, devices.Device]
-	list             *connect_go.Client[node.QueryRequest, devices.Devices]
-	create           *connect_go.Client[devices.CreateRequest, devices.CreateResponse]
-	update           *connect_go.Client[devices.Device, devices.Device]
-	delete           *connect_go.Client[devices.Device, node.DeleteResponse]
-	toggle           *connect_go.Client[devices.Device, devices.Device]
-	toggleBasic      *connect_go.Client[devices.Device, devices.Device]
-	makeDevicesToken *connect_go.Client[node.DevicesTokenRequest, node.TokenResponse]
-	move             *connect_go.Client[node.MoveRequest, node.EmptyMessage]
-	joins            *connect_go.Client[devices.Device, access.Nodes]
-	join             *connect_go.Client[node.JoinGeneralRequest, access.Node]
-	getByToken       *connect_go.Client[devices.Device, devices.Device]
-	getByFingerprint *connect_go.Client[devices.GetByFingerprintRequest, devices.Device]
+	get              *connect.Client[devices.Device, devices.Device]
+	list             *connect.Client[node.QueryRequest, devices.Devices]
+	create           *connect.Client[devices.CreateRequest, devices.CreateResponse]
+	update           *connect.Client[devices.Device, devices.Device]
+	delete           *connect.Client[devices.Device, node.DeleteResponse]
+	toggle           *connect.Client[devices.Device, devices.Device]
+	toggleBasic      *connect.Client[devices.Device, devices.Device]
+	makeDevicesToken *connect.Client[node.DevicesTokenRequest, node.TokenResponse]
+	move             *connect.Client[node.MoveRequest, node.EmptyMessage]
+	joins            *connect.Client[devices.Device, access.Nodes]
+	join             *connect.Client[node.JoinGeneralRequest, access.Node]
+	getByToken       *connect.Client[devices.Device, devices.Device]
+	getByFingerprint *connect.Client[devices.GetByFingerprintRequest, devices.Device]
 }
 
 // Get calls infinimesh.node.DevicesService.Get.
-func (c *devicesServiceClient) Get(ctx context.Context, req *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error) {
+func (c *devicesServiceClient) Get(ctx context.Context, req *connect.Request[devices.Device]) (*connect.Response[devices.Device], error) {
 	return c.get.CallUnary(ctx, req)
 }
 
 // List calls infinimesh.node.DevicesService.List.
-func (c *devicesServiceClient) List(ctx context.Context, req *connect_go.Request[node.QueryRequest]) (*connect_go.Response[devices.Devices], error) {
+func (c *devicesServiceClient) List(ctx context.Context, req *connect.Request[node.QueryRequest]) (*connect.Response[devices.Devices], error) {
 	return c.list.CallUnary(ctx, req)
 }
 
 // Create calls infinimesh.node.DevicesService.Create.
-func (c *devicesServiceClient) Create(ctx context.Context, req *connect_go.Request[devices.CreateRequest]) (*connect_go.Response[devices.CreateResponse], error) {
+func (c *devicesServiceClient) Create(ctx context.Context, req *connect.Request[devices.CreateRequest]) (*connect.Response[devices.CreateResponse], error) {
 	return c.create.CallUnary(ctx, req)
 }
 
 // Update calls infinimesh.node.DevicesService.Update.
-func (c *devicesServiceClient) Update(ctx context.Context, req *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error) {
+func (c *devicesServiceClient) Update(ctx context.Context, req *connect.Request[devices.Device]) (*connect.Response[devices.Device], error) {
 	return c.update.CallUnary(ctx, req)
 }
 
 // Delete calls infinimesh.node.DevicesService.Delete.
-func (c *devicesServiceClient) Delete(ctx context.Context, req *connect_go.Request[devices.Device]) (*connect_go.Response[node.DeleteResponse], error) {
+func (c *devicesServiceClient) Delete(ctx context.Context, req *connect.Request[devices.Device]) (*connect.Response[node.DeleteResponse], error) {
 	return c.delete.CallUnary(ctx, req)
 }
 
 // Toggle calls infinimesh.node.DevicesService.Toggle.
-func (c *devicesServiceClient) Toggle(ctx context.Context, req *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error) {
+func (c *devicesServiceClient) Toggle(ctx context.Context, req *connect.Request[devices.Device]) (*connect.Response[devices.Device], error) {
 	return c.toggle.CallUnary(ctx, req)
 }
 
 // ToggleBasic calls infinimesh.node.DevicesService.ToggleBasic.
-func (c *devicesServiceClient) ToggleBasic(ctx context.Context, req *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error) {
+func (c *devicesServiceClient) ToggleBasic(ctx context.Context, req *connect.Request[devices.Device]) (*connect.Response[devices.Device], error) {
 	return c.toggleBasic.CallUnary(ctx, req)
 }
 
 // MakeDevicesToken calls infinimesh.node.DevicesService.MakeDevicesToken.
-func (c *devicesServiceClient) MakeDevicesToken(ctx context.Context, req *connect_go.Request[node.DevicesTokenRequest]) (*connect_go.Response[node.TokenResponse], error) {
+func (c *devicesServiceClient) MakeDevicesToken(ctx context.Context, req *connect.Request[node.DevicesTokenRequest]) (*connect.Response[node.TokenResponse], error) {
 	return c.makeDevicesToken.CallUnary(ctx, req)
 }
 
 // Move calls infinimesh.node.DevicesService.Move.
-func (c *devicesServiceClient) Move(ctx context.Context, req *connect_go.Request[node.MoveRequest]) (*connect_go.Response[node.EmptyMessage], error) {
+func (c *devicesServiceClient) Move(ctx context.Context, req *connect.Request[node.MoveRequest]) (*connect.Response[node.EmptyMessage], error) {
 	return c.move.CallUnary(ctx, req)
 }
 
 // Joins calls infinimesh.node.DevicesService.Joins.
-func (c *devicesServiceClient) Joins(ctx context.Context, req *connect_go.Request[devices.Device]) (*connect_go.Response[access.Nodes], error) {
+func (c *devicesServiceClient) Joins(ctx context.Context, req *connect.Request[devices.Device]) (*connect.Response[access.Nodes], error) {
 	return c.joins.CallUnary(ctx, req)
 }
 
 // Join calls infinimesh.node.DevicesService.Join.
-func (c *devicesServiceClient) Join(ctx context.Context, req *connect_go.Request[node.JoinGeneralRequest]) (*connect_go.Response[access.Node], error) {
+func (c *devicesServiceClient) Join(ctx context.Context, req *connect.Request[node.JoinGeneralRequest]) (*connect.Response[access.Node], error) {
 	return c.join.CallUnary(ctx, req)
 }
 
 // GetByToken calls infinimesh.node.DevicesService.GetByToken.
-func (c *devicesServiceClient) GetByToken(ctx context.Context, req *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error) {
+func (c *devicesServiceClient) GetByToken(ctx context.Context, req *connect.Request[devices.Device]) (*connect.Response[devices.Device], error) {
 	return c.getByToken.CallUnary(ctx, req)
 }
 
 // GetByFingerprint calls infinimesh.node.DevicesService.GetByFingerprint.
-func (c *devicesServiceClient) GetByFingerprint(ctx context.Context, req *connect_go.Request[devices.GetByFingerprintRequest]) (*connect_go.Response[devices.Device], error) {
+func (c *devicesServiceClient) GetByFingerprint(ctx context.Context, req *connect.Request[devices.GetByFingerprintRequest]) (*connect.Response[devices.Device], error) {
 	return c.getByFingerprint.CallUnary(ctx, req)
 }
 
 // DevicesServiceHandler is an implementation of the infinimesh.node.DevicesService service.
 type DevicesServiceHandler interface {
-	Get(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error)
-	List(context.Context, *connect_go.Request[node.QueryRequest]) (*connect_go.Response[devices.Devices], error)
-	Create(context.Context, *connect_go.Request[devices.CreateRequest]) (*connect_go.Response[devices.CreateResponse], error)
-	Update(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error)
-	Delete(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[node.DeleteResponse], error)
-	Toggle(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error)
-	ToggleBasic(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error)
-	MakeDevicesToken(context.Context, *connect_go.Request[node.DevicesTokenRequest]) (*connect_go.Response[node.TokenResponse], error)
+	Get(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error)
+	List(context.Context, *connect.Request[node.QueryRequest]) (*connect.Response[devices.Devices], error)
+	Create(context.Context, *connect.Request[devices.CreateRequest]) (*connect.Response[devices.CreateResponse], error)
+	Update(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error)
+	Delete(context.Context, *connect.Request[devices.Device]) (*connect.Response[node.DeleteResponse], error)
+	Toggle(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error)
+	ToggleBasic(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error)
+	MakeDevicesToken(context.Context, *connect.Request[node.DevicesTokenRequest]) (*connect.Response[node.TokenResponse], error)
 	// Moves Device between Namespaces
-	Move(context.Context, *connect_go.Request[node.MoveRequest]) (*connect_go.Response[node.EmptyMessage], error)
+	Move(context.Context, *connect.Request[node.MoveRequest]) (*connect.Response[node.EmptyMessage], error)
 	// Accounts and Namesapces having access to this Device
-	Joins(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[access.Nodes], error)
+	Joins(context.Context, *connect.Request[devices.Device]) (*connect.Response[access.Nodes], error)
 	// Sets Access to this namespace for the given Node(Account or Namespace)
 	// (deletes if level is set to NONE(0)) Node is interpret as a Device (uuid is
 	// enough) and Join as an Account or Namespace (must be provided fully)
-	Join(context.Context, *connect_go.Request[node.JoinGeneralRequest]) (*connect_go.Response[access.Node], error)
-	GetByToken(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error)
-	GetByFingerprint(context.Context, *connect_go.Request[devices.GetByFingerprintRequest]) (*connect_go.Response[devices.Device], error)
+	Join(context.Context, *connect.Request[node.JoinGeneralRequest]) (*connect.Response[access.Node], error)
+	GetByToken(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error)
+	GetByFingerprint(context.Context, *connect.Request[devices.GetByFingerprintRequest]) (*connect.Response[devices.Device], error)
 }
 
 // NewDevicesServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -1051,138 +1113,168 @@ type DevicesServiceHandler interface {
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewDevicesServiceHandler(svc DevicesServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	mux := http.NewServeMux()
-	mux.Handle(DevicesServiceGetProcedure, connect_go.NewUnaryHandler(
+func NewDevicesServiceHandler(svc DevicesServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	devicesServiceGetHandler := connect.NewUnaryHandler(
 		DevicesServiceGetProcedure,
 		svc.Get,
 		opts...,
-	))
-	mux.Handle(DevicesServiceListProcedure, connect_go.NewUnaryHandler(
+	)
+	devicesServiceListHandler := connect.NewUnaryHandler(
 		DevicesServiceListProcedure,
 		svc.List,
 		opts...,
-	))
-	mux.Handle(DevicesServiceCreateProcedure, connect_go.NewUnaryHandler(
+	)
+	devicesServiceCreateHandler := connect.NewUnaryHandler(
 		DevicesServiceCreateProcedure,
 		svc.Create,
 		opts...,
-	))
-	mux.Handle(DevicesServiceUpdateProcedure, connect_go.NewUnaryHandler(
+	)
+	devicesServiceUpdateHandler := connect.NewUnaryHandler(
 		DevicesServiceUpdateProcedure,
 		svc.Update,
 		opts...,
-	))
-	mux.Handle(DevicesServiceDeleteProcedure, connect_go.NewUnaryHandler(
+	)
+	devicesServiceDeleteHandler := connect.NewUnaryHandler(
 		DevicesServiceDeleteProcedure,
 		svc.Delete,
 		opts...,
-	))
-	mux.Handle(DevicesServiceToggleProcedure, connect_go.NewUnaryHandler(
+	)
+	devicesServiceToggleHandler := connect.NewUnaryHandler(
 		DevicesServiceToggleProcedure,
 		svc.Toggle,
 		opts...,
-	))
-	mux.Handle(DevicesServiceToggleBasicProcedure, connect_go.NewUnaryHandler(
+	)
+	devicesServiceToggleBasicHandler := connect.NewUnaryHandler(
 		DevicesServiceToggleBasicProcedure,
 		svc.ToggleBasic,
 		opts...,
-	))
-	mux.Handle(DevicesServiceMakeDevicesTokenProcedure, connect_go.NewUnaryHandler(
+	)
+	devicesServiceMakeDevicesTokenHandler := connect.NewUnaryHandler(
 		DevicesServiceMakeDevicesTokenProcedure,
 		svc.MakeDevicesToken,
 		opts...,
-	))
-	mux.Handle(DevicesServiceMoveProcedure, connect_go.NewUnaryHandler(
+	)
+	devicesServiceMoveHandler := connect.NewUnaryHandler(
 		DevicesServiceMoveProcedure,
 		svc.Move,
 		opts...,
-	))
-	mux.Handle(DevicesServiceJoinsProcedure, connect_go.NewUnaryHandler(
+	)
+	devicesServiceJoinsHandler := connect.NewUnaryHandler(
 		DevicesServiceJoinsProcedure,
 		svc.Joins,
 		opts...,
-	))
-	mux.Handle(DevicesServiceJoinProcedure, connect_go.NewUnaryHandler(
+	)
+	devicesServiceJoinHandler := connect.NewUnaryHandler(
 		DevicesServiceJoinProcedure,
 		svc.Join,
 		opts...,
-	))
-	mux.Handle(DevicesServiceGetByTokenProcedure, connect_go.NewUnaryHandler(
+	)
+	devicesServiceGetByTokenHandler := connect.NewUnaryHandler(
 		DevicesServiceGetByTokenProcedure,
 		svc.GetByToken,
 		opts...,
-	))
-	mux.Handle(DevicesServiceGetByFingerprintProcedure, connect_go.NewUnaryHandler(
+	)
+	devicesServiceGetByFingerprintHandler := connect.NewUnaryHandler(
 		DevicesServiceGetByFingerprintProcedure,
 		svc.GetByFingerprint,
 		opts...,
-	))
-	return "/infinimesh.node.DevicesService/", mux
+	)
+	return "/infinimesh.node.DevicesService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case DevicesServiceGetProcedure:
+			devicesServiceGetHandler.ServeHTTP(w, r)
+		case DevicesServiceListProcedure:
+			devicesServiceListHandler.ServeHTTP(w, r)
+		case DevicesServiceCreateProcedure:
+			devicesServiceCreateHandler.ServeHTTP(w, r)
+		case DevicesServiceUpdateProcedure:
+			devicesServiceUpdateHandler.ServeHTTP(w, r)
+		case DevicesServiceDeleteProcedure:
+			devicesServiceDeleteHandler.ServeHTTP(w, r)
+		case DevicesServiceToggleProcedure:
+			devicesServiceToggleHandler.ServeHTTP(w, r)
+		case DevicesServiceToggleBasicProcedure:
+			devicesServiceToggleBasicHandler.ServeHTTP(w, r)
+		case DevicesServiceMakeDevicesTokenProcedure:
+			devicesServiceMakeDevicesTokenHandler.ServeHTTP(w, r)
+		case DevicesServiceMoveProcedure:
+			devicesServiceMoveHandler.ServeHTTP(w, r)
+		case DevicesServiceJoinsProcedure:
+			devicesServiceJoinsHandler.ServeHTTP(w, r)
+		case DevicesServiceJoinProcedure:
+			devicesServiceJoinHandler.ServeHTTP(w, r)
+		case DevicesServiceGetByTokenProcedure:
+			devicesServiceGetByTokenHandler.ServeHTTP(w, r)
+		case DevicesServiceGetByFingerprintProcedure:
+			devicesServiceGetByFingerprintHandler.ServeHTTP(w, r)
+		default:
+			http.NotFound(w, r)
+		}
+	})
 }
 
 // UnimplementedDevicesServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedDevicesServiceHandler struct{}
 
-func (UnimplementedDevicesServiceHandler) Get(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.Get is not implemented"))
+func (UnimplementedDevicesServiceHandler) Get(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.Get is not implemented"))
 }
 
-func (UnimplementedDevicesServiceHandler) List(context.Context, *connect_go.Request[node.QueryRequest]) (*connect_go.Response[devices.Devices], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.List is not implemented"))
+func (UnimplementedDevicesServiceHandler) List(context.Context, *connect.Request[node.QueryRequest]) (*connect.Response[devices.Devices], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.List is not implemented"))
 }
 
-func (UnimplementedDevicesServiceHandler) Create(context.Context, *connect_go.Request[devices.CreateRequest]) (*connect_go.Response[devices.CreateResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.Create is not implemented"))
+func (UnimplementedDevicesServiceHandler) Create(context.Context, *connect.Request[devices.CreateRequest]) (*connect.Response[devices.CreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.Create is not implemented"))
 }
 
-func (UnimplementedDevicesServiceHandler) Update(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.Update is not implemented"))
+func (UnimplementedDevicesServiceHandler) Update(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.Update is not implemented"))
 }
 
-func (UnimplementedDevicesServiceHandler) Delete(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[node.DeleteResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.Delete is not implemented"))
+func (UnimplementedDevicesServiceHandler) Delete(context.Context, *connect.Request[devices.Device]) (*connect.Response[node.DeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.Delete is not implemented"))
 }
 
-func (UnimplementedDevicesServiceHandler) Toggle(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.Toggle is not implemented"))
+func (UnimplementedDevicesServiceHandler) Toggle(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.Toggle is not implemented"))
 }
 
-func (UnimplementedDevicesServiceHandler) ToggleBasic(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.ToggleBasic is not implemented"))
+func (UnimplementedDevicesServiceHandler) ToggleBasic(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.ToggleBasic is not implemented"))
 }
 
-func (UnimplementedDevicesServiceHandler) MakeDevicesToken(context.Context, *connect_go.Request[node.DevicesTokenRequest]) (*connect_go.Response[node.TokenResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.MakeDevicesToken is not implemented"))
+func (UnimplementedDevicesServiceHandler) MakeDevicesToken(context.Context, *connect.Request[node.DevicesTokenRequest]) (*connect.Response[node.TokenResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.MakeDevicesToken is not implemented"))
 }
 
-func (UnimplementedDevicesServiceHandler) Move(context.Context, *connect_go.Request[node.MoveRequest]) (*connect_go.Response[node.EmptyMessage], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.Move is not implemented"))
+func (UnimplementedDevicesServiceHandler) Move(context.Context, *connect.Request[node.MoveRequest]) (*connect.Response[node.EmptyMessage], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.Move is not implemented"))
 }
 
-func (UnimplementedDevicesServiceHandler) Joins(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[access.Nodes], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.Joins is not implemented"))
+func (UnimplementedDevicesServiceHandler) Joins(context.Context, *connect.Request[devices.Device]) (*connect.Response[access.Nodes], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.Joins is not implemented"))
 }
 
-func (UnimplementedDevicesServiceHandler) Join(context.Context, *connect_go.Request[node.JoinGeneralRequest]) (*connect_go.Response[access.Node], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.Join is not implemented"))
+func (UnimplementedDevicesServiceHandler) Join(context.Context, *connect.Request[node.JoinGeneralRequest]) (*connect.Response[access.Node], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.Join is not implemented"))
 }
 
-func (UnimplementedDevicesServiceHandler) GetByToken(context.Context, *connect_go.Request[devices.Device]) (*connect_go.Response[devices.Device], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.GetByToken is not implemented"))
+func (UnimplementedDevicesServiceHandler) GetByToken(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.GetByToken is not implemented"))
 }
 
-func (UnimplementedDevicesServiceHandler) GetByFingerprint(context.Context, *connect_go.Request[devices.GetByFingerprintRequest]) (*connect_go.Response[devices.Device], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.GetByFingerprint is not implemented"))
+func (UnimplementedDevicesServiceHandler) GetByFingerprint(context.Context, *connect.Request[devices.GetByFingerprintRequest]) (*connect.Response[devices.Device], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.GetByFingerprint is not implemented"))
 }
 
 // ShadowServiceClient is a client for the infinimesh.node.ShadowService service.
 type ShadowServiceClient interface {
-	Get(context.Context, *connect_go.Request[shadow.GetRequest]) (*connect_go.Response[shadow.GetResponse], error)
-	Patch(context.Context, *connect_go.Request[shadow.Shadow]) (*connect_go.Response[shadow.Shadow], error)
-	Remove(context.Context, *connect_go.Request[shadow.RemoveRequest]) (*connect_go.Response[shadow.Shadow], error)
-	StreamShadow(context.Context, *connect_go.Request[shadow.StreamShadowRequest]) (*connect_go.ServerStreamForClient[shadow.Shadow], error)
-	StreamShadowSync(context.Context, *connect_go.Request[shadow.StreamShadowRequest]) (*connect_go.ServerStreamForClient[shadow.Shadow], error)
+	Get(context.Context, *connect.Request[shadow.GetRequest]) (*connect.Response[shadow.GetResponse], error)
+	Patch(context.Context, *connect.Request[shadow.Shadow]) (*connect.Response[shadow.Shadow], error)
+	Remove(context.Context, *connect.Request[shadow.RemoveRequest]) (*connect.Response[shadow.Shadow], error)
+	StreamShadow(context.Context, *connect.Request[shadow.StreamShadowRequest]) (*connect.ServerStreamForClient[shadow.Shadow], error)
+	StreamShadowSync(context.Context, *connect.Request[shadow.StreamShadowRequest]) (*connect.ServerStreamForClient[shadow.Shadow], error)
 }
 
 // NewShadowServiceClient constructs a client for the infinimesh.node.ShadowService service. By
@@ -1192,30 +1284,30 @@ type ShadowServiceClient interface {
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewShadowServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) ShadowServiceClient {
+func NewShadowServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ShadowServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &shadowServiceClient{
-		get: connect_go.NewClient[shadow.GetRequest, shadow.GetResponse](
+		get: connect.NewClient[shadow.GetRequest, shadow.GetResponse](
 			httpClient,
 			baseURL+ShadowServiceGetProcedure,
 			opts...,
 		),
-		patch: connect_go.NewClient[shadow.Shadow, shadow.Shadow](
+		patch: connect.NewClient[shadow.Shadow, shadow.Shadow](
 			httpClient,
 			baseURL+ShadowServicePatchProcedure,
 			opts...,
 		),
-		remove: connect_go.NewClient[shadow.RemoveRequest, shadow.Shadow](
+		remove: connect.NewClient[shadow.RemoveRequest, shadow.Shadow](
 			httpClient,
 			baseURL+ShadowServiceRemoveProcedure,
 			opts...,
 		),
-		streamShadow: connect_go.NewClient[shadow.StreamShadowRequest, shadow.Shadow](
+		streamShadow: connect.NewClient[shadow.StreamShadowRequest, shadow.Shadow](
 			httpClient,
 			baseURL+ShadowServiceStreamShadowProcedure,
 			opts...,
 		),
-		streamShadowSync: connect_go.NewClient[shadow.StreamShadowRequest, shadow.Shadow](
+		streamShadowSync: connect.NewClient[shadow.StreamShadowRequest, shadow.Shadow](
 			httpClient,
 			baseURL+ShadowServiceStreamShadowSyncProcedure,
 			opts...,
@@ -1225,45 +1317,45 @@ func NewShadowServiceClient(httpClient connect_go.HTTPClient, baseURL string, op
 
 // shadowServiceClient implements ShadowServiceClient.
 type shadowServiceClient struct {
-	get              *connect_go.Client[shadow.GetRequest, shadow.GetResponse]
-	patch            *connect_go.Client[shadow.Shadow, shadow.Shadow]
-	remove           *connect_go.Client[shadow.RemoveRequest, shadow.Shadow]
-	streamShadow     *connect_go.Client[shadow.StreamShadowRequest, shadow.Shadow]
-	streamShadowSync *connect_go.Client[shadow.StreamShadowRequest, shadow.Shadow]
+	get              *connect.Client[shadow.GetRequest, shadow.GetResponse]
+	patch            *connect.Client[shadow.Shadow, shadow.Shadow]
+	remove           *connect.Client[shadow.RemoveRequest, shadow.Shadow]
+	streamShadow     *connect.Client[shadow.StreamShadowRequest, shadow.Shadow]
+	streamShadowSync *connect.Client[shadow.StreamShadowRequest, shadow.Shadow]
 }
 
 // Get calls infinimesh.node.ShadowService.Get.
-func (c *shadowServiceClient) Get(ctx context.Context, req *connect_go.Request[shadow.GetRequest]) (*connect_go.Response[shadow.GetResponse], error) {
+func (c *shadowServiceClient) Get(ctx context.Context, req *connect.Request[shadow.GetRequest]) (*connect.Response[shadow.GetResponse], error) {
 	return c.get.CallUnary(ctx, req)
 }
 
 // Patch calls infinimesh.node.ShadowService.Patch.
-func (c *shadowServiceClient) Patch(ctx context.Context, req *connect_go.Request[shadow.Shadow]) (*connect_go.Response[shadow.Shadow], error) {
+func (c *shadowServiceClient) Patch(ctx context.Context, req *connect.Request[shadow.Shadow]) (*connect.Response[shadow.Shadow], error) {
 	return c.patch.CallUnary(ctx, req)
 }
 
 // Remove calls infinimesh.node.ShadowService.Remove.
-func (c *shadowServiceClient) Remove(ctx context.Context, req *connect_go.Request[shadow.RemoveRequest]) (*connect_go.Response[shadow.Shadow], error) {
+func (c *shadowServiceClient) Remove(ctx context.Context, req *connect.Request[shadow.RemoveRequest]) (*connect.Response[shadow.Shadow], error) {
 	return c.remove.CallUnary(ctx, req)
 }
 
 // StreamShadow calls infinimesh.node.ShadowService.StreamShadow.
-func (c *shadowServiceClient) StreamShadow(ctx context.Context, req *connect_go.Request[shadow.StreamShadowRequest]) (*connect_go.ServerStreamForClient[shadow.Shadow], error) {
+func (c *shadowServiceClient) StreamShadow(ctx context.Context, req *connect.Request[shadow.StreamShadowRequest]) (*connect.ServerStreamForClient[shadow.Shadow], error) {
 	return c.streamShadow.CallServerStream(ctx, req)
 }
 
 // StreamShadowSync calls infinimesh.node.ShadowService.StreamShadowSync.
-func (c *shadowServiceClient) StreamShadowSync(ctx context.Context, req *connect_go.Request[shadow.StreamShadowRequest]) (*connect_go.ServerStreamForClient[shadow.Shadow], error) {
+func (c *shadowServiceClient) StreamShadowSync(ctx context.Context, req *connect.Request[shadow.StreamShadowRequest]) (*connect.ServerStreamForClient[shadow.Shadow], error) {
 	return c.streamShadowSync.CallServerStream(ctx, req)
 }
 
 // ShadowServiceHandler is an implementation of the infinimesh.node.ShadowService service.
 type ShadowServiceHandler interface {
-	Get(context.Context, *connect_go.Request[shadow.GetRequest]) (*connect_go.Response[shadow.GetResponse], error)
-	Patch(context.Context, *connect_go.Request[shadow.Shadow]) (*connect_go.Response[shadow.Shadow], error)
-	Remove(context.Context, *connect_go.Request[shadow.RemoveRequest]) (*connect_go.Response[shadow.Shadow], error)
-	StreamShadow(context.Context, *connect_go.Request[shadow.StreamShadowRequest], *connect_go.ServerStream[shadow.Shadow]) error
-	StreamShadowSync(context.Context, *connect_go.Request[shadow.StreamShadowRequest], *connect_go.ServerStream[shadow.Shadow]) error
+	Get(context.Context, *connect.Request[shadow.GetRequest]) (*connect.Response[shadow.GetResponse], error)
+	Patch(context.Context, *connect.Request[shadow.Shadow]) (*connect.Response[shadow.Shadow], error)
+	Remove(context.Context, *connect.Request[shadow.RemoveRequest]) (*connect.Response[shadow.Shadow], error)
+	StreamShadow(context.Context, *connect.Request[shadow.StreamShadowRequest], *connect.ServerStream[shadow.Shadow]) error
+	StreamShadowSync(context.Context, *connect.Request[shadow.StreamShadowRequest], *connect.ServerStream[shadow.Shadow]) error
 }
 
 // NewShadowServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -1271,62 +1363,76 @@ type ShadowServiceHandler interface {
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewShadowServiceHandler(svc ShadowServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	mux := http.NewServeMux()
-	mux.Handle(ShadowServiceGetProcedure, connect_go.NewUnaryHandler(
+func NewShadowServiceHandler(svc ShadowServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	shadowServiceGetHandler := connect.NewUnaryHandler(
 		ShadowServiceGetProcedure,
 		svc.Get,
 		opts...,
-	))
-	mux.Handle(ShadowServicePatchProcedure, connect_go.NewUnaryHandler(
+	)
+	shadowServicePatchHandler := connect.NewUnaryHandler(
 		ShadowServicePatchProcedure,
 		svc.Patch,
 		opts...,
-	))
-	mux.Handle(ShadowServiceRemoveProcedure, connect_go.NewUnaryHandler(
+	)
+	shadowServiceRemoveHandler := connect.NewUnaryHandler(
 		ShadowServiceRemoveProcedure,
 		svc.Remove,
 		opts...,
-	))
-	mux.Handle(ShadowServiceStreamShadowProcedure, connect_go.NewServerStreamHandler(
+	)
+	shadowServiceStreamShadowHandler := connect.NewServerStreamHandler(
 		ShadowServiceStreamShadowProcedure,
 		svc.StreamShadow,
 		opts...,
-	))
-	mux.Handle(ShadowServiceStreamShadowSyncProcedure, connect_go.NewServerStreamHandler(
+	)
+	shadowServiceStreamShadowSyncHandler := connect.NewServerStreamHandler(
 		ShadowServiceStreamShadowSyncProcedure,
 		svc.StreamShadowSync,
 		opts...,
-	))
-	return "/infinimesh.node.ShadowService/", mux
+	)
+	return "/infinimesh.node.ShadowService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case ShadowServiceGetProcedure:
+			shadowServiceGetHandler.ServeHTTP(w, r)
+		case ShadowServicePatchProcedure:
+			shadowServicePatchHandler.ServeHTTP(w, r)
+		case ShadowServiceRemoveProcedure:
+			shadowServiceRemoveHandler.ServeHTTP(w, r)
+		case ShadowServiceStreamShadowProcedure:
+			shadowServiceStreamShadowHandler.ServeHTTP(w, r)
+		case ShadowServiceStreamShadowSyncProcedure:
+			shadowServiceStreamShadowSyncHandler.ServeHTTP(w, r)
+		default:
+			http.NotFound(w, r)
+		}
+	})
 }
 
 // UnimplementedShadowServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedShadowServiceHandler struct{}
 
-func (UnimplementedShadowServiceHandler) Get(context.Context, *connect_go.Request[shadow.GetRequest]) (*connect_go.Response[shadow.GetResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.ShadowService.Get is not implemented"))
+func (UnimplementedShadowServiceHandler) Get(context.Context, *connect.Request[shadow.GetRequest]) (*connect.Response[shadow.GetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.ShadowService.Get is not implemented"))
 }
 
-func (UnimplementedShadowServiceHandler) Patch(context.Context, *connect_go.Request[shadow.Shadow]) (*connect_go.Response[shadow.Shadow], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.ShadowService.Patch is not implemented"))
+func (UnimplementedShadowServiceHandler) Patch(context.Context, *connect.Request[shadow.Shadow]) (*connect.Response[shadow.Shadow], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.ShadowService.Patch is not implemented"))
 }
 
-func (UnimplementedShadowServiceHandler) Remove(context.Context, *connect_go.Request[shadow.RemoveRequest]) (*connect_go.Response[shadow.Shadow], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.ShadowService.Remove is not implemented"))
+func (UnimplementedShadowServiceHandler) Remove(context.Context, *connect.Request[shadow.RemoveRequest]) (*connect.Response[shadow.Shadow], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.ShadowService.Remove is not implemented"))
 }
 
-func (UnimplementedShadowServiceHandler) StreamShadow(context.Context, *connect_go.Request[shadow.StreamShadowRequest], *connect_go.ServerStream[shadow.Shadow]) error {
-	return connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.ShadowService.StreamShadow is not implemented"))
+func (UnimplementedShadowServiceHandler) StreamShadow(context.Context, *connect.Request[shadow.StreamShadowRequest], *connect.ServerStream[shadow.Shadow]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.ShadowService.StreamShadow is not implemented"))
 }
 
-func (UnimplementedShadowServiceHandler) StreamShadowSync(context.Context, *connect_go.Request[shadow.StreamShadowRequest], *connect_go.ServerStream[shadow.Shadow]) error {
-	return connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.ShadowService.StreamShadowSync is not implemented"))
+func (UnimplementedShadowServiceHandler) StreamShadowSync(context.Context, *connect.Request[shadow.StreamShadowRequest], *connect.ServerStream[shadow.Shadow]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.ShadowService.StreamShadowSync is not implemented"))
 }
 
 // InternalServiceClient is a client for the infinimesh.node.InternalService service.
 type InternalServiceClient interface {
-	GetLDAPProviders(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[node.LDAPProviders], error)
+	GetLDAPProviders(context.Context, *connect.Request[node.EmptyMessage]) (*connect.Response[node.LDAPProviders], error)
 }
 
 // NewInternalServiceClient constructs a client for the infinimesh.node.InternalService service. By
@@ -1336,10 +1442,10 @@ type InternalServiceClient interface {
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewInternalServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) InternalServiceClient {
+func NewInternalServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) InternalServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &internalServiceClient{
-		getLDAPProviders: connect_go.NewClient[node.EmptyMessage, node.LDAPProviders](
+		getLDAPProviders: connect.NewClient[node.EmptyMessage, node.LDAPProviders](
 			httpClient,
 			baseURL+InternalServiceGetLDAPProvidersProcedure,
 			opts...,
@@ -1349,17 +1455,17 @@ func NewInternalServiceClient(httpClient connect_go.HTTPClient, baseURL string, 
 
 // internalServiceClient implements InternalServiceClient.
 type internalServiceClient struct {
-	getLDAPProviders *connect_go.Client[node.EmptyMessage, node.LDAPProviders]
+	getLDAPProviders *connect.Client[node.EmptyMessage, node.LDAPProviders]
 }
 
 // GetLDAPProviders calls infinimesh.node.InternalService.GetLDAPProviders.
-func (c *internalServiceClient) GetLDAPProviders(ctx context.Context, req *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[node.LDAPProviders], error) {
+func (c *internalServiceClient) GetLDAPProviders(ctx context.Context, req *connect.Request[node.EmptyMessage]) (*connect.Response[node.LDAPProviders], error) {
 	return c.getLDAPProviders.CallUnary(ctx, req)
 }
 
 // InternalServiceHandler is an implementation of the infinimesh.node.InternalService service.
 type InternalServiceHandler interface {
-	GetLDAPProviders(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[node.LDAPProviders], error)
+	GetLDAPProviders(context.Context, *connect.Request[node.EmptyMessage]) (*connect.Response[node.LDAPProviders], error)
 }
 
 // NewInternalServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -1367,19 +1473,25 @@ type InternalServiceHandler interface {
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewInternalServiceHandler(svc InternalServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	mux := http.NewServeMux()
-	mux.Handle(InternalServiceGetLDAPProvidersProcedure, connect_go.NewUnaryHandler(
+func NewInternalServiceHandler(svc InternalServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	internalServiceGetLDAPProvidersHandler := connect.NewUnaryHandler(
 		InternalServiceGetLDAPProvidersProcedure,
 		svc.GetLDAPProviders,
 		opts...,
-	))
-	return "/infinimesh.node.InternalService/", mux
+	)
+	return "/infinimesh.node.InternalService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case InternalServiceGetLDAPProvidersProcedure:
+			internalServiceGetLDAPProvidersHandler.ServeHTTP(w, r)
+		default:
+			http.NotFound(w, r)
+		}
+	})
 }
 
 // UnimplementedInternalServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedInternalServiceHandler struct{}
 
-func (UnimplementedInternalServiceHandler) GetLDAPProviders(context.Context, *connect_go.Request[node.EmptyMessage]) (*connect_go.Response[node.LDAPProviders], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.node.InternalService.GetLDAPProviders is not implemented"))
+func (UnimplementedInternalServiceHandler) GetLDAPProviders(context.Context, *connect.Request[node.EmptyMessage]) (*connect.Response[node.LDAPProviders], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.InternalService.GetLDAPProviders is not implemented"))
 }

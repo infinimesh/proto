@@ -20,9 +20,9 @@
 package pluginsconnect
 
 import (
+	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	connect_go "github.com/bufbuild/connect-go"
 	plugins "github.com/infinimesh/proto/plugins"
 	http "net/http"
 	strings "strings"
@@ -33,7 +33,7 @@ import (
 // generated with a version of connect newer than the one compiled into your binary. You can fix the
 // problem by either regenerating this code with an older version of connect or updating the connect
 // version compiled into your binary.
-const _ = connect_go.IsAtLeastVersion0_1_0
+const _ = connect.IsAtLeastVersion0_1_0
 
 const (
 	// PluginsServiceName is the fully-qualified name of the PluginsService service.
@@ -62,11 +62,11 @@ const (
 
 // PluginsServiceClient is a client for the infinimesh.plugins.PluginsService service.
 type PluginsServiceClient interface {
-	Get(context.Context, *connect_go.Request[plugins.Plugin]) (*connect_go.Response[plugins.Plugin], error)
-	List(context.Context, *connect_go.Request[plugins.ListRequest]) (*connect_go.Response[plugins.Plugins], error)
-	Create(context.Context, *connect_go.Request[plugins.Plugin]) (*connect_go.Response[plugins.Plugin], error)
-	Update(context.Context, *connect_go.Request[plugins.Plugin]) (*connect_go.Response[plugins.Plugin], error)
-	Delete(context.Context, *connect_go.Request[plugins.Plugin]) (*connect_go.Response[plugins.Plugin], error)
+	Get(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error)
+	List(context.Context, *connect.Request[plugins.ListRequest]) (*connect.Response[plugins.Plugins], error)
+	Create(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error)
+	Update(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error)
+	Delete(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error)
 }
 
 // NewPluginsServiceClient constructs a client for the infinimesh.plugins.PluginsService service. By
@@ -76,30 +76,30 @@ type PluginsServiceClient interface {
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewPluginsServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) PluginsServiceClient {
+func NewPluginsServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) PluginsServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &pluginsServiceClient{
-		get: connect_go.NewClient[plugins.Plugin, plugins.Plugin](
+		get: connect.NewClient[plugins.Plugin, plugins.Plugin](
 			httpClient,
 			baseURL+PluginsServiceGetProcedure,
 			opts...,
 		),
-		list: connect_go.NewClient[plugins.ListRequest, plugins.Plugins](
+		list: connect.NewClient[plugins.ListRequest, plugins.Plugins](
 			httpClient,
 			baseURL+PluginsServiceListProcedure,
 			opts...,
 		),
-		create: connect_go.NewClient[plugins.Plugin, plugins.Plugin](
+		create: connect.NewClient[plugins.Plugin, plugins.Plugin](
 			httpClient,
 			baseURL+PluginsServiceCreateProcedure,
 			opts...,
 		),
-		update: connect_go.NewClient[plugins.Plugin, plugins.Plugin](
+		update: connect.NewClient[plugins.Plugin, plugins.Plugin](
 			httpClient,
 			baseURL+PluginsServiceUpdateProcedure,
 			opts...,
 		),
-		delete: connect_go.NewClient[plugins.Plugin, plugins.Plugin](
+		delete: connect.NewClient[plugins.Plugin, plugins.Plugin](
 			httpClient,
 			baseURL+PluginsServiceDeleteProcedure,
 			opts...,
@@ -109,45 +109,45 @@ func NewPluginsServiceClient(httpClient connect_go.HTTPClient, baseURL string, o
 
 // pluginsServiceClient implements PluginsServiceClient.
 type pluginsServiceClient struct {
-	get    *connect_go.Client[plugins.Plugin, plugins.Plugin]
-	list   *connect_go.Client[plugins.ListRequest, plugins.Plugins]
-	create *connect_go.Client[plugins.Plugin, plugins.Plugin]
-	update *connect_go.Client[plugins.Plugin, plugins.Plugin]
-	delete *connect_go.Client[plugins.Plugin, plugins.Plugin]
+	get    *connect.Client[plugins.Plugin, plugins.Plugin]
+	list   *connect.Client[plugins.ListRequest, plugins.Plugins]
+	create *connect.Client[plugins.Plugin, plugins.Plugin]
+	update *connect.Client[plugins.Plugin, plugins.Plugin]
+	delete *connect.Client[plugins.Plugin, plugins.Plugin]
 }
 
 // Get calls infinimesh.plugins.PluginsService.Get.
-func (c *pluginsServiceClient) Get(ctx context.Context, req *connect_go.Request[plugins.Plugin]) (*connect_go.Response[plugins.Plugin], error) {
+func (c *pluginsServiceClient) Get(ctx context.Context, req *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error) {
 	return c.get.CallUnary(ctx, req)
 }
 
 // List calls infinimesh.plugins.PluginsService.List.
-func (c *pluginsServiceClient) List(ctx context.Context, req *connect_go.Request[plugins.ListRequest]) (*connect_go.Response[plugins.Plugins], error) {
+func (c *pluginsServiceClient) List(ctx context.Context, req *connect.Request[plugins.ListRequest]) (*connect.Response[plugins.Plugins], error) {
 	return c.list.CallUnary(ctx, req)
 }
 
 // Create calls infinimesh.plugins.PluginsService.Create.
-func (c *pluginsServiceClient) Create(ctx context.Context, req *connect_go.Request[plugins.Plugin]) (*connect_go.Response[plugins.Plugin], error) {
+func (c *pluginsServiceClient) Create(ctx context.Context, req *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error) {
 	return c.create.CallUnary(ctx, req)
 }
 
 // Update calls infinimesh.plugins.PluginsService.Update.
-func (c *pluginsServiceClient) Update(ctx context.Context, req *connect_go.Request[plugins.Plugin]) (*connect_go.Response[plugins.Plugin], error) {
+func (c *pluginsServiceClient) Update(ctx context.Context, req *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error) {
 	return c.update.CallUnary(ctx, req)
 }
 
 // Delete calls infinimesh.plugins.PluginsService.Delete.
-func (c *pluginsServiceClient) Delete(ctx context.Context, req *connect_go.Request[plugins.Plugin]) (*connect_go.Response[plugins.Plugin], error) {
+func (c *pluginsServiceClient) Delete(ctx context.Context, req *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error) {
 	return c.delete.CallUnary(ctx, req)
 }
 
 // PluginsServiceHandler is an implementation of the infinimesh.plugins.PluginsService service.
 type PluginsServiceHandler interface {
-	Get(context.Context, *connect_go.Request[plugins.Plugin]) (*connect_go.Response[plugins.Plugin], error)
-	List(context.Context, *connect_go.Request[plugins.ListRequest]) (*connect_go.Response[plugins.Plugins], error)
-	Create(context.Context, *connect_go.Request[plugins.Plugin]) (*connect_go.Response[plugins.Plugin], error)
-	Update(context.Context, *connect_go.Request[plugins.Plugin]) (*connect_go.Response[plugins.Plugin], error)
-	Delete(context.Context, *connect_go.Request[plugins.Plugin]) (*connect_go.Response[plugins.Plugin], error)
+	Get(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error)
+	List(context.Context, *connect.Request[plugins.ListRequest]) (*connect.Response[plugins.Plugins], error)
+	Create(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error)
+	Update(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error)
+	Delete(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error)
 }
 
 // NewPluginsServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -155,55 +155,69 @@ type PluginsServiceHandler interface {
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewPluginsServiceHandler(svc PluginsServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	mux := http.NewServeMux()
-	mux.Handle(PluginsServiceGetProcedure, connect_go.NewUnaryHandler(
+func NewPluginsServiceHandler(svc PluginsServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	pluginsServiceGetHandler := connect.NewUnaryHandler(
 		PluginsServiceGetProcedure,
 		svc.Get,
 		opts...,
-	))
-	mux.Handle(PluginsServiceListProcedure, connect_go.NewUnaryHandler(
+	)
+	pluginsServiceListHandler := connect.NewUnaryHandler(
 		PluginsServiceListProcedure,
 		svc.List,
 		opts...,
-	))
-	mux.Handle(PluginsServiceCreateProcedure, connect_go.NewUnaryHandler(
+	)
+	pluginsServiceCreateHandler := connect.NewUnaryHandler(
 		PluginsServiceCreateProcedure,
 		svc.Create,
 		opts...,
-	))
-	mux.Handle(PluginsServiceUpdateProcedure, connect_go.NewUnaryHandler(
+	)
+	pluginsServiceUpdateHandler := connect.NewUnaryHandler(
 		PluginsServiceUpdateProcedure,
 		svc.Update,
 		opts...,
-	))
-	mux.Handle(PluginsServiceDeleteProcedure, connect_go.NewUnaryHandler(
+	)
+	pluginsServiceDeleteHandler := connect.NewUnaryHandler(
 		PluginsServiceDeleteProcedure,
 		svc.Delete,
 		opts...,
-	))
-	return "/infinimesh.plugins.PluginsService/", mux
+	)
+	return "/infinimesh.plugins.PluginsService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case PluginsServiceGetProcedure:
+			pluginsServiceGetHandler.ServeHTTP(w, r)
+		case PluginsServiceListProcedure:
+			pluginsServiceListHandler.ServeHTTP(w, r)
+		case PluginsServiceCreateProcedure:
+			pluginsServiceCreateHandler.ServeHTTP(w, r)
+		case PluginsServiceUpdateProcedure:
+			pluginsServiceUpdateHandler.ServeHTTP(w, r)
+		case PluginsServiceDeleteProcedure:
+			pluginsServiceDeleteHandler.ServeHTTP(w, r)
+		default:
+			http.NotFound(w, r)
+		}
+	})
 }
 
 // UnimplementedPluginsServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedPluginsServiceHandler struct{}
 
-func (UnimplementedPluginsServiceHandler) Get(context.Context, *connect_go.Request[plugins.Plugin]) (*connect_go.Response[plugins.Plugin], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.plugins.PluginsService.Get is not implemented"))
+func (UnimplementedPluginsServiceHandler) Get(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.plugins.PluginsService.Get is not implemented"))
 }
 
-func (UnimplementedPluginsServiceHandler) List(context.Context, *connect_go.Request[plugins.ListRequest]) (*connect_go.Response[plugins.Plugins], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.plugins.PluginsService.List is not implemented"))
+func (UnimplementedPluginsServiceHandler) List(context.Context, *connect.Request[plugins.ListRequest]) (*connect.Response[plugins.Plugins], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.plugins.PluginsService.List is not implemented"))
 }
 
-func (UnimplementedPluginsServiceHandler) Create(context.Context, *connect_go.Request[plugins.Plugin]) (*connect_go.Response[plugins.Plugin], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.plugins.PluginsService.Create is not implemented"))
+func (UnimplementedPluginsServiceHandler) Create(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.plugins.PluginsService.Create is not implemented"))
 }
 
-func (UnimplementedPluginsServiceHandler) Update(context.Context, *connect_go.Request[plugins.Plugin]) (*connect_go.Response[plugins.Plugin], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.plugins.PluginsService.Update is not implemented"))
+func (UnimplementedPluginsServiceHandler) Update(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.plugins.PluginsService.Update is not implemented"))
 }
 
-func (UnimplementedPluginsServiceHandler) Delete(context.Context, *connect_go.Request[plugins.Plugin]) (*connect_go.Response[plugins.Plugin], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.plugins.PluginsService.Delete is not implemented"))
+func (UnimplementedPluginsServiceHandler) Delete(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.plugins.PluginsService.Delete is not implemented"))
 }

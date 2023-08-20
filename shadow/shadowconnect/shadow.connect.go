@@ -20,9 +20,9 @@
 package shadowconnect
 
 import (
+	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	connect_go "github.com/bufbuild/connect-go"
 	shadow "github.com/infinimesh/proto/shadow"
 	http "net/http"
 	strings "strings"
@@ -33,7 +33,7 @@ import (
 // generated with a version of connect newer than the one compiled into your binary. You can fix the
 // problem by either regenerating this code with an older version of connect or updating the connect
 // version compiled into your binary.
-const _ = connect_go.IsAtLeastVersion0_1_0
+const _ = connect.IsAtLeastVersion0_1_0
 
 const (
 	// ShadowServiceName is the fully-qualified name of the ShadowService service.
@@ -61,10 +61,10 @@ const (
 
 // ShadowServiceClient is a client for the infinimesh.shadow.ShadowService service.
 type ShadowServiceClient interface {
-	Get(context.Context, *connect_go.Request[shadow.GetRequest]) (*connect_go.Response[shadow.GetResponse], error)
-	Patch(context.Context, *connect_go.Request[shadow.Shadow]) (*connect_go.Response[shadow.Shadow], error)
-	Remove(context.Context, *connect_go.Request[shadow.RemoveRequest]) (*connect_go.Response[shadow.Shadow], error)
-	StreamShadow(context.Context, *connect_go.Request[shadow.StreamShadowRequest]) (*connect_go.ServerStreamForClient[shadow.Shadow], error)
+	Get(context.Context, *connect.Request[shadow.GetRequest]) (*connect.Response[shadow.GetResponse], error)
+	Patch(context.Context, *connect.Request[shadow.Shadow]) (*connect.Response[shadow.Shadow], error)
+	Remove(context.Context, *connect.Request[shadow.RemoveRequest]) (*connect.Response[shadow.Shadow], error)
+	StreamShadow(context.Context, *connect.Request[shadow.StreamShadowRequest]) (*connect.ServerStreamForClient[shadow.Shadow], error)
 }
 
 // NewShadowServiceClient constructs a client for the infinimesh.shadow.ShadowService service. By
@@ -74,25 +74,25 @@ type ShadowServiceClient interface {
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewShadowServiceClient(httpClient connect_go.HTTPClient, baseURL string, opts ...connect_go.ClientOption) ShadowServiceClient {
+func NewShadowServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ShadowServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &shadowServiceClient{
-		get: connect_go.NewClient[shadow.GetRequest, shadow.GetResponse](
+		get: connect.NewClient[shadow.GetRequest, shadow.GetResponse](
 			httpClient,
 			baseURL+ShadowServiceGetProcedure,
 			opts...,
 		),
-		patch: connect_go.NewClient[shadow.Shadow, shadow.Shadow](
+		patch: connect.NewClient[shadow.Shadow, shadow.Shadow](
 			httpClient,
 			baseURL+ShadowServicePatchProcedure,
 			opts...,
 		),
-		remove: connect_go.NewClient[shadow.RemoveRequest, shadow.Shadow](
+		remove: connect.NewClient[shadow.RemoveRequest, shadow.Shadow](
 			httpClient,
 			baseURL+ShadowServiceRemoveProcedure,
 			opts...,
 		),
-		streamShadow: connect_go.NewClient[shadow.StreamShadowRequest, shadow.Shadow](
+		streamShadow: connect.NewClient[shadow.StreamShadowRequest, shadow.Shadow](
 			httpClient,
 			baseURL+ShadowServiceStreamShadowProcedure,
 			opts...,
@@ -102,38 +102,38 @@ func NewShadowServiceClient(httpClient connect_go.HTTPClient, baseURL string, op
 
 // shadowServiceClient implements ShadowServiceClient.
 type shadowServiceClient struct {
-	get          *connect_go.Client[shadow.GetRequest, shadow.GetResponse]
-	patch        *connect_go.Client[shadow.Shadow, shadow.Shadow]
-	remove       *connect_go.Client[shadow.RemoveRequest, shadow.Shadow]
-	streamShadow *connect_go.Client[shadow.StreamShadowRequest, shadow.Shadow]
+	get          *connect.Client[shadow.GetRequest, shadow.GetResponse]
+	patch        *connect.Client[shadow.Shadow, shadow.Shadow]
+	remove       *connect.Client[shadow.RemoveRequest, shadow.Shadow]
+	streamShadow *connect.Client[shadow.StreamShadowRequest, shadow.Shadow]
 }
 
 // Get calls infinimesh.shadow.ShadowService.Get.
-func (c *shadowServiceClient) Get(ctx context.Context, req *connect_go.Request[shadow.GetRequest]) (*connect_go.Response[shadow.GetResponse], error) {
+func (c *shadowServiceClient) Get(ctx context.Context, req *connect.Request[shadow.GetRequest]) (*connect.Response[shadow.GetResponse], error) {
 	return c.get.CallUnary(ctx, req)
 }
 
 // Patch calls infinimesh.shadow.ShadowService.Patch.
-func (c *shadowServiceClient) Patch(ctx context.Context, req *connect_go.Request[shadow.Shadow]) (*connect_go.Response[shadow.Shadow], error) {
+func (c *shadowServiceClient) Patch(ctx context.Context, req *connect.Request[shadow.Shadow]) (*connect.Response[shadow.Shadow], error) {
 	return c.patch.CallUnary(ctx, req)
 }
 
 // Remove calls infinimesh.shadow.ShadowService.Remove.
-func (c *shadowServiceClient) Remove(ctx context.Context, req *connect_go.Request[shadow.RemoveRequest]) (*connect_go.Response[shadow.Shadow], error) {
+func (c *shadowServiceClient) Remove(ctx context.Context, req *connect.Request[shadow.RemoveRequest]) (*connect.Response[shadow.Shadow], error) {
 	return c.remove.CallUnary(ctx, req)
 }
 
 // StreamShadow calls infinimesh.shadow.ShadowService.StreamShadow.
-func (c *shadowServiceClient) StreamShadow(ctx context.Context, req *connect_go.Request[shadow.StreamShadowRequest]) (*connect_go.ServerStreamForClient[shadow.Shadow], error) {
+func (c *shadowServiceClient) StreamShadow(ctx context.Context, req *connect.Request[shadow.StreamShadowRequest]) (*connect.ServerStreamForClient[shadow.Shadow], error) {
 	return c.streamShadow.CallServerStream(ctx, req)
 }
 
 // ShadowServiceHandler is an implementation of the infinimesh.shadow.ShadowService service.
 type ShadowServiceHandler interface {
-	Get(context.Context, *connect_go.Request[shadow.GetRequest]) (*connect_go.Response[shadow.GetResponse], error)
-	Patch(context.Context, *connect_go.Request[shadow.Shadow]) (*connect_go.Response[shadow.Shadow], error)
-	Remove(context.Context, *connect_go.Request[shadow.RemoveRequest]) (*connect_go.Response[shadow.Shadow], error)
-	StreamShadow(context.Context, *connect_go.Request[shadow.StreamShadowRequest], *connect_go.ServerStream[shadow.Shadow]) error
+	Get(context.Context, *connect.Request[shadow.GetRequest]) (*connect.Response[shadow.GetResponse], error)
+	Patch(context.Context, *connect.Request[shadow.Shadow]) (*connect.Response[shadow.Shadow], error)
+	Remove(context.Context, *connect.Request[shadow.RemoveRequest]) (*connect.Response[shadow.Shadow], error)
+	StreamShadow(context.Context, *connect.Request[shadow.StreamShadowRequest], *connect.ServerStream[shadow.Shadow]) error
 }
 
 // NewShadowServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -141,46 +141,58 @@ type ShadowServiceHandler interface {
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewShadowServiceHandler(svc ShadowServiceHandler, opts ...connect_go.HandlerOption) (string, http.Handler) {
-	mux := http.NewServeMux()
-	mux.Handle(ShadowServiceGetProcedure, connect_go.NewUnaryHandler(
+func NewShadowServiceHandler(svc ShadowServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	shadowServiceGetHandler := connect.NewUnaryHandler(
 		ShadowServiceGetProcedure,
 		svc.Get,
 		opts...,
-	))
-	mux.Handle(ShadowServicePatchProcedure, connect_go.NewUnaryHandler(
+	)
+	shadowServicePatchHandler := connect.NewUnaryHandler(
 		ShadowServicePatchProcedure,
 		svc.Patch,
 		opts...,
-	))
-	mux.Handle(ShadowServiceRemoveProcedure, connect_go.NewUnaryHandler(
+	)
+	shadowServiceRemoveHandler := connect.NewUnaryHandler(
 		ShadowServiceRemoveProcedure,
 		svc.Remove,
 		opts...,
-	))
-	mux.Handle(ShadowServiceStreamShadowProcedure, connect_go.NewServerStreamHandler(
+	)
+	shadowServiceStreamShadowHandler := connect.NewServerStreamHandler(
 		ShadowServiceStreamShadowProcedure,
 		svc.StreamShadow,
 		opts...,
-	))
-	return "/infinimesh.shadow.ShadowService/", mux
+	)
+	return "/infinimesh.shadow.ShadowService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case ShadowServiceGetProcedure:
+			shadowServiceGetHandler.ServeHTTP(w, r)
+		case ShadowServicePatchProcedure:
+			shadowServicePatchHandler.ServeHTTP(w, r)
+		case ShadowServiceRemoveProcedure:
+			shadowServiceRemoveHandler.ServeHTTP(w, r)
+		case ShadowServiceStreamShadowProcedure:
+			shadowServiceStreamShadowHandler.ServeHTTP(w, r)
+		default:
+			http.NotFound(w, r)
+		}
+	})
 }
 
 // UnimplementedShadowServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedShadowServiceHandler struct{}
 
-func (UnimplementedShadowServiceHandler) Get(context.Context, *connect_go.Request[shadow.GetRequest]) (*connect_go.Response[shadow.GetResponse], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.shadow.ShadowService.Get is not implemented"))
+func (UnimplementedShadowServiceHandler) Get(context.Context, *connect.Request[shadow.GetRequest]) (*connect.Response[shadow.GetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.shadow.ShadowService.Get is not implemented"))
 }
 
-func (UnimplementedShadowServiceHandler) Patch(context.Context, *connect_go.Request[shadow.Shadow]) (*connect_go.Response[shadow.Shadow], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.shadow.ShadowService.Patch is not implemented"))
+func (UnimplementedShadowServiceHandler) Patch(context.Context, *connect.Request[shadow.Shadow]) (*connect.Response[shadow.Shadow], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.shadow.ShadowService.Patch is not implemented"))
 }
 
-func (UnimplementedShadowServiceHandler) Remove(context.Context, *connect_go.Request[shadow.RemoveRequest]) (*connect_go.Response[shadow.Shadow], error) {
-	return nil, connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.shadow.ShadowService.Remove is not implemented"))
+func (UnimplementedShadowServiceHandler) Remove(context.Context, *connect.Request[shadow.RemoveRequest]) (*connect.Response[shadow.Shadow], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.shadow.ShadowService.Remove is not implemented"))
 }
 
-func (UnimplementedShadowServiceHandler) StreamShadow(context.Context, *connect_go.Request[shadow.StreamShadowRequest], *connect_go.ServerStream[shadow.Shadow]) error {
-	return connect_go.NewError(connect_go.CodeUnimplemented, errors.New("infinimesh.shadow.ShadowService.StreamShadow is not implemented"))
+func (UnimplementedShadowServiceHandler) StreamShadow(context.Context, *connect.Request[shadow.StreamShadowRequest], *connect.ServerStream[shadow.Shadow]) error {
+	return connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.shadow.ShadowService.StreamShadow is not implemented"))
 }
