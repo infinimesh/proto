@@ -17,6 +17,7 @@ syntax = "proto3";
 package infinimesh.node.accounts;
 
 import "node/access/access.proto";
+import "google/protobuf/struct.proto";
 
 message Credentials {
   string type = 1;
@@ -30,6 +31,7 @@ message Account {
   bool enabled = 3;
   string default_namespace = 4;
   optional infinimesh.node.access.Access access = 5;
+  google.protobuf.Struct config = 6;
 }
 
 message CreateRequest {

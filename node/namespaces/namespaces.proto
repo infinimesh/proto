@@ -17,6 +17,7 @@ syntax = "proto3";
 package infinimesh.node.namespaces;
 
 import "node/access/access.proto";
+import "google/protobuf/struct.proto";
 
 message Plugin {
   string uuid = 1;
@@ -28,6 +29,7 @@ message Namespace {
   string title = 2;
   optional infinimesh.node.access.Access access = 3;
   optional Plugin plugin = 4;
+  google.protobuf.Struct config = 5;
 }
 
 message Namespaces { repeated Namespace namespaces = 1; }

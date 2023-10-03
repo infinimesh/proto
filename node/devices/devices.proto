@@ -17,6 +17,7 @@ syntax = "proto3";
 package infinimesh.node.devices;
 
 import "node/access/access.proto";
+import "google/protobuf/struct.proto";
 
 message Device {
   string uuid = 1;
@@ -27,6 +28,7 @@ message Device {
   bool basic_enabled = 6;
   string token = 7;
   optional infinimesh.node.access.Access access = 8;
+  google.protobuf.Struct config = 9;
 }
 
 message Certificate {
