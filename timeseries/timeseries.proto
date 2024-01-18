@@ -5,20 +5,26 @@ package infinimesh.timeseries;
 import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
 
+message DataPoint {
+  int64 ts = 1;
+  google.protobuf.Value value = 2;
+}
+
 message WriteRequest {
   string device = 1;
   string field = 2;
-  google.protobuf.Value value = 3;
+  DataPoint data_point = 3;
 }
 
 message WriteResponse {
   bool result = 1;
+  int64 ts = 2;
 }
 
 message WriteBulkRequest {
   string device = 1;
   string field = 2;
-  google.protobuf.ListValue values = 3;
+  repeated DataPoint data_points = 3;
 }
 
 message WriteBulkResponse {
@@ -32,11 +38,6 @@ message ReadRequest {
   optional int64 to = 4;
 }
 
-message DataPoint {
-  int64 ts = 1;
-  google.protobuf.Value value = 2;
-}
-
 message FieldInfo {
   string field = 1;
   repeated DataPoint data_points = 2;
@@ -47,10 +48,15 @@ message ReadResponse {
 }
 
 message Metric {
-  string device = 1;
+  string name = 1;
   uint32 data_points = 2;
   DataPoint earliest = 3;
   DataPoint latest = 4;
+}
+
+message DeviceMetric {
+  string device = 1;
+  repeated Metric metrics = 2;
 }
 
 message StatRequest {
@@ -59,8 +65,7 @@ message StatRequest {
 }
 
 message StatResponse {
-  uint32 devices = 1;
-  repeated Metric metrics = 2;
+  repeated DeviceMetric device_metrics = 1;
 }
 
 message FlushRequest {
@@ -73,31 +78,9 @@ message FlushResponse {
 }
 
 service TimeseriesService {
-  rpc Write (WriteRequest) returns (WriteResponse) {
-    option (google.api.http) = {
-      post: "/timeseries/{device}"
-      body: "*"
-    };
-  };
-  rpc WriteBulk (WriteRequest) returns (WriteBulkResponse) {
-    option (google.api.http) = {
-      post: "/timeseries/{device}/bulk"
-      body: "*"
-    };
-  };
-  rpc Read (ReadRequest) returns (ReadResponse) {
-    option (google.api.http) = {
-      get: "/timeseries/{device}"
-    };
-  };
-  rpc Stat (StatRequest) returns (StatResponse) {
-    option (google.api.http) = {
-      get: "/timeseries"
-    };
-  };
-  rpc Flush (FlushRequest) returns (FlushResponse) {
-    option (google.api.http) = {
-      delete: "/timeseries"
-    };
-  };
+  rpc Write (WriteRequest) returns (WriteResponse);
+  rpc WriteBulk (WriteRequest) returns (WriteBulkResponse);
+  rpc Read (ReadRequest) returns (ReadResponse);
+  rpc Stat (StatRequest) returns (StatResponse);
+  rpc Flush (FlushRequest) returns (FlushResponse);
 }
