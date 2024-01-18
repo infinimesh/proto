@@ -24,13 +24,13 @@
       "name": "DevicesService"
     },
     {
-      "name": "ShadowService"
-    },
-    {
       "name": "InternalService"
     },
     {
       "name": "PluginsService"
+    },
+    {
+      "name": "TimeseriesService"
     }
   ],
   "consumes": [
@@ -2833,6 +2833,216 @@
         ]
       }
     },
+    "/timeseries": {
+      "get": {
+        "operationId": "TimeseriesService_Stat",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/timeseriesStatResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "device",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TimeseriesService"
+        ]
+      },
+      "delete": {
+        "operationId": "TimeseriesService_Flush",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/timeseriesFlushResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "namespace",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "device",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "TimeseriesService"
+        ]
+      }
+    },
+    "/timeseries/{device}": {
+      "get": {
+        "operationId": "TimeseriesService_Read",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/timeseriesReadResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "device",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TimeseriesService"
+        ]
+      },
+      "post": {
+        "operationId": "TimeseriesService_Write",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/timeseriesWriteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "device",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "type": "string"
+                },
+                "value": {}
+              }
+            }
+          }
+        ],
+        "tags": [
+          "TimeseriesService"
+        ]
+      }
+    },
+    "/timeseries/{device}/bulk": {
+      "post": {
+        "operationId": "TimeseriesService_WriteBulk",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/timeseriesWriteBulkResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "device",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "type": "string"
+                },
+                "value": {}
+              }
+            }
+          }
+        ],
+        "tags": [
+          "TimeseriesService"
+        ]
+      }
+    },
     "/token": {
       "post": {
         "operationId": "AccountsService_Token",
@@ -3385,7 +3595,7 @@
         "NULL_VALUE"
       ],
       "default": "NULL_VALUE",
-      "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\n The JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
+      "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\nThe JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
     },
     "rpcStatus": {
       "type": "object",
@@ -3531,6 +3741,101 @@
         "CONNECTION"
       ],
       "default": "REPORTED"
+    },
+    "timeseriesDataPoint": {
+      "type": "object",
+      "properties": {
+        "ts": {
+          "type": "string",
+          "format": "int64"
+        },
+        "value": {}
+      }
+    },
+    "timeseriesFieldInfo": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "dataPoints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/timeseriesDataPoint"
+          }
+        }
+      }
+    },
+    "timeseriesFlushResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "boolean"
+        }
+      }
+    },
+    "timeseriesMetric": {
+      "type": "object",
+      "properties": {
+        "device": {
+          "type": "string"
+        },
+        "dataPoints": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "earliest": {
+          "$ref": "#/definitions/timeseriesDataPoint"
+        },
+        "latest": {
+          "$ref": "#/definitions/timeseriesDataPoint"
+        }
+      }
+    },
+    "timeseriesReadResponse": {
+      "type": "object",
+      "properties": {
+        "fieldsInfo": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/timeseriesFieldInfo"
+          }
+        }
+      }
+    },
+    "timeseriesStatResponse": {
+      "type": "object",
+      "properties": {
+        "devices": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "metrics": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/timeseriesMetric"
+          }
+        }
+      }
+    },
+    "timeseriesWriteBulkResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "boolean"
+        }
+      }
+    },
+    "timeseriesWriteResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "boolean"
+        }
+      }
     }
   }
 }

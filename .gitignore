@@ -354,3 +354,5 @@ node_modules/@bufbuild/protobuf/dist/types/private/reify-wkt.d.ts
 node_modules/@bufbuild/protobuf/dist/types/private/scalars.d.ts
 node_modules/@bufbuild/protobuf/dist/types/private/util-common.d.ts
 node_modules/@bufbuild/protobuf/dist/types/private/util.d.ts
+
+.idea
