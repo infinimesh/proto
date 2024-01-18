@@ -425,7 +425,7 @@ func (m *WriteBulkRequest) validate(all bool) error {
 
 	// no validation rules for Device
 
-	// no validation rules for Field
+	// no validation rules for Metric
 
 	for idx, item := range m.GetDataPoints() {
 		_, _ = idx, item
