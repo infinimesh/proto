@@ -12,6 +12,20 @@ At your project(where go.mod is):
 go get github.com/infinimesh/proto@latest
 ```
 
+### Node (Connect ES)
+
+> Install protoc before going further: [manual](https://grpc.io/docs/protoc-installation/)
+
+```shell
+# Clone repo
+git clone git@github.com:infinimesh/proto.git
+cd infinimesh-proto
+
+# Install generators
+npm i
+npx buf generate --template buf.gen.web.yaml
+```
+
 ## How to use
 
 ### Generating
