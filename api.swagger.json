@@ -24,13 +24,13 @@
       "name": "DevicesService"
     },
     {
-      "name": "ShadowService"
-    },
-    {
       "name": "InternalService"
     },
     {
       "name": "PluginsService"
+    },
+    {
+      "name": "TimeseriesService"
     }
   ],
   "consumes": [
@@ -3385,7 +3385,7 @@
         "NULL_VALUE"
       ],
       "default": "NULL_VALUE",
-      "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\n The JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
+      "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\nThe JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
     },
     "rpcStatus": {
       "type": "object",
@@ -3531,6 +3531,116 @@
         "CONNECTION"
       ],
       "default": "REPORTED"
+    },
+    "timeseriesDataPoint": {
+      "type": "object",
+      "properties": {
+        "ts": {
+          "type": "string",
+          "format": "int64"
+        },
+        "value": {}
+      }
+    },
+    "timeseriesDeviceMetric": {
+      "type": "object",
+      "properties": {
+        "device": {
+          "type": "string"
+        },
+        "metrics": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/timeseriesMetric"
+          }
+        }
+      }
+    },
+    "timeseriesFieldInfo": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "dataPoints": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/timeseriesDataPoint"
+          }
+        }
+      }
+    },
+    "timeseriesFlushResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "boolean"
+        }
+      }
+    },
+    "timeseriesMetric": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "dataPoints": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "earliest": {
+          "$ref": "#/definitions/timeseriesDataPoint"
+        },
+        "latest": {
+          "$ref": "#/definitions/timeseriesDataPoint"
+        }
+      }
+    },
+    "timeseriesReadResponse": {
+      "type": "object",
+      "properties": {
+        "fieldsInfo": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/timeseriesFieldInfo"
+          }
+        }
+      }
+    },
+    "timeseriesStatResponse": {
+      "type": "object",
+      "properties": {
+        "deviceMetrics": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/timeseriesDeviceMetric"
+          }
+        }
+      }
+    },
+    "timeseriesWriteBulkResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "boolean"
+        }
+      }
+    },
+    "timeseriesWriteResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "boolean"
+        },
+        "ts": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
     }
   }
 }
