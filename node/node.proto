@@ -29,7 +29,7 @@ message TokenRequest {
   optional string client = 5;
 }
 
-message TokenResponse { string token = 1; }
+message TokenResponse {string token = 1;}
 
 message SetCredentialsRequest {
   string uuid = 1; // Affected account
@@ -178,9 +178,9 @@ message JoinRequest {
 // Generally, adds link like | join ---access---> node |
 message JoinGeneralRequest {
   string node = 1; // Node to make Join to (can be interpret differenetly
-                   // depending on Controller)
+  // depending on Controller)
   string join = 2; // Node to make Join from (can be interpret differenetly
-                   // depending on Controller)
+  // depending on Controller)
   infinimesh.node.access.Level access = 3;
 }
 
@@ -249,9 +249,8 @@ service NamespacesService {
 import "node/devices/devices.proto";
 
 message DevicesTokenRequest {
-  repeated string devices = 1;
+  map<string, access.Level> devices = 1;
   int64 exp = 2;
-  bool post = 3;
 }
 
 service DevicesService {
@@ -380,7 +379,7 @@ message LDAPProviders {
       1; // map of keys to titles (titles can be empty)
 }
 
-service InternalService { // not revenue
+service InternalService {// not revenue
   rpc GetLDAPProviders(EmptyMessage) returns (LDAPProviders) {
     option (google.api.http) = {
       get : "/i/ldapp"
