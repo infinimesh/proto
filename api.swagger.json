@@ -3539,7 +3539,10 @@
           "type": "string",
           "format": "int64"
         },
-        "value": {}
+        "value": {
+          "type": "number",
+          "format": "double"
+        }
       }
     },
     "timeseriesDeviceMetric": {
