@@ -616,6 +616,109 @@ var _ interface {
 	ErrorName() string
 } = WriteBulkResponseValidationError{}
 
+// Validate checks the field values on Aggregation with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *Aggregation) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on Aggregation with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in AggregationMultiError, or
+// nil if none found.
+func (m *Aggregation) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *Aggregation) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Value
+
+	// no validation rules for AggregationType
+
+	if len(errors) > 0 {
+		return AggregationMultiError(errors)
+	}
+
+	return nil
+}
+
+// AggregationMultiError is an error wrapping multiple validation errors
+// returned by Aggregation.ValidateAll() if the designated constraints aren't met.
+type AggregationMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AggregationMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AggregationMultiError) AllErrors() []error { return m }
+
+// AggregationValidationError is the validation error returned by
+// Aggregation.Validate if the designated constraints aren't met.
+type AggregationValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AggregationValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AggregationValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AggregationValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AggregationValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AggregationValidationError) ErrorName() string { return "AggregationValidationError" }
+
+// Error satisfies the builtin error interface
+func (e AggregationValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAggregation.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AggregationValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AggregationValidationError{}
+
 // Validate checks the field values on ReadRequest with the rules defined in
 // the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -644,6 +747,39 @@ func (m *ReadRequest) validate(all bool) error {
 
 	if m.To != nil {
 		// no validation rules for To
+	}
+
+	if m.Aggregation != nil {
+
+		if all {
+			switch v := interface{}(m.GetAggregation()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ReadRequestValidationError{
+						field:  "Aggregation",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ReadRequestValidationError{
+						field:  "Aggregation",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetAggregation()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ReadRequestValidationError{
+					field:  "Aggregation",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	}
 
 	if len(errors) > 0 {

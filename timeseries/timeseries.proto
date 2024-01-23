@@ -28,11 +28,24 @@ message WriteBulkResponse {
   bool result = 1;
 }
 
+enum AggregationType{
+  SUM = 0;
+  MIN = 1;
+  MAX = 2;
+  AVG = 3;
+}
+
+message Aggregation{
+  int64 value = 1;
+  AggregationType aggregation_type = 2;
+}
+
 message ReadRequest {
   string device = 1;
   repeated string fields = 2;
   int64 from = 3;
   optional int64 to = 4;
+  optional Aggregation aggregation = 5;
 }
 
 message FieldInfo {
@@ -76,7 +89,7 @@ message FlushResponse {
 
 service TimeseriesService {
   rpc Write (WriteRequest) returns (WriteResponse);
-  rpc WriteBulk (WriteRequest) returns (WriteBulkResponse);
+  rpc WriteBulk (WriteBulkRequest) returns (WriteBulkResponse);
   rpc Read (ReadRequest) returns (ReadResponse);
   rpc Stat (StatRequest) returns (StatResponse);
   rpc Flush (FlushRequest) returns (FlushResponse);

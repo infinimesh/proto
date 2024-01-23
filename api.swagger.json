@@ -3529,6 +3529,28 @@
       ],
       "default": "REPORTED"
     },
+    "timeseriesAggregation": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string",
+          "format": "int64"
+        },
+        "aggregationType": {
+          "$ref": "#/definitions/timeseriesAggregationType"
+        }
+      }
+    },
+    "timeseriesAggregationType": {
+      "type": "string",
+      "enum": [
+        "SUM",
+        "MIN",
+        "MAX",
+        "AVG"
+      ],
+      "default": "SUM"
+    },
     "timeseriesDataPoint": {
       "type": "object",
       "properties": {

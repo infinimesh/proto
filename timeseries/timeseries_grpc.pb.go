@@ -31,7 +31,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TimeseriesServiceClient interface {
 	Write(ctx context.Context, in *WriteRequest, opts ...grpc.CallOption) (*WriteResponse, error)
-	WriteBulk(ctx context.Context, in *WriteRequest, opts ...grpc.CallOption) (*WriteBulkResponse, error)
+	WriteBulk(ctx context.Context, in *WriteBulkRequest, opts ...grpc.CallOption) (*WriteBulkResponse, error)
 	Read(ctx context.Context, in *ReadRequest, opts ...grpc.CallOption) (*ReadResponse, error)
 	Stat(ctx context.Context, in *StatRequest, opts ...grpc.CallOption) (*StatResponse, error)
 	Flush(ctx context.Context, in *FlushRequest, opts ...grpc.CallOption) (*FlushResponse, error)
@@ -54,7 +54,7 @@ func (c *timeseriesServiceClient) Write(ctx context.Context, in *WriteRequest, o
 	return out, nil
 }
 
-func (c *timeseriesServiceClient) WriteBulk(ctx context.Context, in *WriteRequest, opts ...grpc.CallOption) (*WriteBulkResponse, error) {
+func (c *timeseriesServiceClient) WriteBulk(ctx context.Context, in *WriteBulkRequest, opts ...grpc.CallOption) (*WriteBulkResponse, error) {
 	out := new(WriteBulkResponse)
 	err := c.cc.Invoke(ctx, TimeseriesService_WriteBulk_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -95,7 +95,7 @@ func (c *timeseriesServiceClient) Flush(ctx context.Context, in *FlushRequest, o
 // for forward compatibility
 type TimeseriesServiceServer interface {
 	Write(context.Context, *WriteRequest) (*WriteResponse, error)
-	WriteBulk(context.Context, *WriteRequest) (*WriteBulkResponse, error)
+	WriteBulk(context.Context, *WriteBulkRequest) (*WriteBulkResponse, error)
 	Read(context.Context, *ReadRequest) (*ReadResponse, error)
 	Stat(context.Context, *StatRequest) (*StatResponse, error)
 	Flush(context.Context, *FlushRequest) (*FlushResponse, error)
@@ -109,7 +109,7 @@ type UnimplementedTimeseriesServiceServer struct {
 func (UnimplementedTimeseriesServiceServer) Write(context.Context, *WriteRequest) (*WriteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Write not implemented")
 }
-func (UnimplementedTimeseriesServiceServer) WriteBulk(context.Context, *WriteRequest) (*WriteBulkResponse, error) {
+func (UnimplementedTimeseriesServiceServer) WriteBulk(context.Context, *WriteBulkRequest) (*WriteBulkResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method WriteBulk not implemented")
 }
 func (UnimplementedTimeseriesServiceServer) Read(context.Context, *ReadRequest) (*ReadResponse, error) {
@@ -153,7 +153,7 @@ func _TimeseriesService_Write_Handler(srv interface{}, ctx context.Context, dec 
 }
 
 func _TimeseriesService_WriteBulk_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(WriteRequest)
+	in := new(WriteBulkRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -165,7 +165,7 @@ func _TimeseriesService_WriteBulk_Handler(srv interface{}, ctx context.Context, 
 		FullMethod: TimeseriesService_WriteBulk_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TimeseriesServiceServer).WriteBulk(ctx, req.(*WriteRequest))
+		return srv.(TimeseriesServiceServer).WriteBulk(ctx, req.(*WriteBulkRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
