@@ -7,6 +7,81 @@ import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialM
 import { Message, proto3 } from "@bufbuild/protobuf";
 
 /**
+ * @generated from enum infinimesh.timeseries.AggregationType
+ */
+export declare enum AggregationType {
+  /**
+   * @generated from enum value: NONE = 0;
+   */
+  NONE = 0,
+
+  /**
+   * @generated from enum value: SUM = 1;
+   */
+  SUM = 1,
+
+  /**
+   * @generated from enum value: MIN = 2;
+   */
+  MIN = 2,
+
+  /**
+   * @generated from enum value: MAX = 3;
+   */
+  MAX = 3,
+
+  /**
+   * @generated from enum value: AVG = 4;
+   */
+  AVG = 4,
+
+  /**
+   * @generated from enum value: RANGE = 5;
+   */
+  RANGE = 5,
+
+  /**
+   * @generated from enum value: COUNT = 6;
+   */
+  COUNT = 6,
+
+  /**
+   * @generated from enum value: FIRST = 7;
+   */
+  FIRST = 7,
+
+  /**
+   * @generated from enum value: LAST = 8;
+   */
+  LAST = 8,
+
+  /**
+   * @generated from enum value: STD_P = 9;
+   */
+  STD_P = 9,
+
+  /**
+   * @generated from enum value: STD_S = 10;
+   */
+  STD_S = 10,
+
+  /**
+   * @generated from enum value: VAR_P = 11;
+   */
+  VAR_P = 11,
+
+  /**
+   * @generated from enum value: VAR_S = 12;
+   */
+  VAR_S = 12,
+
+  /**
+   * @generated from enum value: TWA = 13;
+   */
+  TWA = 13,
+}
+
+/**
  * @generated from message infinimesh.timeseries.DataPoint
  */
 export declare class DataPoint extends Message<DataPoint> {
@@ -157,6 +232,35 @@ export declare class WriteBulkResponse extends Message<WriteBulkResponse> {
 }
 
 /**
+ * @generated from message infinimesh.timeseries.Aggregation
+ */
+export declare class Aggregation extends Message<Aggregation> {
+  /**
+   * @generated from field: int64 value = 1;
+   */
+  value: bigint;
+
+  /**
+   * @generated from field: infinimesh.timeseries.AggregationType aggregation_type = 2;
+   */
+  aggregationType: AggregationType;
+
+  constructor(data?: PartialMessage<Aggregation>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "infinimesh.timeseries.Aggregation";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Aggregation;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Aggregation;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Aggregation;
+
+  static equals(a: Aggregation | PlainMessage<Aggregation> | undefined, b: Aggregation | PlainMessage<Aggregation> | undefined): boolean;
+}
+
+/**
  * @generated from message infinimesh.timeseries.ReadRequest
  */
 export declare class ReadRequest extends Message<ReadRequest> {
@@ -179,6 +283,11 @@ export declare class ReadRequest extends Message<ReadRequest> {
    * @generated from field: optional int64 to = 4;
    */
   to?: bigint;
+
+  /**
+   * @generated from field: optional infinimesh.timeseries.Aggregation aggregation = 5;
+   */
+  aggregation?: Aggregation;
 
   constructor(data?: PartialMessage<ReadRequest>);
 

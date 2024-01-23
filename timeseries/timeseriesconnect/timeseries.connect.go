@@ -59,7 +59,7 @@ var (
 // TimeseriesServiceClient is a client for the infinimesh.timeseries.TimeseriesService service.
 type TimeseriesServiceClient interface {
 	Write(context.Context, *connect.Request[timeseries.WriteRequest]) (*connect.Response[timeseries.WriteResponse], error)
-	WriteBulk(context.Context, *connect.Request[timeseries.WriteRequest]) (*connect.Response[timeseries.WriteBulkResponse], error)
+	WriteBulk(context.Context, *connect.Request[timeseries.WriteBulkRequest]) (*connect.Response[timeseries.WriteBulkResponse], error)
 	Read(context.Context, *connect.Request[timeseries.ReadRequest]) (*connect.Response[timeseries.ReadResponse], error)
 	Stat(context.Context, *connect.Request[timeseries.StatRequest]) (*connect.Response[timeseries.StatResponse], error)
 	Flush(context.Context, *connect.Request[timeseries.FlushRequest]) (*connect.Response[timeseries.FlushResponse], error)
@@ -81,7 +81,7 @@ func NewTimeseriesServiceClient(httpClient connect.HTTPClient, baseURL string, o
 			connect.WithSchema(timeseriesServiceWriteMethodDescriptor),
 			connect.WithClientOptions(opts...),
 		),
-		writeBulk: connect.NewClient[timeseries.WriteRequest, timeseries.WriteBulkResponse](
+		writeBulk: connect.NewClient[timeseries.WriteBulkRequest, timeseries.WriteBulkResponse](
 			httpClient,
 			baseURL+TimeseriesServiceWriteBulkProcedure,
 			connect.WithSchema(timeseriesServiceWriteBulkMethodDescriptor),
@@ -111,7 +111,7 @@ func NewTimeseriesServiceClient(httpClient connect.HTTPClient, baseURL string, o
 // timeseriesServiceClient implements TimeseriesServiceClient.
 type timeseriesServiceClient struct {
 	write     *connect.Client[timeseries.WriteRequest, timeseries.WriteResponse]
-	writeBulk *connect.Client[timeseries.WriteRequest, timeseries.WriteBulkResponse]
+	writeBulk *connect.Client[timeseries.WriteBulkRequest, timeseries.WriteBulkResponse]
 	read      *connect.Client[timeseries.ReadRequest, timeseries.ReadResponse]
 	stat      *connect.Client[timeseries.StatRequest, timeseries.StatResponse]
 	flush     *connect.Client[timeseries.FlushRequest, timeseries.FlushResponse]
@@ -123,7 +123,7 @@ func (c *timeseriesServiceClient) Write(ctx context.Context, req *connect.Reques
 }
 
 // WriteBulk calls infinimesh.timeseries.TimeseriesService.WriteBulk.
-func (c *timeseriesServiceClient) WriteBulk(ctx context.Context, req *connect.Request[timeseries.WriteRequest]) (*connect.Response[timeseries.WriteBulkResponse], error) {
+func (c *timeseriesServiceClient) WriteBulk(ctx context.Context, req *connect.Request[timeseries.WriteBulkRequest]) (*connect.Response[timeseries.WriteBulkResponse], error) {
 	return c.writeBulk.CallUnary(ctx, req)
 }
 
@@ -146,7 +146,7 @@ func (c *timeseriesServiceClient) Flush(ctx context.Context, req *connect.Reques
 // service.
 type TimeseriesServiceHandler interface {
 	Write(context.Context, *connect.Request[timeseries.WriteRequest]) (*connect.Response[timeseries.WriteResponse], error)
-	WriteBulk(context.Context, *connect.Request[timeseries.WriteRequest]) (*connect.Response[timeseries.WriteBulkResponse], error)
+	WriteBulk(context.Context, *connect.Request[timeseries.WriteBulkRequest]) (*connect.Response[timeseries.WriteBulkResponse], error)
 	Read(context.Context, *connect.Request[timeseries.ReadRequest]) (*connect.Response[timeseries.ReadResponse], error)
 	Stat(context.Context, *connect.Request[timeseries.StatRequest]) (*connect.Response[timeseries.StatResponse], error)
 	Flush(context.Context, *connect.Request[timeseries.FlushRequest]) (*connect.Response[timeseries.FlushResponse], error)
@@ -213,7 +213,7 @@ func (UnimplementedTimeseriesServiceHandler) Write(context.Context, *connect.Req
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.timeseries.TimeseriesService.Write is not implemented"))
 }
 
-func (UnimplementedTimeseriesServiceHandler) WriteBulk(context.Context, *connect.Request[timeseries.WriteRequest]) (*connect.Response[timeseries.WriteBulkResponse], error) {
+func (UnimplementedTimeseriesServiceHandler) WriteBulk(context.Context, *connect.Request[timeseries.WriteBulkRequest]) (*connect.Response[timeseries.WriteBulkResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.timeseries.TimeseriesService.WriteBulk is not implemented"))
 }
 
