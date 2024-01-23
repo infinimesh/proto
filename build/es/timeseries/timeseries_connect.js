@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { FlushRequest, FlushResponse, ReadRequest, ReadResponse, StatRequest, StatResponse, WriteBulkResponse, WriteRequest, WriteResponse } from "./timeseries_pb.js";
+import { FlushRequest, FlushResponse, ReadRequest, ReadResponse, StatRequest, StatResponse, WriteBulkRequest, WriteBulkResponse, WriteRequest, WriteResponse } from "./timeseries_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -26,7 +26,7 @@ export const TimeseriesService = {
      */
     writeBulk: {
       name: "WriteBulk",
-      I: WriteRequest,
+      I: WriteBulkRequest,
       O: WriteBulkResponse,
       kind: MethodKind.Unary,
     },

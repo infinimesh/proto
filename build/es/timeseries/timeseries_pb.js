@@ -6,6 +6,29 @@
 import { proto3 } from "@bufbuild/protobuf";
 
 /**
+ * @generated from enum infinimesh.timeseries.AggregationType
+ */
+export const AggregationType = proto3.makeEnum(
+  "infinimesh.timeseries.AggregationType",
+  [
+    {no: 0, name: "NONE"},
+    {no: 1, name: "SUM"},
+    {no: 2, name: "MIN"},
+    {no: 3, name: "MAX"},
+    {no: 4, name: "AVG"},
+    {no: 5, name: "RANGE"},
+    {no: 6, name: "COUNT"},
+    {no: 7, name: "FIRST"},
+    {no: 8, name: "LAST"},
+    {no: 9, name: "STD_P"},
+    {no: 10, name: "STD_S"},
+    {no: 11, name: "VAR_P"},
+    {no: 12, name: "VAR_S"},
+    {no: 13, name: "TWA"},
+  ],
+);
+
+/**
  * @generated from message infinimesh.timeseries.DataPoint
  */
 export const DataPoint = proto3.makeMessageType(
@@ -62,6 +85,17 @@ export const WriteBulkResponse = proto3.makeMessageType(
 );
 
 /**
+ * @generated from message infinimesh.timeseries.Aggregation
+ */
+export const Aggregation = proto3.makeMessageType(
+  "infinimesh.timeseries.Aggregation",
+  () => [
+    { no: 1, name: "value", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 2, name: "aggregation_type", kind: "enum", T: proto3.getEnumType(AggregationType) },
+  ],
+);
+
+/**
  * @generated from message infinimesh.timeseries.ReadRequest
  */
 export const ReadRequest = proto3.makeMessageType(
@@ -71,6 +105,7 @@ export const ReadRequest = proto3.makeMessageType(
     { no: 2, name: "fields", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 3, name: "from", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
     { no: 4, name: "to", kind: "scalar", T: 3 /* ScalarType.INT64 */, opt: true },
+    { no: 5, name: "aggregation", kind: "message", T: Aggregation, opt: true },
   ],
 );
 
