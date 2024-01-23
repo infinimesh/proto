@@ -166,9 +166,8 @@ export const JoinGeneralRequest = proto3.makeMessageType(
 export const DevicesTokenRequest = proto3.makeMessageType(
   "infinimesh.node.DevicesTokenRequest",
   () => [
-    { no: 1, name: "devices", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 1, name: "devices", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "enum", T: proto3.getEnumType(Level)} },
     { no: 2, name: "exp", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
-    { no: 3, name: "post", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
 );
 
