@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Value } from "@bufbuild/protobuf";
+import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
 
 /**
@@ -16,9 +16,9 @@ export declare class DataPoint extends Message<DataPoint> {
   ts: bigint;
 
   /**
-   * @generated from field: google.protobuf.Value value = 2;
+   * @generated from field: double value = 2;
    */
-  value?: Value;
+  value: number;
 
   constructor(data?: PartialMessage<DataPoint>);
 

@@ -23,7 +23,7 @@ cd infinimesh-proto
 
 # Install generators
 npm i
-npx buf generate --template buf.gen.web.yaml
+npm run generate
 ```
 
 ## How to use
