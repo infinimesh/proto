@@ -403,19 +403,14 @@ export declare class JoinGeneralRequest extends Message<JoinGeneralRequest> {
  */
 export declare class DevicesTokenRequest extends Message<DevicesTokenRequest> {
   /**
-   * @generated from field: repeated string devices = 1;
+   * @generated from field: map<string, infinimesh.node.access.Level> devices = 1;
    */
-  devices: string[];
+  devices: { [key: string]: Level };
 
   /**
    * @generated from field: int64 exp = 2;
    */
   exp: bigint;
-
-  /**
-   * @generated from field: bool post = 3;
-   */
-  post: boolean;
 
   constructor(data?: PartialMessage<DevicesTokenRequest>);
 
