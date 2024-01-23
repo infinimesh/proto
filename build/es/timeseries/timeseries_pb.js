@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { proto3, Value } from "@bufbuild/protobuf";
+import { proto3 } from "@bufbuild/protobuf";
 
 /**
  * @generated from message infinimesh.timeseries.DataPoint
@@ -12,7 +12,7 @@ export const DataPoint = proto3.makeMessageType(
   "infinimesh.timeseries.DataPoint",
   () => [
     { no: 1, name: "ts", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
-    { no: 2, name: "value", kind: "message", T: Value },
+    { no: 2, name: "value", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
   ],
 );
 
