@@ -1508,9 +1508,9 @@ func (m *DevicesTokenRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Exp
+	// no validation rules for Devices
 
-	// no validation rules for Post
+	// no validation rules for Exp
 
 	if len(errors) > 0 {
 		return DevicesTokenRequestMultiError(errors)

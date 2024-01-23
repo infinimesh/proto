@@ -3170,17 +3170,14 @@
       "type": "object",
       "properties": {
         "devices": {
-          "type": "array",
-          "items": {
-            "type": "string"
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/accessLevel"
           }
         },
         "exp": {
           "type": "string",
           "format": "int64"
-        },
-        "post": {
-          "type": "boolean"
         }
       }
     },
