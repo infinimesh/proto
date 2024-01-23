@@ -3544,6 +3544,7 @@
     "timeseriesAggregationType": {
       "type": "string",
       "enum": [
+        "NONE",
         "SUM",
         "MIN",
         "MAX",
@@ -3558,7 +3559,7 @@
         "VAR_S",
         "TWA"
       ],
-      "default": "SUM"
+      "default": "NONE"
     },
     "timeseriesDataPoint": {
       "type": "object",
