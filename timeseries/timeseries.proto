@@ -33,6 +33,15 @@ enum AggregationType{
   MIN = 1;
   MAX = 2;
   AVG = 3;
+  RANGE = 4;
+  COUNT = 5;
+  FIRST = 6;
+  LAST = 7;
+  STD_P = 8;
+  STD_S = 9;
+  VAR_P = 10;
+  VAR_S = 11;
+  TWA = 12;
 }
 
 message Aggregation{
