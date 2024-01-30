@@ -193,6 +193,8 @@ func (m *WriteRequest) validate(all bool) error {
 		}
 	}
 
+	// no validation rules for DuplicatePolicy
+
 	if len(errors) > 0 {
 		return WriteRequestMultiError(errors)
 	}
@@ -433,6 +435,8 @@ func (m *WriteBulkRequest) validate(all bool) error {
 		}
 
 	}
+
+	// no validation rules for DuplicatePolicy
 
 	if len(errors) > 0 {
 		return WriteBulkRequestMultiError(errors)

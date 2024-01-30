@@ -3624,6 +3624,14 @@
         }
       }
     },
+    "timeseriesDuplicatePolicy": {
+      "type": "string",
+      "enum": [
+        "USE_FIRST",
+        "USE_LAST"
+      ],
+      "default": "USE_FIRST"
+    },
     "timeseriesFlushResponse": {
       "type": "object",
       "properties": {
