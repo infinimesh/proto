@@ -17,6 +17,7 @@ syntax = "proto3";
 package infinimesh.node;
 
 import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
 import "node/accounts/accounts.proto";
 import "node/access/access.proto";
 
@@ -55,6 +56,13 @@ message EmptyMessage {}
 message QueryRequest {
   optional string namespace = 1;
   optional string account = 2;
+
+  optional int64 page = 3;
+  optional int64 limit = 4;
+  optional string field = 5;
+  optional string sort = 6;
+
+  map<string, google.protobuf.Value> filters = 7;
 }
 
 message MoveRequest {
