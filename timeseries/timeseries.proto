@@ -7,10 +7,16 @@ message DataPoint {
   double value = 2;
 }
 
+enum DuplicatePolicy {
+  USE_FIRST = 0;
+  USE_LAST = 1;
+}
+
 message WriteRequest {
   string device = 1;
-  string field = 2;
+  string metric = 2;
   DataPoint data_point = 3;
+  DuplicatePolicy duplicate_policy = 4;
 }
 
 message WriteResponse {
@@ -22,13 +28,14 @@ message WriteBulkRequest {
   string device = 1;
   string metric = 2;
   repeated DataPoint data_points = 3;
+  DuplicatePolicy duplicate_policy = 4;
 }
 
 message WriteBulkResponse {
   bool result = 1;
 }
 
-enum AggregationType{
+enum AggregationType {
   NONE = 0;
   SUM = 1;
   MIN = 2;
@@ -52,19 +59,19 @@ message Aggregation{
 
 message ReadRequest {
   string device = 1;
-  repeated string fields = 2;
+  repeated string metrics = 2;
   int64 from = 3;
   optional int64 to = 4;
   optional Aggregation aggregation = 5;
 }
 
-message FieldInfo {
-  string field = 1;
+message MetricInfo {
+  string metric = 1;
   repeated DataPoint data_points = 2;
 }
 
 message ReadResponse {
-  repeated FieldInfo fields_info = 1;
+  repeated MetricInfo metrics_info = 1;
 }
 
 message Metric {

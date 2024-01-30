@@ -18,7 +18,7 @@ import (
 // generated with a version of connect newer than the one compiled into your binary. You can fix the
 // problem by either regenerating this code with an older version of connect or updating the connect
 // version compiled into your binary.
-const _ = connect.IsAtLeastVersion1_13_0
+const _ = connect.IsAtLeastVersion0_1_0
 
 const (
 	// TimeseriesServiceName is the fully-qualified name of the TimeseriesService service.
@@ -46,16 +46,6 @@ const (
 	TimeseriesServiceFlushProcedure = "/infinimesh.timeseries.TimeseriesService/Flush"
 )
 
-// These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
-var (
-	timeseriesServiceServiceDescriptor         = timeseries.File_timeseries_timeseries_proto.Services().ByName("TimeseriesService")
-	timeseriesServiceWriteMethodDescriptor     = timeseriesServiceServiceDescriptor.Methods().ByName("Write")
-	timeseriesServiceWriteBulkMethodDescriptor = timeseriesServiceServiceDescriptor.Methods().ByName("WriteBulk")
-	timeseriesServiceReadMethodDescriptor      = timeseriesServiceServiceDescriptor.Methods().ByName("Read")
-	timeseriesServiceStatMethodDescriptor      = timeseriesServiceServiceDescriptor.Methods().ByName("Stat")
-	timeseriesServiceFlushMethodDescriptor     = timeseriesServiceServiceDescriptor.Methods().ByName("Flush")
-)
-
 // TimeseriesServiceClient is a client for the infinimesh.timeseries.TimeseriesService service.
 type TimeseriesServiceClient interface {
 	Write(context.Context, *connect.Request[timeseries.WriteRequest]) (*connect.Response[timeseries.WriteResponse], error)
@@ -78,32 +68,27 @@ func NewTimeseriesServiceClient(httpClient connect.HTTPClient, baseURL string, o
 		write: connect.NewClient[timeseries.WriteRequest, timeseries.WriteResponse](
 			httpClient,
 			baseURL+TimeseriesServiceWriteProcedure,
-			connect.WithSchema(timeseriesServiceWriteMethodDescriptor),
-			connect.WithClientOptions(opts...),
+			opts...,
 		),
 		writeBulk: connect.NewClient[timeseries.WriteBulkRequest, timeseries.WriteBulkResponse](
 			httpClient,
 			baseURL+TimeseriesServiceWriteBulkProcedure,
-			connect.WithSchema(timeseriesServiceWriteBulkMethodDescriptor),
-			connect.WithClientOptions(opts...),
+			opts...,
 		),
 		read: connect.NewClient[timeseries.ReadRequest, timeseries.ReadResponse](
 			httpClient,
 			baseURL+TimeseriesServiceReadProcedure,
-			connect.WithSchema(timeseriesServiceReadMethodDescriptor),
-			connect.WithClientOptions(opts...),
+			opts...,
 		),
 		stat: connect.NewClient[timeseries.StatRequest, timeseries.StatResponse](
 			httpClient,
 			baseURL+TimeseriesServiceStatProcedure,
-			connect.WithSchema(timeseriesServiceStatMethodDescriptor),
-			connect.WithClientOptions(opts...),
+			opts...,
 		),
 		flush: connect.NewClient[timeseries.FlushRequest, timeseries.FlushResponse](
 			httpClient,
 			baseURL+TimeseriesServiceFlushProcedure,
-			connect.WithSchema(timeseriesServiceFlushMethodDescriptor),
-			connect.WithClientOptions(opts...),
+			opts...,
 		),
 	}
 }
@@ -161,32 +146,27 @@ func NewTimeseriesServiceHandler(svc TimeseriesServiceHandler, opts ...connect.H
 	timeseriesServiceWriteHandler := connect.NewUnaryHandler(
 		TimeseriesServiceWriteProcedure,
 		svc.Write,
-		connect.WithSchema(timeseriesServiceWriteMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
+		opts...,
 	)
 	timeseriesServiceWriteBulkHandler := connect.NewUnaryHandler(
 		TimeseriesServiceWriteBulkProcedure,
 		svc.WriteBulk,
-		connect.WithSchema(timeseriesServiceWriteBulkMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
+		opts...,
 	)
 	timeseriesServiceReadHandler := connect.NewUnaryHandler(
 		TimeseriesServiceReadProcedure,
 		svc.Read,
-		connect.WithSchema(timeseriesServiceReadMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
+		opts...,
 	)
 	timeseriesServiceStatHandler := connect.NewUnaryHandler(
 		TimeseriesServiceStatProcedure,
 		svc.Stat,
-		connect.WithSchema(timeseriesServiceStatMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
+		opts...,
 	)
 	timeseriesServiceFlushHandler := connect.NewUnaryHandler(
 		TimeseriesServiceFlushProcedure,
 		svc.Flush,
-		connect.WithSchema(timeseriesServiceFlushMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
+		opts...,
 	)
 	return "/infinimesh.timeseries.TimeseriesService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {

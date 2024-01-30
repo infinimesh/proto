@@ -24,6 +24,9 @@
       "name": "DevicesService"
     },
     {
+      "name": "ShadowService"
+    },
+    {
       "name": "InternalService"
     },
     {
@@ -3621,20 +3624,13 @@
         }
       }
     },
-    "timeseriesFieldInfo": {
-      "type": "object",
-      "properties": {
-        "field": {
-          "type": "string"
-        },
-        "dataPoints": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/timeseriesDataPoint"
-          }
-        }
-      }
+    "timeseriesDuplicatePolicy": {
+      "type": "string",
+      "enum": [
+        "USE_FIRST",
+        "USE_LAST"
+      ],
+      "default": "USE_FIRST"
     },
     "timeseriesFlushResponse": {
       "type": "object",
@@ -3662,14 +3658,29 @@
         }
       }
     },
-    "timeseriesReadResponse": {
+    "timeseriesMetricInfo": {
       "type": "object",
       "properties": {
-        "fieldsInfo": {
+        "metric": {
+          "type": "string"
+        },
+        "dataPoints": {
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/timeseriesFieldInfo"
+            "$ref": "#/definitions/timeseriesDataPoint"
+          }
+        }
+      }
+    },
+    "timeseriesReadResponse": {
+      "type": "object",
+      "properties": {
+        "metricsInfo": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/timeseriesMetricInfo"
           }
         }
       }
