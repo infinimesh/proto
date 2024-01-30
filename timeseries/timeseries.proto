@@ -9,7 +9,7 @@ message DataPoint {
 
 message WriteRequest {
   string device = 1;
-  string field = 2;
+  string metric = 2;
   DataPoint data_point = 3;
 }
 
@@ -52,19 +52,19 @@ message Aggregation{
 
 message ReadRequest {
   string device = 1;
-  repeated string fields = 2;
+  repeated string metrics = 2;
   int64 from = 3;
   optional int64 to = 4;
   optional Aggregation aggregation = 5;
 }
 
-message FieldInfo {
-  string field = 1;
+message MetricInfo {
+  string metric = 1;
   repeated DataPoint data_points = 2;
 }
 
 message ReadResponse {
-  repeated FieldInfo fields_info = 1;
+  repeated MetricInfo metrics_info = 1;
 }
 
 message Metric {

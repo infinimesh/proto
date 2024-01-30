@@ -33,7 +33,7 @@ import (
 // generated with a version of connect newer than the one compiled into your binary. You can fix the
 // problem by either regenerating this code with an older version of connect or updating the connect
 // version compiled into your binary.
-const _ = connect.IsAtLeastVersion1_13_0
+const _ = connect.IsAtLeastVersion0_1_0
 
 const (
 	// ShadowServiceName is the fully-qualified name of the ShadowService service.
@@ -59,15 +59,6 @@ const (
 	ShadowServiceStreamShadowProcedure = "/infinimesh.shadow.ShadowService/StreamShadow"
 )
 
-// These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
-var (
-	shadowServiceServiceDescriptor            = shadow.File_shadow_shadow_proto.Services().ByName("ShadowService")
-	shadowServiceGetMethodDescriptor          = shadowServiceServiceDescriptor.Methods().ByName("Get")
-	shadowServicePatchMethodDescriptor        = shadowServiceServiceDescriptor.Methods().ByName("Patch")
-	shadowServiceRemoveMethodDescriptor       = shadowServiceServiceDescriptor.Methods().ByName("Remove")
-	shadowServiceStreamShadowMethodDescriptor = shadowServiceServiceDescriptor.Methods().ByName("StreamShadow")
-)
-
 // ShadowServiceClient is a client for the infinimesh.shadow.ShadowService service.
 type ShadowServiceClient interface {
 	Get(context.Context, *connect.Request[shadow.GetRequest]) (*connect.Response[shadow.GetResponse], error)
@@ -89,26 +80,22 @@ func NewShadowServiceClient(httpClient connect.HTTPClient, baseURL string, opts 
 		get: connect.NewClient[shadow.GetRequest, shadow.GetResponse](
 			httpClient,
 			baseURL+ShadowServiceGetProcedure,
-			connect.WithSchema(shadowServiceGetMethodDescriptor),
-			connect.WithClientOptions(opts...),
+			opts...,
 		),
 		patch: connect.NewClient[shadow.Shadow, shadow.Shadow](
 			httpClient,
 			baseURL+ShadowServicePatchProcedure,
-			connect.WithSchema(shadowServicePatchMethodDescriptor),
-			connect.WithClientOptions(opts...),
+			opts...,
 		),
 		remove: connect.NewClient[shadow.RemoveRequest, shadow.Shadow](
 			httpClient,
 			baseURL+ShadowServiceRemoveProcedure,
-			connect.WithSchema(shadowServiceRemoveMethodDescriptor),
-			connect.WithClientOptions(opts...),
+			opts...,
 		),
 		streamShadow: connect.NewClient[shadow.StreamShadowRequest, shadow.Shadow](
 			httpClient,
 			baseURL+ShadowServiceStreamShadowProcedure,
-			connect.WithSchema(shadowServiceStreamShadowMethodDescriptor),
-			connect.WithClientOptions(opts...),
+			opts...,
 		),
 	}
 }
@@ -158,26 +145,22 @@ func NewShadowServiceHandler(svc ShadowServiceHandler, opts ...connect.HandlerOp
 	shadowServiceGetHandler := connect.NewUnaryHandler(
 		ShadowServiceGetProcedure,
 		svc.Get,
-		connect.WithSchema(shadowServiceGetMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
+		opts...,
 	)
 	shadowServicePatchHandler := connect.NewUnaryHandler(
 		ShadowServicePatchProcedure,
 		svc.Patch,
-		connect.WithSchema(shadowServicePatchMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
+		opts...,
 	)
 	shadowServiceRemoveHandler := connect.NewUnaryHandler(
 		ShadowServiceRemoveProcedure,
 		svc.Remove,
-		connect.WithSchema(shadowServiceRemoveMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
+		opts...,
 	)
 	shadowServiceStreamShadowHandler := connect.NewServerStreamHandler(
 		ShadowServiceStreamShadowProcedure,
 		svc.StreamShadow,
-		connect.WithSchema(shadowServiceStreamShadowMethodDescriptor),
-		connect.WithHandlerOptions(opts...),
+		opts...,
 	)
 	return "/infinimesh.shadow.ShadowService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
