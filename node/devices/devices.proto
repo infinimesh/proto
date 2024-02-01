@@ -37,7 +37,10 @@ message Certificate {
   bytes fingerprint = 3;
 }
 
-message Devices { repeated Device devices = 1; }
+message Devices { 
+  repeated Device devices = 1;
+  int totalPages = 2;
+}
 
 message HandsfreeCreate {
   string code = 1;
