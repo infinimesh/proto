@@ -217,7 +217,7 @@ type Devices struct {
 	unknownFields protoimpl.UnknownFields
 
 	Devices		[]*Device	`protobuf:"bytes,1,rep,name=devices,proto3" json:"devices,omitempty"`
-	TotalPages	int		`protobuf:"bytes,2,opt,name=totalPages,proto3" json:"totalPages,omitempty"`
+	TotalPages     *int64           `protobuf:"varint,2,opt,name=limit,proto3" json:"totalPages,omitempty"`
 }
 
 func (x *Devices) Reset() {
@@ -259,9 +259,9 @@ func (x *Devices) GetDevices() []*Device {
 	return nil
 }
 
-func (x *Devices) GetTotalPages() int {
+func (x *Devices) GetTotalPages() int64 {
 	if x != nil {
-		return x.TotalPages
+		return *x.TotalPages
 	}
 	return 0
 }
