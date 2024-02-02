@@ -327,6 +327,15 @@ export declare const DevicesService: {
       readonly kind: MethodKind.Unary,
     },
     /**
+     * @generated from rpc infinimesh.node.DevicesService.PatchConfig
+     */
+    readonly patchConfig: {
+      readonly name: "PatchConfig",
+      readonly I: typeof Device,
+      readonly O: typeof Device,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
      * @generated from rpc infinimesh.node.DevicesService.Delete
      */
     readonly delete: {
