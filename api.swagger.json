@@ -1298,6 +1298,44 @@
         ]
       }
     },
+    "/devices/{uuid}/config": {
+      "patch": {
+        "operationId": "DevicesService_PatchConfig",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/devicesDevice"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DevicesServicePatchConfigBody"
+            }
+          }
+        ],
+        "tags": [
+          "DevicesService"
+        ]
+      }
+    },
     "/devices/{uuid}/joins": {
       "get": {
         "summary": "Accounts and Namesapces having access to this Device",
@@ -1451,44 +1489,6 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/nodeDevicesServiceMoveBody"
-            }
-          }
-        ],
-        "tags": [
-          "DevicesService"
-        ]
-      }
-    },
-    "/devices/{uuid}/patch_config": {
-      "patch": {
-        "operationId": "DevicesService_PatchConfig",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/devicesDevice"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "uuid",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/DevicesServicePatchConfigBody"
             }
           }
         ],
@@ -2985,6 +2985,10 @@
             "type": "object",
             "$ref": "#/definitions/devicesDevice"
           }
+        },
+        "total": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
