@@ -39,7 +39,7 @@ message Certificate {
 
 message Devices { 
   repeated Device devices = 1;
-  int64 totalPages = 2;
+  int64 total = 2;
 }
 
 message HandsfreeCreate {
