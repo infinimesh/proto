@@ -327,6 +327,15 @@ export const DevicesService = {
       kind: MethodKind.Unary,
     },
     /**
+     * @generated from rpc infinimesh.node.DevicesService.PatchConfig
+     */
+    patchConfig: {
+      name: "PatchConfig",
+      I: Device,
+      O: Device,
+      kind: MethodKind.Unary,
+    },
+    /**
      * @generated from rpc infinimesh.node.DevicesService.Delete
      */
     delete: {
