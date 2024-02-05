@@ -130,9 +130,9 @@ export declare class Devices extends Message<Devices> {
   devices: Device[];
 
   /**
-   * @generated from field: int64 totalPages = 2;
+   * @generated from field: int64 total = 2;
    */
-  totalPages: bigint;
+  total: bigint;
 
   constructor(data?: PartialMessage<Devices>);
 

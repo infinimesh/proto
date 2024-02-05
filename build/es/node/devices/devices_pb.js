@@ -58,7 +58,7 @@ export const Devices = proto3.makeMessageType(
   "infinimesh.node.devices.Devices",
   () => [
     { no: 1, name: "devices", kind: "message", T: Device, repeated: true },
-    { no: 2, name: "totalPages", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+    { no: 2, name: "total", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
   ],
 );
 
