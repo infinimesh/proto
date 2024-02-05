@@ -216,7 +216,8 @@ type Devices struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Devices []*Device `protobuf:"bytes,1,rep,name=devices,proto3" json:"devices,omitempty"`
+	Devices	[]*Device	`protobuf:"bytes,1,rep,name=devices,proto3" json:"devices,omitempty"`
+	Total	*int64		`protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
 }
 
 func (x *Devices) Reset() {
@@ -256,6 +257,13 @@ func (x *Devices) GetDevices() []*Device {
 		return x.Devices
 	}
 	return nil
+}
+
+func (x *Devices) GetTotal() int64 {
+	if x != nil {
+		return *x.Total
+	}
+	return 0
 }
 
 type HandsfreeCreate struct {

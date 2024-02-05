@@ -129,6 +129,11 @@ export declare class Devices extends Message<Devices> {
    */
   devices: Device[];
 
+  /**
+   * @generated from field: int64 total = 2;
+   */
+  total: bigint;
+
   constructor(data?: PartialMessage<Devices>);
 
   static readonly runtime: typeof proto3;
