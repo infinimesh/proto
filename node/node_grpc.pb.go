@@ -1134,6 +1134,7 @@ const (
 	DevicesService_List_FullMethodName             = "/infinimesh.node.DevicesService/List"
 	DevicesService_Create_FullMethodName           = "/infinimesh.node.DevicesService/Create"
 	DevicesService_Update_FullMethodName           = "/infinimesh.node.DevicesService/Update"
+	DevicesService_PatchConfig_FullMethodName      = "/infinimesh.node.DevicesService/PatchConfig"
 	DevicesService_Delete_FullMethodName           = "/infinimesh.node.DevicesService/Delete"
 	DevicesService_Toggle_FullMethodName           = "/infinimesh.node.DevicesService/Toggle"
 	DevicesService_ToggleBasic_FullMethodName      = "/infinimesh.node.DevicesService/ToggleBasic"
@@ -1153,6 +1154,7 @@ type DevicesServiceClient interface {
 	List(ctx context.Context, in *QueryRequest, opts ...grpc.CallOption) (*devices.Devices, error)
 	Create(ctx context.Context, in *devices.CreateRequest, opts ...grpc.CallOption) (*devices.CreateResponse, error)
 	Update(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*devices.Device, error)
+	PatchConfig(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*devices.Device, error)
 	Delete(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*DeleteResponse, error)
 	Toggle(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*devices.Device, error)
 	ToggleBasic(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*devices.Device, error)
@@ -1207,6 +1209,15 @@ func (c *devicesServiceClient) Create(ctx context.Context, in *devices.CreateReq
 func (c *devicesServiceClient) Update(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*devices.Device, error) {
 	out := new(devices.Device)
 	err := c.cc.Invoke(ctx, DevicesService_Update_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *devicesServiceClient) PatchConfig(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*devices.Device, error) {
+	out := new(devices.Device)
+	err := c.cc.Invoke(ctx, DevicesService_PatchConfig_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1302,6 +1313,7 @@ type DevicesServiceServer interface {
 	List(context.Context, *QueryRequest) (*devices.Devices, error)
 	Create(context.Context, *devices.CreateRequest) (*devices.CreateResponse, error)
 	Update(context.Context, *devices.Device) (*devices.Device, error)
+	PatchConfig(context.Context, *devices.Device) (*devices.Device, error)
 	Delete(context.Context, *devices.Device) (*DeleteResponse, error)
 	Toggle(context.Context, *devices.Device) (*devices.Device, error)
 	ToggleBasic(context.Context, *devices.Device) (*devices.Device, error)
@@ -1334,6 +1346,9 @@ func (UnimplementedDevicesServiceServer) Create(context.Context, *devices.Create
 }
 func (UnimplementedDevicesServiceServer) Update(context.Context, *devices.Device) (*devices.Device, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedDevicesServiceServer) PatchConfig(context.Context, *devices.Device) (*devices.Device, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PatchConfig not implemented")
 }
 func (UnimplementedDevicesServiceServer) Delete(context.Context, *devices.Device) (*DeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
@@ -1443,6 +1458,24 @@ func _DevicesService_Update_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DevicesServiceServer).Update(ctx, req.(*devices.Device))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DevicesService_PatchConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(devices.Device)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DevicesServiceServer).PatchConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DevicesService_PatchConfig_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DevicesServiceServer).PatchConfig(ctx, req.(*devices.Device))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1631,6 +1664,10 @@ var DevicesService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Update",
 			Handler:    _DevicesService_Update_Handler,
+		},
+		{
+			MethodName: "PatchConfig",
+			Handler:    _DevicesService_PatchConfig_Handler,
 		},
 		{
 			MethodName: "Delete",

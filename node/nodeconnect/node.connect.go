@@ -39,7 +39,7 @@ import (
 // generated with a version of connect newer than the one compiled into your binary. You can fix the
 // problem by either regenerating this code with an older version of connect or updating the connect
 // version compiled into your binary.
-const _ = connect.IsAtLeastVersion0_1_0
+const _ = connect.IsAtLeastVersion1_13_0
 
 const (
 	// AccountsServiceName is the fully-qualified name of the AccountsService service.
@@ -133,6 +133,9 @@ const (
 	DevicesServiceCreateProcedure = "/infinimesh.node.DevicesService/Create"
 	// DevicesServiceUpdateProcedure is the fully-qualified name of the DevicesService's Update RPC.
 	DevicesServiceUpdateProcedure = "/infinimesh.node.DevicesService/Update"
+	// DevicesServicePatchConfigProcedure is the fully-qualified name of the DevicesService's
+	// PatchConfig RPC.
+	DevicesServicePatchConfigProcedure = "/infinimesh.node.DevicesService/PatchConfig"
 	// DevicesServiceDeleteProcedure is the fully-qualified name of the DevicesService's Delete RPC.
 	DevicesServiceDeleteProcedure = "/infinimesh.node.DevicesService/Delete"
 	// DevicesServiceToggleProcedure is the fully-qualified name of the DevicesService's Toggle RPC.
@@ -172,6 +175,61 @@ const (
 	InternalServiceGetLDAPProvidersProcedure = "/infinimesh.node.InternalService/GetLDAPProviders"
 )
 
+// These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
+var (
+	accountsServiceServiceDescriptor                = node.File_node_node_proto.Services().ByName("AccountsService")
+	accountsServiceTokenMethodDescriptor            = accountsServiceServiceDescriptor.Methods().ByName("Token")
+	accountsServiceGetMethodDescriptor              = accountsServiceServiceDescriptor.Methods().ByName("Get")
+	accountsServiceListMethodDescriptor             = accountsServiceServiceDescriptor.Methods().ByName("List")
+	accountsServiceCreateMethodDescriptor           = accountsServiceServiceDescriptor.Methods().ByName("Create")
+	accountsServiceUpdateMethodDescriptor           = accountsServiceServiceDescriptor.Methods().ByName("Update")
+	accountsServiceToggleMethodDescriptor           = accountsServiceServiceDescriptor.Methods().ByName("Toggle")
+	accountsServiceDeleteMethodDescriptor           = accountsServiceServiceDescriptor.Methods().ByName("Delete")
+	accountsServiceAccessiblesMethodDescriptor      = accountsServiceServiceDescriptor.Methods().ByName("Accessibles")
+	accountsServiceDeletablesMethodDescriptor       = accountsServiceServiceDescriptor.Methods().ByName("Deletables")
+	accountsServiceMoveMethodDescriptor             = accountsServiceServiceDescriptor.Methods().ByName("Move")
+	accountsServiceGetCredentialsMethodDescriptor   = accountsServiceServiceDescriptor.Methods().ByName("GetCredentials")
+	accountsServiceSetCredentialsMethodDescriptor   = accountsServiceServiceDescriptor.Methods().ByName("SetCredentials")
+	accountsServiceDelCredentialsMethodDescriptor   = accountsServiceServiceDescriptor.Methods().ByName("DelCredentials")
+	sessionsServiceServiceDescriptor                = node.File_node_node_proto.Services().ByName("SessionsService")
+	sessionsServiceGetMethodDescriptor              = sessionsServiceServiceDescriptor.Methods().ByName("Get")
+	sessionsServiceRevokeMethodDescriptor           = sessionsServiceServiceDescriptor.Methods().ByName("Revoke")
+	sessionsServiceGetActivityMethodDescriptor      = sessionsServiceServiceDescriptor.Methods().ByName("GetActivity")
+	namespacesServiceServiceDescriptor              = node.File_node_node_proto.Services().ByName("NamespacesService")
+	namespacesServiceGetMethodDescriptor            = namespacesServiceServiceDescriptor.Methods().ByName("Get")
+	namespacesServiceListMethodDescriptor           = namespacesServiceServiceDescriptor.Methods().ByName("List")
+	namespacesServiceCreateMethodDescriptor         = namespacesServiceServiceDescriptor.Methods().ByName("Create")
+	namespacesServiceUpdateMethodDescriptor         = namespacesServiceServiceDescriptor.Methods().ByName("Update")
+	namespacesServiceDeleteMethodDescriptor         = namespacesServiceServiceDescriptor.Methods().ByName("Delete")
+	namespacesServiceAccessiblesMethodDescriptor    = namespacesServiceServiceDescriptor.Methods().ByName("Accessibles")
+	namespacesServiceDeletablesMethodDescriptor     = namespacesServiceServiceDescriptor.Methods().ByName("Deletables")
+	namespacesServiceJoinsMethodDescriptor          = namespacesServiceServiceDescriptor.Methods().ByName("Joins")
+	namespacesServiceJoinMethodDescriptor           = namespacesServiceServiceDescriptor.Methods().ByName("Join")
+	devicesServiceServiceDescriptor                 = node.File_node_node_proto.Services().ByName("DevicesService")
+	devicesServiceGetMethodDescriptor               = devicesServiceServiceDescriptor.Methods().ByName("Get")
+	devicesServiceListMethodDescriptor              = devicesServiceServiceDescriptor.Methods().ByName("List")
+	devicesServiceCreateMethodDescriptor            = devicesServiceServiceDescriptor.Methods().ByName("Create")
+	devicesServiceUpdateMethodDescriptor            = devicesServiceServiceDescriptor.Methods().ByName("Update")
+	devicesServicePatchConfigMethodDescriptor       = devicesServiceServiceDescriptor.Methods().ByName("PatchConfig")
+	devicesServiceDeleteMethodDescriptor            = devicesServiceServiceDescriptor.Methods().ByName("Delete")
+	devicesServiceToggleMethodDescriptor            = devicesServiceServiceDescriptor.Methods().ByName("Toggle")
+	devicesServiceToggleBasicMethodDescriptor       = devicesServiceServiceDescriptor.Methods().ByName("ToggleBasic")
+	devicesServiceMakeDevicesTokenMethodDescriptor  = devicesServiceServiceDescriptor.Methods().ByName("MakeDevicesToken")
+	devicesServiceMoveMethodDescriptor              = devicesServiceServiceDescriptor.Methods().ByName("Move")
+	devicesServiceJoinsMethodDescriptor             = devicesServiceServiceDescriptor.Methods().ByName("Joins")
+	devicesServiceJoinMethodDescriptor              = devicesServiceServiceDescriptor.Methods().ByName("Join")
+	devicesServiceGetByTokenMethodDescriptor        = devicesServiceServiceDescriptor.Methods().ByName("GetByToken")
+	devicesServiceGetByFingerprintMethodDescriptor  = devicesServiceServiceDescriptor.Methods().ByName("GetByFingerprint")
+	shadowServiceServiceDescriptor                  = node.File_node_node_proto.Services().ByName("ShadowService")
+	shadowServiceGetMethodDescriptor                = shadowServiceServiceDescriptor.Methods().ByName("Get")
+	shadowServicePatchMethodDescriptor              = shadowServiceServiceDescriptor.Methods().ByName("Patch")
+	shadowServiceRemoveMethodDescriptor             = shadowServiceServiceDescriptor.Methods().ByName("Remove")
+	shadowServiceStreamShadowMethodDescriptor       = shadowServiceServiceDescriptor.Methods().ByName("StreamShadow")
+	shadowServiceStreamShadowSyncMethodDescriptor   = shadowServiceServiceDescriptor.Methods().ByName("StreamShadowSync")
+	internalServiceServiceDescriptor                = node.File_node_node_proto.Services().ByName("InternalService")
+	internalServiceGetLDAPProvidersMethodDescriptor = internalServiceServiceDescriptor.Methods().ByName("GetLDAPProviders")
+)
+
 // AccountsServiceClient is a client for the infinimesh.node.AccountsService service.
 type AccountsServiceClient interface {
 	Token(context.Context, *connect.Request[node.TokenRequest]) (*connect.Response[node.TokenResponse], error)
@@ -202,67 +260,80 @@ func NewAccountsServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 		token: connect.NewClient[node.TokenRequest, node.TokenResponse](
 			httpClient,
 			baseURL+AccountsServiceTokenProcedure,
-			opts...,
+			connect.WithSchema(accountsServiceTokenMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		get: connect.NewClient[accounts.Account, accounts.Account](
 			httpClient,
 			baseURL+AccountsServiceGetProcedure,
-			opts...,
+			connect.WithSchema(accountsServiceGetMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		list: connect.NewClient[node.EmptyMessage, accounts.Accounts](
 			httpClient,
 			baseURL+AccountsServiceListProcedure,
-			opts...,
+			connect.WithSchema(accountsServiceListMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		create: connect.NewClient[accounts.CreateRequest, accounts.CreateResponse](
 			httpClient,
 			baseURL+AccountsServiceCreateProcedure,
-			opts...,
+			connect.WithSchema(accountsServiceCreateMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		update: connect.NewClient[accounts.Account, accounts.Account](
 			httpClient,
 			baseURL+AccountsServiceUpdateProcedure,
-			opts...,
+			connect.WithSchema(accountsServiceUpdateMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		toggle: connect.NewClient[accounts.Account, accounts.Account](
 			httpClient,
 			baseURL+AccountsServiceToggleProcedure,
-			opts...,
+			connect.WithSchema(accountsServiceToggleMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		delete: connect.NewClient[accounts.Account, node.DeleteResponse](
 			httpClient,
 			baseURL+AccountsServiceDeleteProcedure,
-			opts...,
+			connect.WithSchema(accountsServiceDeleteMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		accessibles: connect.NewClient[namespaces.Namespace, access.Nodes](
 			httpClient,
 			baseURL+AccountsServiceAccessiblesProcedure,
-			opts...,
+			connect.WithSchema(accountsServiceAccessiblesMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		deletables: connect.NewClient[accounts.Account, access.Nodes](
 			httpClient,
 			baseURL+AccountsServiceDeletablesProcedure,
-			opts...,
+			connect.WithSchema(accountsServiceDeletablesMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		move: connect.NewClient[node.MoveRequest, node.EmptyMessage](
 			httpClient,
 			baseURL+AccountsServiceMoveProcedure,
-			opts...,
+			connect.WithSchema(accountsServiceMoveMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		getCredentials: connect.NewClient[node.GetCredentialsRequest, node.GetCredentialsResponse](
 			httpClient,
 			baseURL+AccountsServiceGetCredentialsProcedure,
-			opts...,
+			connect.WithSchema(accountsServiceGetCredentialsMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		setCredentials: connect.NewClient[node.SetCredentialsRequest, node.SetCredentialsResponse](
 			httpClient,
 			baseURL+AccountsServiceSetCredentialsProcedure,
-			opts...,
+			connect.WithSchema(accountsServiceSetCredentialsMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		delCredentials: connect.NewClient[node.DeleteCredentialsRequest, node.DeleteResponse](
 			httpClient,
 			baseURL+AccountsServiceDelCredentialsProcedure,
-			opts...,
+			connect.WithSchema(accountsServiceDelCredentialsMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 	}
 }
@@ -375,67 +446,80 @@ func NewAccountsServiceHandler(svc AccountsServiceHandler, opts ...connect.Handl
 	accountsServiceTokenHandler := connect.NewUnaryHandler(
 		AccountsServiceTokenProcedure,
 		svc.Token,
-		opts...,
+		connect.WithSchema(accountsServiceTokenMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	accountsServiceGetHandler := connect.NewUnaryHandler(
 		AccountsServiceGetProcedure,
 		svc.Get,
-		opts...,
+		connect.WithSchema(accountsServiceGetMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	accountsServiceListHandler := connect.NewUnaryHandler(
 		AccountsServiceListProcedure,
 		svc.List,
-		opts...,
+		connect.WithSchema(accountsServiceListMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	accountsServiceCreateHandler := connect.NewUnaryHandler(
 		AccountsServiceCreateProcedure,
 		svc.Create,
-		opts...,
+		connect.WithSchema(accountsServiceCreateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	accountsServiceUpdateHandler := connect.NewUnaryHandler(
 		AccountsServiceUpdateProcedure,
 		svc.Update,
-		opts...,
+		connect.WithSchema(accountsServiceUpdateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	accountsServiceToggleHandler := connect.NewUnaryHandler(
 		AccountsServiceToggleProcedure,
 		svc.Toggle,
-		opts...,
+		connect.WithSchema(accountsServiceToggleMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	accountsServiceDeleteHandler := connect.NewUnaryHandler(
 		AccountsServiceDeleteProcedure,
 		svc.Delete,
-		opts...,
+		connect.WithSchema(accountsServiceDeleteMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	accountsServiceAccessiblesHandler := connect.NewUnaryHandler(
 		AccountsServiceAccessiblesProcedure,
 		svc.Accessibles,
-		opts...,
+		connect.WithSchema(accountsServiceAccessiblesMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	accountsServiceDeletablesHandler := connect.NewUnaryHandler(
 		AccountsServiceDeletablesProcedure,
 		svc.Deletables,
-		opts...,
+		connect.WithSchema(accountsServiceDeletablesMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	accountsServiceMoveHandler := connect.NewUnaryHandler(
 		AccountsServiceMoveProcedure,
 		svc.Move,
-		opts...,
+		connect.WithSchema(accountsServiceMoveMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	accountsServiceGetCredentialsHandler := connect.NewUnaryHandler(
 		AccountsServiceGetCredentialsProcedure,
 		svc.GetCredentials,
-		opts...,
+		connect.WithSchema(accountsServiceGetCredentialsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	accountsServiceSetCredentialsHandler := connect.NewUnaryHandler(
 		AccountsServiceSetCredentialsProcedure,
 		svc.SetCredentials,
-		opts...,
+		connect.WithSchema(accountsServiceSetCredentialsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	accountsServiceDelCredentialsHandler := connect.NewUnaryHandler(
 		AccountsServiceDelCredentialsProcedure,
 		svc.DelCredentials,
-		opts...,
+		connect.WithSchema(accountsServiceDelCredentialsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	return "/infinimesh.node.AccountsService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
@@ -546,17 +630,20 @@ func NewSessionsServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 		get: connect.NewClient[node.EmptyMessage, sessions.Sessions](
 			httpClient,
 			baseURL+SessionsServiceGetProcedure,
-			opts...,
+			connect.WithSchema(sessionsServiceGetMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		revoke: connect.NewClient[sessions.Session, node.DeleteResponse](
 			httpClient,
 			baseURL+SessionsServiceRevokeProcedure,
-			opts...,
+			connect.WithSchema(sessionsServiceRevokeMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		getActivity: connect.NewClient[node.EmptyMessage, sessions.Activity](
 			httpClient,
 			baseURL+SessionsServiceGetActivityProcedure,
-			opts...,
+			connect.WithSchema(sessionsServiceGetActivityMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 	}
 }
@@ -599,17 +686,20 @@ func NewSessionsServiceHandler(svc SessionsServiceHandler, opts ...connect.Handl
 	sessionsServiceGetHandler := connect.NewUnaryHandler(
 		SessionsServiceGetProcedure,
 		svc.Get,
-		opts...,
+		connect.WithSchema(sessionsServiceGetMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	sessionsServiceRevokeHandler := connect.NewUnaryHandler(
 		SessionsServiceRevokeProcedure,
 		svc.Revoke,
-		opts...,
+		connect.WithSchema(sessionsServiceRevokeMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	sessionsServiceGetActivityHandler := connect.NewUnaryHandler(
 		SessionsServiceGetActivityProcedure,
 		svc.GetActivity,
-		opts...,
+		connect.WithSchema(sessionsServiceGetActivityMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	return "/infinimesh.node.SessionsService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
@@ -669,47 +759,56 @@ func NewNamespacesServiceClient(httpClient connect.HTTPClient, baseURL string, o
 		get: connect.NewClient[namespaces.Namespace, namespaces.Namespace](
 			httpClient,
 			baseURL+NamespacesServiceGetProcedure,
-			opts...,
+			connect.WithSchema(namespacesServiceGetMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		list: connect.NewClient[node.EmptyMessage, namespaces.Namespaces](
 			httpClient,
 			baseURL+NamespacesServiceListProcedure,
-			opts...,
+			connect.WithSchema(namespacesServiceListMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		create: connect.NewClient[namespaces.Namespace, namespaces.Namespace](
 			httpClient,
 			baseURL+NamespacesServiceCreateProcedure,
-			opts...,
+			connect.WithSchema(namespacesServiceCreateMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		update: connect.NewClient[namespaces.Namespace, namespaces.Namespace](
 			httpClient,
 			baseURL+NamespacesServiceUpdateProcedure,
-			opts...,
+			connect.WithSchema(namespacesServiceUpdateMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		delete: connect.NewClient[namespaces.Namespace, node.DeleteResponse](
 			httpClient,
 			baseURL+NamespacesServiceDeleteProcedure,
-			opts...,
+			connect.WithSchema(namespacesServiceDeleteMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		accessibles: connect.NewClient[namespaces.Namespace, access.Nodes](
 			httpClient,
 			baseURL+NamespacesServiceAccessiblesProcedure,
-			opts...,
+			connect.WithSchema(namespacesServiceAccessiblesMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		deletables: connect.NewClient[namespaces.Namespace, access.Nodes](
 			httpClient,
 			baseURL+NamespacesServiceDeletablesProcedure,
-			opts...,
+			connect.WithSchema(namespacesServiceDeletablesMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		joins: connect.NewClient[namespaces.Namespace, accounts.Accounts](
 			httpClient,
 			baseURL+NamespacesServiceJoinsProcedure,
-			opts...,
+			connect.WithSchema(namespacesServiceJoinsMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		join: connect.NewClient[node.JoinRequest, accounts.Accounts](
 			httpClient,
 			baseURL+NamespacesServiceJoinProcedure,
-			opts...,
+			connect.WithSchema(namespacesServiceJoinMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 	}
 }
@@ -797,47 +896,56 @@ func NewNamespacesServiceHandler(svc NamespacesServiceHandler, opts ...connect.H
 	namespacesServiceGetHandler := connect.NewUnaryHandler(
 		NamespacesServiceGetProcedure,
 		svc.Get,
-		opts...,
+		connect.WithSchema(namespacesServiceGetMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	namespacesServiceListHandler := connect.NewUnaryHandler(
 		NamespacesServiceListProcedure,
 		svc.List,
-		opts...,
+		connect.WithSchema(namespacesServiceListMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	namespacesServiceCreateHandler := connect.NewUnaryHandler(
 		NamespacesServiceCreateProcedure,
 		svc.Create,
-		opts...,
+		connect.WithSchema(namespacesServiceCreateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	namespacesServiceUpdateHandler := connect.NewUnaryHandler(
 		NamespacesServiceUpdateProcedure,
 		svc.Update,
-		opts...,
+		connect.WithSchema(namespacesServiceUpdateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	namespacesServiceDeleteHandler := connect.NewUnaryHandler(
 		NamespacesServiceDeleteProcedure,
 		svc.Delete,
-		opts...,
+		connect.WithSchema(namespacesServiceDeleteMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	namespacesServiceAccessiblesHandler := connect.NewUnaryHandler(
 		NamespacesServiceAccessiblesProcedure,
 		svc.Accessibles,
-		opts...,
+		connect.WithSchema(namespacesServiceAccessiblesMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	namespacesServiceDeletablesHandler := connect.NewUnaryHandler(
 		NamespacesServiceDeletablesProcedure,
 		svc.Deletables,
-		opts...,
+		connect.WithSchema(namespacesServiceDeletablesMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	namespacesServiceJoinsHandler := connect.NewUnaryHandler(
 		NamespacesServiceJoinsProcedure,
 		svc.Joins,
-		opts...,
+		connect.WithSchema(namespacesServiceJoinsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	namespacesServiceJoinHandler := connect.NewUnaryHandler(
 		NamespacesServiceJoinProcedure,
 		svc.Join,
-		opts...,
+		connect.WithSchema(namespacesServiceJoinMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	return "/infinimesh.node.NamespacesService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
@@ -910,6 +1018,7 @@ type DevicesServiceClient interface {
 	List(context.Context, *connect.Request[node.QueryRequest]) (*connect.Response[devices.Devices], error)
 	Create(context.Context, *connect.Request[devices.CreateRequest]) (*connect.Response[devices.CreateResponse], error)
 	Update(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error)
+	PatchConfig(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error)
 	Delete(context.Context, *connect.Request[devices.Device]) (*connect.Response[node.DeleteResponse], error)
 	Toggle(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error)
 	ToggleBasic(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error)
@@ -939,67 +1048,86 @@ func NewDevicesServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 		get: connect.NewClient[devices.Device, devices.Device](
 			httpClient,
 			baseURL+DevicesServiceGetProcedure,
-			opts...,
+			connect.WithSchema(devicesServiceGetMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		list: connect.NewClient[node.QueryRequest, devices.Devices](
 			httpClient,
 			baseURL+DevicesServiceListProcedure,
-			opts...,
+			connect.WithSchema(devicesServiceListMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		create: connect.NewClient[devices.CreateRequest, devices.CreateResponse](
 			httpClient,
 			baseURL+DevicesServiceCreateProcedure,
-			opts...,
+			connect.WithSchema(devicesServiceCreateMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		update: connect.NewClient[devices.Device, devices.Device](
 			httpClient,
 			baseURL+DevicesServiceUpdateProcedure,
-			opts...,
+			connect.WithSchema(devicesServiceUpdateMethodDescriptor),
+			connect.WithClientOptions(opts...),
+		),
+		patchConfig: connect.NewClient[devices.Device, devices.Device](
+			httpClient,
+			baseURL+DevicesServicePatchConfigProcedure,
+			connect.WithSchema(devicesServicePatchConfigMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		delete: connect.NewClient[devices.Device, node.DeleteResponse](
 			httpClient,
 			baseURL+DevicesServiceDeleteProcedure,
-			opts...,
+			connect.WithSchema(devicesServiceDeleteMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		toggle: connect.NewClient[devices.Device, devices.Device](
 			httpClient,
 			baseURL+DevicesServiceToggleProcedure,
-			opts...,
+			connect.WithSchema(devicesServiceToggleMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		toggleBasic: connect.NewClient[devices.Device, devices.Device](
 			httpClient,
 			baseURL+DevicesServiceToggleBasicProcedure,
-			opts...,
+			connect.WithSchema(devicesServiceToggleBasicMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		makeDevicesToken: connect.NewClient[node.DevicesTokenRequest, node.TokenResponse](
 			httpClient,
 			baseURL+DevicesServiceMakeDevicesTokenProcedure,
-			opts...,
+			connect.WithSchema(devicesServiceMakeDevicesTokenMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		move: connect.NewClient[node.MoveRequest, node.EmptyMessage](
 			httpClient,
 			baseURL+DevicesServiceMoveProcedure,
-			opts...,
+			connect.WithSchema(devicesServiceMoveMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		joins: connect.NewClient[devices.Device, access.Nodes](
 			httpClient,
 			baseURL+DevicesServiceJoinsProcedure,
-			opts...,
+			connect.WithSchema(devicesServiceJoinsMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		join: connect.NewClient[node.JoinGeneralRequest, access.Node](
 			httpClient,
 			baseURL+DevicesServiceJoinProcedure,
-			opts...,
+			connect.WithSchema(devicesServiceJoinMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		getByToken: connect.NewClient[devices.Device, devices.Device](
 			httpClient,
 			baseURL+DevicesServiceGetByTokenProcedure,
-			opts...,
+			connect.WithSchema(devicesServiceGetByTokenMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		getByFingerprint: connect.NewClient[devices.GetByFingerprintRequest, devices.Device](
 			httpClient,
 			baseURL+DevicesServiceGetByFingerprintProcedure,
-			opts...,
+			connect.WithSchema(devicesServiceGetByFingerprintMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 	}
 }
@@ -1010,6 +1138,7 @@ type devicesServiceClient struct {
 	list             *connect.Client[node.QueryRequest, devices.Devices]
 	create           *connect.Client[devices.CreateRequest, devices.CreateResponse]
 	update           *connect.Client[devices.Device, devices.Device]
+	patchConfig      *connect.Client[devices.Device, devices.Device]
 	delete           *connect.Client[devices.Device, node.DeleteResponse]
 	toggle           *connect.Client[devices.Device, devices.Device]
 	toggleBasic      *connect.Client[devices.Device, devices.Device]
@@ -1039,6 +1168,11 @@ func (c *devicesServiceClient) Create(ctx context.Context, req *connect.Request[
 // Update calls infinimesh.node.DevicesService.Update.
 func (c *devicesServiceClient) Update(ctx context.Context, req *connect.Request[devices.Device]) (*connect.Response[devices.Device], error) {
 	return c.update.CallUnary(ctx, req)
+}
+
+// PatchConfig calls infinimesh.node.DevicesService.PatchConfig.
+func (c *devicesServiceClient) PatchConfig(ctx context.Context, req *connect.Request[devices.Device]) (*connect.Response[devices.Device], error) {
+	return c.patchConfig.CallUnary(ctx, req)
 }
 
 // Delete calls infinimesh.node.DevicesService.Delete.
@@ -1092,6 +1226,7 @@ type DevicesServiceHandler interface {
 	List(context.Context, *connect.Request[node.QueryRequest]) (*connect.Response[devices.Devices], error)
 	Create(context.Context, *connect.Request[devices.CreateRequest]) (*connect.Response[devices.CreateResponse], error)
 	Update(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error)
+	PatchConfig(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error)
 	Delete(context.Context, *connect.Request[devices.Device]) (*connect.Response[node.DeleteResponse], error)
 	Toggle(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error)
 	ToggleBasic(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error)
@@ -1117,67 +1252,86 @@ func NewDevicesServiceHandler(svc DevicesServiceHandler, opts ...connect.Handler
 	devicesServiceGetHandler := connect.NewUnaryHandler(
 		DevicesServiceGetProcedure,
 		svc.Get,
-		opts...,
+		connect.WithSchema(devicesServiceGetMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	devicesServiceListHandler := connect.NewUnaryHandler(
 		DevicesServiceListProcedure,
 		svc.List,
-		opts...,
+		connect.WithSchema(devicesServiceListMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	devicesServiceCreateHandler := connect.NewUnaryHandler(
 		DevicesServiceCreateProcedure,
 		svc.Create,
-		opts...,
+		connect.WithSchema(devicesServiceCreateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	devicesServiceUpdateHandler := connect.NewUnaryHandler(
 		DevicesServiceUpdateProcedure,
 		svc.Update,
-		opts...,
+		connect.WithSchema(devicesServiceUpdateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
+	)
+	devicesServicePatchConfigHandler := connect.NewUnaryHandler(
+		DevicesServicePatchConfigProcedure,
+		svc.PatchConfig,
+		connect.WithSchema(devicesServicePatchConfigMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	devicesServiceDeleteHandler := connect.NewUnaryHandler(
 		DevicesServiceDeleteProcedure,
 		svc.Delete,
-		opts...,
+		connect.WithSchema(devicesServiceDeleteMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	devicesServiceToggleHandler := connect.NewUnaryHandler(
 		DevicesServiceToggleProcedure,
 		svc.Toggle,
-		opts...,
+		connect.WithSchema(devicesServiceToggleMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	devicesServiceToggleBasicHandler := connect.NewUnaryHandler(
 		DevicesServiceToggleBasicProcedure,
 		svc.ToggleBasic,
-		opts...,
+		connect.WithSchema(devicesServiceToggleBasicMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	devicesServiceMakeDevicesTokenHandler := connect.NewUnaryHandler(
 		DevicesServiceMakeDevicesTokenProcedure,
 		svc.MakeDevicesToken,
-		opts...,
+		connect.WithSchema(devicesServiceMakeDevicesTokenMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	devicesServiceMoveHandler := connect.NewUnaryHandler(
 		DevicesServiceMoveProcedure,
 		svc.Move,
-		opts...,
+		connect.WithSchema(devicesServiceMoveMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	devicesServiceJoinsHandler := connect.NewUnaryHandler(
 		DevicesServiceJoinsProcedure,
 		svc.Joins,
-		opts...,
+		connect.WithSchema(devicesServiceJoinsMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	devicesServiceJoinHandler := connect.NewUnaryHandler(
 		DevicesServiceJoinProcedure,
 		svc.Join,
-		opts...,
+		connect.WithSchema(devicesServiceJoinMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	devicesServiceGetByTokenHandler := connect.NewUnaryHandler(
 		DevicesServiceGetByTokenProcedure,
 		svc.GetByToken,
-		opts...,
+		connect.WithSchema(devicesServiceGetByTokenMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	devicesServiceGetByFingerprintHandler := connect.NewUnaryHandler(
 		DevicesServiceGetByFingerprintProcedure,
 		svc.GetByFingerprint,
-		opts...,
+		connect.WithSchema(devicesServiceGetByFingerprintMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	return "/infinimesh.node.DevicesService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
@@ -1189,6 +1343,8 @@ func NewDevicesServiceHandler(svc DevicesServiceHandler, opts ...connect.Handler
 			devicesServiceCreateHandler.ServeHTTP(w, r)
 		case DevicesServiceUpdateProcedure:
 			devicesServiceUpdateHandler.ServeHTTP(w, r)
+		case DevicesServicePatchConfigProcedure:
+			devicesServicePatchConfigHandler.ServeHTTP(w, r)
 		case DevicesServiceDeleteProcedure:
 			devicesServiceDeleteHandler.ServeHTTP(w, r)
 		case DevicesServiceToggleProcedure:
@@ -1230,6 +1386,10 @@ func (UnimplementedDevicesServiceHandler) Create(context.Context, *connect.Reque
 
 func (UnimplementedDevicesServiceHandler) Update(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.Update is not implemented"))
+}
+
+func (UnimplementedDevicesServiceHandler) PatchConfig(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.DevicesService.PatchConfig is not implemented"))
 }
 
 func (UnimplementedDevicesServiceHandler) Delete(context.Context, *connect.Request[devices.Device]) (*connect.Response[node.DeleteResponse], error) {
@@ -1290,27 +1450,32 @@ func NewShadowServiceClient(httpClient connect.HTTPClient, baseURL string, opts 
 		get: connect.NewClient[shadow.GetRequest, shadow.GetResponse](
 			httpClient,
 			baseURL+ShadowServiceGetProcedure,
-			opts...,
+			connect.WithSchema(shadowServiceGetMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		patch: connect.NewClient[shadow.Shadow, shadow.Shadow](
 			httpClient,
 			baseURL+ShadowServicePatchProcedure,
-			opts...,
+			connect.WithSchema(shadowServicePatchMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		remove: connect.NewClient[shadow.RemoveRequest, shadow.Shadow](
 			httpClient,
 			baseURL+ShadowServiceRemoveProcedure,
-			opts...,
+			connect.WithSchema(shadowServiceRemoveMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		streamShadow: connect.NewClient[shadow.StreamShadowRequest, shadow.Shadow](
 			httpClient,
 			baseURL+ShadowServiceStreamShadowProcedure,
-			opts...,
+			connect.WithSchema(shadowServiceStreamShadowMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		streamShadowSync: connect.NewClient[shadow.StreamShadowRequest, shadow.Shadow](
 			httpClient,
 			baseURL+ShadowServiceStreamShadowSyncProcedure,
-			opts...,
+			connect.WithSchema(shadowServiceStreamShadowSyncMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 	}
 }
@@ -1367,27 +1532,32 @@ func NewShadowServiceHandler(svc ShadowServiceHandler, opts ...connect.HandlerOp
 	shadowServiceGetHandler := connect.NewUnaryHandler(
 		ShadowServiceGetProcedure,
 		svc.Get,
-		opts...,
+		connect.WithSchema(shadowServiceGetMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	shadowServicePatchHandler := connect.NewUnaryHandler(
 		ShadowServicePatchProcedure,
 		svc.Patch,
-		opts...,
+		connect.WithSchema(shadowServicePatchMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	shadowServiceRemoveHandler := connect.NewUnaryHandler(
 		ShadowServiceRemoveProcedure,
 		svc.Remove,
-		opts...,
+		connect.WithSchema(shadowServiceRemoveMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	shadowServiceStreamShadowHandler := connect.NewServerStreamHandler(
 		ShadowServiceStreamShadowProcedure,
 		svc.StreamShadow,
-		opts...,
+		connect.WithSchema(shadowServiceStreamShadowMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	shadowServiceStreamShadowSyncHandler := connect.NewServerStreamHandler(
 		ShadowServiceStreamShadowSyncProcedure,
 		svc.StreamShadowSync,
-		opts...,
+		connect.WithSchema(shadowServiceStreamShadowSyncMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	return "/infinimesh.node.ShadowService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
@@ -1448,7 +1618,8 @@ func NewInternalServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 		getLDAPProviders: connect.NewClient[node.EmptyMessage, node.LDAPProviders](
 			httpClient,
 			baseURL+InternalServiceGetLDAPProvidersProcedure,
-			opts...,
+			connect.WithSchema(internalServiceGetLDAPProvidersMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 	}
 }
@@ -1477,7 +1648,8 @@ func NewInternalServiceHandler(svc InternalServiceHandler, opts ...connect.Handl
 	internalServiceGetLDAPProvidersHandler := connect.NewUnaryHandler(
 		InternalServiceGetLDAPProvidersProcedure,
 		svc.GetLDAPProviders,
-		opts...,
+		connect.WithSchema(internalServiceGetLDAPProvidersMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	return "/infinimesh.node.InternalService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {

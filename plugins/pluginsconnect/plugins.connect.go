@@ -33,7 +33,7 @@ import (
 // generated with a version of connect newer than the one compiled into your binary. You can fix the
 // problem by either regenerating this code with an older version of connect or updating the connect
 // version compiled into your binary.
-const _ = connect.IsAtLeastVersion0_1_0
+const _ = connect.IsAtLeastVersion1_13_0
 
 const (
 	// PluginsServiceName is the fully-qualified name of the PluginsService service.
@@ -60,6 +60,16 @@ const (
 	PluginsServiceDeleteProcedure = "/infinimesh.plugins.PluginsService/Delete"
 )
 
+// These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
+var (
+	pluginsServiceServiceDescriptor      = plugins.File_plugins_plugins_proto.Services().ByName("PluginsService")
+	pluginsServiceGetMethodDescriptor    = pluginsServiceServiceDescriptor.Methods().ByName("Get")
+	pluginsServiceListMethodDescriptor   = pluginsServiceServiceDescriptor.Methods().ByName("List")
+	pluginsServiceCreateMethodDescriptor = pluginsServiceServiceDescriptor.Methods().ByName("Create")
+	pluginsServiceUpdateMethodDescriptor = pluginsServiceServiceDescriptor.Methods().ByName("Update")
+	pluginsServiceDeleteMethodDescriptor = pluginsServiceServiceDescriptor.Methods().ByName("Delete")
+)
+
 // PluginsServiceClient is a client for the infinimesh.plugins.PluginsService service.
 type PluginsServiceClient interface {
 	Get(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error)
@@ -82,27 +92,32 @@ func NewPluginsServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 		get: connect.NewClient[plugins.Plugin, plugins.Plugin](
 			httpClient,
 			baseURL+PluginsServiceGetProcedure,
-			opts...,
+			connect.WithSchema(pluginsServiceGetMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		list: connect.NewClient[plugins.ListRequest, plugins.Plugins](
 			httpClient,
 			baseURL+PluginsServiceListProcedure,
-			opts...,
+			connect.WithSchema(pluginsServiceListMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		create: connect.NewClient[plugins.Plugin, plugins.Plugin](
 			httpClient,
 			baseURL+PluginsServiceCreateProcedure,
-			opts...,
+			connect.WithSchema(pluginsServiceCreateMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		update: connect.NewClient[plugins.Plugin, plugins.Plugin](
 			httpClient,
 			baseURL+PluginsServiceUpdateProcedure,
-			opts...,
+			connect.WithSchema(pluginsServiceUpdateMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		delete: connect.NewClient[plugins.Plugin, plugins.Plugin](
 			httpClient,
 			baseURL+PluginsServiceDeleteProcedure,
-			opts...,
+			connect.WithSchema(pluginsServiceDeleteMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 	}
 }
@@ -159,27 +174,32 @@ func NewPluginsServiceHandler(svc PluginsServiceHandler, opts ...connect.Handler
 	pluginsServiceGetHandler := connect.NewUnaryHandler(
 		PluginsServiceGetProcedure,
 		svc.Get,
-		opts...,
+		connect.WithSchema(pluginsServiceGetMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	pluginsServiceListHandler := connect.NewUnaryHandler(
 		PluginsServiceListProcedure,
 		svc.List,
-		opts...,
+		connect.WithSchema(pluginsServiceListMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	pluginsServiceCreateHandler := connect.NewUnaryHandler(
 		PluginsServiceCreateProcedure,
 		svc.Create,
-		opts...,
+		connect.WithSchema(pluginsServiceCreateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	pluginsServiceUpdateHandler := connect.NewUnaryHandler(
 		PluginsServiceUpdateProcedure,
 		svc.Update,
-		opts...,
+		connect.WithSchema(pluginsServiceUpdateMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	pluginsServiceDeleteHandler := connect.NewUnaryHandler(
 		PluginsServiceDeleteProcedure,
 		svc.Delete,
-		opts...,
+		connect.WithSchema(pluginsServiceDeleteMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	return "/infinimesh.plugins.PluginsService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
