@@ -2922,7 +2922,7 @@ func RegisterDevicesServiceHandlerServer(ctx context.Context, mux *runtime.Serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/infinimesh.node.DevicesService/PatchConfig", runtime.WithHTTPPathPattern("/devices/{uuid}/patch_config"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/infinimesh.node.DevicesService/PatchConfig", runtime.WithHTTPPathPattern("/devices/{uuid}/config"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -4166,7 +4166,7 @@ func RegisterDevicesServiceHandlerClient(ctx context.Context, mux *runtime.Serve
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/infinimesh.node.DevicesService/PatchConfig", runtime.WithHTTPPathPattern("/devices/{uuid}/patch_config"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/infinimesh.node.DevicesService/PatchConfig", runtime.WithHTTPPathPattern("/devices/{uuid}/config"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -4348,7 +4348,7 @@ var (
 
 	pattern_DevicesService_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"devices", "uuid"}, ""))
 
-	pattern_DevicesService_PatchConfig_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"devices", "uuid", "patch_config"}, ""))
+	pattern_DevicesService_PatchConfig_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"devices", "uuid", "config"}, ""))
 
 	pattern_DevicesService_Delete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"devices", "uuid"}, ""))
 
