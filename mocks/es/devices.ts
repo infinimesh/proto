@@ -1,8 +1,8 @@
 import { createPromiseClient, createRouterTransport } from '@connectrpc/connect'
-import { DevicesService, NamespacesService } from '../node/node_connect'
-import { DeleteResponse, EmptyMessage, TokenResponse } from '..//node/node_pb'
-import { Access, Nodes, Node, Role } from '../node/access/access_pb'
-import { Certificate, CreateResponse, Device, Devices } from '../node/devices/devices_pb'
+import { DevicesService, NamespacesService } from '../../build/es/node/node_connect'
+import { DeleteResponse, EmptyMessage, TokenResponse } from '../../build/es//node/node_pb'
+import { Access, Nodes, Node, Role } from '../../build/es/node/access/access_pb'
+import { Certificate, CreateResponse, Device, Devices } from '../../build/es/node/devices/devices_pb'
 import { transport as nsTransport } from './namespaces.ts'
 import { v4 as uuidv4 } from 'uuid'
 

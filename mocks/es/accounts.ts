@@ -1,7 +1,7 @@
 import { createRouterTransport } from '@connectrpc/connect'
-import { AccountsService } from '../node/node_connect'
-import { Access } from '../node/access/access_pb'
-import { Account, Accounts } from '../node/accounts/accounts_pb'
+import { AccountsService } from '../../build/es/node/node_connect'
+import { Access } from '../../build/es/node/access/access_pb'
+import { Account, Accounts } from '../../build/es/node/accounts/accounts_pb'
 import { v4 as uuidv4 } from 'uuid'
 
 export const transport = createRouterTransport(({ service }) => {

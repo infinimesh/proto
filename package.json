@@ -13,7 +13,8 @@
   },
   "files": [
     "build/es",
-    "build/nodejs"
+    "build/nodejs",
+    "mocks/es"
   ],
   "keywords": [
     "grpc",
