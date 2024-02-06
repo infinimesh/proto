@@ -5,6 +5,7 @@ import { Access, Nodes, Node, Level, Role } from '../node/access/access_pb'
 import { Namespace, Namespaces, Plugin } from '../node/namespaces/namespaces_pb'
 import { Account, Accounts } from '../node/accounts/accounts_pb'
 import { transport as accTransport } from './accounts.ts'
+import { v4 as uuidv4 } from 'uuid'
 
 export const transport = createRouterTransport(({ service }) => {
   const accountsApi = createPromiseClient(AccountsService, accTransport)
@@ -53,7 +54,7 @@ export const transport = createRouterTransport(({ service }) => {
       return new Namespaces({
         namespaces: Array.from({ length: 10 }).map((_, i) => {
           const namespace = `${i}`
-          const uuid = Math.random().toString(16).slice(2)
+          const uuid = uuidv4()
           const role = Role.OWNER
           const level = Level.ADMIN
 

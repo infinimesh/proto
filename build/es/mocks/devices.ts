@@ -4,6 +4,7 @@ import { DeleteResponse, EmptyMessage, TokenResponse } from '..//node/node_pb'
 import { Access, Nodes, Node, Role } from '../node/access/access_pb'
 import { Certificate, CreateResponse, Device, Devices } from '../node/devices/devices_pb'
 import { transport as nsTransport } from './namespaces.ts'
+import { v4 as uuidv4 } from 'uuid'
 
 export const transport = createRouterTransport(({ service }) => {
   const namespaceApi = createPromiseClient(NamespacesService, nsTransport)
@@ -39,7 +40,7 @@ export const transport = createRouterTransport(({ service }) => {
         const role = Math.floor(Math.random() * 2 + 1)
         const level = Math.floor(Math.random() * 4 + 1)
         const device = new Device({
-          uuid: value.toString(16).slice(2),
+          uuid: uuidv4(),
           token: value.toString(8).slice(2),
           title: `Device ${i + 1}`,
           certificate: new Certificate(),
