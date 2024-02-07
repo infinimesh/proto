@@ -239,7 +239,7 @@ service DevicesService {
   }
   rpc PatchConfig(infinimesh.node.devices.Device) returns (infinimesh.node.devices.Device) {
     option (google.api.http) = {
-      patch: "/devices/{uuid}/patch_config"
+      patch: "/devices/{uuid}/config"
       body: "*"
     };
   }
