@@ -34,7 +34,7 @@
     "uuid": "^9.0.1",
     "@bufbuild/connect": "^0.13.0",
     "@bufbuild/connect-web": "^0.13.0",
-    "@bufbuild/protobuf": "^1.1.1"
+    "@bufbuild/protobuf": "^1.7.2"
   },
   "devDependencies": {
     "@bufbuild/buf": "^1.28.1",
