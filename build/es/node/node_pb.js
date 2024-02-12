@@ -120,7 +120,7 @@ export const QueryRequest = proto3.makeMessageType(
   () => [
     { no: 1, name: "namespace", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
     { no: 2, name: "account", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
-    { no: 3, name: "page", kind: "scalar", T: 3 /* ScalarType.INT64 */, opt: true },
+    { no: 3, name: "offset", kind: "scalar", T: 3 /* ScalarType.INT64 */, opt: true },
     { no: 4, name: "limit", kind: "scalar", T: 3 /* ScalarType.INT64 */, opt: true },
     { no: 5, name: "field", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
     { no: 6, name: "sort", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
