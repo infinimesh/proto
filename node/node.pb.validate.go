@@ -1139,8 +1139,8 @@ func (m *QueryRequest) validate(all bool) error {
 		// no validation rules for Account
 	}
 
-	if m.Page != nil {
-		// no validation rules for Page
+	if m.Offset != nil {
+		// no validation rules for Offset
 	}
 
 	if m.Limit != nil {

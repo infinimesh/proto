@@ -24,6 +24,9 @@
       "name": "DevicesService"
     },
     {
+      "name": "ShadowService"
+    },
+    {
       "name": "InternalService"
     },
     {
@@ -289,7 +292,24 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/nodeAccountsServiceUpdateBody"
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "defaultNamespace": {
+                  "type": "string"
+                },
+                "access": {
+                  "$ref": "#/definitions/accessAccess"
+                },
+                "config": {
+                  "type": "object"
+                }
+              }
             }
           }
         ],
@@ -444,7 +464,12 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/AccountsServiceSetCredentialsBody"
+              "type": "object",
+              "properties": {
+                "credentials": {
+                  "$ref": "#/definitions/accountsCredentials"
+                }
+              }
             }
           }
         ],
@@ -606,7 +631,12 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/nodeAccountsServiceMoveBody"
+              "type": "object",
+              "properties": {
+                "namespace": {
+                  "type": "string"
+                }
+              }
             }
           }
         ],
@@ -644,7 +674,24 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/nodeAccountsServiceToggleBody"
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "defaultNamespace": {
+                  "type": "string"
+                },
+                "access": {
+                  "$ref": "#/definitions/accessAccess"
+                },
+                "config": {
+                  "type": "object"
+                }
+              }
             }
           }
         ],
@@ -684,7 +731,7 @@
             "type": "string"
           },
           {
-            "name": "page",
+            "name": "offset",
             "in": "query",
             "required": false,
             "type": "string",
@@ -1289,7 +1336,36 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/nodeDevicesServiceUpdateBody"
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "certificate": {
+                  "$ref": "#/definitions/devicesCertificate"
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "basicEnabled": {
+                  "type": "boolean"
+                },
+                "token": {
+                  "type": "string"
+                },
+                "access": {
+                  "$ref": "#/definitions/accessAccess"
+                },
+                "config": {
+                  "type": "object"
+                }
+              }
             }
           }
         ],
@@ -1327,7 +1403,36 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/DevicesServicePatchConfigBody"
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "certificate": {
+                  "$ref": "#/definitions/devicesCertificate"
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "basicEnabled": {
+                  "type": "boolean"
+                },
+                "token": {
+                  "type": "string"
+                },
+                "access": {
+                  "$ref": "#/definitions/accessAccess"
+                },
+                "config": {
+                  "type": "object"
+                }
+              }
             }
           }
         ],
@@ -1488,7 +1593,12 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/nodeDevicesServiceMoveBody"
+              "type": "object",
+              "properties": {
+                "namespace": {
+                  "type": "string"
+                }
+              }
             }
           }
         ],
@@ -1526,7 +1636,36 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/nodeDevicesServiceToggleBody"
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "certificate": {
+                  "$ref": "#/definitions/devicesCertificate"
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "basicEnabled": {
+                  "type": "boolean"
+                },
+                "token": {
+                  "type": "string"
+                },
+                "access": {
+                  "$ref": "#/definitions/accessAccess"
+                },
+                "config": {
+                  "type": "object"
+                }
+              }
             }
           }
         ],
@@ -1564,7 +1703,36 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/DevicesServiceToggleBasicBody"
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "enabled": {
+                  "type": "boolean"
+                },
+                "certificate": {
+                  "$ref": "#/definitions/devicesCertificate"
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "basicEnabled": {
+                  "type": "boolean"
+                },
+                "token": {
+                  "type": "string"
+                },
+                "access": {
+                  "$ref": "#/definitions/accessAccess"
+                },
+                "config": {
+                  "type": "object"
+                }
+              }
             }
           }
         ],
@@ -1759,7 +1927,15 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/nodeNamespacesServiceJoinBody"
+              "type": "object",
+              "properties": {
+                "account": {
+                  "type": "string"
+                },
+                "access": {
+                  "$ref": "#/definitions/accessLevel"
+                }
+              }
             }
           }
         ],
@@ -1967,7 +2143,21 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/nodeNamespacesServiceUpdateBody"
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "access": {
+                  "$ref": "#/definitions/accessAccess"
+                },
+                "plugin": {
+                  "$ref": "#/definitions/nodenamespacesPlugin"
+                },
+                "config": {
+                  "type": "object"
+                }
+              }
             }
           }
         ],
@@ -2597,7 +2787,46 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/pluginsPluginsServiceUpdateBody"
+              "type": "object",
+              "properties": {
+                "logo": {
+                  "type": "string",
+                  "title": "Plugin logo url in format supported by \u003cimg\u003e tag"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string",
+                  "title": "(optionally Markdown) long description Marketplace like"
+                },
+                "public": {
+                  "type": "boolean",
+                  "title": "see Namespace field"
+                },
+                "namespace": {
+                  "type": "string",
+                  "title": "Required to get not-public Plugin"
+                },
+                "access": {
+                  "$ref": "#/definitions/accessAccess"
+                },
+                "kind": {
+                  "$ref": "#/definitions/pluginsPluginKind"
+                },
+                "vars": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "embeddedConf": {
+                  "$ref": "#/definitions/pluginsEmbededPluginConf"
+                },
+                "deviceConf": {
+                  "$ref": "#/definitions/pluginsDevicePluginConf"
+                }
+              }
             }
           }
         ],
@@ -2740,78 +2969,6 @@
     }
   },
   "definitions": {
-    "AccountsServiceSetCredentialsBody": {
-      "type": "object",
-      "properties": {
-        "credentials": {
-          "$ref": "#/definitions/accountsCredentials"
-        }
-      }
-    },
-    "DevicesServicePatchConfigBody": {
-      "type": "object",
-      "properties": {
-        "title": {
-          "type": "string"
-        },
-        "enabled": {
-          "type": "boolean"
-        },
-        "certificate": {
-          "$ref": "#/definitions/devicesCertificate"
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "basicEnabled": {
-          "type": "boolean"
-        },
-        "token": {
-          "type": "string"
-        },
-        "access": {
-          "$ref": "#/definitions/accessAccess"
-        },
-        "config": {
-          "type": "object"
-        }
-      }
-    },
-    "DevicesServiceToggleBasicBody": {
-      "type": "object",
-      "properties": {
-        "title": {
-          "type": "string"
-        },
-        "enabled": {
-          "type": "boolean"
-        },
-        "certificate": {
-          "$ref": "#/definitions/devicesCertificate"
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "basicEnabled": {
-          "type": "boolean"
-        },
-        "token": {
-          "type": "string"
-        },
-        "access": {
-          "$ref": "#/definitions/accessAccess"
-        },
-        "config": {
-          "type": "object"
-        }
-      }
-    },
     "accessAccess": {
       "type": "object",
       "properties": {
@@ -3112,128 +3269,8 @@
         }
       }
     },
-    "nodeAccountsServiceMoveBody": {
-      "type": "object",
-      "properties": {
-        "namespace": {
-          "type": "string"
-        }
-      }
-    },
-    "nodeAccountsServiceToggleBody": {
-      "type": "object",
-      "properties": {
-        "title": {
-          "type": "string"
-        },
-        "enabled": {
-          "type": "boolean"
-        },
-        "defaultNamespace": {
-          "type": "string"
-        },
-        "access": {
-          "$ref": "#/definitions/accessAccess"
-        },
-        "config": {
-          "type": "object"
-        }
-      }
-    },
-    "nodeAccountsServiceUpdateBody": {
-      "type": "object",
-      "properties": {
-        "title": {
-          "type": "string"
-        },
-        "enabled": {
-          "type": "boolean"
-        },
-        "defaultNamespace": {
-          "type": "string"
-        },
-        "access": {
-          "$ref": "#/definitions/accessAccess"
-        },
-        "config": {
-          "type": "object"
-        }
-      }
-    },
     "nodeDeleteResponse": {
       "type": "object"
-    },
-    "nodeDevicesServiceMoveBody": {
-      "type": "object",
-      "properties": {
-        "namespace": {
-          "type": "string"
-        }
-      }
-    },
-    "nodeDevicesServiceToggleBody": {
-      "type": "object",
-      "properties": {
-        "title": {
-          "type": "string"
-        },
-        "enabled": {
-          "type": "boolean"
-        },
-        "certificate": {
-          "$ref": "#/definitions/devicesCertificate"
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "basicEnabled": {
-          "type": "boolean"
-        },
-        "token": {
-          "type": "string"
-        },
-        "access": {
-          "$ref": "#/definitions/accessAccess"
-        },
-        "config": {
-          "type": "object"
-        }
-      }
-    },
-    "nodeDevicesServiceUpdateBody": {
-      "type": "object",
-      "properties": {
-        "title": {
-          "type": "string"
-        },
-        "enabled": {
-          "type": "boolean"
-        },
-        "certificate": {
-          "$ref": "#/definitions/devicesCertificate"
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "basicEnabled": {
-          "type": "boolean"
-        },
-        "token": {
-          "type": "string"
-        },
-        "access": {
-          "$ref": "#/definitions/accessAccess"
-        },
-        "config": {
-          "type": "object"
-        }
-      }
     },
     "nodeDevicesTokenRequest": {
       "type": "object",
@@ -3293,34 +3330,6 @@
             "type": "string"
           },
           "title": "map of keys to titles (titles can be empty)"
-        }
-      }
-    },
-    "nodeNamespacesServiceJoinBody": {
-      "type": "object",
-      "properties": {
-        "account": {
-          "type": "string"
-        },
-        "access": {
-          "$ref": "#/definitions/accessLevel"
-        }
-      }
-    },
-    "nodeNamespacesServiceUpdateBody": {
-      "type": "object",
-      "properties": {
-        "title": {
-          "type": "string"
-        },
-        "access": {
-          "$ref": "#/definitions/accessAccess"
-        },
-        "plugin": {
-          "$ref": "#/definitions/nodenamespacesPlugin"
-        },
-        "config": {
-          "type": "object"
         }
       }
     },
@@ -3461,48 +3470,6 @@
             "type": "object",
             "$ref": "#/definitions/infinimeshpluginsPlugin"
           }
-        }
-      }
-    },
-    "pluginsPluginsServiceUpdateBody": {
-      "type": "object",
-      "properties": {
-        "logo": {
-          "type": "string",
-          "title": "Plugin logo url in format supported by \u003cimg\u003e tag"
-        },
-        "title": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string",
-          "title": "(optionally Markdown) long description Marketplace like"
-        },
-        "public": {
-          "type": "boolean",
-          "title": "see Namespace field"
-        },
-        "namespace": {
-          "type": "string",
-          "title": "Required to get not-public Plugin"
-        },
-        "access": {
-          "$ref": "#/definitions/accessAccess"
-        },
-        "kind": {
-          "$ref": "#/definitions/pluginsPluginKind"
-        },
-        "vars": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "embeddedConf": {
-          "$ref": "#/definitions/pluginsEmbededPluginConf"
-        },
-        "deviceConf": {
-          "$ref": "#/definitions/pluginsDevicePluginConf"
         }
       }
     },
