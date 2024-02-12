@@ -277,9 +277,9 @@ export declare class QueryRequest extends Message<QueryRequest> {
   account?: string;
 
   /**
-   * @generated from field: optional int64 page = 3;
+   * @generated from field: optional int64 offset = 3;
    */
-  page?: bigint;
+  offset?: bigint;
 
   /**
    * @generated from field: optional int64 limit = 4;
