@@ -12,8 +12,8 @@ export const transport = createRouterTransport(({ service }) => {
 
   const namespaces = new Map<string, Namespace>()
   const accountsList = new Map<string, Account>()
-  const accountsByNs = new Map<string, Account[]>()
-  const nodes = new Map<string, Node[]>()
+  const accountsByNs: any = new Map<string, Account[]>()
+  const nodes: any = new Map<string, Node[]>()
 
   const role = Math.floor(Math.random() * 2 + 1)
   const level = Math.floor(Math.random() * 4 + 1)
@@ -88,7 +88,7 @@ export const transport = createRouterTransport(({ service }) => {
     },
     join(request) {
       const account = accountsByNs.get(request.namespace)?.find(
-        ({ uuid }) => uuid === request.account
+        ({ uuid }: any) => uuid === request.account
       )
 
       if (account?.access) {

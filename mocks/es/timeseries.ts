@@ -12,16 +12,16 @@ export const transport = createRouterTransport(({ service }) => {
   const devicesApi = createPromiseClient(DevicesService, devicesTransport)
   const metrics = new Map<string, Map<string, DataPoint[]>>()
 
-  function getField () {
+  function getField() {
     return [50, 40, 30, 20, 10].map((num) => {
       const ts = BigInt(Date.now() - num * 3600 * 1000)
       const value = Value.fromJson(Math.floor(Math.random() * 101))
 
-      return new DataPoint({ ts, value })
+      return new DataPoint({ ts, value: +value })
     })
   }
 
-  function getMetrics (uuid: string) {
+  function getMetrics(uuid: string) {
     const metricsList: Metric[] = []
 
     metrics.get(uuid)?.forEach((value, name) => {
@@ -54,26 +54,26 @@ export const transport = createRouterTransport(({ service }) => {
   })
 
   service(TimeseriesService, {
-    read (request) {
+    read(request: any) {
       const fieldsInfo: MetricInfo[] = []
 
       if (!metrics.has(request.device)) {
         metrics.set(request.device, new Map())
       }
 
-      request.fields.forEach((field) => {
+      request.fields?.forEach((field: any) => {
         const fields = metrics.get(request.device)
 
         const dataPoints = fields?.get(field)?.filter(({ ts }) =>
           ts >= request.from && (request.to) ? ts <= request.to : true
         )
-
-        fieldsInfo.push(new MetricInfo({ field, dataPoints }))
+        const dto = { field, dataPoints }
+        fieldsInfo.push(new MetricInfo(dto))
       })
 
-      return new ReadResponse({ fieldsInfo })
+      return new ReadResponse({ metricsInfo: fieldsInfo })
     },
-    async stat (request) {
+    async stat(request) {
       await new Promise((resolve) => setTimeout(resolve, 300))
       const deviceMetrics: DeviceMetric[] = []
 
@@ -99,7 +99,7 @@ export const transport = createRouterTransport(({ service }) => {
 
       return new StatResponse({ deviceMetrics })
     },
-    write (request) {
+    write(request: any) {
       const dataPoint = request.dataPoint ?? new DataPoint()
       const metric = new Map([[request.field, [dataPoint]]])
       const value = metrics.get(request.device)
@@ -114,7 +114,7 @@ export const transport = createRouterTransport(({ service }) => {
 
       return new WriteResponse({ result: true, ts: BigInt(Date.now()) })
     },
-    writeBulk (request) {
+    writeBulk(request: any) {
       const dataPoint = request.dataPoint ?? new DataPoint()
       const metric = new Map([[request.field, [dataPoint]]])
       const value = metrics.get(request.device)
@@ -129,7 +129,7 @@ export const transport = createRouterTransport(({ service }) => {
 
       return new WriteBulkResponse({ result: true })
     },
-    async flush (request) {
+    async flush(request) {
       if (request.namespace) {
         const { devices } = await devicesApi.list(new QueryRequest({
           namespace: request.namespace
