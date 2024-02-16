@@ -18,7 +18,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { proto3, Struct } from "@bufbuild/protobuf";
+import { proto3, Struct, Timestamp } from "@bufbuild/protobuf";
 import { Access } from "../access/access_pb.js";
 
 /**
@@ -36,6 +36,7 @@ export const Device = proto3.makeMessageType(
     { no: 7, name: "token", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 8, name: "access", kind: "message", T: Access, opt: true },
     { no: 9, name: "config", kind: "message", T: Struct },
+    { no: 10, name: "last_updated", kind: "message", T: Timestamp },
   ],
 );
 
