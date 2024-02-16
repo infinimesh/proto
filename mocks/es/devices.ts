@@ -13,10 +13,10 @@ export const transport = createRouterTransport(({ service }) => {
   const nodes = new Map<string, Node[]>()
 
   function changeDevice(key: string, uuid: string, value: any) {
-    const device = devices.get(uuid) ?? new Device({ uuid })
+    const device: any = devices.get(uuid) ?? new Device({ uuid })
 
     for (const devices of devicesByNs.values()) {
-      const device = devices.find(({ uuid: id }) => id === uuid)
+      const device: any = devices.find(({ uuid: id }) => id === uuid)
 
       if (device) {
         device[key] = value
