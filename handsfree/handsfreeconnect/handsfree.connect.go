@@ -33,7 +33,7 @@ import (
 // generated with a version of connect newer than the one compiled into your binary. You can fix the
 // problem by either regenerating this code with an older version of connect or updating the connect
 // version compiled into your binary.
-const _ = connect.IsAtLeastVersion0_1_0
+const _ = connect.IsAtLeastVersion1_13_0
 
 const (
 	// HandsfreeServiceName is the fully-qualified name of the HandsfreeService service.
@@ -55,6 +55,13 @@ const (
 	HandsfreeServiceConnectProcedure = "/infinimesh.handsfree.HandsfreeService/Connect"
 )
 
+// These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
+var (
+	handsfreeServiceServiceDescriptor       = handsfree.File_handsfree_handsfree_proto.Services().ByName("HandsfreeService")
+	handsfreeServiceSendMethodDescriptor    = handsfreeServiceServiceDescriptor.Methods().ByName("Send")
+	handsfreeServiceConnectMethodDescriptor = handsfreeServiceServiceDescriptor.Methods().ByName("Connect")
+)
+
 // HandsfreeServiceClient is a client for the infinimesh.handsfree.HandsfreeService service.
 type HandsfreeServiceClient interface {
 	Send(context.Context, *connect.Request[handsfree.ControlPacket]) (*connect.Response[handsfree.ControlPacket], error)
@@ -74,12 +81,14 @@ func NewHandsfreeServiceClient(httpClient connect.HTTPClient, baseURL string, op
 		send: connect.NewClient[handsfree.ControlPacket, handsfree.ControlPacket](
 			httpClient,
 			baseURL+HandsfreeServiceSendProcedure,
-			opts...,
+			connect.WithSchema(handsfreeServiceSendMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 		connect: connect.NewClient[handsfree.ConnectionRequest, handsfree.ControlPacket](
 			httpClient,
 			baseURL+HandsfreeServiceConnectProcedure,
-			opts...,
+			connect.WithSchema(handsfreeServiceConnectMethodDescriptor),
+			connect.WithClientOptions(opts...),
 		),
 	}
 }
@@ -116,12 +125,14 @@ func NewHandsfreeServiceHandler(svc HandsfreeServiceHandler, opts ...connect.Han
 	handsfreeServiceSendHandler := connect.NewUnaryHandler(
 		HandsfreeServiceSendProcedure,
 		svc.Send,
-		opts...,
+		connect.WithSchema(handsfreeServiceSendMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	handsfreeServiceConnectHandler := connect.NewServerStreamHandler(
 		HandsfreeServiceConnectProcedure,
 		svc.Connect,
-		opts...,
+		connect.WithSchema(handsfreeServiceConnectMethodDescriptor),
+		connect.WithHandlerOptions(opts...),
 	)
 	return "/infinimesh.handsfree.HandsfreeService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
