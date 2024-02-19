@@ -3179,8 +3179,7 @@
           "$ref": "#/definitions/devicesDevice"
         },
         "meta": {
-          "type": "object",
-          "additionalProperties": {}
+          "type": "object"
         }
       }
     },

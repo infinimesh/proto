@@ -28,7 +28,7 @@ message Event {
     node.namespaces.Namespace namespace = 3;
     node.devices.Device device = 4;
   }
-  map<string, google.protobuf.Value> meta = 5;
+  google.protobuf.Struct meta = 5;
 }
 
 service EventsService{
