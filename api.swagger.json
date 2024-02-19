@@ -1,13 +1,10 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "handsfree/handsfree.proto",
+    "title": "node/access/access.proto",
     "version": "version not set"
   },
   "tags": [
-    {
-      "name": "HandsfreeService"
-    },
     {
       "name": "ShadowService"
     },
@@ -24,10 +21,13 @@
       "name": "DevicesService"
     },
     {
-      "name": "ShadowService"
+      "name": "InternalService"
     },
     {
-      "name": "InternalService"
+      "name": "EventsService"
+    },
+    {
+      "name": "HandsfreeService"
     },
     {
       "name": "PluginsService"
@@ -3162,6 +3162,43 @@
           }
         }
       }
+    },
+    "eventbusEvent": {
+      "type": "object",
+      "properties": {
+        "eventType": {
+          "$ref": "#/definitions/eventbusEventType"
+        },
+        "account": {
+          "$ref": "#/definitions/accountsAccount"
+        },
+        "namespace": {
+          "$ref": "#/definitions/namespacesNamespace"
+        },
+        "device": {
+          "$ref": "#/definitions/devicesDevice"
+        },
+        "meta": {
+          "type": "object",
+          "additionalProperties": {}
+        }
+      }
+    },
+    "eventbusEventType": {
+      "type": "string",
+      "enum": [
+        "NONE",
+        "ACCOUNT_CREATE",
+        "ACCOUNT_UPDATE",
+        "ACCOUNT_DELETE",
+        "NAMESPACE_CREATE",
+        "NAMESPACE_UPDATE",
+        "NAMESPACE_DELETE",
+        "DEVICE_CREATE",
+        "DEVICE_UPDATE",
+        "DEVICE_DELETE"
+      ],
+      "default": "NONE"
     },
     "handsfreeCode": {
       "type": "string",
