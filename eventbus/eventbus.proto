@@ -7,6 +7,7 @@ import "node/namespaces/namespaces.proto";
 import "node/devices/devices.proto";
 import "node/node.proto";
 import "google/protobuf/struct.proto";
+import "google/api/annotations.proto";
 
 enum EventType{
   NONE = 0;
@@ -32,5 +33,7 @@ message Event {
 }
 
 service EventsService{
-  rpc Subscribe (node.EmptyMessage) returns (stream Event);
+  rpc Subscribe (node.EmptyMessage) returns (stream Event){
+    option (google.api.http) = {get: "/eventbus/stream"};
+  }
 }
