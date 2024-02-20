@@ -12,9 +12,10 @@ export const transport = createRouterTransport(({ service }) => {
   const devicesByNs = new Map<string, Device[]>()
   const nodes = new Map<string, Node[]>()
 
-  function changeDevice(key: string, uuid: string, value: any) {
-    const device: any = devices.get(uuid) ?? new Device({ uuid })
+  function changeDevice (key: string, uuid: string, value?: any) {
+    const device = devices.get(uuid) ?? new Device({ uuid })
 
+    if (value ?? true) value = !device[key]
     for (const devices of devicesByNs.values()) {
       const device: any = devices.find(({ uuid: id }) => id === uuid)
 
@@ -39,6 +40,7 @@ export const transport = createRouterTransport(({ service }) => {
         const length = Math.floor(value * 6)
         const role = Math.floor(Math.random() * 2 + 1)
         const level = Math.floor(Math.random() * 4 + 1)
+
         const device = new Device({
           uuid: uuidv4(),
           token: value.toString(8).slice(2),
@@ -77,14 +79,32 @@ export const transport = createRouterTransport(({ service }) => {
       devices.set(request.namespace, new Device(request.device))
       const device = devices.get(request.device?.uuid ?? '')
 
+      for (const devices of devicesByNs.values()) {
+        devices.push(new Device(request.device))
+      }
+
       return new CreateResponse({ device })
     },
     update(request) {
       devices.set(request.uuid, request)
+
+      for (const devices of devicesByNs.values()) {
+        const i = devices.findIndex(({ uuid }) => uuid === request.uuid)
+
+        if (i !== -1) devices.splice(i, 1, request)
+      }
+
       return devices.get(request.uuid) ?? request
     },
     delete(request) {
       devices.delete(request.uuid)
+
+      for (const devices of devicesByNs.values()) {
+        const i = devices.findIndex(({ uuid }) => uuid === request.uuid)
+
+        if (i !== -1) devices.splice(i, 1)
+      }
+
       return new DeleteResponse()
     },
     join(request) {
@@ -137,10 +157,10 @@ export const transport = createRouterTransport(({ service }) => {
       return new EmptyMessage()
     },
     toggle(request) {
-      return new Device(changeDevice('enabled', request.uuid, false))
+      return new Device(changeDevice('enabled', request.uuid))
     },
     toggleBasic(request) {
-      return new Device(changeDevice('basicEnabled', request.uuid, false))
+      return new Device(changeDevice('basicEnabled', request.uuid))
     },
     makeDevicesToken(request) {
       const token = Math.random().toString(16).slice(2)
