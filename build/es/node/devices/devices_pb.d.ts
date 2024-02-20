@@ -18,7 +18,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Struct } from "@bufbuild/protobuf";
+import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Struct, Timestamp } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
 import type { Access } from "../access/access_pb.js";
 
@@ -70,6 +70,11 @@ export declare class Device extends Message<Device> {
    * @generated from field: google.protobuf.Struct config = 9;
    */
   config?: Struct;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp last_updated = 10;
+   */
+  lastUpdated?: Timestamp;
 
   constructor(data?: PartialMessage<Device>);
 
