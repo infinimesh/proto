@@ -10,9 +10,9 @@ import type { Namespace } from "../node/namespaces/namespaces_pb.js";
 import type { Device } from "../node/devices/devices_pb.js";
 
 /**
- * @generated from enum infinimesh.eventbus.EventType
+ * @generated from enum infinimesh.eventbus.EventKind
  */
-export declare enum EventType {
+export declare enum EventKind {
   /**
    * @generated from enum value: NONE = 0;
    */
@@ -69,9 +69,9 @@ export declare enum EventType {
  */
 export declare class Event extends Message<Event> {
   /**
-   * @generated from field: infinimesh.eventbus.EventType event_type = 1;
+   * @generated from field: infinimesh.eventbus.EventKind event_kind = 1;
    */
-  eventType: EventType;
+  eventKind: EventKind;
 
   /**
    * @generated from oneof infinimesh.eventbus.Event.entity
