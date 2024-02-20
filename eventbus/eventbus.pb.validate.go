@@ -56,7 +56,7 @@ func (m *Event) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for EventType
+	// no validation rules for EventKind
 
 	if all {
 		switch v := interface{}(m.GetMeta()).(type) {

@@ -9,7 +9,7 @@ import "node/node.proto";
 import "google/protobuf/struct.proto";
 import "google/api/annotations.proto";
 
-enum EventType{
+enum EventKind{
   NONE = 0;
   ACCOUNT_CREATE = 1;
   ACCOUNT_UPDATE = 2;
@@ -23,7 +23,7 @@ enum EventType{
 }
 
 message Event {
-  EventType event_type = 1;
+  EventKind event_kind = 1;
   oneof entity {
     node.accounts.Account account = 2;
     node.namespaces.Namespace namespace = 3;
@@ -33,7 +33,5 @@ message Event {
 }
 
 service EventsService{
-  rpc Subscribe (node.EmptyMessage) returns (stream Event){
-    option (google.api.http) = {get: "/eventbus/stream"};
-  }
+  rpc Subscribe (node.EmptyMessage) returns (stream Event);
 }

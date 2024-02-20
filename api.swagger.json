@@ -1597,37 +1597,6 @@
         ]
       }
     },
-    "/eventbus/stream": {
-      "get": {
-        "operationId": "EventsService_Subscribe",
-        "responses": {
-          "200": {
-            "description": "A successful response.(streaming responses)",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "result": {
-                  "$ref": "#/definitions/eventbusEvent"
-                },
-                "error": {
-                  "$ref": "#/definitions/rpcStatus"
-                }
-              },
-              "title": "Stream result of eventbusEvent"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "tags": [
-          "EventsService"
-        ]
-      }
-    },
     "/handsfree": {
       "post": {
         "operationId": "HandsfreeService_Send",
@@ -3076,8 +3045,8 @@
     "eventbusEvent": {
       "type": "object",
       "properties": {
-        "eventType": {
-          "$ref": "#/definitions/eventbusEventType"
+        "eventKind": {
+          "$ref": "#/definitions/eventbusEventKind"
         },
         "account": {
           "$ref": "#/definitions/accountsAccount"
@@ -3093,7 +3062,7 @@
         }
       }
     },
-    "eventbusEventType": {
+    "eventbusEventKind": {
       "type": "string",
       "enum": [
         "NONE",
