@@ -10,9 +10,9 @@ import type { Namespace } from "../node/namespaces/namespaces_pb.js";
 import type { Device } from "../node/devices/devices_pb.js";
 
 /**
- * @generated from enum infinimesh.eventbus.EventType
+ * @generated from enum infinimesh.eventbus.EventKind
  */
-export declare enum EventType {
+export declare enum EventKind {
   /**
    * @generated from enum value: NONE = 0;
    */
@@ -34,34 +34,44 @@ export declare enum EventType {
   ACCOUNT_DELETE = 3,
 
   /**
-   * @generated from enum value: NAMESPACE_CREATE = 4;
+   * @generated from enum value: ACCOUNT_MOVE = 4;
    */
-  NAMESPACE_CREATE = 4,
+  ACCOUNT_MOVE = 4,
 
   /**
-   * @generated from enum value: NAMESPACE_UPDATE = 5;
+   * @generated from enum value: NAMESPACE_CREATE = 5;
    */
-  NAMESPACE_UPDATE = 5,
+  NAMESPACE_CREATE = 5,
 
   /**
-   * @generated from enum value: NAMESPACE_DELETE = 6;
+   * @generated from enum value: NAMESPACE_UPDATE = 6;
    */
-  NAMESPACE_DELETE = 6,
+  NAMESPACE_UPDATE = 6,
 
   /**
-   * @generated from enum value: DEVICE_CREATE = 7;
+   * @generated from enum value: NAMESPACE_DELETE = 7;
    */
-  DEVICE_CREATE = 7,
+  NAMESPACE_DELETE = 7,
 
   /**
-   * @generated from enum value: DEVICE_UPDATE = 8;
+   * @generated from enum value: DEVICE_CREATE = 8;
    */
-  DEVICE_UPDATE = 8,
+  DEVICE_CREATE = 8,
 
   /**
-   * @generated from enum value: DEVICE_DELETE = 9;
+   * @generated from enum value: DEVICE_UPDATE = 9;
    */
-  DEVICE_DELETE = 9,
+  DEVICE_UPDATE = 9,
+
+  /**
+   * @generated from enum value: DEVICE_DELETE = 10;
+   */
+  DEVICE_DELETE = 10,
+
+  /**
+   * @generated from enum value: DEVICE_MOVE = 11;
+   */
+  DEVICE_MOVE = 11,
 }
 
 /**
@@ -69,9 +79,9 @@ export declare enum EventType {
  */
 export declare class Event extends Message<Event> {
   /**
-   * @generated from field: infinimesh.eventbus.EventType event_type = 1;
+   * @generated from field: infinimesh.eventbus.EventKind event_kind = 1;
    */
-  eventType: EventType;
+  eventKind: EventKind;
 
   /**
    * @generated from oneof infinimesh.eventbus.Event.entity

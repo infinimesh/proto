@@ -9,21 +9,23 @@ import { Namespace } from "../node/namespaces/namespaces_pb.js";
 import { Device } from "../node/devices/devices_pb.js";
 
 /**
- * @generated from enum infinimesh.eventbus.EventType
+ * @generated from enum infinimesh.eventbus.EventKind
  */
-export const EventType = proto3.makeEnum(
-  "infinimesh.eventbus.EventType",
+export const EventKind = proto3.makeEnum(
+  "infinimesh.eventbus.EventKind",
   [
     {no: 0, name: "NONE"},
     {no: 1, name: "ACCOUNT_CREATE"},
     {no: 2, name: "ACCOUNT_UPDATE"},
     {no: 3, name: "ACCOUNT_DELETE"},
-    {no: 4, name: "NAMESPACE_CREATE"},
-    {no: 5, name: "NAMESPACE_UPDATE"},
-    {no: 6, name: "NAMESPACE_DELETE"},
-    {no: 7, name: "DEVICE_CREATE"},
-    {no: 8, name: "DEVICE_UPDATE"},
-    {no: 9, name: "DEVICE_DELETE"},
+    {no: 4, name: "ACCOUNT_MOVE"},
+    {no: 5, name: "NAMESPACE_CREATE"},
+    {no: 6, name: "NAMESPACE_UPDATE"},
+    {no: 7, name: "NAMESPACE_DELETE"},
+    {no: 8, name: "DEVICE_CREATE"},
+    {no: 9, name: "DEVICE_UPDATE"},
+    {no: 10, name: "DEVICE_DELETE"},
+    {no: 11, name: "DEVICE_MOVE"},
   ],
 );
 
@@ -33,7 +35,7 @@ export const EventType = proto3.makeEnum(
 export const Event = proto3.makeMessageType(
   "infinimesh.eventbus.Event",
   () => [
-    { no: 1, name: "event_type", kind: "enum", T: proto3.getEnumType(EventType) },
+    { no: 1, name: "event_kind", kind: "enum", T: proto3.getEnumType(EventKind) },
     { no: 2, name: "account", kind: "message", T: Account, oneof: "entity" },
     { no: 3, name: "namespace", kind: "message", T: Namespace, oneof: "entity" },
     { no: 4, name: "device", kind: "message", T: Device, oneof: "entity" },
