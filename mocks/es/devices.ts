@@ -1,4 +1,4 @@
-import { createPromiseClient, createRouterTransport } from '@connectrpc/connect'
+import { createPromiseClient, createRouterTransport, ConnectError, Code } from '@connectrpc/connect'
 import { DevicesService, NamespacesService } from '../../build/es/node/node_connect'
 import { DeleteResponse, EmptyMessage, TokenResponse } from '../../build/es//node/node_pb'
 import { Access, Nodes, Node, Role } from '../../build/es/node/access/access_pb'
@@ -95,6 +95,17 @@ export const transport = createRouterTransport(({ service }) => {
       }
 
       return devices.get(request.uuid) ?? request
+    },
+    patchConfig(request: Device): Device {
+      const device = devices.get(request.uuid)
+      if (!device) {
+        throw new ConnectError("Device not found or not enough Access Rights", Code.NotFound)
+      }
+
+      device.config = request.config
+      devices.set(request.uuid, device)
+      return device
+    
     },
     delete(request) {
       devices.delete(request.uuid)
