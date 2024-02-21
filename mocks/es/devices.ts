@@ -12,7 +12,7 @@ export const transport = createRouterTransport(({ service }) => {
   const devicesByNs = new Map<string, Device[]>()
   const nodes = new Map<string, Node[]>()
 
-  function changeDevice (key: string, uuid: string, value?: any) {
+  function changeDevice(key: string, uuid: string, value?: any) {
     const device = devices.get(uuid) ?? new Device({ uuid })
 
     if (value ?? true) value = !device[key]
@@ -157,10 +157,10 @@ export const transport = createRouterTransport(({ service }) => {
       return new EmptyMessage()
     },
     toggle(request) {
-      return new Device(changeDevice('enabled', request.uuid))
+      return new Device(changeDevice('enabled', request.uuid, !request.enabled))
     },
     toggleBasic(request) {
-      return new Device(changeDevice('basicEnabled', request.uuid))
+      return new Device(changeDevice('basicEnabled', request.uuid, !request.basicEnabled))
     },
     makeDevicesToken(request) {
       const token = Math.random().toString(16).slice(2)
