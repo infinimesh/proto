@@ -59,6 +59,12 @@ message DeleteCredentialsRequest {
 message DeleteResponse {}
 message EmptyMessage {}
 
+enum Sort {
+  title = 0;
+  last_updated = 1;
+  enabled = 2;
+}
+
 message QueryRequest {
   optional string namespace = 1;
   optional string account = 2;
@@ -66,7 +72,7 @@ message QueryRequest {
   optional int64 offset = 3;
   optional int64 limit = 4;
   optional string field = 5;
-  optional string sort = 6;
+  optional Sort sort = 6;
 
   map<string, google.protobuf.Value> filters = 7;
 }
