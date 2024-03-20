@@ -1,6 +1,6 @@
 {
   "name": "infinimesh-proto",
-  "version": "3.1.5-7",
+  "version": "3.1.5-8",
   "type": "module",
   "description": "Buf generated gRPC and Connect API ",
   "scripts": {
