@@ -13,20 +13,23 @@ export const transport = createRouterTransport(({ service }) => {
   const devicesByNs = new Map<string, Device[]>()
   const nodes = new Map<string, Node[]>()
 
-  function changeDevice(key: string, uuid: string, value?: JsonValue) {
+  function changeDevice(key: keyof Device, uuid: string, value?: JsonValue) {
     const device = devices.get(uuid) ?? new Device({ uuid })
 
-    if (value ?? true) value = !device[key]
+    if (typeof value !== 'boolean' && (value ?? true)) {
+      value = !device[key]
+    }
+
     for (const devices of devicesByNs.values()) {
       const device = devices.find(({ uuid: id }) => id === uuid)
 
       if (device) {
-        device[key] = value
+        (device[key] as JsonValue | undefined) = value
         break
       }
     }
 
-    device[key] = value
+    (device[key] as JsonValue | undefined) = value
     return device
   }
 
