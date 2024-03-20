@@ -1,10 +1,11 @@
+import { v4 as uuidv4 } from 'uuid'
+import { JsonValue, Struct } from '@bufbuild/protobuf'
 import { createPromiseClient, createRouterTransport, ConnectError, Code } from '@connectrpc/connect'
 import { DevicesService, NamespacesService } from '../../build/es/node/node_connect'
 import { DeleteResponse, EmptyMessage, TokenResponse } from '../../build/es//node/node_pb'
 import { Access, Nodes, Node, Role } from '../../build/es/node/access/access_pb'
 import { Certificate, CreateResponse, Device, Devices } from '../../build/es/node/devices/devices_pb'
 import { transport as nsTransport } from './namespaces.ts'
-import { v4 as uuidv4 } from 'uuid'
 
 export const transport = createRouterTransport(({ service }) => {
   const namespaceApi = createPromiseClient(NamespacesService, nsTransport)
@@ -12,12 +13,12 @@ export const transport = createRouterTransport(({ service }) => {
   const devicesByNs = new Map<string, Device[]>()
   const nodes = new Map<string, Node[]>()
 
-  function changeDevice(key: string, uuid: string, value?: any) {
+  function changeDevice(key: string, uuid: string, value?: JsonValue) {
     const device = devices.get(uuid) ?? new Device({ uuid })
 
     if (value ?? true) value = !device[key]
     for (const devices of devicesByNs.values()) {
-      const device: any = devices.find(({ uuid: id }) => id === uuid)
+      const device = devices.find(({ uuid: id }) => id === uuid)
 
       if (device) {
         device[key] = value
@@ -49,7 +50,7 @@ export const transport = createRouterTransport(({ service }) => {
           tags: Array.from({ length }).map((_, i) => `tag ${i}`),
           access: new Access({ namespace: key, level, role }),
           enabled: true,
-          config: {}
+          config: new Struct({})
         })
 
         devices.set(device.uuid, device)
