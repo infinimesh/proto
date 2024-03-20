@@ -1,4 +1,3 @@
-import { Value } from '@bufbuild/protobuf'
 import { createPromiseClient, createRouterTransport } from '@connectrpc/connect'
 import { TimeseriesService } from '../../build/es/timeseries/timeseries_connect'
 import {
@@ -13,11 +12,11 @@ export const transport = createRouterTransport(({ service }) => {
   const metrics = new Map<string, Map<string, DataPoint[]>>()
 
   function getField() {
-    return [50, 40, 30, 20, 10].map((num) => {
+    return [100, 90, 80, 70, 60, 50, 40, 30, 20, 10].map((num) => {
       const ts = BigInt(Date.now() - num * 3600 * 1000)
-      const value = Value.fromJson(Math.floor(Math.random() * 101))
+      const value = Math.floor(Math.random() * 101)
 
-      return new DataPoint({ ts, value: +value })
+      return new DataPoint({ ts, value })
     })
   }
 
@@ -26,8 +25,8 @@ export const transport = createRouterTransport(({ service }) => {
 
     metrics.get(uuid)?.forEach((value, name) => {
       const dataPoints = value.length
-      let earliest: DataPoint = value[0]
-      let latest: DataPoint = value[0]
+      let earliest = value[0]
+      let latest = value[0]
 
       value.forEach((point) => {
         if (point.ts < earliest.ts) {
@@ -54,21 +53,21 @@ export const transport = createRouterTransport(({ service }) => {
   })
 
   service(TimeseriesService, {
-    read(request: any) {
+    read(request) {
       const fieldsInfo: MetricInfo[] = []
 
       if (!metrics.has(request.device)) {
         metrics.set(request.device, new Map())
       }
 
-      request.fields?.forEach((field: any) => {
+      request.metrics?.forEach((metric) => {
         const fields = metrics.get(request.device)
 
-        const dataPoints = fields?.get(field)?.filter(({ ts }) =>
+        const dataPoints = fields?.get(metric)?.filter(({ ts }) =>
           ts >= request.from && (request.to) ? ts <= request.to : true
         )
-        const dto = { field, dataPoints }
-        fieldsInfo.push(new MetricInfo(dto))
+
+        fieldsInfo.push(new MetricInfo({ metric, dataPoints }))
       })
 
       return new ReadResponse({ metricsInfo: fieldsInfo })
@@ -99,32 +98,31 @@ export const transport = createRouterTransport(({ service }) => {
 
       return new StatResponse({ deviceMetrics })
     },
-    write(request: any) {
+    write(request) {
       const dataPoint = request.dataPoint ?? new DataPoint()
-      const metric = new Map([[request.field, [dataPoint]]])
+      const metric = new Map([[request.metric, [dataPoint]]])
       const value = metrics.get(request.device)
 
       if (!value) {
         metrics.set(request.device, metric)
-      } else if (!value.has(request.field)) {
-        value.set(request.field, [dataPoint])
+      } else if (!value.has(request.metric)) {
+        value.set(request.metric, [dataPoint])
       } else {
-        value.get(request.field)?.push(dataPoint)
+        value.get(request.metric)?.push(dataPoint)
       }
 
       return new WriteResponse({ result: true, ts: BigInt(Date.now()) })
     },
-    writeBulk(request: any) {
-      const dataPoint = request.dataPoint ?? new DataPoint()
-      const metric = new Map([[request.field, [dataPoint]]])
+    writeBulk(request) {
+      const metric = new Map([[request.metric, request.dataPoints]])
       const value = metrics.get(request.device)
 
       if (!value) {
         metrics.set(request.device, metric)
-      } else if (!value.has(request.field)) {
-        value.set(request.field, [dataPoint])
+      } else if (!value.has(request.metric)) {
+        value.set(request.metric, request.dataPoints)
       } else {
-        value.get(request.field)?.push(dataPoint)
+        value.get(request.metric)?.push(...request.dataPoints)
       }
 
       return new WriteBulkResponse({ result: true })
