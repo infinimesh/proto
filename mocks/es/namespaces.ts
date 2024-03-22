@@ -1,3 +1,4 @@
+import { Struct } from '@bufbuild/protobuf'
 import { createPromiseClient, createRouterTransport } from '@connectrpc/connect'
 import { AccountsService, NamespacesService } from '../../build/es/node/node_connect'
 import { DeleteResponse, EmptyMessage } from '../../build/es/node/node_pb'
@@ -19,14 +20,14 @@ export const transport = createRouterTransport(({ service }) => {
   const level = Math.floor(Math.random() * 4 + 1)
 
   for (const key of namespaces.keys()) {
-    nodes[key] = [0, 1].map((i) =>
+    nodes.set(key, [0, 1].map((i) =>
       new Node({
         access: new Access({ namespace: key, level, role }),
         edge: `Namespases2Accounts/${key}-${i}`,
         parent: `Namespaces/${key}`,
         node: ''
       })
-    )
+    ))
   }
 
   accountsApi.list(new EmptyMessage()).then(({ accounts }) => {
@@ -63,7 +64,7 @@ export const transport = createRouterTransport(({ service }) => {
             title: `Namespace ${i + 1}`,
             plugin: new Plugin({ uuid, vars: {} }),
             access: new Access({ namespace, level, role }),
-            config: {}
+            config: new Struct({})
           })
 
           namespaces.set(namespace, namespaceItem)
@@ -99,16 +100,16 @@ export const transport = createRouterTransport(({ service }) => {
 
         accountsByNs.get(request.namespace)?.push(account)
       }
-      return new Accounts({ accounts: accountsByNs[request.namespace] })
+      return new Accounts({ accounts: accountsByNs.get(request.namespace) })
     },
     joins(request) {
-      return new Accounts({ accounts: accountsByNs[request.uuid] })
+      return new Accounts({ accounts: accountsByNs.get(request.uuid) })
     },
     accessibles(request) {
-      return new Nodes({ nodes: nodes[request.uuid] })
+      return new Nodes({ nodes: nodes.get(request.uuid) })
     },
     deletables(request) {
-      return new Nodes({ nodes: nodes[request.uuid] })
+      return new Nodes({ nodes: nodes.get(request.uuid) })
     }
   })
 })
