@@ -66,7 +66,7 @@ message QueryRequest {
   optional int64 offset = 3;
   optional int64 limit = 4;
   optional string field = 5;
-  optional string sort = 6;
+  repeated string sorter = 6;
 
   map<string, google.protobuf.Value> filters = 7;
 }
