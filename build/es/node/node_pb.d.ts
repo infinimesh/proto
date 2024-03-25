@@ -292,9 +292,9 @@ export declare class QueryRequest extends Message<QueryRequest> {
   field?: string;
 
   /**
-   * @generated from field: optional string sort = 6;
+   * @generated from field: repeated string sorter = 6;
    */
-  sort?: string;
+  sorter: string[];
 
   /**
    * @generated from field: map<string, google.protobuf.Value> filters = 7;
