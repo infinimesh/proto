@@ -1151,10 +1151,6 @@ func (m *QueryRequest) validate(all bool) error {
 		// no validation rules for Field
 	}
 
-	if m.Sort != nil {
-		// no validation rules for Sort
-	}
-
 	if len(errors) > 0 {
 		return QueryRequestMultiError(errors)
 	}
