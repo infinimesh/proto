@@ -123,7 +123,7 @@ export const QueryRequest = /*@__PURE__*/ proto3.makeMessageType(
     { no: 3, name: "offset", kind: "scalar", T: 3 /* ScalarType.INT64 */, opt: true },
     { no: 4, name: "limit", kind: "scalar", T: 3 /* ScalarType.INT64 */, opt: true },
     { no: 5, name: "field", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
-    { no: 6, name: "sort", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
+    { no: 6, name: "sorter", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
     { no: 7, name: "filters", kind: "map", K: 9 /* ScalarType.STRING */, V: {kind: "message", T: Value} },
   ],
 );
