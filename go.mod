@@ -6,7 +6,7 @@ require (
 	connectrpc.com/connect v1.18.1
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.10.3
 	google.golang.org/genproto v0.0.0-20220627200112-0a929928cb33
-	google.golang.org/grpc v1.83.2
+	google.golang.org/grpc v1.84.0
 	google.golang.org/protobuf v1.36.11
 )
 
