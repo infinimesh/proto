@@ -16,7 +16,7 @@ Plugins are pinned: `protoc-gen-go` v1.36.12, `protoc-gen-go-grpc` v1.6.2, `prot
 make generate
 ```
 
-Commit the proto change and the generated files together. GitHub Actions runs `make buf-check`: `buf lint`, `buf breaking` against the latest tag (or the pull request base when there is no tag), then `buf generate`, and fails if the generated files differ. On `main`, `buf push` runs when `BUF_TOKEN` is set. That push publishes the module to buf.build. The TypeScript package is `infinimesh-proto` at `build/es`. The Python package is `gen/python`.
+Commit the proto change and the generated files together. GitHub Actions runs `make buf-check`: `buf lint`, `buf breaking` against the latest tag, then `buf generate`, and fails if the generated files differ. Until the first tag, breaking is skipped. On `main`, `buf push` runs when `BUF_TOKEN` is set. That push publishes the module to buf.build. The TypeScript package is `infinimesh-proto` at `build/es`. The Python package is `gen/python`.
 
 See [docs/api-versioning.md](docs/api-versioning.md).
 
