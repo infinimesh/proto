@@ -26,6 +26,7 @@ import (
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -34,11 +35,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ShadowService_Get_FullMethodName              = "/infinimesh.shadow.ShadowService/Get"
-	ShadowService_Patch_FullMethodName            = "/infinimesh.shadow.ShadowService/Patch"
-	ShadowService_Remove_FullMethodName           = "/infinimesh.shadow.ShadowService/Remove"
-	ShadowService_StreamShadow_FullMethodName     = "/infinimesh.shadow.ShadowService/StreamShadow"
-	ShadowService_StreamShadowSync_FullMethodName = "/infinimesh.shadow.ShadowService/StreamShadowSync"
+	ShadowService_Get_FullMethodName                = "/infinimesh.shadow.ShadowService/Get"
+	ShadowService_Patch_FullMethodName              = "/infinimesh.shadow.ShadowService/Patch"
+	ShadowService_Remove_FullMethodName             = "/infinimesh.shadow.ShadowService/Remove"
+	ShadowService_StreamShadow_FullMethodName       = "/infinimesh.shadow.ShadowService/StreamShadow"
+	ShadowService_StreamShadowSync_FullMethodName   = "/infinimesh.shadow.ShadowService/StreamShadowSync"
+	ShadowService_PublishDeviceScope_FullMethodName = "/infinimesh.shadow.ShadowService/PublishDeviceScope"
 )
 
 // ShadowServiceClient is the client API for ShadowService service.
@@ -50,6 +52,7 @@ type ShadowServiceClient interface {
 	Remove(ctx context.Context, in *RemoveRequest, opts ...grpc.CallOption) (*Shadow, error)
 	StreamShadow(ctx context.Context, in *StreamShadowRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Shadow], error)
 	StreamShadowSync(ctx context.Context, in *StreamShadowRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Shadow], error)
+	PublishDeviceScope(ctx context.Context, in *Shadow, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type shadowServiceClient struct {
@@ -128,6 +131,16 @@ func (c *shadowServiceClient) StreamShadowSync(ctx context.Context, in *StreamSh
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type ShadowService_StreamShadowSyncClient = grpc.ServerStreamingClient[Shadow]
 
+func (c *shadowServiceClient) PublishDeviceScope(ctx context.Context, in *Shadow, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, ShadowService_PublishDeviceScope_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ShadowServiceServer is the server API for ShadowService service.
 // All implementations must embed UnimplementedShadowServiceServer
 // for forward compatibility.
@@ -137,6 +150,7 @@ type ShadowServiceServer interface {
 	Remove(context.Context, *RemoveRequest) (*Shadow, error)
 	StreamShadow(*StreamShadowRequest, grpc.ServerStreamingServer[Shadow]) error
 	StreamShadowSync(*StreamShadowRequest, grpc.ServerStreamingServer[Shadow]) error
+	PublishDeviceScope(context.Context, *Shadow) (*emptypb.Empty, error)
 	mustEmbedUnimplementedShadowServiceServer()
 }
 
@@ -161,6 +175,9 @@ func (UnimplementedShadowServiceServer) StreamShadow(*StreamShadowRequest, grpc.
 }
 func (UnimplementedShadowServiceServer) StreamShadowSync(*StreamShadowRequest, grpc.ServerStreamingServer[Shadow]) error {
 	return status.Error(codes.Unimplemented, "method StreamShadowSync not implemented")
+}
+func (UnimplementedShadowServiceServer) PublishDeviceScope(context.Context, *Shadow) (*emptypb.Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method PublishDeviceScope not implemented")
 }
 func (UnimplementedShadowServiceServer) mustEmbedUnimplementedShadowServiceServer() {}
 func (UnimplementedShadowServiceServer) testEmbeddedByValue()                       {}
@@ -259,6 +276,24 @@ func _ShadowService_StreamShadowSync_Handler(srv interface{}, stream grpc.Server
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type ShadowService_StreamShadowSyncServer = grpc.ServerStreamingServer[Shadow]
 
+func _ShadowService_PublishDeviceScope_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Shadow)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShadowServiceServer).PublishDeviceScope(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShadowService_PublishDeviceScope_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShadowServiceServer).PublishDeviceScope(ctx, req.(*Shadow))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ShadowService_ServiceDesc is the grpc.ServiceDesc for ShadowService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -277,6 +312,10 @@ var ShadowService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Remove",
 			Handler:    _ShadowService_Remove_Handler,
+		},
+		{
+			MethodName: "PublishDeviceScope",
+			Handler:    _ShadowService_PublishDeviceScope_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
