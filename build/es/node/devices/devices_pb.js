@@ -63,10 +63,10 @@ export const Devices = proto3.makeMessageType(
 );
 
 /**
- * @generated from message infinimesh.node.devices.v1.HandsfreeCreate
+ * @generated from message infinimesh.node.devices.v1.PairingCreate
  */
-export const HandsfreeCreate = proto3.makeMessageType(
-  "infinimesh.node.devices.v1.HandsfreeCreate",
+export const PairingCreate = proto3.makeMessageType(
+  "infinimesh.node.devices.v1.PairingCreate",
   () => [
     { no: 1, name: "code", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "payload", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
@@ -81,7 +81,7 @@ export const CreateRequest = proto3.makeMessageType(
   () => [
     { no: 1, name: "device", kind: "message", T: Device },
     { no: 2, name: "namespace", kind: "scalar", T: 9 /* ScalarType.STRING */ },
-    { no: 3, name: "handsfree", kind: "message", T: HandsfreeCreate },
+    { no: 3, name: "pairing", kind: "message", T: PairingCreate },
   ],
 );
 

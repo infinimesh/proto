@@ -2,10 +2,10 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from handsfree import handsfree_pb2 as handsfree_dot_handsfree__pb2
+from pairing import pairing_pb2 as pairing_dot_pairing__pb2
 
 
-class HandsfreeServiceStub(object):
+class PairingServiceStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -15,18 +15,18 @@ class HandsfreeServiceStub(object):
             channel: A grpc.Channel.
         """
         self.Send = channel.unary_unary(
-                '/infinimesh.handsfree.v1.HandsfreeService/Send',
-                request_serializer=handsfree_dot_handsfree__pb2.ControlPacket.SerializeToString,
-                response_deserializer=handsfree_dot_handsfree__pb2.ControlPacket.FromString,
+                '/infinimesh.pairing.v1.PairingService/Send',
+                request_serializer=pairing_dot_pairing__pb2.ControlPacket.SerializeToString,
+                response_deserializer=pairing_dot_pairing__pb2.ControlPacket.FromString,
                 _registered_method=True)
         self.Connect = channel.unary_stream(
-                '/infinimesh.handsfree.v1.HandsfreeService/Connect',
-                request_serializer=handsfree_dot_handsfree__pb2.ConnectionRequest.SerializeToString,
-                response_deserializer=handsfree_dot_handsfree__pb2.ControlPacket.FromString,
+                '/infinimesh.pairing.v1.PairingService/Connect',
+                request_serializer=pairing_dot_pairing__pb2.ConnectionRequest.SerializeToString,
+                response_deserializer=pairing_dot_pairing__pb2.ControlPacket.FromString,
                 _registered_method=True)
 
 
-class HandsfreeServiceServicer(object):
+class PairingServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def Send(self, request, context):
@@ -42,27 +42,27 @@ class HandsfreeServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
 
-def add_HandsfreeServiceServicer_to_server(servicer, server):
+def add_PairingServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'Send': grpc.unary_unary_rpc_method_handler(
                     servicer.Send,
-                    request_deserializer=handsfree_dot_handsfree__pb2.ControlPacket.FromString,
-                    response_serializer=handsfree_dot_handsfree__pb2.ControlPacket.SerializeToString,
+                    request_deserializer=pairing_dot_pairing__pb2.ControlPacket.FromString,
+                    response_serializer=pairing_dot_pairing__pb2.ControlPacket.SerializeToString,
             ),
             'Connect': grpc.unary_stream_rpc_method_handler(
                     servicer.Connect,
-                    request_deserializer=handsfree_dot_handsfree__pb2.ConnectionRequest.FromString,
-                    response_serializer=handsfree_dot_handsfree__pb2.ControlPacket.SerializeToString,
+                    request_deserializer=pairing_dot_pairing__pb2.ConnectionRequest.FromString,
+                    response_serializer=pairing_dot_pairing__pb2.ControlPacket.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'infinimesh.handsfree.v1.HandsfreeService', rpc_method_handlers)
+            'infinimesh.pairing.v1.PairingService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('infinimesh.handsfree.v1.HandsfreeService', rpc_method_handlers)
+    server.add_registered_method_handlers('infinimesh.pairing.v1.PairingService', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
-class HandsfreeService(object):
+class PairingService(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
@@ -79,9 +79,9 @@ class HandsfreeService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/infinimesh.handsfree.v1.HandsfreeService/Send',
-            handsfree_dot_handsfree__pb2.ControlPacket.SerializeToString,
-            handsfree_dot_handsfree__pb2.ControlPacket.FromString,
+            '/infinimesh.pairing.v1.PairingService/Send',
+            pairing_dot_pairing__pb2.ControlPacket.SerializeToString,
+            pairing_dot_pairing__pb2.ControlPacket.FromString,
             options,
             channel_credentials,
             insecure,
@@ -106,9 +106,9 @@ class HandsfreeService(object):
         return grpc.experimental.unary_stream(
             request,
             target,
-            '/infinimesh.handsfree.v1.HandsfreeService/Connect',
-            handsfree_dot_handsfree__pb2.ConnectionRequest.SerializeToString,
-            handsfree_dot_handsfree__pb2.ControlPacket.FromString,
+            '/infinimesh.pairing.v1.PairingService/Connect',
+            pairing_dot_pairing__pb2.ConnectionRequest.SerializeToString,
+            pairing_dot_pairing__pb2.ControlPacket.FromString,
             options,
             channel_credentials,
             insecure,

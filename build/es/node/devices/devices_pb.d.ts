@@ -150,9 +150,9 @@ export declare class Devices extends Message<Devices> {
 }
 
 /**
- * @generated from message infinimesh.node.devices.v1.HandsfreeCreate
+ * @generated from message infinimesh.node.devices.v1.PairingCreate
  */
-export declare class HandsfreeCreate extends Message<HandsfreeCreate> {
+export declare class PairingCreate extends Message<PairingCreate> {
   /**
    * @generated from field: string code = 1;
    */
@@ -163,19 +163,19 @@ export declare class HandsfreeCreate extends Message<HandsfreeCreate> {
    */
   payload: string[];
 
-  constructor(data?: PartialMessage<HandsfreeCreate>);
+  constructor(data?: PartialMessage<PairingCreate>);
 
   static readonly runtime: typeof proto3;
-  static readonly typeName = "infinimesh.node.devices.v1.HandsfreeCreate";
+  static readonly typeName = "infinimesh.node.devices.v1.PairingCreate";
   static readonly fields: FieldList;
 
-  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): HandsfreeCreate;
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PairingCreate;
 
-  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): HandsfreeCreate;
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): PairingCreate;
 
-  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): HandsfreeCreate;
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PairingCreate;
 
-  static equals(a: HandsfreeCreate | PlainMessage<HandsfreeCreate> | undefined, b: HandsfreeCreate | PlainMessage<HandsfreeCreate> | undefined): boolean;
+  static equals(a: PairingCreate | PlainMessage<PairingCreate> | undefined, b: PairingCreate | PlainMessage<PairingCreate> | undefined): boolean;
 }
 
 /**
@@ -195,9 +195,9 @@ export declare class CreateRequest extends Message<CreateRequest> {
   namespace: string;
 
   /**
-   * @generated from field: infinimesh.node.devices.v1.HandsfreeCreate handsfree = 3;
+   * @generated from field: infinimesh.node.devices.v1.PairingCreate pairing = 3;
    */
-  handsfree?: HandsfreeCreate;
+  pairing?: PairingCreate;
 
   constructor(data?: PartialMessage<CreateRequest>);
 

@@ -26,7 +26,7 @@ from node.access import access_pb2 as node_dot_access_dot_access__pb2
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1anode/devices/devices.proto\x12\x1ainfinimesh.node.devices.v1\x1a\x18node/access/access.proto\x1a\x1cgoogle/protobuf/struct.proto\"\xe2\x02\n\x06\x44\x65vice\x12\x12\n\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x14\n\x05title\x18\x02 \x01(\tR\x05title\x12\x18\n\x07\x65nabled\x18\x03 \x01(\x08R\x07\x65nabled\x12I\n\x0b\x63\x65rtificate\x18\x04 \x01(\x0b\x32\'.infinimesh.node.devices.v1.CertificateR\x0b\x63\x65rtificate\x12\x12\n\x04tags\x18\x05 \x03(\tR\x04tags\x12#\n\rbasic_enabled\x18\x06 \x01(\x08R\x0c\x62\x61sicEnabled\x12\x14\n\x05token\x18\x07 \x01(\tR\x05token\x12>\n\x06\x61\x63\x63\x65ss\x18\x08 \x01(\x0b\x32!.infinimesh.node.access.v1.AccessH\x00R\x06\x61\x63\x63\x65ss\x88\x01\x01\x12/\n\x06\x63onfig\x18\t \x01(\x0b\x32\x17.google.protobuf.StructR\x06\x63onfigB\t\n\x07_access\"h\n\x0b\x43\x65rtificate\x12\x19\n\x08pem_data\x18\x01 \x01(\tR\x07pemData\x12\x1c\n\talgorithm\x18\x02 \x01(\tR\talgorithm\x12 \n\x0b\x66ingerprint\x18\x03 \x01(\x0cR\x0b\x66ingerprint\"o\n\x07\x44\x65vices\x12<\n\x07\x64\x65vices\x18\x01 \x03(\x0b\x32\".infinimesh.node.devices.v1.DeviceR\x07\x64\x65vices\x12&\n\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"?\n\x0fHandsfreeCreate\x12\x12\n\x04\x63ode\x18\x01 \x01(\tR\x04\x63ode\x12\x18\n\x07payload\x18\x02 \x03(\tR\x07payload\"\xb4\x01\n\rCreateRequest\x12:\n\x06\x64\x65vice\x18\x01 \x01(\x0b\x32\".infinimesh.node.devices.v1.DeviceR\x06\x64\x65vice\x12\x1c\n\tnamespace\x18\x02 \x01(\tR\tnamespace\x12I\n\thandsfree\x18\x03 \x01(\x0b\x32+.infinimesh.node.devices.v1.HandsfreeCreateR\thandsfree\"L\n\x0e\x43reateResponse\x12:\n\x06\x64\x65vice\x18\x01 \x01(\x0b\x32\".infinimesh.node.devices.v1.DeviceR\x06\x64\x65vice\";\n\x17GetByFingerprintRequest\x12 \n\x0b\x66ingerprint\x18\x01 \x01(\x0cR\x0b\x66ingerprintB2Z0github.com/infinimesh/proto/node/devices;devicesb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1anode/devices/devices.proto\x12\x1ainfinimesh.node.devices.v1\x1a\x18node/access/access.proto\x1a\x1cgoogle/protobuf/struct.proto\"\xe2\x02\n\x06\x44\x65vice\x12\x12\n\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x14\n\x05title\x18\x02 \x01(\tR\x05title\x12\x18\n\x07\x65nabled\x18\x03 \x01(\x08R\x07\x65nabled\x12I\n\x0b\x63\x65rtificate\x18\x04 \x01(\x0b\x32\'.infinimesh.node.devices.v1.CertificateR\x0b\x63\x65rtificate\x12\x12\n\x04tags\x18\x05 \x03(\tR\x04tags\x12#\n\rbasic_enabled\x18\x06 \x01(\x08R\x0c\x62\x61sicEnabled\x12\x14\n\x05token\x18\x07 \x01(\tR\x05token\x12>\n\x06\x61\x63\x63\x65ss\x18\x08 \x01(\x0b\x32!.infinimesh.node.access.v1.AccessH\x00R\x06\x61\x63\x63\x65ss\x88\x01\x01\x12/\n\x06\x63onfig\x18\t \x01(\x0b\x32\x17.google.protobuf.StructR\x06\x63onfigB\t\n\x07_access\"h\n\x0b\x43\x65rtificate\x12\x19\n\x08pem_data\x18\x01 \x01(\tR\x07pemData\x12\x1c\n\talgorithm\x18\x02 \x01(\tR\talgorithm\x12 \n\x0b\x66ingerprint\x18\x03 \x01(\x0cR\x0b\x66ingerprint\"o\n\x07\x44\x65vices\x12<\n\x07\x64\x65vices\x18\x01 \x03(\x0b\x32\".infinimesh.node.devices.v1.DeviceR\x07\x64\x65vices\x12&\n\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"=\n\rPairingCreate\x12\x12\n\x04\x63ode\x18\x01 \x01(\tR\x04\x63ode\x12\x18\n\x07payload\x18\x02 \x03(\tR\x07payload\"\xae\x01\n\rCreateRequest\x12:\n\x06\x64\x65vice\x18\x01 \x01(\x0b\x32\".infinimesh.node.devices.v1.DeviceR\x06\x64\x65vice\x12\x1c\n\tnamespace\x18\x02 \x01(\tR\tnamespace\x12\x43\n\x07pairing\x18\x03 \x01(\x0b\x32).infinimesh.node.devices.v1.PairingCreateR\x07pairing\"L\n\x0e\x43reateResponse\x12:\n\x06\x64\x65vice\x18\x01 \x01(\x0b\x32\".infinimesh.node.devices.v1.DeviceR\x06\x64\x65vice\";\n\x17GetByFingerprintRequest\x12 \n\x0b\x66ingerprint\x18\x01 \x01(\x0cR\x0b\x66ingerprintB2Z0github.com/infinimesh/proto/node/devices;devicesb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -40,12 +40,12 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_CERTIFICATE']._serialized_end=575
   _globals['_DEVICES']._serialized_start=577
   _globals['_DEVICES']._serialized_end=688
-  _globals['_HANDSFREECREATE']._serialized_start=690
-  _globals['_HANDSFREECREATE']._serialized_end=753
-  _globals['_CREATEREQUEST']._serialized_start=756
-  _globals['_CREATEREQUEST']._serialized_end=936
-  _globals['_CREATERESPONSE']._serialized_start=938
-  _globals['_CREATERESPONSE']._serialized_end=1014
-  _globals['_GETBYFINGERPRINTREQUEST']._serialized_start=1016
-  _globals['_GETBYFINGERPRINTREQUEST']._serialized_end=1075
+  _globals['_PAIRINGCREATE']._serialized_start=690
+  _globals['_PAIRINGCREATE']._serialized_end=751
+  _globals['_CREATEREQUEST']._serialized_start=754
+  _globals['_CREATEREQUEST']._serialized_end=928
+  _globals['_CREATERESPONSE']._serialized_start=930
+  _globals['_CREATERESPONSE']._serialized_end=1006
+  _globals['_GETBYFINGERPRINTREQUEST']._serialized_start=1008
+  _globals['_GETBYFINGERPRINTREQUEST']._serialized_end=1067
 # @@protoc_insertion_point(module_scope)

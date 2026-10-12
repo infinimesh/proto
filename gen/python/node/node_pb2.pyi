@@ -1,4 +1,5 @@
 from google.api import annotations_pb2 as _annotations_pb2
+from protoc_gen_openapiv2.options import annotations_pb2 as _annotations_pb2_1
 from node.accounts import accounts_pb2 as _accounts_pb2
 from node.access import access_pb2 as _access_pb2
 from node.sessions import sessions_pb2 as _sessions_pb2

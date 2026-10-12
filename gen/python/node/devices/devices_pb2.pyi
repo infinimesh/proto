@@ -48,7 +48,7 @@ class Devices(_message.Message):
     next_page_token: str
     def __init__(self, devices: _Optional[_Iterable[_Union[Device, _Mapping]]] = ..., next_page_token: _Optional[str] = ...) -> None: ...
 
-class HandsfreeCreate(_message.Message):
+class PairingCreate(_message.Message):
     __slots__ = ("code", "payload")
     CODE_FIELD_NUMBER: _ClassVar[int]
     PAYLOAD_FIELD_NUMBER: _ClassVar[int]
@@ -57,14 +57,14 @@ class HandsfreeCreate(_message.Message):
     def __init__(self, code: _Optional[str] = ..., payload: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class CreateRequest(_message.Message):
-    __slots__ = ("device", "namespace", "handsfree")
+    __slots__ = ("device", "namespace", "pairing")
     DEVICE_FIELD_NUMBER: _ClassVar[int]
     NAMESPACE_FIELD_NUMBER: _ClassVar[int]
-    HANDSFREE_FIELD_NUMBER: _ClassVar[int]
+    PAIRING_FIELD_NUMBER: _ClassVar[int]
     device: Device
     namespace: str
-    handsfree: HandsfreeCreate
-    def __init__(self, device: _Optional[_Union[Device, _Mapping]] = ..., namespace: _Optional[str] = ..., handsfree: _Optional[_Union[HandsfreeCreate, _Mapping]] = ...) -> None: ...
+    pairing: PairingCreate
+    def __init__(self, device: _Optional[_Union[Device, _Mapping]] = ..., namespace: _Optional[str] = ..., pairing: _Optional[_Union[PairingCreate, _Mapping]] = ...) -> None: ...
 
 class CreateResponse(_message.Message):
     __slots__ = ("device",)
