@@ -32,6 +32,36 @@ export const Namespace = proto3.makeMessageType(
     { no: 3, name: "access", kind: "message", T: Access, opt: true },
     { no: 4, name: "plugin", kind: "scalar", T: 9 /* ScalarType.STRING */, opt: true },
     { no: 5, name: "config", kind: "message", T: Struct },
+    { no: 6, name: "ota", kind: "message", T: OTAConfig },
+    { no: 7, name: "quota", kind: "message", T: Quota },
+  ],
+);
+
+/**
+ * OTAConfig is read by the OTA addon. backend is hawkBit or mender.
+ *
+ * @generated from message infinimesh.node.namespaces.v1.OTAConfig
+ */
+export const OTAConfig = proto3.makeMessageType(
+  "infinimesh.node.namespaces.v1.OTAConfig",
+  () => [
+    { no: 1, name: "enabled", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 2, name: "backend_url", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "backend", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * Quota limits a namespace. Zero means no limit.
+ *
+ * @generated from message infinimesh.node.namespaces.v1.Quota
+ */
+export const Quota = proto3.makeMessageType(
+  "infinimesh.node.namespaces.v1.Quota",
+  () => [
+    { no: 1, name: "max_devices", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 2, name: "device_messages_per_second", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
+    { no: 3, name: "namespace_messages_per_second", kind: "scalar", T: 1 /* ScalarType.DOUBLE */ },
   ],
 );
 

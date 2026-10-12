@@ -41,6 +41,7 @@ const (
 	ShadowService_StreamShadow_FullMethodName       = "/infinimesh.shadow.v1.ShadowService/StreamShadow"
 	ShadowService_StreamShadowSync_FullMethodName   = "/infinimesh.shadow.v1.ShadowService/StreamShadowSync"
 	ShadowService_PublishDeviceScope_FullMethodName = "/infinimesh.shadow.v1.ShadowService/PublishDeviceScope"
+	ShadowService_PatchMany_FullMethodName          = "/infinimesh.shadow.v1.ShadowService/PatchMany"
 )
 
 // ShadowServiceClient is the client API for ShadowService service.
@@ -53,6 +54,7 @@ type ShadowServiceClient interface {
 	StreamShadow(ctx context.Context, in *StreamShadowRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Shadow], error)
 	StreamShadowSync(ctx context.Context, in *StreamShadowRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[Shadow], error)
 	PublishDeviceScope(ctx context.Context, in *Shadow, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	PatchMany(ctx context.Context, in *PatchManyRequest, opts ...grpc.CallOption) (*PatchManyResponse, error)
 }
 
 type shadowServiceClient struct {
@@ -141,6 +143,16 @@ func (c *shadowServiceClient) PublishDeviceScope(ctx context.Context, in *Shadow
 	return out, nil
 }
 
+func (c *shadowServiceClient) PatchMany(ctx context.Context, in *PatchManyRequest, opts ...grpc.CallOption) (*PatchManyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PatchManyResponse)
+	err := c.cc.Invoke(ctx, ShadowService_PatchMany_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ShadowServiceServer is the server API for ShadowService service.
 // All implementations must embed UnimplementedShadowServiceServer
 // for forward compatibility.
@@ -151,6 +163,7 @@ type ShadowServiceServer interface {
 	StreamShadow(*StreamShadowRequest, grpc.ServerStreamingServer[Shadow]) error
 	StreamShadowSync(*StreamShadowRequest, grpc.ServerStreamingServer[Shadow]) error
 	PublishDeviceScope(context.Context, *Shadow) (*emptypb.Empty, error)
+	PatchMany(context.Context, *PatchManyRequest) (*PatchManyResponse, error)
 	mustEmbedUnimplementedShadowServiceServer()
 }
 
@@ -178,6 +191,9 @@ func (UnimplementedShadowServiceServer) StreamShadowSync(*StreamShadowRequest, g
 }
 func (UnimplementedShadowServiceServer) PublishDeviceScope(context.Context, *Shadow) (*emptypb.Empty, error) {
 	return nil, status.Error(codes.Unimplemented, "method PublishDeviceScope not implemented")
+}
+func (UnimplementedShadowServiceServer) PatchMany(context.Context, *PatchManyRequest) (*PatchManyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method PatchMany not implemented")
 }
 func (UnimplementedShadowServiceServer) mustEmbedUnimplementedShadowServiceServer() {}
 func (UnimplementedShadowServiceServer) testEmbeddedByValue()                       {}
@@ -294,6 +310,24 @@ func _ShadowService_PublishDeviceScope_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ShadowService_PatchMany_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PatchManyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShadowServiceServer).PatchMany(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShadowService_PatchMany_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShadowServiceServer).PatchMany(ctx, req.(*PatchManyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ShadowService_ServiceDesc is the grpc.ServiceDesc for ShadowService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -316,6 +350,10 @@ var ShadowService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PublishDeviceScope",
 			Handler:    _ShadowService_PublishDeviceScope_Handler,
+		},
+		{
+			MethodName: "PatchMany",
+			Handler:    _ShadowService_PatchMany_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

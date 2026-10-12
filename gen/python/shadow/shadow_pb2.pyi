@@ -17,6 +17,8 @@ class ShadowEvent(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     STATE: _ClassVar[ShadowEvent]
     DEVICE_ADDED: _ClassVar[ShadowEvent]
     DEVICE_REMOVED: _ClassVar[ShadowEvent]
+    TAG_ADDED: _ClassVar[ShadowEvent]
+    TAG_REMOVED: _ClassVar[ShadowEvent]
 
 class StateKey(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -26,6 +28,8 @@ class StateKey(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
 STATE: ShadowEvent
 DEVICE_ADDED: ShadowEvent
 DEVICE_REMOVED: ShadowEvent
+TAG_ADDED: ShadowEvent
+TAG_REMOVED: ShadowEvent
 REPORTED: StateKey
 DESIRED: StateKey
 CONNECTION: StateKey
@@ -63,7 +67,7 @@ class DeviceMeta(_message.Message):
     def __init__(self, device: _Optional[str] = ..., title: _Optional[str] = ..., namespace: _Optional[str] = ..., tags: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class Shadow(_message.Message):
-    __slots__ = ("device", "reported", "desired", "connection", "event_id", "title", "namespace", "tags", "event", "account", "sequence")
+    __slots__ = ("device", "reported", "desired", "connection", "event_id", "title", "namespace", "tags", "event", "account", "sequence", "tag")
     DEVICE_FIELD_NUMBER: _ClassVar[int]
     REPORTED_FIELD_NUMBER: _ClassVar[int]
     DESIRED_FIELD_NUMBER: _ClassVar[int]
@@ -75,6 +79,7 @@ class Shadow(_message.Message):
     EVENT_FIELD_NUMBER: _ClassVar[int]
     ACCOUNT_FIELD_NUMBER: _ClassVar[int]
     SEQUENCE_FIELD_NUMBER: _ClassVar[int]
+    TAG_FIELD_NUMBER: _ClassVar[int]
     device: str
     reported: State
     desired: State
@@ -86,7 +91,26 @@ class Shadow(_message.Message):
     event: ShadowEvent
     account: str
     sequence: int
-    def __init__(self, device: _Optional[str] = ..., reported: _Optional[_Union[State, _Mapping]] = ..., desired: _Optional[_Union[State, _Mapping]] = ..., connection: _Optional[_Union[ConnectionState, _Mapping]] = ..., event_id: _Optional[int] = ..., title: _Optional[str] = ..., namespace: _Optional[str] = ..., tags: _Optional[_Iterable[str]] = ..., event: _Optional[_Union[ShadowEvent, str]] = ..., account: _Optional[str] = ..., sequence: _Optional[int] = ...) -> None: ...
+    tag: str
+    def __init__(self, device: _Optional[str] = ..., reported: _Optional[_Union[State, _Mapping]] = ..., desired: _Optional[_Union[State, _Mapping]] = ..., connection: _Optional[_Union[ConnectionState, _Mapping]] = ..., event_id: _Optional[int] = ..., title: _Optional[str] = ..., namespace: _Optional[str] = ..., tags: _Optional[_Iterable[str]] = ..., event: _Optional[_Union[ShadowEvent, str]] = ..., account: _Optional[str] = ..., sequence: _Optional[int] = ..., tag: _Optional[str] = ...) -> None: ...
+
+class PatchManyRequest(_message.Message):
+    __slots__ = ("devices", "desired", "namespace", "tag")
+    DEVICES_FIELD_NUMBER: _ClassVar[int]
+    DESIRED_FIELD_NUMBER: _ClassVar[int]
+    NAMESPACE_FIELD_NUMBER: _ClassVar[int]
+    TAG_FIELD_NUMBER: _ClassVar[int]
+    devices: _containers.RepeatedScalarFieldContainer[str]
+    desired: State
+    namespace: str
+    tag: str
+    def __init__(self, devices: _Optional[_Iterable[str]] = ..., desired: _Optional[_Union[State, _Mapping]] = ..., namespace: _Optional[str] = ..., tag: _Optional[str] = ...) -> None: ...
+
+class PatchManyResponse(_message.Message):
+    __slots__ = ("updated",)
+    UPDATED_FIELD_NUMBER: _ClassVar[int]
+    updated: int
+    def __init__(self, updated: _Optional[int] = ...) -> None: ...
 
 class GetRequest(_message.Message):
     __slots__ = ("pool", "devices", "device")

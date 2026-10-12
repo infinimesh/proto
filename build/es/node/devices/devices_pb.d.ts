@@ -21,6 +21,7 @@
 import type { BinaryReadOptions, FieldList, JsonReadOptions, JsonValue, PartialMessage, PlainMessage, Struct } from "@bufbuild/protobuf";
 import { Message, proto3 } from "@bufbuild/protobuf";
 import type { Access } from "../access/access_pb.js";
+import type { Quota } from "../namespaces/namespaces_pb.js";
 
 /**
  * @generated from message infinimesh.node.devices.v1.Device
@@ -71,6 +72,13 @@ export declare class Device extends Message<Device> {
    */
   config?: Struct;
 
+  /**
+   * Filled on GetByFingerprint from the device's namespace. Not stored.
+   *
+   * @generated from field: infinimesh.node.namespaces.v1.Quota quota = 10;
+   */
+  quota?: Quota;
+
   constructor(data?: PartialMessage<Device>);
 
   static readonly runtime: typeof proto3;
@@ -104,6 +112,23 @@ export declare class Certificate extends Message<Certificate> {
    * @generated from field: bytes fingerprint = 3;
    */
   fingerprint: Uint8Array;
+
+  /**
+   * Previous fingerprint that stays valid until the next rotation.
+   *
+   * @generated from field: bytes rollover_fingerprint = 4;
+   */
+  rolloverFingerprint: Uint8Array;
+
+  /**
+   * @generated from field: bool revoked = 5;
+   */
+  revoked: boolean;
+
+  /**
+   * @generated from field: repeated bytes revoked_fingerprints = 6;
+   */
+  revokedFingerprints: Uint8Array[];
 
   constructor(data?: PartialMessage<Certificate>);
 
@@ -260,5 +285,231 @@ export declare class GetByFingerprintRequest extends Message<GetByFingerprintReq
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): GetByFingerprintRequest;
 
   static equals(a: GetByFingerprintRequest | PlainMessage<GetByFingerprintRequest> | undefined, b: GetByFingerprintRequest | PlainMessage<GetByFingerprintRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message infinimesh.node.devices.v1.BulkCreateRequest
+ */
+export declare class BulkCreateRequest extends Message<BulkCreateRequest> {
+  /**
+   * @generated from field: string namespace = 1;
+   */
+  namespace: string;
+
+  /**
+   * @generated from field: repeated infinimesh.node.devices.v1.Device devices = 2;
+   */
+  devices: Device[];
+
+  constructor(data?: PartialMessage<BulkCreateRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "infinimesh.node.devices.v1.BulkCreateRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): BulkCreateRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): BulkCreateRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): BulkCreateRequest;
+
+  static equals(a: BulkCreateRequest | PlainMessage<BulkCreateRequest> | undefined, b: BulkCreateRequest | PlainMessage<BulkCreateRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message infinimesh.node.devices.v1.BulkCreateResponse
+ */
+export declare class BulkCreateResponse extends Message<BulkCreateResponse> {
+  /**
+   * @generated from field: repeated infinimesh.node.devices.v1.Device devices = 1;
+   */
+  devices: Device[];
+
+  constructor(data?: PartialMessage<BulkCreateResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "infinimesh.node.devices.v1.BulkCreateResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): BulkCreateResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): BulkCreateResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): BulkCreateResponse;
+
+  static equals(a: BulkCreateResponse | PlainMessage<BulkCreateResponse> | undefined, b: BulkCreateResponse | PlainMessage<BulkCreateResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message infinimesh.node.devices.v1.ClaimIssueRequest
+ */
+export declare class ClaimIssueRequest extends Message<ClaimIssueRequest> {
+  /**
+   * @generated from field: string namespace = 1;
+   */
+  namespace: string;
+
+  /**
+   * Unix seconds. The factory token stops working at this time.
+   *
+   * @generated from field: int64 expires_at = 2;
+   */
+  expiresAt: bigint;
+
+  constructor(data?: PartialMessage<ClaimIssueRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "infinimesh.node.devices.v1.ClaimIssueRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ClaimIssueRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ClaimIssueRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ClaimIssueRequest;
+
+  static equals(a: ClaimIssueRequest | PlainMessage<ClaimIssueRequest> | undefined, b: ClaimIssueRequest | PlainMessage<ClaimIssueRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message infinimesh.node.devices.v1.ClaimIssueResponse
+ */
+export declare class ClaimIssueResponse extends Message<ClaimIssueResponse> {
+  /**
+   * @generated from field: string token = 1;
+   */
+  token: string;
+
+  /**
+   * @generated from field: int64 expires_at = 2;
+   */
+  expiresAt: bigint;
+
+  constructor(data?: PartialMessage<ClaimIssueResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "infinimesh.node.devices.v1.ClaimIssueResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ClaimIssueResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ClaimIssueResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ClaimIssueResponse;
+
+  static equals(a: ClaimIssueResponse | PlainMessage<ClaimIssueResponse> | undefined, b: ClaimIssueResponse | PlainMessage<ClaimIssueResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message infinimesh.node.devices.v1.ClaimRequest
+ */
+export declare class ClaimRequest extends Message<ClaimRequest> {
+  /**
+   * @generated from field: string token = 1;
+   */
+  token: string;
+
+  /**
+   * @generated from field: infinimesh.node.devices.v1.Device device = 2;
+   */
+  device?: Device;
+
+  constructor(data?: PartialMessage<ClaimRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "infinimesh.node.devices.v1.ClaimRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ClaimRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ClaimRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ClaimRequest;
+
+  static equals(a: ClaimRequest | PlainMessage<ClaimRequest> | undefined, b: ClaimRequest | PlainMessage<ClaimRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message infinimesh.node.devices.v1.ClaimResponse
+ */
+export declare class ClaimResponse extends Message<ClaimResponse> {
+  /**
+   * @generated from field: infinimesh.node.devices.v1.Device device = 1;
+   */
+  device?: Device;
+
+  constructor(data?: PartialMessage<ClaimResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "infinimesh.node.devices.v1.ClaimResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): ClaimResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): ClaimResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): ClaimResponse;
+
+  static equals(a: ClaimResponse | PlainMessage<ClaimResponse> | undefined, b: ClaimResponse | PlainMessage<ClaimResponse> | undefined): boolean;
+}
+
+/**
+ * @generated from message infinimesh.node.devices.v1.RotateCertificateRequest
+ */
+export declare class RotateCertificateRequest extends Message<RotateCertificateRequest> {
+  /**
+   * @generated from field: string uuid = 1;
+   */
+  uuid: string;
+
+  /**
+   * @generated from field: infinimesh.node.devices.v1.Certificate certificate = 2;
+   */
+  certificate?: Certificate;
+
+  constructor(data?: PartialMessage<RotateCertificateRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "infinimesh.node.devices.v1.RotateCertificateRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RotateCertificateRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RotateCertificateRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RotateCertificateRequest;
+
+  static equals(a: RotateCertificateRequest | PlainMessage<RotateCertificateRequest> | undefined, b: RotateCertificateRequest | PlainMessage<RotateCertificateRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message infinimesh.node.devices.v1.RevokeCertificateRequest
+ */
+export declare class RevokeCertificateRequest extends Message<RevokeCertificateRequest> {
+  /**
+   * @generated from field: string uuid = 1;
+   */
+  uuid: string;
+
+  /**
+   * Empty revokes every fingerprint on the device.
+   *
+   * @generated from field: bytes fingerprint = 2;
+   */
+  fingerprint: Uint8Array;
+
+  constructor(data?: PartialMessage<RevokeCertificateRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "infinimesh.node.devices.v1.RevokeCertificateRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): RevokeCertificateRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): RevokeCertificateRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): RevokeCertificateRequest;
+
+  static equals(a: RevokeCertificateRequest | PlainMessage<RevokeCertificateRequest> | undefined, b: RevokeCertificateRequest | PlainMessage<RevokeCertificateRequest> | undefined): boolean;
 }
 

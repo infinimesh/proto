@@ -26,8 +26,11 @@ import (
 	node "github.com/infinimesh/proto/node"
 	access "github.com/infinimesh/proto/node/access"
 	accounts "github.com/infinimesh/proto/node/accounts"
+	audit "github.com/infinimesh/proto/node/audit"
 	devices "github.com/infinimesh/proto/node/devices"
+	grants "github.com/infinimesh/proto/node/grants"
 	namespaces "github.com/infinimesh/proto/node/namespaces"
+	rules "github.com/infinimesh/proto/node/rules"
 	sessions "github.com/infinimesh/proto/node/sessions"
 	shadow "github.com/infinimesh/proto/shadow"
 	http "net/http"
@@ -52,6 +55,12 @@ const (
 	SessionsServiceName = "infinimesh.node.v1.SessionsService"
 	// ShadowServiceName is the fully-qualified name of the ShadowService service.
 	ShadowServiceName = "infinimesh.node.v1.ShadowService"
+	// RulesServiceName is the fully-qualified name of the RulesService service.
+	RulesServiceName = "infinimesh.node.v1.RulesService"
+	// AuditServiceName is the fully-qualified name of the AuditService service.
+	AuditServiceName = "infinimesh.node.v1.AuditService"
+	// GrantsServiceName is the fully-qualified name of the GrantsService service.
+	GrantsServiceName = "infinimesh.node.v1.GrantsService"
 	// InternalServiceName is the fully-qualified name of the InternalService service.
 	InternalServiceName = "infinimesh.node.v1.InternalService"
 )
@@ -134,6 +143,20 @@ const (
 	// DevicesServiceGetByFingerprintProcedure is the fully-qualified name of the DevicesService's
 	// GetByFingerprint RPC.
 	DevicesServiceGetByFingerprintProcedure = "/infinimesh.node.v1.DevicesService/GetByFingerprint"
+	// DevicesServiceBulkCreateProcedure is the fully-qualified name of the DevicesService's BulkCreate
+	// RPC.
+	DevicesServiceBulkCreateProcedure = "/infinimesh.node.v1.DevicesService/BulkCreate"
+	// DevicesServiceIssueClaimProcedure is the fully-qualified name of the DevicesService's IssueClaim
+	// RPC.
+	DevicesServiceIssueClaimProcedure = "/infinimesh.node.v1.DevicesService/IssueClaim"
+	// DevicesServiceClaimProcedure is the fully-qualified name of the DevicesService's Claim RPC.
+	DevicesServiceClaimProcedure = "/infinimesh.node.v1.DevicesService/Claim"
+	// DevicesServiceRotateCertificateProcedure is the fully-qualified name of the DevicesService's
+	// RotateCertificate RPC.
+	DevicesServiceRotateCertificateProcedure = "/infinimesh.node.v1.DevicesService/RotateCertificate"
+	// DevicesServiceRevokeCertificateProcedure is the fully-qualified name of the DevicesService's
+	// RevokeCertificate RPC.
+	DevicesServiceRevokeCertificateProcedure = "/infinimesh.node.v1.DevicesService/RevokeCertificate"
 	// DevicesServiceRevokeDevicesTokenProcedure is the fully-qualified name of the DevicesService's
 	// RevokeDevicesToken RPC.
 	DevicesServiceRevokeDevicesTokenProcedure = "/infinimesh.node.v1.DevicesService/RevokeDevicesToken"
@@ -156,6 +179,37 @@ const (
 	// ShadowServiceStreamShadowSyncProcedure is the fully-qualified name of the ShadowService's
 	// StreamShadowSync RPC.
 	ShadowServiceStreamShadowSyncProcedure = "/infinimesh.node.v1.ShadowService/StreamShadowSync"
+	// ShadowServicePatchManyProcedure is the fully-qualified name of the ShadowService's PatchMany RPC.
+	ShadowServicePatchManyProcedure = "/infinimesh.node.v1.ShadowService/PatchMany"
+	// RulesServiceCreateProcedure is the fully-qualified name of the RulesService's Create RPC.
+	RulesServiceCreateProcedure = "/infinimesh.node.v1.RulesService/Create"
+	// RulesServiceUpdateProcedure is the fully-qualified name of the RulesService's Update RPC.
+	RulesServiceUpdateProcedure = "/infinimesh.node.v1.RulesService/Update"
+	// RulesServiceGetProcedure is the fully-qualified name of the RulesService's Get RPC.
+	RulesServiceGetProcedure = "/infinimesh.node.v1.RulesService/Get"
+	// RulesServiceListProcedure is the fully-qualified name of the RulesService's List RPC.
+	RulesServiceListProcedure = "/infinimesh.node.v1.RulesService/List"
+	// RulesServiceDeleteProcedure is the fully-qualified name of the RulesService's Delete RPC.
+	RulesServiceDeleteProcedure = "/infinimesh.node.v1.RulesService/Delete"
+	// RulesServiceListAlarmsProcedure is the fully-qualified name of the RulesService's ListAlarms RPC.
+	RulesServiceListAlarmsProcedure = "/infinimesh.node.v1.RulesService/ListAlarms"
+	// RulesServiceAckAlarmProcedure is the fully-qualified name of the RulesService's AckAlarm RPC.
+	RulesServiceAckAlarmProcedure = "/infinimesh.node.v1.RulesService/AckAlarm"
+	// RulesServiceClearAlarmProcedure is the fully-qualified name of the RulesService's ClearAlarm RPC.
+	RulesServiceClearAlarmProcedure = "/infinimesh.node.v1.RulesService/ClearAlarm"
+	// AuditServiceListProcedure is the fully-qualified name of the AuditService's List RPC.
+	AuditServiceListProcedure = "/infinimesh.node.v1.AuditService/List"
+	// AuditServiceExportProcedure is the fully-qualified name of the AuditService's Export RPC.
+	AuditServiceExportProcedure = "/infinimesh.node.v1.AuditService/Export"
+	// GrantsServiceCreateProcedure is the fully-qualified name of the GrantsService's Create RPC.
+	GrantsServiceCreateProcedure = "/infinimesh.node.v1.GrantsService/Create"
+	// GrantsServiceListProcedure is the fully-qualified name of the GrantsService's List RPC.
+	GrantsServiceListProcedure = "/infinimesh.node.v1.GrantsService/List"
+	// GrantsServiceRevokeProcedure is the fully-qualified name of the GrantsService's Revoke RPC.
+	GrantsServiceRevokeProcedure = "/infinimesh.node.v1.GrantsService/Revoke"
+	// GrantsServiceListConsentProcedure is the fully-qualified name of the GrantsService's ListConsent
+	// RPC.
+	GrantsServiceListConsentProcedure = "/infinimesh.node.v1.GrantsService/ListConsent"
 	// InternalServiceGetLDAPProvidersProcedure is the fully-qualified name of the InternalService's
 	// GetLDAPProviders RPC.
 	InternalServiceGetLDAPProvidersProcedure = "/infinimesh.node.v1.InternalService/GetLDAPProviders"
@@ -760,6 +814,11 @@ type DevicesServiceClient interface {
 	MakeDevicesToken(context.Context, *connect.Request[node.DevicesTokenRequest]) (*connect.Response[node.TokenResponse], error)
 	GetByToken(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error)
 	GetByFingerprint(context.Context, *connect.Request[devices.GetByFingerprintRequest]) (*connect.Response[devices.Device], error)
+	BulkCreate(context.Context, *connect.Request[devices.BulkCreateRequest]) (*connect.Response[devices.BulkCreateResponse], error)
+	IssueClaim(context.Context, *connect.Request[devices.ClaimIssueRequest]) (*connect.Response[devices.ClaimIssueResponse], error)
+	Claim(context.Context, *connect.Request[devices.ClaimRequest]) (*connect.Response[devices.ClaimResponse], error)
+	RotateCertificate(context.Context, *connect.Request[devices.RotateCertificateRequest]) (*connect.Response[devices.Device], error)
+	RevokeCertificate(context.Context, *connect.Request[devices.RevokeCertificateRequest]) (*connect.Response[devices.Device], error)
 	RevokeDevicesToken(context.Context, *connect.Request[node.RevokeDeviceTokenRequest]) (*connect.Response[node.DeleteResponse], error)
 }
 
@@ -834,6 +893,36 @@ func NewDevicesServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 			connect.WithSchema(devicesServiceMethods.ByName("GetByFingerprint")),
 			connect.WithClientOptions(opts...),
 		),
+		bulkCreate: connect.NewClient[devices.BulkCreateRequest, devices.BulkCreateResponse](
+			httpClient,
+			baseURL+DevicesServiceBulkCreateProcedure,
+			connect.WithSchema(devicesServiceMethods.ByName("BulkCreate")),
+			connect.WithClientOptions(opts...),
+		),
+		issueClaim: connect.NewClient[devices.ClaimIssueRequest, devices.ClaimIssueResponse](
+			httpClient,
+			baseURL+DevicesServiceIssueClaimProcedure,
+			connect.WithSchema(devicesServiceMethods.ByName("IssueClaim")),
+			connect.WithClientOptions(opts...),
+		),
+		claim: connect.NewClient[devices.ClaimRequest, devices.ClaimResponse](
+			httpClient,
+			baseURL+DevicesServiceClaimProcedure,
+			connect.WithSchema(devicesServiceMethods.ByName("Claim")),
+			connect.WithClientOptions(opts...),
+		),
+		rotateCertificate: connect.NewClient[devices.RotateCertificateRequest, devices.Device](
+			httpClient,
+			baseURL+DevicesServiceRotateCertificateProcedure,
+			connect.WithSchema(devicesServiceMethods.ByName("RotateCertificate")),
+			connect.WithClientOptions(opts...),
+		),
+		revokeCertificate: connect.NewClient[devices.RevokeCertificateRequest, devices.Device](
+			httpClient,
+			baseURL+DevicesServiceRevokeCertificateProcedure,
+			connect.WithSchema(devicesServiceMethods.ByName("RevokeCertificate")),
+			connect.WithClientOptions(opts...),
+		),
 		revokeDevicesToken: connect.NewClient[node.RevokeDeviceTokenRequest, node.DeleteResponse](
 			httpClient,
 			baseURL+DevicesServiceRevokeDevicesTokenProcedure,
@@ -855,6 +944,11 @@ type devicesServiceClient struct {
 	makeDevicesToken   *connect.Client[node.DevicesTokenRequest, node.TokenResponse]
 	getByToken         *connect.Client[devices.Device, devices.Device]
 	getByFingerprint   *connect.Client[devices.GetByFingerprintRequest, devices.Device]
+	bulkCreate         *connect.Client[devices.BulkCreateRequest, devices.BulkCreateResponse]
+	issueClaim         *connect.Client[devices.ClaimIssueRequest, devices.ClaimIssueResponse]
+	claim              *connect.Client[devices.ClaimRequest, devices.ClaimResponse]
+	rotateCertificate  *connect.Client[devices.RotateCertificateRequest, devices.Device]
+	revokeCertificate  *connect.Client[devices.RevokeCertificateRequest, devices.Device]
 	revokeDevicesToken *connect.Client[node.RevokeDeviceTokenRequest, node.DeleteResponse]
 }
 
@@ -908,6 +1002,31 @@ func (c *devicesServiceClient) GetByFingerprint(ctx context.Context, req *connec
 	return c.getByFingerprint.CallUnary(ctx, req)
 }
 
+// BulkCreate calls infinimesh.node.v1.DevicesService.BulkCreate.
+func (c *devicesServiceClient) BulkCreate(ctx context.Context, req *connect.Request[devices.BulkCreateRequest]) (*connect.Response[devices.BulkCreateResponse], error) {
+	return c.bulkCreate.CallUnary(ctx, req)
+}
+
+// IssueClaim calls infinimesh.node.v1.DevicesService.IssueClaim.
+func (c *devicesServiceClient) IssueClaim(ctx context.Context, req *connect.Request[devices.ClaimIssueRequest]) (*connect.Response[devices.ClaimIssueResponse], error) {
+	return c.issueClaim.CallUnary(ctx, req)
+}
+
+// Claim calls infinimesh.node.v1.DevicesService.Claim.
+func (c *devicesServiceClient) Claim(ctx context.Context, req *connect.Request[devices.ClaimRequest]) (*connect.Response[devices.ClaimResponse], error) {
+	return c.claim.CallUnary(ctx, req)
+}
+
+// RotateCertificate calls infinimesh.node.v1.DevicesService.RotateCertificate.
+func (c *devicesServiceClient) RotateCertificate(ctx context.Context, req *connect.Request[devices.RotateCertificateRequest]) (*connect.Response[devices.Device], error) {
+	return c.rotateCertificate.CallUnary(ctx, req)
+}
+
+// RevokeCertificate calls infinimesh.node.v1.DevicesService.RevokeCertificate.
+func (c *devicesServiceClient) RevokeCertificate(ctx context.Context, req *connect.Request[devices.RevokeCertificateRequest]) (*connect.Response[devices.Device], error) {
+	return c.revokeCertificate.CallUnary(ctx, req)
+}
+
 // RevokeDevicesToken calls infinimesh.node.v1.DevicesService.RevokeDevicesToken.
 func (c *devicesServiceClient) RevokeDevicesToken(ctx context.Context, req *connect.Request[node.RevokeDeviceTokenRequest]) (*connect.Response[node.DeleteResponse], error) {
 	return c.revokeDevicesToken.CallUnary(ctx, req)
@@ -925,6 +1044,11 @@ type DevicesServiceHandler interface {
 	MakeDevicesToken(context.Context, *connect.Request[node.DevicesTokenRequest]) (*connect.Response[node.TokenResponse], error)
 	GetByToken(context.Context, *connect.Request[devices.Device]) (*connect.Response[devices.Device], error)
 	GetByFingerprint(context.Context, *connect.Request[devices.GetByFingerprintRequest]) (*connect.Response[devices.Device], error)
+	BulkCreate(context.Context, *connect.Request[devices.BulkCreateRequest]) (*connect.Response[devices.BulkCreateResponse], error)
+	IssueClaim(context.Context, *connect.Request[devices.ClaimIssueRequest]) (*connect.Response[devices.ClaimIssueResponse], error)
+	Claim(context.Context, *connect.Request[devices.ClaimRequest]) (*connect.Response[devices.ClaimResponse], error)
+	RotateCertificate(context.Context, *connect.Request[devices.RotateCertificateRequest]) (*connect.Response[devices.Device], error)
+	RevokeCertificate(context.Context, *connect.Request[devices.RevokeCertificateRequest]) (*connect.Response[devices.Device], error)
 	RevokeDevicesToken(context.Context, *connect.Request[node.RevokeDeviceTokenRequest]) (*connect.Response[node.DeleteResponse], error)
 }
 
@@ -995,6 +1119,36 @@ func NewDevicesServiceHandler(svc DevicesServiceHandler, opts ...connect.Handler
 		connect.WithSchema(devicesServiceMethods.ByName("GetByFingerprint")),
 		connect.WithHandlerOptions(opts...),
 	)
+	devicesServiceBulkCreateHandler := connect.NewUnaryHandler(
+		DevicesServiceBulkCreateProcedure,
+		svc.BulkCreate,
+		connect.WithSchema(devicesServiceMethods.ByName("BulkCreate")),
+		connect.WithHandlerOptions(opts...),
+	)
+	devicesServiceIssueClaimHandler := connect.NewUnaryHandler(
+		DevicesServiceIssueClaimProcedure,
+		svc.IssueClaim,
+		connect.WithSchema(devicesServiceMethods.ByName("IssueClaim")),
+		connect.WithHandlerOptions(opts...),
+	)
+	devicesServiceClaimHandler := connect.NewUnaryHandler(
+		DevicesServiceClaimProcedure,
+		svc.Claim,
+		connect.WithSchema(devicesServiceMethods.ByName("Claim")),
+		connect.WithHandlerOptions(opts...),
+	)
+	devicesServiceRotateCertificateHandler := connect.NewUnaryHandler(
+		DevicesServiceRotateCertificateProcedure,
+		svc.RotateCertificate,
+		connect.WithSchema(devicesServiceMethods.ByName("RotateCertificate")),
+		connect.WithHandlerOptions(opts...),
+	)
+	devicesServiceRevokeCertificateHandler := connect.NewUnaryHandler(
+		DevicesServiceRevokeCertificateProcedure,
+		svc.RevokeCertificate,
+		connect.WithSchema(devicesServiceMethods.ByName("RevokeCertificate")),
+		connect.WithHandlerOptions(opts...),
+	)
 	devicesServiceRevokeDevicesTokenHandler := connect.NewUnaryHandler(
 		DevicesServiceRevokeDevicesTokenProcedure,
 		svc.RevokeDevicesToken,
@@ -1023,6 +1177,16 @@ func NewDevicesServiceHandler(svc DevicesServiceHandler, opts ...connect.Handler
 			devicesServiceGetByTokenHandler.ServeHTTP(w, r)
 		case DevicesServiceGetByFingerprintProcedure:
 			devicesServiceGetByFingerprintHandler.ServeHTTP(w, r)
+		case DevicesServiceBulkCreateProcedure:
+			devicesServiceBulkCreateHandler.ServeHTTP(w, r)
+		case DevicesServiceIssueClaimProcedure:
+			devicesServiceIssueClaimHandler.ServeHTTP(w, r)
+		case DevicesServiceClaimProcedure:
+			devicesServiceClaimHandler.ServeHTTP(w, r)
+		case DevicesServiceRotateCertificateProcedure:
+			devicesServiceRotateCertificateHandler.ServeHTTP(w, r)
+		case DevicesServiceRevokeCertificateProcedure:
+			devicesServiceRevokeCertificateHandler.ServeHTTP(w, r)
 		case DevicesServiceRevokeDevicesTokenProcedure:
 			devicesServiceRevokeDevicesTokenHandler.ServeHTTP(w, r)
 		default:
@@ -1072,6 +1236,26 @@ func (UnimplementedDevicesServiceHandler) GetByToken(context.Context, *connect.R
 
 func (UnimplementedDevicesServiceHandler) GetByFingerprint(context.Context, *connect.Request[devices.GetByFingerprintRequest]) (*connect.Response[devices.Device], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.DevicesService.GetByFingerprint is not implemented"))
+}
+
+func (UnimplementedDevicesServiceHandler) BulkCreate(context.Context, *connect.Request[devices.BulkCreateRequest]) (*connect.Response[devices.BulkCreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.DevicesService.BulkCreate is not implemented"))
+}
+
+func (UnimplementedDevicesServiceHandler) IssueClaim(context.Context, *connect.Request[devices.ClaimIssueRequest]) (*connect.Response[devices.ClaimIssueResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.DevicesService.IssueClaim is not implemented"))
+}
+
+func (UnimplementedDevicesServiceHandler) Claim(context.Context, *connect.Request[devices.ClaimRequest]) (*connect.Response[devices.ClaimResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.DevicesService.Claim is not implemented"))
+}
+
+func (UnimplementedDevicesServiceHandler) RotateCertificate(context.Context, *connect.Request[devices.RotateCertificateRequest]) (*connect.Response[devices.Device], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.DevicesService.RotateCertificate is not implemented"))
+}
+
+func (UnimplementedDevicesServiceHandler) RevokeCertificate(context.Context, *connect.Request[devices.RevokeCertificateRequest]) (*connect.Response[devices.Device], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.DevicesService.RevokeCertificate is not implemented"))
 }
 
 func (UnimplementedDevicesServiceHandler) RevokeDevicesToken(context.Context, *connect.Request[node.RevokeDeviceTokenRequest]) (*connect.Response[node.DeleteResponse], error) {
@@ -1207,6 +1391,7 @@ type ShadowServiceClient interface {
 	Remove(context.Context, *connect.Request[shadow.RemoveRequest]) (*connect.Response[shadow.Shadow], error)
 	StreamShadow(context.Context, *connect.Request[shadow.StreamShadowRequest]) (*connect.ServerStreamForClient[shadow.Shadow], error)
 	StreamShadowSync(context.Context, *connect.Request[shadow.StreamShadowRequest]) (*connect.ServerStreamForClient[shadow.Shadow], error)
+	PatchMany(context.Context, *connect.Request[shadow.PatchManyRequest]) (*connect.Response[shadow.PatchManyResponse], error)
 }
 
 // NewShadowServiceClient constructs a client for the infinimesh.node.v1.ShadowService service. By
@@ -1250,6 +1435,12 @@ func NewShadowServiceClient(httpClient connect.HTTPClient, baseURL string, opts 
 			connect.WithSchema(shadowServiceMethods.ByName("StreamShadowSync")),
 			connect.WithClientOptions(opts...),
 		),
+		patchMany: connect.NewClient[shadow.PatchManyRequest, shadow.PatchManyResponse](
+			httpClient,
+			baseURL+ShadowServicePatchManyProcedure,
+			connect.WithSchema(shadowServiceMethods.ByName("PatchMany")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -1260,6 +1451,7 @@ type shadowServiceClient struct {
 	remove           *connect.Client[shadow.RemoveRequest, shadow.Shadow]
 	streamShadow     *connect.Client[shadow.StreamShadowRequest, shadow.Shadow]
 	streamShadowSync *connect.Client[shadow.StreamShadowRequest, shadow.Shadow]
+	patchMany        *connect.Client[shadow.PatchManyRequest, shadow.PatchManyResponse]
 }
 
 // Get calls infinimesh.node.v1.ShadowService.Get.
@@ -1287,6 +1479,11 @@ func (c *shadowServiceClient) StreamShadowSync(ctx context.Context, req *connect
 	return c.streamShadowSync.CallServerStream(ctx, req)
 }
 
+// PatchMany calls infinimesh.node.v1.ShadowService.PatchMany.
+func (c *shadowServiceClient) PatchMany(ctx context.Context, req *connect.Request[shadow.PatchManyRequest]) (*connect.Response[shadow.PatchManyResponse], error) {
+	return c.patchMany.CallUnary(ctx, req)
+}
+
 // ShadowServiceHandler is an implementation of the infinimesh.node.v1.ShadowService service.
 type ShadowServiceHandler interface {
 	Get(context.Context, *connect.Request[shadow.GetRequest]) (*connect.Response[shadow.GetResponse], error)
@@ -1294,6 +1491,7 @@ type ShadowServiceHandler interface {
 	Remove(context.Context, *connect.Request[shadow.RemoveRequest]) (*connect.Response[shadow.Shadow], error)
 	StreamShadow(context.Context, *connect.Request[shadow.StreamShadowRequest], *connect.ServerStream[shadow.Shadow]) error
 	StreamShadowSync(context.Context, *connect.Request[shadow.StreamShadowRequest], *connect.ServerStream[shadow.Shadow]) error
+	PatchMany(context.Context, *connect.Request[shadow.PatchManyRequest]) (*connect.Response[shadow.PatchManyResponse], error)
 }
 
 // NewShadowServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -1333,6 +1531,12 @@ func NewShadowServiceHandler(svc ShadowServiceHandler, opts ...connect.HandlerOp
 		connect.WithSchema(shadowServiceMethods.ByName("StreamShadowSync")),
 		connect.WithHandlerOptions(opts...),
 	)
+	shadowServicePatchManyHandler := connect.NewUnaryHandler(
+		ShadowServicePatchManyProcedure,
+		svc.PatchMany,
+		connect.WithSchema(shadowServiceMethods.ByName("PatchMany")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/infinimesh.node.v1.ShadowService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ShadowServiceGetProcedure:
@@ -1345,6 +1549,8 @@ func NewShadowServiceHandler(svc ShadowServiceHandler, opts ...connect.HandlerOp
 			shadowServiceStreamShadowHandler.ServeHTTP(w, r)
 		case ShadowServiceStreamShadowSyncProcedure:
 			shadowServiceStreamShadowSyncHandler.ServeHTTP(w, r)
+		case ShadowServicePatchManyProcedure:
+			shadowServicePatchManyHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -1372,6 +1578,506 @@ func (UnimplementedShadowServiceHandler) StreamShadow(context.Context, *connect.
 
 func (UnimplementedShadowServiceHandler) StreamShadowSync(context.Context, *connect.Request[shadow.StreamShadowRequest], *connect.ServerStream[shadow.Shadow]) error {
 	return connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.ShadowService.StreamShadowSync is not implemented"))
+}
+
+func (UnimplementedShadowServiceHandler) PatchMany(context.Context, *connect.Request[shadow.PatchManyRequest]) (*connect.Response[shadow.PatchManyResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.ShadowService.PatchMany is not implemented"))
+}
+
+// RulesServiceClient is a client for the infinimesh.node.v1.RulesService service.
+type RulesServiceClient interface {
+	Create(context.Context, *connect.Request[rules.Rule]) (*connect.Response[rules.Rule], error)
+	Update(context.Context, *connect.Request[rules.Rule]) (*connect.Response[rules.Rule], error)
+	Get(context.Context, *connect.Request[rules.Rule]) (*connect.Response[rules.Rule], error)
+	List(context.Context, *connect.Request[rules.ListRulesRequest]) (*connect.Response[rules.Rules], error)
+	Delete(context.Context, *connect.Request[rules.Rule]) (*connect.Response[node.DeleteResponse], error)
+	ListAlarms(context.Context, *connect.Request[rules.ListAlarmsRequest]) (*connect.Response[rules.Alarms], error)
+	AckAlarm(context.Context, *connect.Request[rules.AlarmRef]) (*connect.Response[rules.Alarm], error)
+	ClearAlarm(context.Context, *connect.Request[rules.AlarmRef]) (*connect.Response[rules.Alarm], error)
+}
+
+// NewRulesServiceClient constructs a client for the infinimesh.node.v1.RulesService service. By
+// default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses,
+// and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
+// connect.WithGRPC() or connect.WithGRPCWeb() options.
+//
+// The URL supplied here should be the base URL for the Connect or gRPC server (for example,
+// http://api.acme.com or https://acme.com/grpc).
+func NewRulesServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) RulesServiceClient {
+	baseURL = strings.TrimRight(baseURL, "/")
+	rulesServiceMethods := node.File_node_node_proto.Services().ByName("RulesService").Methods()
+	return &rulesServiceClient{
+		create: connect.NewClient[rules.Rule, rules.Rule](
+			httpClient,
+			baseURL+RulesServiceCreateProcedure,
+			connect.WithSchema(rulesServiceMethods.ByName("Create")),
+			connect.WithClientOptions(opts...),
+		),
+		update: connect.NewClient[rules.Rule, rules.Rule](
+			httpClient,
+			baseURL+RulesServiceUpdateProcedure,
+			connect.WithSchema(rulesServiceMethods.ByName("Update")),
+			connect.WithClientOptions(opts...),
+		),
+		get: connect.NewClient[rules.Rule, rules.Rule](
+			httpClient,
+			baseURL+RulesServiceGetProcedure,
+			connect.WithSchema(rulesServiceMethods.ByName("Get")),
+			connect.WithClientOptions(opts...),
+		),
+		list: connect.NewClient[rules.ListRulesRequest, rules.Rules](
+			httpClient,
+			baseURL+RulesServiceListProcedure,
+			connect.WithSchema(rulesServiceMethods.ByName("List")),
+			connect.WithClientOptions(opts...),
+		),
+		delete: connect.NewClient[rules.Rule, node.DeleteResponse](
+			httpClient,
+			baseURL+RulesServiceDeleteProcedure,
+			connect.WithSchema(rulesServiceMethods.ByName("Delete")),
+			connect.WithClientOptions(opts...),
+		),
+		listAlarms: connect.NewClient[rules.ListAlarmsRequest, rules.Alarms](
+			httpClient,
+			baseURL+RulesServiceListAlarmsProcedure,
+			connect.WithSchema(rulesServiceMethods.ByName("ListAlarms")),
+			connect.WithClientOptions(opts...),
+		),
+		ackAlarm: connect.NewClient[rules.AlarmRef, rules.Alarm](
+			httpClient,
+			baseURL+RulesServiceAckAlarmProcedure,
+			connect.WithSchema(rulesServiceMethods.ByName("AckAlarm")),
+			connect.WithClientOptions(opts...),
+		),
+		clearAlarm: connect.NewClient[rules.AlarmRef, rules.Alarm](
+			httpClient,
+			baseURL+RulesServiceClearAlarmProcedure,
+			connect.WithSchema(rulesServiceMethods.ByName("ClearAlarm")),
+			connect.WithClientOptions(opts...),
+		),
+	}
+}
+
+// rulesServiceClient implements RulesServiceClient.
+type rulesServiceClient struct {
+	create     *connect.Client[rules.Rule, rules.Rule]
+	update     *connect.Client[rules.Rule, rules.Rule]
+	get        *connect.Client[rules.Rule, rules.Rule]
+	list       *connect.Client[rules.ListRulesRequest, rules.Rules]
+	delete     *connect.Client[rules.Rule, node.DeleteResponse]
+	listAlarms *connect.Client[rules.ListAlarmsRequest, rules.Alarms]
+	ackAlarm   *connect.Client[rules.AlarmRef, rules.Alarm]
+	clearAlarm *connect.Client[rules.AlarmRef, rules.Alarm]
+}
+
+// Create calls infinimesh.node.v1.RulesService.Create.
+func (c *rulesServiceClient) Create(ctx context.Context, req *connect.Request[rules.Rule]) (*connect.Response[rules.Rule], error) {
+	return c.create.CallUnary(ctx, req)
+}
+
+// Update calls infinimesh.node.v1.RulesService.Update.
+func (c *rulesServiceClient) Update(ctx context.Context, req *connect.Request[rules.Rule]) (*connect.Response[rules.Rule], error) {
+	return c.update.CallUnary(ctx, req)
+}
+
+// Get calls infinimesh.node.v1.RulesService.Get.
+func (c *rulesServiceClient) Get(ctx context.Context, req *connect.Request[rules.Rule]) (*connect.Response[rules.Rule], error) {
+	return c.get.CallUnary(ctx, req)
+}
+
+// List calls infinimesh.node.v1.RulesService.List.
+func (c *rulesServiceClient) List(ctx context.Context, req *connect.Request[rules.ListRulesRequest]) (*connect.Response[rules.Rules], error) {
+	return c.list.CallUnary(ctx, req)
+}
+
+// Delete calls infinimesh.node.v1.RulesService.Delete.
+func (c *rulesServiceClient) Delete(ctx context.Context, req *connect.Request[rules.Rule]) (*connect.Response[node.DeleteResponse], error) {
+	return c.delete.CallUnary(ctx, req)
+}
+
+// ListAlarms calls infinimesh.node.v1.RulesService.ListAlarms.
+func (c *rulesServiceClient) ListAlarms(ctx context.Context, req *connect.Request[rules.ListAlarmsRequest]) (*connect.Response[rules.Alarms], error) {
+	return c.listAlarms.CallUnary(ctx, req)
+}
+
+// AckAlarm calls infinimesh.node.v1.RulesService.AckAlarm.
+func (c *rulesServiceClient) AckAlarm(ctx context.Context, req *connect.Request[rules.AlarmRef]) (*connect.Response[rules.Alarm], error) {
+	return c.ackAlarm.CallUnary(ctx, req)
+}
+
+// ClearAlarm calls infinimesh.node.v1.RulesService.ClearAlarm.
+func (c *rulesServiceClient) ClearAlarm(ctx context.Context, req *connect.Request[rules.AlarmRef]) (*connect.Response[rules.Alarm], error) {
+	return c.clearAlarm.CallUnary(ctx, req)
+}
+
+// RulesServiceHandler is an implementation of the infinimesh.node.v1.RulesService service.
+type RulesServiceHandler interface {
+	Create(context.Context, *connect.Request[rules.Rule]) (*connect.Response[rules.Rule], error)
+	Update(context.Context, *connect.Request[rules.Rule]) (*connect.Response[rules.Rule], error)
+	Get(context.Context, *connect.Request[rules.Rule]) (*connect.Response[rules.Rule], error)
+	List(context.Context, *connect.Request[rules.ListRulesRequest]) (*connect.Response[rules.Rules], error)
+	Delete(context.Context, *connect.Request[rules.Rule]) (*connect.Response[node.DeleteResponse], error)
+	ListAlarms(context.Context, *connect.Request[rules.ListAlarmsRequest]) (*connect.Response[rules.Alarms], error)
+	AckAlarm(context.Context, *connect.Request[rules.AlarmRef]) (*connect.Response[rules.Alarm], error)
+	ClearAlarm(context.Context, *connect.Request[rules.AlarmRef]) (*connect.Response[rules.Alarm], error)
+}
+
+// NewRulesServiceHandler builds an HTTP handler from the service implementation. It returns the
+// path on which to mount the handler and the handler itself.
+//
+// By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
+// and JSON codecs. They also support gzip compression.
+func NewRulesServiceHandler(svc RulesServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	rulesServiceMethods := node.File_node_node_proto.Services().ByName("RulesService").Methods()
+	rulesServiceCreateHandler := connect.NewUnaryHandler(
+		RulesServiceCreateProcedure,
+		svc.Create,
+		connect.WithSchema(rulesServiceMethods.ByName("Create")),
+		connect.WithHandlerOptions(opts...),
+	)
+	rulesServiceUpdateHandler := connect.NewUnaryHandler(
+		RulesServiceUpdateProcedure,
+		svc.Update,
+		connect.WithSchema(rulesServiceMethods.ByName("Update")),
+		connect.WithHandlerOptions(opts...),
+	)
+	rulesServiceGetHandler := connect.NewUnaryHandler(
+		RulesServiceGetProcedure,
+		svc.Get,
+		connect.WithSchema(rulesServiceMethods.ByName("Get")),
+		connect.WithHandlerOptions(opts...),
+	)
+	rulesServiceListHandler := connect.NewUnaryHandler(
+		RulesServiceListProcedure,
+		svc.List,
+		connect.WithSchema(rulesServiceMethods.ByName("List")),
+		connect.WithHandlerOptions(opts...),
+	)
+	rulesServiceDeleteHandler := connect.NewUnaryHandler(
+		RulesServiceDeleteProcedure,
+		svc.Delete,
+		connect.WithSchema(rulesServiceMethods.ByName("Delete")),
+		connect.WithHandlerOptions(opts...),
+	)
+	rulesServiceListAlarmsHandler := connect.NewUnaryHandler(
+		RulesServiceListAlarmsProcedure,
+		svc.ListAlarms,
+		connect.WithSchema(rulesServiceMethods.ByName("ListAlarms")),
+		connect.WithHandlerOptions(opts...),
+	)
+	rulesServiceAckAlarmHandler := connect.NewUnaryHandler(
+		RulesServiceAckAlarmProcedure,
+		svc.AckAlarm,
+		connect.WithSchema(rulesServiceMethods.ByName("AckAlarm")),
+		connect.WithHandlerOptions(opts...),
+	)
+	rulesServiceClearAlarmHandler := connect.NewUnaryHandler(
+		RulesServiceClearAlarmProcedure,
+		svc.ClearAlarm,
+		connect.WithSchema(rulesServiceMethods.ByName("ClearAlarm")),
+		connect.WithHandlerOptions(opts...),
+	)
+	return "/infinimesh.node.v1.RulesService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case RulesServiceCreateProcedure:
+			rulesServiceCreateHandler.ServeHTTP(w, r)
+		case RulesServiceUpdateProcedure:
+			rulesServiceUpdateHandler.ServeHTTP(w, r)
+		case RulesServiceGetProcedure:
+			rulesServiceGetHandler.ServeHTTP(w, r)
+		case RulesServiceListProcedure:
+			rulesServiceListHandler.ServeHTTP(w, r)
+		case RulesServiceDeleteProcedure:
+			rulesServiceDeleteHandler.ServeHTTP(w, r)
+		case RulesServiceListAlarmsProcedure:
+			rulesServiceListAlarmsHandler.ServeHTTP(w, r)
+		case RulesServiceAckAlarmProcedure:
+			rulesServiceAckAlarmHandler.ServeHTTP(w, r)
+		case RulesServiceClearAlarmProcedure:
+			rulesServiceClearAlarmHandler.ServeHTTP(w, r)
+		default:
+			http.NotFound(w, r)
+		}
+	})
+}
+
+// UnimplementedRulesServiceHandler returns CodeUnimplemented from all methods.
+type UnimplementedRulesServiceHandler struct{}
+
+func (UnimplementedRulesServiceHandler) Create(context.Context, *connect.Request[rules.Rule]) (*connect.Response[rules.Rule], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.RulesService.Create is not implemented"))
+}
+
+func (UnimplementedRulesServiceHandler) Update(context.Context, *connect.Request[rules.Rule]) (*connect.Response[rules.Rule], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.RulesService.Update is not implemented"))
+}
+
+func (UnimplementedRulesServiceHandler) Get(context.Context, *connect.Request[rules.Rule]) (*connect.Response[rules.Rule], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.RulesService.Get is not implemented"))
+}
+
+func (UnimplementedRulesServiceHandler) List(context.Context, *connect.Request[rules.ListRulesRequest]) (*connect.Response[rules.Rules], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.RulesService.List is not implemented"))
+}
+
+func (UnimplementedRulesServiceHandler) Delete(context.Context, *connect.Request[rules.Rule]) (*connect.Response[node.DeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.RulesService.Delete is not implemented"))
+}
+
+func (UnimplementedRulesServiceHandler) ListAlarms(context.Context, *connect.Request[rules.ListAlarmsRequest]) (*connect.Response[rules.Alarms], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.RulesService.ListAlarms is not implemented"))
+}
+
+func (UnimplementedRulesServiceHandler) AckAlarm(context.Context, *connect.Request[rules.AlarmRef]) (*connect.Response[rules.Alarm], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.RulesService.AckAlarm is not implemented"))
+}
+
+func (UnimplementedRulesServiceHandler) ClearAlarm(context.Context, *connect.Request[rules.AlarmRef]) (*connect.Response[rules.Alarm], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.RulesService.ClearAlarm is not implemented"))
+}
+
+// AuditServiceClient is a client for the infinimesh.node.v1.AuditService service.
+type AuditServiceClient interface {
+	List(context.Context, *connect.Request[audit.ListAuditRequest]) (*connect.Response[audit.AuditRecords], error)
+	Export(context.Context, *connect.Request[audit.ExportRequest]) (*connect.Response[audit.ExportResponse], error)
+}
+
+// NewAuditServiceClient constructs a client for the infinimesh.node.v1.AuditService service. By
+// default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses,
+// and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
+// connect.WithGRPC() or connect.WithGRPCWeb() options.
+//
+// The URL supplied here should be the base URL for the Connect or gRPC server (for example,
+// http://api.acme.com or https://acme.com/grpc).
+func NewAuditServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) AuditServiceClient {
+	baseURL = strings.TrimRight(baseURL, "/")
+	auditServiceMethods := node.File_node_node_proto.Services().ByName("AuditService").Methods()
+	return &auditServiceClient{
+		list: connect.NewClient[audit.ListAuditRequest, audit.AuditRecords](
+			httpClient,
+			baseURL+AuditServiceListProcedure,
+			connect.WithSchema(auditServiceMethods.ByName("List")),
+			connect.WithClientOptions(opts...),
+		),
+		export: connect.NewClient[audit.ExportRequest, audit.ExportResponse](
+			httpClient,
+			baseURL+AuditServiceExportProcedure,
+			connect.WithSchema(auditServiceMethods.ByName("Export")),
+			connect.WithClientOptions(opts...),
+		),
+	}
+}
+
+// auditServiceClient implements AuditServiceClient.
+type auditServiceClient struct {
+	list   *connect.Client[audit.ListAuditRequest, audit.AuditRecords]
+	export *connect.Client[audit.ExportRequest, audit.ExportResponse]
+}
+
+// List calls infinimesh.node.v1.AuditService.List.
+func (c *auditServiceClient) List(ctx context.Context, req *connect.Request[audit.ListAuditRequest]) (*connect.Response[audit.AuditRecords], error) {
+	return c.list.CallUnary(ctx, req)
+}
+
+// Export calls infinimesh.node.v1.AuditService.Export.
+func (c *auditServiceClient) Export(ctx context.Context, req *connect.Request[audit.ExportRequest]) (*connect.Response[audit.ExportResponse], error) {
+	return c.export.CallUnary(ctx, req)
+}
+
+// AuditServiceHandler is an implementation of the infinimesh.node.v1.AuditService service.
+type AuditServiceHandler interface {
+	List(context.Context, *connect.Request[audit.ListAuditRequest]) (*connect.Response[audit.AuditRecords], error)
+	Export(context.Context, *connect.Request[audit.ExportRequest]) (*connect.Response[audit.ExportResponse], error)
+}
+
+// NewAuditServiceHandler builds an HTTP handler from the service implementation. It returns the
+// path on which to mount the handler and the handler itself.
+//
+// By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
+// and JSON codecs. They also support gzip compression.
+func NewAuditServiceHandler(svc AuditServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	auditServiceMethods := node.File_node_node_proto.Services().ByName("AuditService").Methods()
+	auditServiceListHandler := connect.NewUnaryHandler(
+		AuditServiceListProcedure,
+		svc.List,
+		connect.WithSchema(auditServiceMethods.ByName("List")),
+		connect.WithHandlerOptions(opts...),
+	)
+	auditServiceExportHandler := connect.NewUnaryHandler(
+		AuditServiceExportProcedure,
+		svc.Export,
+		connect.WithSchema(auditServiceMethods.ByName("Export")),
+		connect.WithHandlerOptions(opts...),
+	)
+	return "/infinimesh.node.v1.AuditService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case AuditServiceListProcedure:
+			auditServiceListHandler.ServeHTTP(w, r)
+		case AuditServiceExportProcedure:
+			auditServiceExportHandler.ServeHTTP(w, r)
+		default:
+			http.NotFound(w, r)
+		}
+	})
+}
+
+// UnimplementedAuditServiceHandler returns CodeUnimplemented from all methods.
+type UnimplementedAuditServiceHandler struct{}
+
+func (UnimplementedAuditServiceHandler) List(context.Context, *connect.Request[audit.ListAuditRequest]) (*connect.Response[audit.AuditRecords], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.AuditService.List is not implemented"))
+}
+
+func (UnimplementedAuditServiceHandler) Export(context.Context, *connect.Request[audit.ExportRequest]) (*connect.Response[audit.ExportResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.AuditService.Export is not implemented"))
+}
+
+// GrantsServiceClient is a client for the infinimesh.node.v1.GrantsService service.
+type GrantsServiceClient interface {
+	Create(context.Context, *connect.Request[grants.Grant]) (*connect.Response[grants.Grant], error)
+	List(context.Context, *connect.Request[grants.ListGrantsRequest]) (*connect.Response[grants.Grants], error)
+	Revoke(context.Context, *connect.Request[grants.Grant]) (*connect.Response[grants.Grant], error)
+	ListConsent(context.Context, *connect.Request[grants.ListConsentRequest]) (*connect.Response[grants.Consents], error)
+}
+
+// NewGrantsServiceClient constructs a client for the infinimesh.node.v1.GrantsService service. By
+// default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses,
+// and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
+// connect.WithGRPC() or connect.WithGRPCWeb() options.
+//
+// The URL supplied here should be the base URL for the Connect or gRPC server (for example,
+// http://api.acme.com or https://acme.com/grpc).
+func NewGrantsServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) GrantsServiceClient {
+	baseURL = strings.TrimRight(baseURL, "/")
+	grantsServiceMethods := node.File_node_node_proto.Services().ByName("GrantsService").Methods()
+	return &grantsServiceClient{
+		create: connect.NewClient[grants.Grant, grants.Grant](
+			httpClient,
+			baseURL+GrantsServiceCreateProcedure,
+			connect.WithSchema(grantsServiceMethods.ByName("Create")),
+			connect.WithClientOptions(opts...),
+		),
+		list: connect.NewClient[grants.ListGrantsRequest, grants.Grants](
+			httpClient,
+			baseURL+GrantsServiceListProcedure,
+			connect.WithSchema(grantsServiceMethods.ByName("List")),
+			connect.WithClientOptions(opts...),
+		),
+		revoke: connect.NewClient[grants.Grant, grants.Grant](
+			httpClient,
+			baseURL+GrantsServiceRevokeProcedure,
+			connect.WithSchema(grantsServiceMethods.ByName("Revoke")),
+			connect.WithClientOptions(opts...),
+		),
+		listConsent: connect.NewClient[grants.ListConsentRequest, grants.Consents](
+			httpClient,
+			baseURL+GrantsServiceListConsentProcedure,
+			connect.WithSchema(grantsServiceMethods.ByName("ListConsent")),
+			connect.WithClientOptions(opts...),
+		),
+	}
+}
+
+// grantsServiceClient implements GrantsServiceClient.
+type grantsServiceClient struct {
+	create      *connect.Client[grants.Grant, grants.Grant]
+	list        *connect.Client[grants.ListGrantsRequest, grants.Grants]
+	revoke      *connect.Client[grants.Grant, grants.Grant]
+	listConsent *connect.Client[grants.ListConsentRequest, grants.Consents]
+}
+
+// Create calls infinimesh.node.v1.GrantsService.Create.
+func (c *grantsServiceClient) Create(ctx context.Context, req *connect.Request[grants.Grant]) (*connect.Response[grants.Grant], error) {
+	return c.create.CallUnary(ctx, req)
+}
+
+// List calls infinimesh.node.v1.GrantsService.List.
+func (c *grantsServiceClient) List(ctx context.Context, req *connect.Request[grants.ListGrantsRequest]) (*connect.Response[grants.Grants], error) {
+	return c.list.CallUnary(ctx, req)
+}
+
+// Revoke calls infinimesh.node.v1.GrantsService.Revoke.
+func (c *grantsServiceClient) Revoke(ctx context.Context, req *connect.Request[grants.Grant]) (*connect.Response[grants.Grant], error) {
+	return c.revoke.CallUnary(ctx, req)
+}
+
+// ListConsent calls infinimesh.node.v1.GrantsService.ListConsent.
+func (c *grantsServiceClient) ListConsent(ctx context.Context, req *connect.Request[grants.ListConsentRequest]) (*connect.Response[grants.Consents], error) {
+	return c.listConsent.CallUnary(ctx, req)
+}
+
+// GrantsServiceHandler is an implementation of the infinimesh.node.v1.GrantsService service.
+type GrantsServiceHandler interface {
+	Create(context.Context, *connect.Request[grants.Grant]) (*connect.Response[grants.Grant], error)
+	List(context.Context, *connect.Request[grants.ListGrantsRequest]) (*connect.Response[grants.Grants], error)
+	Revoke(context.Context, *connect.Request[grants.Grant]) (*connect.Response[grants.Grant], error)
+	ListConsent(context.Context, *connect.Request[grants.ListConsentRequest]) (*connect.Response[grants.Consents], error)
+}
+
+// NewGrantsServiceHandler builds an HTTP handler from the service implementation. It returns the
+// path on which to mount the handler and the handler itself.
+//
+// By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
+// and JSON codecs. They also support gzip compression.
+func NewGrantsServiceHandler(svc GrantsServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	grantsServiceMethods := node.File_node_node_proto.Services().ByName("GrantsService").Methods()
+	grantsServiceCreateHandler := connect.NewUnaryHandler(
+		GrantsServiceCreateProcedure,
+		svc.Create,
+		connect.WithSchema(grantsServiceMethods.ByName("Create")),
+		connect.WithHandlerOptions(opts...),
+	)
+	grantsServiceListHandler := connect.NewUnaryHandler(
+		GrantsServiceListProcedure,
+		svc.List,
+		connect.WithSchema(grantsServiceMethods.ByName("List")),
+		connect.WithHandlerOptions(opts...),
+	)
+	grantsServiceRevokeHandler := connect.NewUnaryHandler(
+		GrantsServiceRevokeProcedure,
+		svc.Revoke,
+		connect.WithSchema(grantsServiceMethods.ByName("Revoke")),
+		connect.WithHandlerOptions(opts...),
+	)
+	grantsServiceListConsentHandler := connect.NewUnaryHandler(
+		GrantsServiceListConsentProcedure,
+		svc.ListConsent,
+		connect.WithSchema(grantsServiceMethods.ByName("ListConsent")),
+		connect.WithHandlerOptions(opts...),
+	)
+	return "/infinimesh.node.v1.GrantsService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case GrantsServiceCreateProcedure:
+			grantsServiceCreateHandler.ServeHTTP(w, r)
+		case GrantsServiceListProcedure:
+			grantsServiceListHandler.ServeHTTP(w, r)
+		case GrantsServiceRevokeProcedure:
+			grantsServiceRevokeHandler.ServeHTTP(w, r)
+		case GrantsServiceListConsentProcedure:
+			grantsServiceListConsentHandler.ServeHTTP(w, r)
+		default:
+			http.NotFound(w, r)
+		}
+	})
+}
+
+// UnimplementedGrantsServiceHandler returns CodeUnimplemented from all methods.
+type UnimplementedGrantsServiceHandler struct{}
+
+func (UnimplementedGrantsServiceHandler) Create(context.Context, *connect.Request[grants.Grant]) (*connect.Response[grants.Grant], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.GrantsService.Create is not implemented"))
+}
+
+func (UnimplementedGrantsServiceHandler) List(context.Context, *connect.Request[grants.ListGrantsRequest]) (*connect.Response[grants.Grants], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.GrantsService.List is not implemented"))
+}
+
+func (UnimplementedGrantsServiceHandler) Revoke(context.Context, *connect.Request[grants.Grant]) (*connect.Response[grants.Grant], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.GrantsService.Revoke is not implemented"))
+}
+
+func (UnimplementedGrantsServiceHandler) ListConsent(context.Context, *connect.Request[grants.ListConsentRequest]) (*connect.Response[grants.Consents], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.GrantsService.ListConsent is not implemented"))
 }
 
 // InternalServiceClient is a client for the infinimesh.node.v1.InternalService service.

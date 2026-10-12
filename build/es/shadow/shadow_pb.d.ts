@@ -39,6 +39,20 @@ export declare enum ShadowEvent {
    * @generated from enum value: DEVICE_REMOVED = 2;
    */
   DEVICE_REMOVED = 2,
+
+  /**
+   * A tag was added. tag names it. tags is the full list after the change.
+   *
+   * @generated from enum value: TAG_ADDED = 3;
+   */
+  TAG_ADDED = 3,
+
+  /**
+   * A tag was removed. tag names it. tags is the full list after the change.
+   *
+   * @generated from enum value: TAG_REMOVED = 4;
+   */
+  TAG_REMOVED = 4,
 }
 
 /**
@@ -62,6 +76,11 @@ export declare enum StateKey {
 }
 
 /**
+ * State is one section of a device shadow.
+ * data.ota, when set, is the over-the-air document:
+ * version (string), url (string), sha256 (string).
+ * Reported state also carries state (string), progress (number), and error (string).
+ *
  * @generated from message infinimesh.shadow.v1.State
  */
 export declare class State extends Message<State> {
@@ -227,6 +246,13 @@ export declare class Shadow extends Message<Shadow> {
    */
   sequence: bigint;
 
+  /**
+   * Tag that was added or removed when event is TAG_ADDED or TAG_REMOVED.
+   *
+   * @generated from field: string tag = 12;
+   */
+  tag: string;
+
   constructor(data?: PartialMessage<Shadow>);
 
   static readonly runtime: typeof proto3;
@@ -240,6 +266,73 @@ export declare class Shadow extends Message<Shadow> {
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Shadow;
 
   static equals(a: Shadow | PlainMessage<Shadow> | undefined, b: Shadow | PlainMessage<Shadow> | undefined): boolean;
+}
+
+/**
+ * @generated from message infinimesh.shadow.v1.PatchManyRequest
+ */
+export declare class PatchManyRequest extends Message<PatchManyRequest> {
+  /**
+   * @generated from field: repeated string devices = 1;
+   */
+  devices: string[];
+
+  /**
+   * Applied as desired state on every device.
+   *
+   * @generated from field: infinimesh.shadow.v1.State desired = 2;
+   */
+  desired?: State;
+
+  /**
+   * Resolved by the API to devices before the shadow process sees the call.
+   *
+   * @generated from field: string namespace = 3;
+   */
+  namespace: string;
+
+  /**
+   * @generated from field: string tag = 4;
+   */
+  tag: string;
+
+  constructor(data?: PartialMessage<PatchManyRequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "infinimesh.shadow.v1.PatchManyRequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PatchManyRequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): PatchManyRequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PatchManyRequest;
+
+  static equals(a: PatchManyRequest | PlainMessage<PatchManyRequest> | undefined, b: PatchManyRequest | PlainMessage<PatchManyRequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message infinimesh.shadow.v1.PatchManyResponse
+ */
+export declare class PatchManyResponse extends Message<PatchManyResponse> {
+  /**
+   * @generated from field: int32 updated = 1;
+   */
+  updated: number;
+
+  constructor(data?: PartialMessage<PatchManyResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "infinimesh.shadow.v1.PatchManyResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): PatchManyResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): PatchManyResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PatchManyResponse;
+
+  static equals(a: PatchManyResponse | PlainMessage<PatchManyResponse> | undefined, b: PatchManyResponse | PlainMessage<PatchManyResponse> | undefined): boolean;
 }
 
 /**

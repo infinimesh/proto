@@ -45,6 +45,11 @@ class ShadowServiceStub(object):
                 request_serializer=shadow_dot_shadow__pb2.Shadow.SerializeToString,
                 response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 _registered_method=True)
+        self.PatchMany = channel.unary_unary(
+                '/infinimesh.shadow.v1.ShadowService/PatchMany',
+                request_serializer=shadow_dot_shadow__pb2.PatchManyRequest.SerializeToString,
+                response_deserializer=shadow_dot_shadow__pb2.PatchManyResponse.FromString,
+                _registered_method=True)
 
 
 class ShadowServiceServicer(object):
@@ -86,6 +91,12 @@ class ShadowServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def PatchMany(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ShadowServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -118,6 +129,11 @@ def add_ShadowServiceServicer_to_server(servicer, server):
                     servicer.PublishDeviceScope,
                     request_deserializer=shadow_dot_shadow__pb2.Shadow.FromString,
                     response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            ),
+            'PatchMany': grpc.unary_unary_rpc_method_handler(
+                    servicer.PatchMany,
+                    request_deserializer=shadow_dot_shadow__pb2.PatchManyRequest.FromString,
+                    response_serializer=shadow_dot_shadow__pb2.PatchManyResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -282,6 +298,33 @@ class ShadowService(object):
             '/infinimesh.shadow.v1.ShadowService/PublishDeviceScope',
             shadow_dot_shadow__pb2.Shadow.SerializeToString,
             google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PatchMany(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/infinimesh.shadow.v1.ShadowService/PatchMany',
+            shadow_dot_shadow__pb2.PatchManyRequest.SerializeToString,
+            shadow_dot_shadow__pb2.PatchManyResponse.FromString,
             options,
             channel_credentials,
             insecure,

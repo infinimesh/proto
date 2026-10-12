@@ -25,8 +25,11 @@ import (
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	access "github.com/infinimesh/proto/node/access"
 	accounts "github.com/infinimesh/proto/node/accounts"
+	audit "github.com/infinimesh/proto/node/audit"
 	devices "github.com/infinimesh/proto/node/devices"
+	grants "github.com/infinimesh/proto/node/grants"
 	namespaces "github.com/infinimesh/proto/node/namespaces"
+	rules "github.com/infinimesh/proto/node/rules"
 	sessions "github.com/infinimesh/proto/node/sessions"
 	shadow "github.com/infinimesh/proto/shadow"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
@@ -954,7 +957,7 @@ var File_node_node_proto protoreflect.FileDescriptor
 
 const file_node_node_proto_rawDesc = "" +
 	"\n" +
-	"\x0fnode/node.proto\x12\x12infinimesh.node.v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1cnode/accounts/accounts.proto\x1a\x18node/access/access.proto\x1a\x1cnode/sessions/sessions.proto\x1a node/namespaces/namespaces.proto\x1a\x1anode/devices/devices.proto\x1a\x13shadow/shadow.proto\"\x9c\x02\n" +
+	"\x0fnode/node.proto\x12\x12infinimesh.node.v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1cnode/accounts/accounts.proto\x1a\x18node/access/access.proto\x1a\x1cnode/sessions/sessions.proto\x1a\x16node/rules/rules.proto\x1a\x16node/audit/audit.proto\x1a\x18node/grants/grants.proto\x1a node/namespaces/namespaces.proto\x1a\x1anode/devices/devices.proto\x1a\x13shadow/shadow.proto\"\x9c\x02\n" +
 	"\fTokenRequest\x12<\n" +
 	"\x04auth\x18\x01 \x01(\v2(.infinimesh.node.accounts.v1.CredentialsR\x04auth\x12\x14\n" +
 	"\x03exp\x18\x02 \x01(\x03B\x02\x18\x01R\x03exp\x12\x17\n" +
@@ -1044,7 +1047,7 @@ const file_node_node_proto_rawDesc = "" +
 	"\n" +
 	"Deletables\x12(.infinimesh.node.namespaces.v1.Namespace\x1a .infinimesh.node.access.v1.Nodes\"I\x82\xd3\xe4\x93\x02CZ\x1f\x12\x1d/namespaces/{uuid}/deletables\x12 /v1/namespaces/{uuid}/deletables\x12\x99\x01\n" +
 	"\x05Joins\x12(.infinimesh.node.namespaces.v1.Namespace\x1a%.infinimesh.node.accounts.v1.Accounts\"?\x82\xd3\xe4\x93\x029Z\x1a\x12\x18/namespaces/{uuid}/joins\x12\x1b/v1/namespaces/{uuid}/joins\x12\x9d\x01\n" +
-	"\x04Join\x12\x1f.infinimesh.node.v1.JoinRequest\x1a%.infinimesh.node.accounts.v1.Accounts\"M\x82\xd3\xe4\x93\x02G:\x01*Z!:\x01*\"\x1c/namespaces/{namespace}/join\"\x1f/v1/namespaces/{namespace}/join2\xce\v\n" +
+	"\x04Join\x12\x1f.infinimesh.node.v1.JoinRequest\x1a%.infinimesh.node.accounts.v1.Accounts\"M\x82\xd3\xe4\x93\x02G:\x01*Z!:\x01*\"\x1c/namespaces/{namespace}/join\"\x1f/v1/namespaces/{namespace}/join2\xc4\x12\n" +
 	"\x0eDevicesService\x12|\n" +
 	"\x03Get\x12\".infinimesh.node.devices.v1.Device\x1a\".infinimesh.node.devices.v1.Device\"-\x82\xd3\xe4\x93\x02'Z\x11\x12\x0f/devices/{uuid}\x12\x12/v1/devices/{uuid}\x12n\n" +
 	"\x04List\x12 .infinimesh.node.v1.QueryRequest\x1a#.infinimesh.node.devices.v1.Devices\"\x1f\x82\xd3\xe4\x93\x02\x19Z\n" +
@@ -1057,18 +1060,48 @@ const file_node_node_proto_rawDesc = "" +
 	"\x10MakeDevicesToken\x12'.infinimesh.node.v1.DevicesTokenRequest\x1a!.infinimesh.node.v1.TokenResponse\"1\x82\xd3\xe4\x93\x02+:\x01*Z\x13:\x01*\"\x0e/devices/token\"\x11/v1/devices/token\x12T\n" +
 	"\n" +
 	"GetByToken\x12\".infinimesh.node.devices.v1.Device\x1a\".infinimesh.node.devices.v1.Device\x12k\n" +
-	"\x10GetByFingerprint\x123.infinimesh.node.devices.v1.GetByFingerprintRequest\x1a\".infinimesh.node.devices.v1.Device\x12\xa7\x01\n" +
+	"\x10GetByFingerprint\x123.infinimesh.node.devices.v1.GetByFingerprintRequest\x1a\".infinimesh.node.devices.v1.Device\x12\x9c\x01\n" +
+	"\n" +
+	"BulkCreate\x12-.infinimesh.node.devices.v1.BulkCreateRequest\x1a..infinimesh.node.devices.v1.BulkCreateResponse\"/\x82\xd3\xe4\x93\x02):\x01*Z\x12:\x01*\"\r/devices:bulk\"\x10/v1/devices:bulk\x12\xac\x01\n" +
+	"\n" +
+	"IssueClaim\x12-.infinimesh.node.devices.v1.ClaimIssueRequest\x1a..infinimesh.node.devices.v1.ClaimIssueResponse\"?\x82\xd3\xe4\x93\x029:\x01*Z\x1a:\x01*\"\x15/devices/claim-tokens\"\x18/v1/devices/claim-tokens\x12\x8f\x01\n" +
+	"\x05Claim\x12(.infinimesh.node.devices.v1.ClaimRequest\x1a).infinimesh.node.devices.v1.ClaimResponse\"1\x82\xd3\xe4\x93\x02+:\x01*Z\x13:\x01*\"\x0e/devices:claim\"\x11/v1/devices:claim\x12\xc8\x01\n" +
+	"\x11RotateCertificate\x124.infinimesh.node.devices.v1.RotateCertificateRequest\x1a\".infinimesh.node.devices.v1.Device\"Y\x82\xd3\xe4\x93\x02S:\x01*Z':\x01*\"\"/devices/{uuid}/certificate:rotate\"%/v1/devices/{uuid}/certificate:rotate\x12\xc8\x01\n" +
+	"\x11RevokeCertificate\x124.infinimesh.node.devices.v1.RevokeCertificateRequest\x1a\".infinimesh.node.devices.v1.Device\"Y\x82\xd3\xe4\x93\x02S:\x01*Z':\x01*\"\"/devices/{uuid}/certificate:revoke\"%/v1/devices/{uuid}/certificate:revoke\x12\xa7\x01\n" +
 	"\x12RevokeDevicesToken\x12,.infinimesh.node.v1.RevokeDeviceTokenRequest\x1a\".infinimesh.node.v1.DeleteResponse\"?\x82\xd3\xe4\x93\x029:\x01*Z\x1a:\x01*\"\x15/devices/token/revoke\"\x18/v1/devices/token/revoke2\x92\x03\n" +
 	"\x0fSessionsService\x12p\n" +
 	"\x03Get\x12\x1f.infinimesh.node.v1.ListRequest\x1a%.infinimesh.node.sessions.v1.Sessions\"!\x82\xd3\xe4\x93\x02\x1bZ\v\x12\t/sessions\x12\f/v1/sessions\x12\x8b\x01\n" +
 	"\vGetActivity\x12 .infinimesh.node.v1.EmptyMessage\x1a%.infinimesh.node.sessions.v1.Activity\"3\x82\xd3\xe4\x93\x02-Z\x14\x12\x12/sessions/activity\x12\x15/v1/sessions/activity\x12\x7f\n" +
-	"\x06Revoke\x12$.infinimesh.node.sessions.v1.Session\x1a\".infinimesh.node.v1.DeleteResponse\"+\x82\xd3\xe4\x93\x02%Z\x10*\x0e/sessions/{id}*\x11/v1/sessions/{id}2\xa7\x05\n" +
+	"\x06Revoke\x12$.infinimesh.node.sessions.v1.Session\x1a\".infinimesh.node.v1.DeleteResponse\"+\x82\xd3\xe4\x93\x02%Z\x10*\x0e/sessions/{id}*\x11/v1/sessions/{id}2\xcf\x06\n" +
 	"\rShadowService\x12\x81\x01\n" +
 	"\x03Get\x12 .infinimesh.shadow.v1.GetRequest\x1a!.infinimesh.shadow.v1.GetResponse\"5\x82\xd3\xe4\x93\x02/Z\x11\x12\x0f/devices/states\x12\x1a/v1/devices/{device}/state\x12\x80\x01\n" +
 	"\x05Patch\x12\x1c.infinimesh.shadow.v1.Shadow\x1a\x1c.infinimesh.shadow.v1.Shadow\";\x82\xd3\xe4\x93\x025:\x01*Z\x14:\x01*\"\x0f/devices/states\"\x1a/v1/devices/{device}/state\x12\x96\x01\n" +
 	"\x06Remove\x12#.infinimesh.shadow.v1.RemoveRequest\x1a\x1c.infinimesh.shadow.v1.Shadow\"I\x82\xd3\xe4\x93\x02C:\x01*Z\x1b:\x01*\"\x16/devices/states/remove\"!/v1/devices/{device}/state:remove\x12\x96\x01\n" +
 	"\fStreamShadow\x12).infinimesh.shadow.v1.StreamShadowRequest\x1a\x1c.infinimesh.shadow.v1.Shadow\";\x82\xd3\xe4\x93\x025Z\x18\x12\x16/devices/states/stream\x12\x19/v1/devices/states/stream0\x01\x12]\n" +
-	"\x10StreamShadowSync\x12).infinimesh.shadow.v1.StreamShadowRequest\x1a\x1c.infinimesh.shadow.v1.Shadow0\x012\x8b\x01\n" +
+	"\x10StreamShadowSync\x12).infinimesh.shadow.v1.StreamShadowRequest\x1a\x1c.infinimesh.shadow.v1.Shadow0\x01\x12\xa5\x01\n" +
+	"\tPatchMany\x12&.infinimesh.shadow.v1.PatchManyRequest\x1a'.infinimesh.shadow.v1.PatchManyResponse\"G\x82\xd3\xe4\x93\x02A:\x01*Z\x1e:\x01*\"\x19/devices/states:patchMany\"\x1c/v1/devices/states:patchMany2\x93\b\n" +
+	"\fRulesService\x12k\n" +
+	"\x06Create\x12\x1e.infinimesh.node.rules.v1.Rule\x1a\x1e.infinimesh.node.rules.v1.Rule\"!\x82\xd3\xe4\x93\x02\x1b:\x01*Z\v:\x01*\"\x06/rules\"\t/v1/rules\x12y\n" +
+	"\x06Update\x12\x1e.infinimesh.node.rules.v1.Rule\x1a\x1e.infinimesh.node.rules.v1.Rule\"/\x82\xd3\xe4\x93\x02):\x01*Z\x12:\x01*2\r/rules/{uuid}2\x10/v1/rules/{uuid}\x12p\n" +
+	"\x03Get\x12\x1e.infinimesh.node.rules.v1.Rule\x1a\x1e.infinimesh.node.rules.v1.Rule\")\x82\xd3\xe4\x93\x02#Z\x0f\x12\r/rules/{uuid}\x12\x10/v1/rules/{uuid}\x12p\n" +
+	"\x04List\x12*.infinimesh.node.rules.v1.ListRulesRequest\x1a\x1f.infinimesh.node.rules.v1.Rules\"\x1b\x82\xd3\xe4\x93\x02\x15Z\b\x12\x06/rules\x12\t/v1/rules\x12w\n" +
+	"\x06Delete\x12\x1e.infinimesh.node.rules.v1.Rule\x1a\".infinimesh.node.v1.DeleteResponse\")\x82\xd3\xe4\x93\x02#Z\x0f*\r/rules/{uuid}*\x10/v1/rules/{uuid}\x12z\n" +
+	"\n" +
+	"ListAlarms\x12+.infinimesh.node.rules.v1.ListAlarmsRequest\x1a .infinimesh.node.rules.v1.Alarms\"\x1d\x82\xd3\xe4\x93\x02\x17Z\t\x12\a/alarms\x12\n" +
+	"/v1/alarms\x12\x9c\x01\n" +
+	"\bAckAlarm\x12\".infinimesh.node.rules.v1.AlarmRef\x1a\x1f.infinimesh.node.rules.v1.Alarm\"K\x82\xd3\xe4\x93\x02E:\x01*Z :\x01*\"\x1b/alarms/{rule}/{device}/ack\"\x1e/v1/alarms/{rule}/{device}/ack\x12\xa2\x01\n" +
+	"\n" +
+	"ClearAlarm\x12\".infinimesh.node.rules.v1.AlarmRef\x1a\x1f.infinimesh.node.rules.v1.Alarm\"O\x82\xd3\xe4\x93\x02I:\x01*Z\":\x01*\"\x1d/alarms/{rule}/{device}/clear\" /v1/alarms/{rule}/{device}/clear2\xa6\x02\n" +
+	"\fAuditService\x12w\n" +
+	"\x04List\x12*.infinimesh.node.audit.v1.ListAuditRequest\x1a&.infinimesh.node.audit.v1.AuditRecords\"\x1b\x82\xd3\xe4\x93\x02\x15Z\b\x12\x06/audit\x12\t/v1/audit\x12\x9c\x01\n" +
+	"\x06Export\x12'.infinimesh.node.audit.v1.ExportRequest\x1a(.infinimesh.node.audit.v1.ExportResponse\"?\x82\xd3\xe4\x93\x029Z\x1a\x12\x18/devices/{device}/export\x12\x1b/v1/devices/{device}/export2\x8d\x04\n" +
+	"\rGrantsService\x12q\n" +
+	"\x06Create\x12 .infinimesh.node.grants.v1.Grant\x1a .infinimesh.node.grants.v1.Grant\"#\x82\xd3\xe4\x93\x02\x1d:\x01*Z\f:\x01*\"\a/grants\"\n" +
+	"/v1/grants\x12v\n" +
+	"\x04List\x12,.infinimesh.node.grants.v1.ListGrantsRequest\x1a!.infinimesh.node.grants.v1.Grants\"\x1d\x82\xd3\xe4\x93\x02\x17Z\t\x12\a/grants\x12\n" +
+	"/v1/grants\x12\x89\x01\n" +
+	"\x06Revoke\x12 .infinimesh.node.grants.v1.Grant\x1a .infinimesh.node.grants.v1.Grant\";\x82\xd3\xe4\x93\x025:\x01*Z\x18:\x01*\"\x13/grants/{id}/revoke\"\x16/v1/grants/{id}/revoke\x12\x84\x01\n" +
+	"\vListConsent\x12-.infinimesh.node.grants.v1.ListConsentRequest\x1a#.infinimesh.node.grants.v1.Consents\"!\x82\xd3\xe4\x93\x02\x1bZ\v\x12\t/consents\x12\f/v1/consents2\x8b\x01\n" +
 	"\x0fInternalService\x12x\n" +
 	"\x10GetLDAPProviders\x12 .infinimesh.node.v1.EmptyMessage\x1a!.infinimesh.node.v1.LDAPProviders\"\x1f\x82\xd3\xe4\x93\x02\x19Z\n" +
 	"\x12\b/i/ldapp\x12\v/v1/i/ldappBC\x92A\x19\x12\x17\n" +
@@ -1088,47 +1121,73 @@ func file_node_node_proto_rawDescGZIP() []byte {
 
 var file_node_node_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
 var file_node_node_proto_goTypes = []any{
-	(*TokenRequest)(nil),                    // 0: infinimesh.node.v1.TokenRequest
-	(*TokenResponse)(nil),                   // 1: infinimesh.node.v1.TokenResponse
-	(*SetCredentialsRequest)(nil),           // 2: infinimesh.node.v1.SetCredentialsRequest
-	(*GetCredentialsRequest)(nil),           // 3: infinimesh.node.v1.GetCredentialsRequest
-	(*GetCredentialsResponse)(nil),          // 4: infinimesh.node.v1.GetCredentialsResponse
-	(*DeleteCredentialsRequest)(nil),        // 5: infinimesh.node.v1.DeleteCredentialsRequest
-	(*SetCredentialsResponse)(nil),          // 6: infinimesh.node.v1.SetCredentialsResponse
-	(*DeleteResponse)(nil),                  // 7: infinimesh.node.v1.DeleteResponse
-	(*EmptyMessage)(nil),                    // 8: infinimesh.node.v1.EmptyMessage
-	(*ListRequest)(nil),                     // 9: infinimesh.node.v1.ListRequest
-	(*JoinRequest)(nil),                     // 10: infinimesh.node.v1.JoinRequest
-	(*DevicesTokenRequest)(nil),             // 11: infinimesh.node.v1.DevicesTokenRequest
-	(*RevokeDeviceTokenRequest)(nil),        // 12: infinimesh.node.v1.RevokeDeviceTokenRequest
-	(*MoveRequest)(nil),                     // 13: infinimesh.node.v1.MoveRequest
-	(*QueryRequest)(nil),                    // 14: infinimesh.node.v1.QueryRequest
-	(*JoinGeneralRequest)(nil),              // 15: infinimesh.node.v1.JoinGeneralRequest
-	(*LDAPProviders)(nil),                   // 16: infinimesh.node.v1.LDAPProviders
-	nil,                                     // 17: infinimesh.node.v1.DevicesTokenRequest.DevicesEntry
-	nil,                                     // 18: infinimesh.node.v1.LDAPProviders.ProvidersEntry
-	(*accounts.Credentials)(nil),            // 19: infinimesh.node.accounts.v1.Credentials
-	(access.Level)(0),                       // 20: infinimesh.node.access.v1.Level
-	(*accounts.Account)(nil),                // 21: infinimesh.node.accounts.v1.Account
-	(*accounts.CreateRequest)(nil),          // 22: infinimesh.node.accounts.v1.CreateRequest
-	(*namespaces.Namespace)(nil),            // 23: infinimesh.node.namespaces.v1.Namespace
-	(*devices.Device)(nil),                  // 24: infinimesh.node.devices.v1.Device
-	(*devices.CreateRequest)(nil),           // 25: infinimesh.node.devices.v1.CreateRequest
-	(*devices.GetByFingerprintRequest)(nil), // 26: infinimesh.node.devices.v1.GetByFingerprintRequest
-	(*sessions.Session)(nil),                // 27: infinimesh.node.sessions.v1.Session
-	(*shadow.GetRequest)(nil),               // 28: infinimesh.shadow.v1.GetRequest
-	(*shadow.Shadow)(nil),                   // 29: infinimesh.shadow.v1.Shadow
-	(*shadow.RemoveRequest)(nil),            // 30: infinimesh.shadow.v1.RemoveRequest
-	(*shadow.StreamShadowRequest)(nil),      // 31: infinimesh.shadow.v1.StreamShadowRequest
-	(*accounts.Accounts)(nil),               // 32: infinimesh.node.accounts.v1.Accounts
-	(*accounts.CreateResponse)(nil),         // 33: infinimesh.node.accounts.v1.CreateResponse
-	(*access.Nodes)(nil),                    // 34: infinimesh.node.access.v1.Nodes
-	(*namespaces.Namespaces)(nil),           // 35: infinimesh.node.namespaces.v1.Namespaces
-	(*devices.Devices)(nil),                 // 36: infinimesh.node.devices.v1.Devices
-	(*devices.CreateResponse)(nil),          // 37: infinimesh.node.devices.v1.CreateResponse
-	(*sessions.Sessions)(nil),               // 38: infinimesh.node.sessions.v1.Sessions
-	(*sessions.Activity)(nil),               // 39: infinimesh.node.sessions.v1.Activity
-	(*shadow.GetResponse)(nil),              // 40: infinimesh.shadow.v1.GetResponse
+	(*TokenRequest)(nil),                     // 0: infinimesh.node.v1.TokenRequest
+	(*TokenResponse)(nil),                    // 1: infinimesh.node.v1.TokenResponse
+	(*SetCredentialsRequest)(nil),            // 2: infinimesh.node.v1.SetCredentialsRequest
+	(*GetCredentialsRequest)(nil),            // 3: infinimesh.node.v1.GetCredentialsRequest
+	(*GetCredentialsResponse)(nil),           // 4: infinimesh.node.v1.GetCredentialsResponse
+	(*DeleteCredentialsRequest)(nil),         // 5: infinimesh.node.v1.DeleteCredentialsRequest
+	(*SetCredentialsResponse)(nil),           // 6: infinimesh.node.v1.SetCredentialsResponse
+	(*DeleteResponse)(nil),                   // 7: infinimesh.node.v1.DeleteResponse
+	(*EmptyMessage)(nil),                     // 8: infinimesh.node.v1.EmptyMessage
+	(*ListRequest)(nil),                      // 9: infinimesh.node.v1.ListRequest
+	(*JoinRequest)(nil),                      // 10: infinimesh.node.v1.JoinRequest
+	(*DevicesTokenRequest)(nil),              // 11: infinimesh.node.v1.DevicesTokenRequest
+	(*RevokeDeviceTokenRequest)(nil),         // 12: infinimesh.node.v1.RevokeDeviceTokenRequest
+	(*MoveRequest)(nil),                      // 13: infinimesh.node.v1.MoveRequest
+	(*QueryRequest)(nil),                     // 14: infinimesh.node.v1.QueryRequest
+	(*JoinGeneralRequest)(nil),               // 15: infinimesh.node.v1.JoinGeneralRequest
+	(*LDAPProviders)(nil),                    // 16: infinimesh.node.v1.LDAPProviders
+	nil,                                      // 17: infinimesh.node.v1.DevicesTokenRequest.DevicesEntry
+	nil,                                      // 18: infinimesh.node.v1.LDAPProviders.ProvidersEntry
+	(*accounts.Credentials)(nil),             // 19: infinimesh.node.accounts.v1.Credentials
+	(access.Level)(0),                        // 20: infinimesh.node.access.v1.Level
+	(*accounts.Account)(nil),                 // 21: infinimesh.node.accounts.v1.Account
+	(*accounts.CreateRequest)(nil),           // 22: infinimesh.node.accounts.v1.CreateRequest
+	(*namespaces.Namespace)(nil),             // 23: infinimesh.node.namespaces.v1.Namespace
+	(*devices.Device)(nil),                   // 24: infinimesh.node.devices.v1.Device
+	(*devices.CreateRequest)(nil),            // 25: infinimesh.node.devices.v1.CreateRequest
+	(*devices.GetByFingerprintRequest)(nil),  // 26: infinimesh.node.devices.v1.GetByFingerprintRequest
+	(*devices.BulkCreateRequest)(nil),        // 27: infinimesh.node.devices.v1.BulkCreateRequest
+	(*devices.ClaimIssueRequest)(nil),        // 28: infinimesh.node.devices.v1.ClaimIssueRequest
+	(*devices.ClaimRequest)(nil),             // 29: infinimesh.node.devices.v1.ClaimRequest
+	(*devices.RotateCertificateRequest)(nil), // 30: infinimesh.node.devices.v1.RotateCertificateRequest
+	(*devices.RevokeCertificateRequest)(nil), // 31: infinimesh.node.devices.v1.RevokeCertificateRequest
+	(*sessions.Session)(nil),                 // 32: infinimesh.node.sessions.v1.Session
+	(*shadow.GetRequest)(nil),                // 33: infinimesh.shadow.v1.GetRequest
+	(*shadow.Shadow)(nil),                    // 34: infinimesh.shadow.v1.Shadow
+	(*shadow.RemoveRequest)(nil),             // 35: infinimesh.shadow.v1.RemoveRequest
+	(*shadow.StreamShadowRequest)(nil),       // 36: infinimesh.shadow.v1.StreamShadowRequest
+	(*shadow.PatchManyRequest)(nil),          // 37: infinimesh.shadow.v1.PatchManyRequest
+	(*rules.Rule)(nil),                       // 38: infinimesh.node.rules.v1.Rule
+	(*rules.ListRulesRequest)(nil),           // 39: infinimesh.node.rules.v1.ListRulesRequest
+	(*rules.ListAlarmsRequest)(nil),          // 40: infinimesh.node.rules.v1.ListAlarmsRequest
+	(*rules.AlarmRef)(nil),                   // 41: infinimesh.node.rules.v1.AlarmRef
+	(*audit.ListAuditRequest)(nil),           // 42: infinimesh.node.audit.v1.ListAuditRequest
+	(*audit.ExportRequest)(nil),              // 43: infinimesh.node.audit.v1.ExportRequest
+	(*grants.Grant)(nil),                     // 44: infinimesh.node.grants.v1.Grant
+	(*grants.ListGrantsRequest)(nil),         // 45: infinimesh.node.grants.v1.ListGrantsRequest
+	(*grants.ListConsentRequest)(nil),        // 46: infinimesh.node.grants.v1.ListConsentRequest
+	(*accounts.Accounts)(nil),                // 47: infinimesh.node.accounts.v1.Accounts
+	(*accounts.CreateResponse)(nil),          // 48: infinimesh.node.accounts.v1.CreateResponse
+	(*access.Nodes)(nil),                     // 49: infinimesh.node.access.v1.Nodes
+	(*namespaces.Namespaces)(nil),            // 50: infinimesh.node.namespaces.v1.Namespaces
+	(*devices.Devices)(nil),                  // 51: infinimesh.node.devices.v1.Devices
+	(*devices.CreateResponse)(nil),           // 52: infinimesh.node.devices.v1.CreateResponse
+	(*devices.BulkCreateResponse)(nil),       // 53: infinimesh.node.devices.v1.BulkCreateResponse
+	(*devices.ClaimIssueResponse)(nil),       // 54: infinimesh.node.devices.v1.ClaimIssueResponse
+	(*devices.ClaimResponse)(nil),            // 55: infinimesh.node.devices.v1.ClaimResponse
+	(*sessions.Sessions)(nil),                // 56: infinimesh.node.sessions.v1.Sessions
+	(*sessions.Activity)(nil),                // 57: infinimesh.node.sessions.v1.Activity
+	(*shadow.GetResponse)(nil),               // 58: infinimesh.shadow.v1.GetResponse
+	(*shadow.PatchManyResponse)(nil),         // 59: infinimesh.shadow.v1.PatchManyResponse
+	(*rules.Rules)(nil),                      // 60: infinimesh.node.rules.v1.Rules
+	(*rules.Alarms)(nil),                     // 61: infinimesh.node.rules.v1.Alarms
+	(*rules.Alarm)(nil),                      // 62: infinimesh.node.rules.v1.Alarm
+	(*audit.AuditRecords)(nil),               // 63: infinimesh.node.audit.v1.AuditRecords
+	(*audit.ExportResponse)(nil),             // 64: infinimesh.node.audit.v1.ExportResponse
+	(*grants.Grants)(nil),                    // 65: infinimesh.node.grants.v1.Grants
+	(*grants.Consents)(nil),                  // 66: infinimesh.node.grants.v1.Consents
 }
 var file_node_node_proto_depIdxs = []int32{
 	19, // 0: infinimesh.node.v1.TokenRequest.auth:type_name -> infinimesh.node.accounts.v1.Credentials
@@ -1168,57 +1227,97 @@ var file_node_node_proto_depIdxs = []int32{
 	11, // 34: infinimesh.node.v1.DevicesService.MakeDevicesToken:input_type -> infinimesh.node.v1.DevicesTokenRequest
 	24, // 35: infinimesh.node.v1.DevicesService.GetByToken:input_type -> infinimesh.node.devices.v1.Device
 	26, // 36: infinimesh.node.v1.DevicesService.GetByFingerprint:input_type -> infinimesh.node.devices.v1.GetByFingerprintRequest
-	12, // 37: infinimesh.node.v1.DevicesService.RevokeDevicesToken:input_type -> infinimesh.node.v1.RevokeDeviceTokenRequest
-	9,  // 38: infinimesh.node.v1.SessionsService.Get:input_type -> infinimesh.node.v1.ListRequest
-	8,  // 39: infinimesh.node.v1.SessionsService.GetActivity:input_type -> infinimesh.node.v1.EmptyMessage
-	27, // 40: infinimesh.node.v1.SessionsService.Revoke:input_type -> infinimesh.node.sessions.v1.Session
-	28, // 41: infinimesh.node.v1.ShadowService.Get:input_type -> infinimesh.shadow.v1.GetRequest
-	29, // 42: infinimesh.node.v1.ShadowService.Patch:input_type -> infinimesh.shadow.v1.Shadow
-	30, // 43: infinimesh.node.v1.ShadowService.Remove:input_type -> infinimesh.shadow.v1.RemoveRequest
-	31, // 44: infinimesh.node.v1.ShadowService.StreamShadow:input_type -> infinimesh.shadow.v1.StreamShadowRequest
-	31, // 45: infinimesh.node.v1.ShadowService.StreamShadowSync:input_type -> infinimesh.shadow.v1.StreamShadowRequest
-	8,  // 46: infinimesh.node.v1.InternalService.GetLDAPProviders:input_type -> infinimesh.node.v1.EmptyMessage
-	1,  // 47: infinimesh.node.v1.AccountsService.Token:output_type -> infinimesh.node.v1.TokenResponse
-	21, // 48: infinimesh.node.v1.AccountsService.Get:output_type -> infinimesh.node.accounts.v1.Account
-	32, // 49: infinimesh.node.v1.AccountsService.List:output_type -> infinimesh.node.accounts.v1.Accounts
-	33, // 50: infinimesh.node.v1.AccountsService.Create:output_type -> infinimesh.node.accounts.v1.CreateResponse
-	21, // 51: infinimesh.node.v1.AccountsService.Update:output_type -> infinimesh.node.accounts.v1.Account
-	21, // 52: infinimesh.node.v1.AccountsService.Toggle:output_type -> infinimesh.node.accounts.v1.Account
-	7,  // 53: infinimesh.node.v1.AccountsService.Delete:output_type -> infinimesh.node.v1.DeleteResponse
-	34, // 54: infinimesh.node.v1.AccountsService.Deletables:output_type -> infinimesh.node.access.v1.Nodes
-	6,  // 55: infinimesh.node.v1.AccountsService.SetCredentials:output_type -> infinimesh.node.v1.SetCredentialsResponse
-	4,  // 56: infinimesh.node.v1.AccountsService.GetCredentials:output_type -> infinimesh.node.v1.GetCredentialsResponse
-	7,  // 57: infinimesh.node.v1.AccountsService.DeleteCredentials:output_type -> infinimesh.node.v1.DeleteResponse
-	23, // 58: infinimesh.node.v1.NamespacesService.Get:output_type -> infinimesh.node.namespaces.v1.Namespace
-	35, // 59: infinimesh.node.v1.NamespacesService.List:output_type -> infinimesh.node.namespaces.v1.Namespaces
-	23, // 60: infinimesh.node.v1.NamespacesService.Create:output_type -> infinimesh.node.namespaces.v1.Namespace
-	23, // 61: infinimesh.node.v1.NamespacesService.Update:output_type -> infinimesh.node.namespaces.v1.Namespace
-	7,  // 62: infinimesh.node.v1.NamespacesService.Delete:output_type -> infinimesh.node.v1.DeleteResponse
-	34, // 63: infinimesh.node.v1.NamespacesService.Deletables:output_type -> infinimesh.node.access.v1.Nodes
-	32, // 64: infinimesh.node.v1.NamespacesService.Joins:output_type -> infinimesh.node.accounts.v1.Accounts
-	32, // 65: infinimesh.node.v1.NamespacesService.Join:output_type -> infinimesh.node.accounts.v1.Accounts
-	24, // 66: infinimesh.node.v1.DevicesService.Get:output_type -> infinimesh.node.devices.v1.Device
-	36, // 67: infinimesh.node.v1.DevicesService.List:output_type -> infinimesh.node.devices.v1.Devices
-	37, // 68: infinimesh.node.v1.DevicesService.Create:output_type -> infinimesh.node.devices.v1.CreateResponse
-	24, // 69: infinimesh.node.v1.DevicesService.Update:output_type -> infinimesh.node.devices.v1.Device
-	7,  // 70: infinimesh.node.v1.DevicesService.Delete:output_type -> infinimesh.node.v1.DeleteResponse
-	24, // 71: infinimesh.node.v1.DevicesService.Toggle:output_type -> infinimesh.node.devices.v1.Device
-	24, // 72: infinimesh.node.v1.DevicesService.ToggleBasic:output_type -> infinimesh.node.devices.v1.Device
-	1,  // 73: infinimesh.node.v1.DevicesService.MakeDevicesToken:output_type -> infinimesh.node.v1.TokenResponse
-	24, // 74: infinimesh.node.v1.DevicesService.GetByToken:output_type -> infinimesh.node.devices.v1.Device
-	24, // 75: infinimesh.node.v1.DevicesService.GetByFingerprint:output_type -> infinimesh.node.devices.v1.Device
-	7,  // 76: infinimesh.node.v1.DevicesService.RevokeDevicesToken:output_type -> infinimesh.node.v1.DeleteResponse
-	38, // 77: infinimesh.node.v1.SessionsService.Get:output_type -> infinimesh.node.sessions.v1.Sessions
-	39, // 78: infinimesh.node.v1.SessionsService.GetActivity:output_type -> infinimesh.node.sessions.v1.Activity
-	7,  // 79: infinimesh.node.v1.SessionsService.Revoke:output_type -> infinimesh.node.v1.DeleteResponse
-	40, // 80: infinimesh.node.v1.ShadowService.Get:output_type -> infinimesh.shadow.v1.GetResponse
-	29, // 81: infinimesh.node.v1.ShadowService.Patch:output_type -> infinimesh.shadow.v1.Shadow
-	29, // 82: infinimesh.node.v1.ShadowService.Remove:output_type -> infinimesh.shadow.v1.Shadow
-	29, // 83: infinimesh.node.v1.ShadowService.StreamShadow:output_type -> infinimesh.shadow.v1.Shadow
-	29, // 84: infinimesh.node.v1.ShadowService.StreamShadowSync:output_type -> infinimesh.shadow.v1.Shadow
-	16, // 85: infinimesh.node.v1.InternalService.GetLDAPProviders:output_type -> infinimesh.node.v1.LDAPProviders
-	47, // [47:86] is the sub-list for method output_type
-	8,  // [8:47] is the sub-list for method input_type
+	27, // 37: infinimesh.node.v1.DevicesService.BulkCreate:input_type -> infinimesh.node.devices.v1.BulkCreateRequest
+	28, // 38: infinimesh.node.v1.DevicesService.IssueClaim:input_type -> infinimesh.node.devices.v1.ClaimIssueRequest
+	29, // 39: infinimesh.node.v1.DevicesService.Claim:input_type -> infinimesh.node.devices.v1.ClaimRequest
+	30, // 40: infinimesh.node.v1.DevicesService.RotateCertificate:input_type -> infinimesh.node.devices.v1.RotateCertificateRequest
+	31, // 41: infinimesh.node.v1.DevicesService.RevokeCertificate:input_type -> infinimesh.node.devices.v1.RevokeCertificateRequest
+	12, // 42: infinimesh.node.v1.DevicesService.RevokeDevicesToken:input_type -> infinimesh.node.v1.RevokeDeviceTokenRequest
+	9,  // 43: infinimesh.node.v1.SessionsService.Get:input_type -> infinimesh.node.v1.ListRequest
+	8,  // 44: infinimesh.node.v1.SessionsService.GetActivity:input_type -> infinimesh.node.v1.EmptyMessage
+	32, // 45: infinimesh.node.v1.SessionsService.Revoke:input_type -> infinimesh.node.sessions.v1.Session
+	33, // 46: infinimesh.node.v1.ShadowService.Get:input_type -> infinimesh.shadow.v1.GetRequest
+	34, // 47: infinimesh.node.v1.ShadowService.Patch:input_type -> infinimesh.shadow.v1.Shadow
+	35, // 48: infinimesh.node.v1.ShadowService.Remove:input_type -> infinimesh.shadow.v1.RemoveRequest
+	36, // 49: infinimesh.node.v1.ShadowService.StreamShadow:input_type -> infinimesh.shadow.v1.StreamShadowRequest
+	36, // 50: infinimesh.node.v1.ShadowService.StreamShadowSync:input_type -> infinimesh.shadow.v1.StreamShadowRequest
+	37, // 51: infinimesh.node.v1.ShadowService.PatchMany:input_type -> infinimesh.shadow.v1.PatchManyRequest
+	38, // 52: infinimesh.node.v1.RulesService.Create:input_type -> infinimesh.node.rules.v1.Rule
+	38, // 53: infinimesh.node.v1.RulesService.Update:input_type -> infinimesh.node.rules.v1.Rule
+	38, // 54: infinimesh.node.v1.RulesService.Get:input_type -> infinimesh.node.rules.v1.Rule
+	39, // 55: infinimesh.node.v1.RulesService.List:input_type -> infinimesh.node.rules.v1.ListRulesRequest
+	38, // 56: infinimesh.node.v1.RulesService.Delete:input_type -> infinimesh.node.rules.v1.Rule
+	40, // 57: infinimesh.node.v1.RulesService.ListAlarms:input_type -> infinimesh.node.rules.v1.ListAlarmsRequest
+	41, // 58: infinimesh.node.v1.RulesService.AckAlarm:input_type -> infinimesh.node.rules.v1.AlarmRef
+	41, // 59: infinimesh.node.v1.RulesService.ClearAlarm:input_type -> infinimesh.node.rules.v1.AlarmRef
+	42, // 60: infinimesh.node.v1.AuditService.List:input_type -> infinimesh.node.audit.v1.ListAuditRequest
+	43, // 61: infinimesh.node.v1.AuditService.Export:input_type -> infinimesh.node.audit.v1.ExportRequest
+	44, // 62: infinimesh.node.v1.GrantsService.Create:input_type -> infinimesh.node.grants.v1.Grant
+	45, // 63: infinimesh.node.v1.GrantsService.List:input_type -> infinimesh.node.grants.v1.ListGrantsRequest
+	44, // 64: infinimesh.node.v1.GrantsService.Revoke:input_type -> infinimesh.node.grants.v1.Grant
+	46, // 65: infinimesh.node.v1.GrantsService.ListConsent:input_type -> infinimesh.node.grants.v1.ListConsentRequest
+	8,  // 66: infinimesh.node.v1.InternalService.GetLDAPProviders:input_type -> infinimesh.node.v1.EmptyMessage
+	1,  // 67: infinimesh.node.v1.AccountsService.Token:output_type -> infinimesh.node.v1.TokenResponse
+	21, // 68: infinimesh.node.v1.AccountsService.Get:output_type -> infinimesh.node.accounts.v1.Account
+	47, // 69: infinimesh.node.v1.AccountsService.List:output_type -> infinimesh.node.accounts.v1.Accounts
+	48, // 70: infinimesh.node.v1.AccountsService.Create:output_type -> infinimesh.node.accounts.v1.CreateResponse
+	21, // 71: infinimesh.node.v1.AccountsService.Update:output_type -> infinimesh.node.accounts.v1.Account
+	21, // 72: infinimesh.node.v1.AccountsService.Toggle:output_type -> infinimesh.node.accounts.v1.Account
+	7,  // 73: infinimesh.node.v1.AccountsService.Delete:output_type -> infinimesh.node.v1.DeleteResponse
+	49, // 74: infinimesh.node.v1.AccountsService.Deletables:output_type -> infinimesh.node.access.v1.Nodes
+	6,  // 75: infinimesh.node.v1.AccountsService.SetCredentials:output_type -> infinimesh.node.v1.SetCredentialsResponse
+	4,  // 76: infinimesh.node.v1.AccountsService.GetCredentials:output_type -> infinimesh.node.v1.GetCredentialsResponse
+	7,  // 77: infinimesh.node.v1.AccountsService.DeleteCredentials:output_type -> infinimesh.node.v1.DeleteResponse
+	23, // 78: infinimesh.node.v1.NamespacesService.Get:output_type -> infinimesh.node.namespaces.v1.Namespace
+	50, // 79: infinimesh.node.v1.NamespacesService.List:output_type -> infinimesh.node.namespaces.v1.Namespaces
+	23, // 80: infinimesh.node.v1.NamespacesService.Create:output_type -> infinimesh.node.namespaces.v1.Namespace
+	23, // 81: infinimesh.node.v1.NamespacesService.Update:output_type -> infinimesh.node.namespaces.v1.Namespace
+	7,  // 82: infinimesh.node.v1.NamespacesService.Delete:output_type -> infinimesh.node.v1.DeleteResponse
+	49, // 83: infinimesh.node.v1.NamespacesService.Deletables:output_type -> infinimesh.node.access.v1.Nodes
+	47, // 84: infinimesh.node.v1.NamespacesService.Joins:output_type -> infinimesh.node.accounts.v1.Accounts
+	47, // 85: infinimesh.node.v1.NamespacesService.Join:output_type -> infinimesh.node.accounts.v1.Accounts
+	24, // 86: infinimesh.node.v1.DevicesService.Get:output_type -> infinimesh.node.devices.v1.Device
+	51, // 87: infinimesh.node.v1.DevicesService.List:output_type -> infinimesh.node.devices.v1.Devices
+	52, // 88: infinimesh.node.v1.DevicesService.Create:output_type -> infinimesh.node.devices.v1.CreateResponse
+	24, // 89: infinimesh.node.v1.DevicesService.Update:output_type -> infinimesh.node.devices.v1.Device
+	7,  // 90: infinimesh.node.v1.DevicesService.Delete:output_type -> infinimesh.node.v1.DeleteResponse
+	24, // 91: infinimesh.node.v1.DevicesService.Toggle:output_type -> infinimesh.node.devices.v1.Device
+	24, // 92: infinimesh.node.v1.DevicesService.ToggleBasic:output_type -> infinimesh.node.devices.v1.Device
+	1,  // 93: infinimesh.node.v1.DevicesService.MakeDevicesToken:output_type -> infinimesh.node.v1.TokenResponse
+	24, // 94: infinimesh.node.v1.DevicesService.GetByToken:output_type -> infinimesh.node.devices.v1.Device
+	24, // 95: infinimesh.node.v1.DevicesService.GetByFingerprint:output_type -> infinimesh.node.devices.v1.Device
+	53, // 96: infinimesh.node.v1.DevicesService.BulkCreate:output_type -> infinimesh.node.devices.v1.BulkCreateResponse
+	54, // 97: infinimesh.node.v1.DevicesService.IssueClaim:output_type -> infinimesh.node.devices.v1.ClaimIssueResponse
+	55, // 98: infinimesh.node.v1.DevicesService.Claim:output_type -> infinimesh.node.devices.v1.ClaimResponse
+	24, // 99: infinimesh.node.v1.DevicesService.RotateCertificate:output_type -> infinimesh.node.devices.v1.Device
+	24, // 100: infinimesh.node.v1.DevicesService.RevokeCertificate:output_type -> infinimesh.node.devices.v1.Device
+	7,  // 101: infinimesh.node.v1.DevicesService.RevokeDevicesToken:output_type -> infinimesh.node.v1.DeleteResponse
+	56, // 102: infinimesh.node.v1.SessionsService.Get:output_type -> infinimesh.node.sessions.v1.Sessions
+	57, // 103: infinimesh.node.v1.SessionsService.GetActivity:output_type -> infinimesh.node.sessions.v1.Activity
+	7,  // 104: infinimesh.node.v1.SessionsService.Revoke:output_type -> infinimesh.node.v1.DeleteResponse
+	58, // 105: infinimesh.node.v1.ShadowService.Get:output_type -> infinimesh.shadow.v1.GetResponse
+	34, // 106: infinimesh.node.v1.ShadowService.Patch:output_type -> infinimesh.shadow.v1.Shadow
+	34, // 107: infinimesh.node.v1.ShadowService.Remove:output_type -> infinimesh.shadow.v1.Shadow
+	34, // 108: infinimesh.node.v1.ShadowService.StreamShadow:output_type -> infinimesh.shadow.v1.Shadow
+	34, // 109: infinimesh.node.v1.ShadowService.StreamShadowSync:output_type -> infinimesh.shadow.v1.Shadow
+	59, // 110: infinimesh.node.v1.ShadowService.PatchMany:output_type -> infinimesh.shadow.v1.PatchManyResponse
+	38, // 111: infinimesh.node.v1.RulesService.Create:output_type -> infinimesh.node.rules.v1.Rule
+	38, // 112: infinimesh.node.v1.RulesService.Update:output_type -> infinimesh.node.rules.v1.Rule
+	38, // 113: infinimesh.node.v1.RulesService.Get:output_type -> infinimesh.node.rules.v1.Rule
+	60, // 114: infinimesh.node.v1.RulesService.List:output_type -> infinimesh.node.rules.v1.Rules
+	7,  // 115: infinimesh.node.v1.RulesService.Delete:output_type -> infinimesh.node.v1.DeleteResponse
+	61, // 116: infinimesh.node.v1.RulesService.ListAlarms:output_type -> infinimesh.node.rules.v1.Alarms
+	62, // 117: infinimesh.node.v1.RulesService.AckAlarm:output_type -> infinimesh.node.rules.v1.Alarm
+	62, // 118: infinimesh.node.v1.RulesService.ClearAlarm:output_type -> infinimesh.node.rules.v1.Alarm
+	63, // 119: infinimesh.node.v1.AuditService.List:output_type -> infinimesh.node.audit.v1.AuditRecords
+	64, // 120: infinimesh.node.v1.AuditService.Export:output_type -> infinimesh.node.audit.v1.ExportResponse
+	44, // 121: infinimesh.node.v1.GrantsService.Create:output_type -> infinimesh.node.grants.v1.Grant
+	65, // 122: infinimesh.node.v1.GrantsService.List:output_type -> infinimesh.node.grants.v1.Grants
+	44, // 123: infinimesh.node.v1.GrantsService.Revoke:output_type -> infinimesh.node.grants.v1.Grant
+	66, // 124: infinimesh.node.v1.GrantsService.ListConsent:output_type -> infinimesh.node.grants.v1.Consents
+	16, // 125: infinimesh.node.v1.InternalService.GetLDAPProviders:output_type -> infinimesh.node.v1.LDAPProviders
+	67, // [67:126] is the sub-list for method output_type
+	8,  // [8:67] is the sub-list for method input_type
 	8,  // [8:8] is the sub-list for extension type_name
 	8,  // [8:8] is the sub-list for extension extendee
 	0,  // [0:8] is the sub-list for field type_name
@@ -1238,7 +1337,7 @@ func file_node_node_proto_init() {
 			NumEnums:      0,
 			NumMessages:   19,
 			NumExtensions: 0,
-			NumServices:   6,
+			NumServices:   9,
 		},
 		GoTypes:           file_node_node_proto_goTypes,
 		DependencyIndexes: file_node_node_proto_depIdxs,

@@ -20,6 +20,7 @@
 
 import { proto3, Struct } from "@bufbuild/protobuf";
 import { Access } from "../access/access_pb.js";
+import { Quota } from "../namespaces/namespaces_pb.js";
 
 /**
  * @generated from message infinimesh.node.devices.v1.Device
@@ -36,6 +37,7 @@ export const Device = proto3.makeMessageType(
     { no: 7, name: "token", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 8, name: "access", kind: "message", T: Access, opt: true },
     { no: 9, name: "config", kind: "message", T: Struct },
+    { no: 10, name: "quota", kind: "message", T: Quota },
   ],
 );
 
@@ -48,6 +50,9 @@ export const Certificate = proto3.makeMessageType(
     { no: 1, name: "pem_data", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 2, name: "algorithm", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "fingerprint", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
+    { no: 4, name: "rollover_fingerprint", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
+    { no: 5, name: "revoked", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
+    { no: 6, name: "revoked_fingerprints", kind: "scalar", T: 12 /* ScalarType.BYTES */, repeated: true },
   ],
 );
 
@@ -102,6 +107,92 @@ export const GetByFingerprintRequest = proto3.makeMessageType(
   "infinimesh.node.devices.v1.GetByFingerprintRequest",
   () => [
     { no: 1, name: "fingerprint", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
+  ],
+);
+
+/**
+ * @generated from message infinimesh.node.devices.v1.BulkCreateRequest
+ */
+export const BulkCreateRequest = proto3.makeMessageType(
+  "infinimesh.node.devices.v1.BulkCreateRequest",
+  () => [
+    { no: 1, name: "namespace", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "devices", kind: "message", T: Device, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message infinimesh.node.devices.v1.BulkCreateResponse
+ */
+export const BulkCreateResponse = proto3.makeMessageType(
+  "infinimesh.node.devices.v1.BulkCreateResponse",
+  () => [
+    { no: 1, name: "devices", kind: "message", T: Device, repeated: true },
+  ],
+);
+
+/**
+ * @generated from message infinimesh.node.devices.v1.ClaimIssueRequest
+ */
+export const ClaimIssueRequest = proto3.makeMessageType(
+  "infinimesh.node.devices.v1.ClaimIssueRequest",
+  () => [
+    { no: 1, name: "namespace", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "expires_at", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+  ],
+);
+
+/**
+ * @generated from message infinimesh.node.devices.v1.ClaimIssueResponse
+ */
+export const ClaimIssueResponse = proto3.makeMessageType(
+  "infinimesh.node.devices.v1.ClaimIssueResponse",
+  () => [
+    { no: 1, name: "token", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "expires_at", kind: "scalar", T: 3 /* ScalarType.INT64 */ },
+  ],
+);
+
+/**
+ * @generated from message infinimesh.node.devices.v1.ClaimRequest
+ */
+export const ClaimRequest = proto3.makeMessageType(
+  "infinimesh.node.devices.v1.ClaimRequest",
+  () => [
+    { no: 1, name: "token", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "device", kind: "message", T: Device },
+  ],
+);
+
+/**
+ * @generated from message infinimesh.node.devices.v1.ClaimResponse
+ */
+export const ClaimResponse = proto3.makeMessageType(
+  "infinimesh.node.devices.v1.ClaimResponse",
+  () => [
+    { no: 1, name: "device", kind: "message", T: Device },
+  ],
+);
+
+/**
+ * @generated from message infinimesh.node.devices.v1.RotateCertificateRequest
+ */
+export const RotateCertificateRequest = proto3.makeMessageType(
+  "infinimesh.node.devices.v1.RotateCertificateRequest",
+  () => [
+    { no: 1, name: "uuid", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "certificate", kind: "message", T: Certificate },
+  ],
+);
+
+/**
+ * @generated from message infinimesh.node.devices.v1.RevokeCertificateRequest
+ */
+export const RevokeCertificateRequest = proto3.makeMessageType(
+  "infinimesh.node.devices.v1.RevokeCertificateRequest",
+  () => [
+    { no: 1, name: "uuid", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "fingerprint", kind: "scalar", T: 12 /* ScalarType.BYTES */ },
   ],
 );
 

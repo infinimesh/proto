@@ -23,9 +23,12 @@ import { MethodKind } from "@bufbuild/protobuf";
 import { Account, Accounts, CreateRequest, CreateResponse } from "./accounts/accounts_pb.js";
 import { Nodes } from "./access/access_pb.js";
 import { Namespace, Namespaces } from "./namespaces/namespaces_pb.js";
-import { CreateRequest as CreateRequest$1, CreateResponse as CreateResponse$1, Device, Devices, GetByFingerprintRequest } from "./devices/devices_pb.js";
+import { BulkCreateRequest, BulkCreateResponse, ClaimIssueRequest, ClaimIssueResponse, ClaimRequest, ClaimResponse, CreateRequest as CreateRequest$1, CreateResponse as CreateResponse$1, Device, Devices, GetByFingerprintRequest, RevokeCertificateRequest, RotateCertificateRequest } from "./devices/devices_pb.js";
 import { Activity, Session, Sessions } from "./sessions/sessions_pb.js";
-import { GetRequest, GetResponse, RemoveRequest, Shadow, StreamShadowRequest } from "../shadow/shadow_pb.js";
+import { GetRequest, GetResponse, PatchManyRequest, PatchManyResponse, RemoveRequest, Shadow, StreamShadowRequest } from "../shadow/shadow_pb.js";
+import { Alarm, AlarmRef, Alarms, ListAlarmsRequest, ListRulesRequest, Rule, Rules } from "./rules/rules_pb.js";
+import { AuditRecords, ExportRequest, ExportResponse, ListAuditRequest } from "./audit/audit_pb.js";
+import { Consents, Grant, Grants, ListConsentRequest, ListGrantsRequest } from "./grants/grants_pb.js";
 
 /**
  * @generated from service infinimesh.node.v1.AccountsService
@@ -317,6 +320,51 @@ export declare const DevicesService: {
       readonly kind: MethodKind.Unary,
     },
     /**
+     * @generated from rpc infinimesh.node.v1.DevicesService.BulkCreate
+     */
+    readonly bulkCreate: {
+      readonly name: "BulkCreate",
+      readonly I: typeof BulkCreateRequest,
+      readonly O: typeof BulkCreateResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc infinimesh.node.v1.DevicesService.IssueClaim
+     */
+    readonly issueClaim: {
+      readonly name: "IssueClaim",
+      readonly I: typeof ClaimIssueRequest,
+      readonly O: typeof ClaimIssueResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc infinimesh.node.v1.DevicesService.Claim
+     */
+    readonly claim: {
+      readonly name: "Claim",
+      readonly I: typeof ClaimRequest,
+      readonly O: typeof ClaimResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc infinimesh.node.v1.DevicesService.RotateCertificate
+     */
+    readonly rotateCertificate: {
+      readonly name: "RotateCertificate",
+      readonly I: typeof RotateCertificateRequest,
+      readonly O: typeof Device,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc infinimesh.node.v1.DevicesService.RevokeCertificate
+     */
+    readonly revokeCertificate: {
+      readonly name: "RevokeCertificate",
+      readonly I: typeof RevokeCertificateRequest,
+      readonly O: typeof Device,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
      * @generated from rpc infinimesh.node.v1.DevicesService.RevokeDevicesToken
      */
     readonly revokeDevicesToken: {
@@ -414,6 +462,168 @@ export declare const ShadowService: {
       readonly I: typeof StreamShadowRequest,
       readonly O: typeof Shadow,
       readonly kind: MethodKind.ServerStreaming,
+    },
+    /**
+     * @generated from rpc infinimesh.node.v1.ShadowService.PatchMany
+     */
+    readonly patchMany: {
+      readonly name: "PatchMany",
+      readonly I: typeof PatchManyRequest,
+      readonly O: typeof PatchManyResponse,
+      readonly kind: MethodKind.Unary,
+    },
+  }
+};
+
+/**
+ * @generated from service infinimesh.node.v1.RulesService
+ */
+export declare const RulesService: {
+  readonly typeName: "infinimesh.node.v1.RulesService",
+  readonly methods: {
+    /**
+     * @generated from rpc infinimesh.node.v1.RulesService.Create
+     */
+    readonly create: {
+      readonly name: "Create",
+      readonly I: typeof Rule,
+      readonly O: typeof Rule,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc infinimesh.node.v1.RulesService.Update
+     */
+    readonly update: {
+      readonly name: "Update",
+      readonly I: typeof Rule,
+      readonly O: typeof Rule,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc infinimesh.node.v1.RulesService.Get
+     */
+    readonly get: {
+      readonly name: "Get",
+      readonly I: typeof Rule,
+      readonly O: typeof Rule,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc infinimesh.node.v1.RulesService.List
+     */
+    readonly list: {
+      readonly name: "List",
+      readonly I: typeof ListRulesRequest,
+      readonly O: typeof Rules,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc infinimesh.node.v1.RulesService.Delete
+     */
+    readonly delete: {
+      readonly name: "Delete",
+      readonly I: typeof Rule,
+      readonly O: typeof DeleteResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc infinimesh.node.v1.RulesService.ListAlarms
+     */
+    readonly listAlarms: {
+      readonly name: "ListAlarms",
+      readonly I: typeof ListAlarmsRequest,
+      readonly O: typeof Alarms,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc infinimesh.node.v1.RulesService.AckAlarm
+     */
+    readonly ackAlarm: {
+      readonly name: "AckAlarm",
+      readonly I: typeof AlarmRef,
+      readonly O: typeof Alarm,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc infinimesh.node.v1.RulesService.ClearAlarm
+     */
+    readonly clearAlarm: {
+      readonly name: "ClearAlarm",
+      readonly I: typeof AlarmRef,
+      readonly O: typeof Alarm,
+      readonly kind: MethodKind.Unary,
+    },
+  }
+};
+
+/**
+ * @generated from service infinimesh.node.v1.AuditService
+ */
+export declare const AuditService: {
+  readonly typeName: "infinimesh.node.v1.AuditService",
+  readonly methods: {
+    /**
+     * @generated from rpc infinimesh.node.v1.AuditService.List
+     */
+    readonly list: {
+      readonly name: "List",
+      readonly I: typeof ListAuditRequest,
+      readonly O: typeof AuditRecords,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc infinimesh.node.v1.AuditService.Export
+     */
+    readonly export: {
+      readonly name: "Export",
+      readonly I: typeof ExportRequest,
+      readonly O: typeof ExportResponse,
+      readonly kind: MethodKind.Unary,
+    },
+  }
+};
+
+/**
+ * @generated from service infinimesh.node.v1.GrantsService
+ */
+export declare const GrantsService: {
+  readonly typeName: "infinimesh.node.v1.GrantsService",
+  readonly methods: {
+    /**
+     * @generated from rpc infinimesh.node.v1.GrantsService.Create
+     */
+    readonly create: {
+      readonly name: "Create",
+      readonly I: typeof Grant,
+      readonly O: typeof Grant,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc infinimesh.node.v1.GrantsService.List
+     */
+    readonly list: {
+      readonly name: "List",
+      readonly I: typeof ListGrantsRequest,
+      readonly O: typeof Grants,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc infinimesh.node.v1.GrantsService.Revoke
+     */
+    readonly revoke: {
+      readonly name: "Revoke",
+      readonly I: typeof Grant,
+      readonly O: typeof Grant,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc infinimesh.node.v1.GrantsService.ListConsent
+     */
+    readonly listConsent: {
+      readonly name: "ListConsent",
+      readonly I: typeof ListConsentRequest,
+      readonly O: typeof Consents,
+      readonly kind: MethodKind.Unary,
     },
   }
 };

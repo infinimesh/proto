@@ -23,6 +23,7 @@ package devices
 
 import (
 	access "github.com/infinimesh/proto/node/access"
+	namespaces "github.com/infinimesh/proto/node/namespaces"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	structpb "google.golang.org/protobuf/types/known/structpb"
@@ -39,16 +40,18 @@ const (
 )
 
 type Device struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
-	Enabled       bool                   `protobuf:"varint,3,opt,name=enabled,proto3" json:"enabled,omitempty"`
-	Certificate   *Certificate           `protobuf:"bytes,4,opt,name=certificate,proto3" json:"certificate,omitempty"`
-	Tags          []string               `protobuf:"bytes,5,rep,name=tags,proto3" json:"tags,omitempty"`
-	BasicEnabled  bool                   `protobuf:"varint,6,opt,name=basic_enabled,json=basicEnabled,proto3" json:"basic_enabled,omitempty"`
-	Token         string                 `protobuf:"bytes,7,opt,name=token,proto3" json:"token,omitempty"`
-	Access        *access.Access         `protobuf:"bytes,8,opt,name=access,proto3,oneof" json:"access,omitempty"`
-	Config        *structpb.Struct       `protobuf:"bytes,9,opt,name=config,proto3" json:"config,omitempty"`
+	state        protoimpl.MessageState `protogen:"open.v1"`
+	Uuid         string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Title        string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	Enabled      bool                   `protobuf:"varint,3,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	Certificate  *Certificate           `protobuf:"bytes,4,opt,name=certificate,proto3" json:"certificate,omitempty"`
+	Tags         []string               `protobuf:"bytes,5,rep,name=tags,proto3" json:"tags,omitempty"`
+	BasicEnabled bool                   `protobuf:"varint,6,opt,name=basic_enabled,json=basicEnabled,proto3" json:"basic_enabled,omitempty"`
+	Token        string                 `protobuf:"bytes,7,opt,name=token,proto3" json:"token,omitempty"`
+	Access       *access.Access         `protobuf:"bytes,8,opt,name=access,proto3,oneof" json:"access,omitempty"`
+	Config       *structpb.Struct       `protobuf:"bytes,9,opt,name=config,proto3" json:"config,omitempty"`
+	// Filled on GetByFingerprint from the device's namespace. Not stored.
+	Quota         *namespaces.Quota `protobuf:"bytes,10,opt,name=quota,proto3" json:"quota,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -146,13 +149,24 @@ func (x *Device) GetConfig() *structpb.Struct {
 	return nil
 }
 
+func (x *Device) GetQuota() *namespaces.Quota {
+	if x != nil {
+		return x.Quota
+	}
+	return nil
+}
+
 type Certificate struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	PemData       string                 `protobuf:"bytes,1,opt,name=pem_data,json=pemData,proto3" json:"pem_data,omitempty"`
-	Algorithm     string                 `protobuf:"bytes,2,opt,name=algorithm,proto3" json:"algorithm,omitempty"`
-	Fingerprint   []byte                 `protobuf:"bytes,3,opt,name=fingerprint,proto3" json:"fingerprint,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state       protoimpl.MessageState `protogen:"open.v1"`
+	PemData     string                 `protobuf:"bytes,1,opt,name=pem_data,json=pemData,proto3" json:"pem_data,omitempty"`
+	Algorithm   string                 `protobuf:"bytes,2,opt,name=algorithm,proto3" json:"algorithm,omitempty"`
+	Fingerprint []byte                 `protobuf:"bytes,3,opt,name=fingerprint,proto3" json:"fingerprint,omitempty"`
+	// Previous fingerprint that stays valid until the next rotation.
+	RolloverFingerprint []byte   `protobuf:"bytes,4,opt,name=rollover_fingerprint,json=rolloverFingerprint,proto3" json:"rollover_fingerprint,omitempty"`
+	Revoked             bool     `protobuf:"varint,5,opt,name=revoked,proto3" json:"revoked,omitempty"`
+	RevokedFingerprints [][]byte `protobuf:"bytes,6,rep,name=revoked_fingerprints,json=revokedFingerprints,proto3" json:"revoked_fingerprints,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *Certificate) Reset() {
@@ -202,6 +216,27 @@ func (x *Certificate) GetAlgorithm() string {
 func (x *Certificate) GetFingerprint() []byte {
 	if x != nil {
 		return x.Fingerprint
+	}
+	return nil
+}
+
+func (x *Certificate) GetRolloverFingerprint() []byte {
+	if x != nil {
+		return x.RolloverFingerprint
+	}
+	return nil
+}
+
+func (x *Certificate) GetRevoked() bool {
+	if x != nil {
+		return x.Revoked
+	}
+	return false
+}
+
+func (x *Certificate) GetRevokedFingerprints() [][]byte {
+	if x != nil {
+		return x.RevokedFingerprints
 	}
 	return nil
 }
@@ -458,11 +493,413 @@ func (x *GetByFingerprintRequest) GetFingerprint() []byte {
 	return nil
 }
 
+type BulkCreateRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Namespace     string                 `protobuf:"bytes,1,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	Devices       []*Device              `protobuf:"bytes,2,rep,name=devices,proto3" json:"devices,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BulkCreateRequest) Reset() {
+	*x = BulkCreateRequest{}
+	mi := &file_node_devices_devices_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BulkCreateRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BulkCreateRequest) ProtoMessage() {}
+
+func (x *BulkCreateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_node_devices_devices_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BulkCreateRequest.ProtoReflect.Descriptor instead.
+func (*BulkCreateRequest) Descriptor() ([]byte, []int) {
+	return file_node_devices_devices_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *BulkCreateRequest) GetNamespace() string {
+	if x != nil {
+		return x.Namespace
+	}
+	return ""
+}
+
+func (x *BulkCreateRequest) GetDevices() []*Device {
+	if x != nil {
+		return x.Devices
+	}
+	return nil
+}
+
+type BulkCreateResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Devices       []*Device              `protobuf:"bytes,1,rep,name=devices,proto3" json:"devices,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BulkCreateResponse) Reset() {
+	*x = BulkCreateResponse{}
+	mi := &file_node_devices_devices_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BulkCreateResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BulkCreateResponse) ProtoMessage() {}
+
+func (x *BulkCreateResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_node_devices_devices_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BulkCreateResponse.ProtoReflect.Descriptor instead.
+func (*BulkCreateResponse) Descriptor() ([]byte, []int) {
+	return file_node_devices_devices_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *BulkCreateResponse) GetDevices() []*Device {
+	if x != nil {
+		return x.Devices
+	}
+	return nil
+}
+
+type ClaimIssueRequest struct {
+	state     protoimpl.MessageState `protogen:"open.v1"`
+	Namespace string                 `protobuf:"bytes,1,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	// Unix seconds. The factory token stops working at this time.
+	ExpiresAt     int64 `protobuf:"varint,2,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ClaimIssueRequest) Reset() {
+	*x = ClaimIssueRequest{}
+	mi := &file_node_devices_devices_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ClaimIssueRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClaimIssueRequest) ProtoMessage() {}
+
+func (x *ClaimIssueRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_node_devices_devices_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClaimIssueRequest.ProtoReflect.Descriptor instead.
+func (*ClaimIssueRequest) Descriptor() ([]byte, []int) {
+	return file_node_devices_devices_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *ClaimIssueRequest) GetNamespace() string {
+	if x != nil {
+		return x.Namespace
+	}
+	return ""
+}
+
+func (x *ClaimIssueRequest) GetExpiresAt() int64 {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return 0
+}
+
+type ClaimIssueResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	ExpiresAt     int64                  `protobuf:"varint,2,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ClaimIssueResponse) Reset() {
+	*x = ClaimIssueResponse{}
+	mi := &file_node_devices_devices_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ClaimIssueResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClaimIssueResponse) ProtoMessage() {}
+
+func (x *ClaimIssueResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_node_devices_devices_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClaimIssueResponse.ProtoReflect.Descriptor instead.
+func (*ClaimIssueResponse) Descriptor() ([]byte, []int) {
+	return file_node_devices_devices_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *ClaimIssueResponse) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+func (x *ClaimIssueResponse) GetExpiresAt() int64 {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return 0
+}
+
+type ClaimRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	Device        *Device                `protobuf:"bytes,2,opt,name=device,proto3" json:"device,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ClaimRequest) Reset() {
+	*x = ClaimRequest{}
+	mi := &file_node_devices_devices_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ClaimRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClaimRequest) ProtoMessage() {}
+
+func (x *ClaimRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_node_devices_devices_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClaimRequest.ProtoReflect.Descriptor instead.
+func (*ClaimRequest) Descriptor() ([]byte, []int) {
+	return file_node_devices_devices_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *ClaimRequest) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+func (x *ClaimRequest) GetDevice() *Device {
+	if x != nil {
+		return x.Device
+	}
+	return nil
+}
+
+type ClaimResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Device        *Device                `protobuf:"bytes,1,opt,name=device,proto3" json:"device,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ClaimResponse) Reset() {
+	*x = ClaimResponse{}
+	mi := &file_node_devices_devices_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ClaimResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ClaimResponse) ProtoMessage() {}
+
+func (x *ClaimResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_node_devices_devices_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ClaimResponse.ProtoReflect.Descriptor instead.
+func (*ClaimResponse) Descriptor() ([]byte, []int) {
+	return file_node_devices_devices_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *ClaimResponse) GetDevice() *Device {
+	if x != nil {
+		return x.Device
+	}
+	return nil
+}
+
+type RotateCertificateRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Certificate   *Certificate           `protobuf:"bytes,2,opt,name=certificate,proto3" json:"certificate,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RotateCertificateRequest) Reset() {
+	*x = RotateCertificateRequest{}
+	mi := &file_node_devices_devices_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RotateCertificateRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RotateCertificateRequest) ProtoMessage() {}
+
+func (x *RotateCertificateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_node_devices_devices_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RotateCertificateRequest.ProtoReflect.Descriptor instead.
+func (*RotateCertificateRequest) Descriptor() ([]byte, []int) {
+	return file_node_devices_devices_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *RotateCertificateRequest) GetUuid() string {
+	if x != nil {
+		return x.Uuid
+	}
+	return ""
+}
+
+func (x *RotateCertificateRequest) GetCertificate() *Certificate {
+	if x != nil {
+		return x.Certificate
+	}
+	return nil
+}
+
+type RevokeCertificateRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	Uuid  string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	// Empty revokes every fingerprint on the device.
+	Fingerprint   []byte `protobuf:"bytes,2,opt,name=fingerprint,proto3" json:"fingerprint,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RevokeCertificateRequest) Reset() {
+	*x = RevokeCertificateRequest{}
+	mi := &file_node_devices_devices_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RevokeCertificateRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RevokeCertificateRequest) ProtoMessage() {}
+
+func (x *RevokeCertificateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_node_devices_devices_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RevokeCertificateRequest.ProtoReflect.Descriptor instead.
+func (*RevokeCertificateRequest) Descriptor() ([]byte, []int) {
+	return file_node_devices_devices_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *RevokeCertificateRequest) GetUuid() string {
+	if x != nil {
+		return x.Uuid
+	}
+	return ""
+}
+
+func (x *RevokeCertificateRequest) GetFingerprint() []byte {
+	if x != nil {
+		return x.Fingerprint
+	}
+	return nil
+}
+
 var File_node_devices_devices_proto protoreflect.FileDescriptor
 
 const file_node_devices_devices_proto_rawDesc = "" +
 	"\n" +
-	"\x1anode/devices/devices.proto\x12\x1ainfinimesh.node.devices.v1\x1a\x18node/access/access.proto\x1a\x1cgoogle/protobuf/struct.proto\"\xe2\x02\n" +
+	"\x1anode/devices/devices.proto\x12\x1ainfinimesh.node.devices.v1\x1a\x18node/access/access.proto\x1a node/namespaces/namespaces.proto\x1a\x1cgoogle/protobuf/struct.proto\"\x9e\x03\n" +
 	"\x06Device\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12\x18\n" +
@@ -472,12 +909,17 @@ const file_node_devices_devices_proto_rawDesc = "" +
 	"\rbasic_enabled\x18\x06 \x01(\bR\fbasicEnabled\x12\x14\n" +
 	"\x05token\x18\a \x01(\tR\x05token\x12>\n" +
 	"\x06access\x18\b \x01(\v2!.infinimesh.node.access.v1.AccessH\x00R\x06access\x88\x01\x01\x12/\n" +
-	"\x06config\x18\t \x01(\v2\x17.google.protobuf.StructR\x06configB\t\n" +
-	"\a_access\"h\n" +
+	"\x06config\x18\t \x01(\v2\x17.google.protobuf.StructR\x06config\x12:\n" +
+	"\x05quota\x18\n" +
+	" \x01(\v2$.infinimesh.node.namespaces.v1.QuotaR\x05quotaB\t\n" +
+	"\a_access\"\xe8\x01\n" +
 	"\vCertificate\x12\x19\n" +
 	"\bpem_data\x18\x01 \x01(\tR\apemData\x12\x1c\n" +
 	"\talgorithm\x18\x02 \x01(\tR\talgorithm\x12 \n" +
-	"\vfingerprint\x18\x03 \x01(\fR\vfingerprint\"o\n" +
+	"\vfingerprint\x18\x03 \x01(\fR\vfingerprint\x121\n" +
+	"\x14rollover_fingerprint\x18\x04 \x01(\fR\x13rolloverFingerprint\x12\x18\n" +
+	"\arevoked\x18\x05 \x01(\bR\arevoked\x121\n" +
+	"\x14revoked_fingerprints\x18\x06 \x03(\fR\x13revokedFingerprints\"o\n" +
 	"\aDevices\x12<\n" +
 	"\adevices\x18\x01 \x03(\v2\".infinimesh.node.devices.v1.DeviceR\adevices\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"=\n" +
@@ -491,7 +933,31 @@ const file_node_devices_devices_proto_rawDesc = "" +
 	"\x0eCreateResponse\x12:\n" +
 	"\x06device\x18\x01 \x01(\v2\".infinimesh.node.devices.v1.DeviceR\x06device\";\n" +
 	"\x17GetByFingerprintRequest\x12 \n" +
-	"\vfingerprint\x18\x01 \x01(\fR\vfingerprintB2Z0github.com/infinimesh/proto/node/devices;devicesb\x06proto3"
+	"\vfingerprint\x18\x01 \x01(\fR\vfingerprint\"o\n" +
+	"\x11BulkCreateRequest\x12\x1c\n" +
+	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12<\n" +
+	"\adevices\x18\x02 \x03(\v2\".infinimesh.node.devices.v1.DeviceR\adevices\"R\n" +
+	"\x12BulkCreateResponse\x12<\n" +
+	"\adevices\x18\x01 \x03(\v2\".infinimesh.node.devices.v1.DeviceR\adevices\"P\n" +
+	"\x11ClaimIssueRequest\x12\x1c\n" +
+	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x1d\n" +
+	"\n" +
+	"expires_at\x18\x02 \x01(\x03R\texpiresAt\"I\n" +
+	"\x12ClaimIssueResponse\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\x12\x1d\n" +
+	"\n" +
+	"expires_at\x18\x02 \x01(\x03R\texpiresAt\"`\n" +
+	"\fClaimRequest\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\x12:\n" +
+	"\x06device\x18\x02 \x01(\v2\".infinimesh.node.devices.v1.DeviceR\x06device\"K\n" +
+	"\rClaimResponse\x12:\n" +
+	"\x06device\x18\x01 \x01(\v2\".infinimesh.node.devices.v1.DeviceR\x06device\"y\n" +
+	"\x18RotateCertificateRequest\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12I\n" +
+	"\vcertificate\x18\x02 \x01(\v2'.infinimesh.node.devices.v1.CertificateR\vcertificate\"P\n" +
+	"\x18RevokeCertificateRequest\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12 \n" +
+	"\vfingerprint\x18\x02 \x01(\fR\vfingerprintB2Z0github.com/infinimesh/proto/node/devices;devicesb\x06proto3"
 
 var (
 	file_node_devices_devices_proto_rawDescOnce sync.Once
@@ -505,31 +971,46 @@ func file_node_devices_devices_proto_rawDescGZIP() []byte {
 	return file_node_devices_devices_proto_rawDescData
 }
 
-var file_node_devices_devices_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_node_devices_devices_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
 var file_node_devices_devices_proto_goTypes = []any{
-	(*Device)(nil),                  // 0: infinimesh.node.devices.v1.Device
-	(*Certificate)(nil),             // 1: infinimesh.node.devices.v1.Certificate
-	(*Devices)(nil),                 // 2: infinimesh.node.devices.v1.Devices
-	(*PairingCreate)(nil),           // 3: infinimesh.node.devices.v1.PairingCreate
-	(*CreateRequest)(nil),           // 4: infinimesh.node.devices.v1.CreateRequest
-	(*CreateResponse)(nil),          // 5: infinimesh.node.devices.v1.CreateResponse
-	(*GetByFingerprintRequest)(nil), // 6: infinimesh.node.devices.v1.GetByFingerprintRequest
-	(*access.Access)(nil),           // 7: infinimesh.node.access.v1.Access
-	(*structpb.Struct)(nil),         // 8: google.protobuf.Struct
+	(*Device)(nil),                   // 0: infinimesh.node.devices.v1.Device
+	(*Certificate)(nil),              // 1: infinimesh.node.devices.v1.Certificate
+	(*Devices)(nil),                  // 2: infinimesh.node.devices.v1.Devices
+	(*PairingCreate)(nil),            // 3: infinimesh.node.devices.v1.PairingCreate
+	(*CreateRequest)(nil),            // 4: infinimesh.node.devices.v1.CreateRequest
+	(*CreateResponse)(nil),           // 5: infinimesh.node.devices.v1.CreateResponse
+	(*GetByFingerprintRequest)(nil),  // 6: infinimesh.node.devices.v1.GetByFingerprintRequest
+	(*BulkCreateRequest)(nil),        // 7: infinimesh.node.devices.v1.BulkCreateRequest
+	(*BulkCreateResponse)(nil),       // 8: infinimesh.node.devices.v1.BulkCreateResponse
+	(*ClaimIssueRequest)(nil),        // 9: infinimesh.node.devices.v1.ClaimIssueRequest
+	(*ClaimIssueResponse)(nil),       // 10: infinimesh.node.devices.v1.ClaimIssueResponse
+	(*ClaimRequest)(nil),             // 11: infinimesh.node.devices.v1.ClaimRequest
+	(*ClaimResponse)(nil),            // 12: infinimesh.node.devices.v1.ClaimResponse
+	(*RotateCertificateRequest)(nil), // 13: infinimesh.node.devices.v1.RotateCertificateRequest
+	(*RevokeCertificateRequest)(nil), // 14: infinimesh.node.devices.v1.RevokeCertificateRequest
+	(*access.Access)(nil),            // 15: infinimesh.node.access.v1.Access
+	(*structpb.Struct)(nil),          // 16: google.protobuf.Struct
+	(*namespaces.Quota)(nil),         // 17: infinimesh.node.namespaces.v1.Quota
 }
 var file_node_devices_devices_proto_depIdxs = []int32{
-	1, // 0: infinimesh.node.devices.v1.Device.certificate:type_name -> infinimesh.node.devices.v1.Certificate
-	7, // 1: infinimesh.node.devices.v1.Device.access:type_name -> infinimesh.node.access.v1.Access
-	8, // 2: infinimesh.node.devices.v1.Device.config:type_name -> google.protobuf.Struct
-	0, // 3: infinimesh.node.devices.v1.Devices.devices:type_name -> infinimesh.node.devices.v1.Device
-	0, // 4: infinimesh.node.devices.v1.CreateRequest.device:type_name -> infinimesh.node.devices.v1.Device
-	3, // 5: infinimesh.node.devices.v1.CreateRequest.pairing:type_name -> infinimesh.node.devices.v1.PairingCreate
-	0, // 6: infinimesh.node.devices.v1.CreateResponse.device:type_name -> infinimesh.node.devices.v1.Device
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	1,  // 0: infinimesh.node.devices.v1.Device.certificate:type_name -> infinimesh.node.devices.v1.Certificate
+	15, // 1: infinimesh.node.devices.v1.Device.access:type_name -> infinimesh.node.access.v1.Access
+	16, // 2: infinimesh.node.devices.v1.Device.config:type_name -> google.protobuf.Struct
+	17, // 3: infinimesh.node.devices.v1.Device.quota:type_name -> infinimesh.node.namespaces.v1.Quota
+	0,  // 4: infinimesh.node.devices.v1.Devices.devices:type_name -> infinimesh.node.devices.v1.Device
+	0,  // 5: infinimesh.node.devices.v1.CreateRequest.device:type_name -> infinimesh.node.devices.v1.Device
+	3,  // 6: infinimesh.node.devices.v1.CreateRequest.pairing:type_name -> infinimesh.node.devices.v1.PairingCreate
+	0,  // 7: infinimesh.node.devices.v1.CreateResponse.device:type_name -> infinimesh.node.devices.v1.Device
+	0,  // 8: infinimesh.node.devices.v1.BulkCreateRequest.devices:type_name -> infinimesh.node.devices.v1.Device
+	0,  // 9: infinimesh.node.devices.v1.BulkCreateResponse.devices:type_name -> infinimesh.node.devices.v1.Device
+	0,  // 10: infinimesh.node.devices.v1.ClaimRequest.device:type_name -> infinimesh.node.devices.v1.Device
+	0,  // 11: infinimesh.node.devices.v1.ClaimResponse.device:type_name -> infinimesh.node.devices.v1.Device
+	1,  // 12: infinimesh.node.devices.v1.RotateCertificateRequest.certificate:type_name -> infinimesh.node.devices.v1.Certificate
+	13, // [13:13] is the sub-list for method output_type
+	13, // [13:13] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_node_devices_devices_proto_init() }
@@ -544,7 +1025,7 @@ func file_node_devices_devices_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_node_devices_devices_proto_rawDesc), len(file_node_devices_devices_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   15,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

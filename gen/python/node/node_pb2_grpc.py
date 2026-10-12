@@ -4,9 +4,12 @@ import grpc
 
 from node.access import access_pb2 as node_dot_access_dot_access__pb2
 from node.accounts import accounts_pb2 as node_dot_accounts_dot_accounts__pb2
+from node.audit import audit_pb2 as node_dot_audit_dot_audit__pb2
 from node.devices import devices_pb2 as node_dot_devices_dot_devices__pb2
+from node.grants import grants_pb2 as node_dot_grants_dot_grants__pb2
 from node.namespaces import namespaces_pb2 as node_dot_namespaces_dot_namespaces__pb2
 from node import node_pb2 as node_dot_node__pb2
+from node.rules import rules_pb2 as node_dot_rules_dot_rules__pb2
 from node.sessions import sessions_pb2 as node_dot_sessions_dot_sessions__pb2
 from shadow import shadow_pb2 as shadow_dot_shadow__pb2
 
@@ -947,6 +950,31 @@ class DevicesServiceStub(object):
                 request_serializer=node_dot_devices_dot_devices__pb2.GetByFingerprintRequest.SerializeToString,
                 response_deserializer=node_dot_devices_dot_devices__pb2.Device.FromString,
                 _registered_method=True)
+        self.BulkCreate = channel.unary_unary(
+                '/infinimesh.node.v1.DevicesService/BulkCreate',
+                request_serializer=node_dot_devices_dot_devices__pb2.BulkCreateRequest.SerializeToString,
+                response_deserializer=node_dot_devices_dot_devices__pb2.BulkCreateResponse.FromString,
+                _registered_method=True)
+        self.IssueClaim = channel.unary_unary(
+                '/infinimesh.node.v1.DevicesService/IssueClaim',
+                request_serializer=node_dot_devices_dot_devices__pb2.ClaimIssueRequest.SerializeToString,
+                response_deserializer=node_dot_devices_dot_devices__pb2.ClaimIssueResponse.FromString,
+                _registered_method=True)
+        self.Claim = channel.unary_unary(
+                '/infinimesh.node.v1.DevicesService/Claim',
+                request_serializer=node_dot_devices_dot_devices__pb2.ClaimRequest.SerializeToString,
+                response_deserializer=node_dot_devices_dot_devices__pb2.ClaimResponse.FromString,
+                _registered_method=True)
+        self.RotateCertificate = channel.unary_unary(
+                '/infinimesh.node.v1.DevicesService/RotateCertificate',
+                request_serializer=node_dot_devices_dot_devices__pb2.RotateCertificateRequest.SerializeToString,
+                response_deserializer=node_dot_devices_dot_devices__pb2.Device.FromString,
+                _registered_method=True)
+        self.RevokeCertificate = channel.unary_unary(
+                '/infinimesh.node.v1.DevicesService/RevokeCertificate',
+                request_serializer=node_dot_devices_dot_devices__pb2.RevokeCertificateRequest.SerializeToString,
+                response_deserializer=node_dot_devices_dot_devices__pb2.Device.FromString,
+                _registered_method=True)
         self.RevokeDevicesToken = channel.unary_unary(
                 '/infinimesh.node.v1.DevicesService/RevokeDevicesToken',
                 request_serializer=node_dot_node__pb2.RevokeDeviceTokenRequest.SerializeToString,
@@ -1017,6 +1045,36 @@ class DevicesServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def BulkCreate(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def IssueClaim(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Claim(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RotateCertificate(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def RevokeCertificate(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def RevokeDevicesToken(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -1074,6 +1132,31 @@ def add_DevicesServiceServicer_to_server(servicer, server):
             'GetByFingerprint': grpc.unary_unary_rpc_method_handler(
                     servicer.GetByFingerprint,
                     request_deserializer=node_dot_devices_dot_devices__pb2.GetByFingerprintRequest.FromString,
+                    response_serializer=node_dot_devices_dot_devices__pb2.Device.SerializeToString,
+            ),
+            'BulkCreate': grpc.unary_unary_rpc_method_handler(
+                    servicer.BulkCreate,
+                    request_deserializer=node_dot_devices_dot_devices__pb2.BulkCreateRequest.FromString,
+                    response_serializer=node_dot_devices_dot_devices__pb2.BulkCreateResponse.SerializeToString,
+            ),
+            'IssueClaim': grpc.unary_unary_rpc_method_handler(
+                    servicer.IssueClaim,
+                    request_deserializer=node_dot_devices_dot_devices__pb2.ClaimIssueRequest.FromString,
+                    response_serializer=node_dot_devices_dot_devices__pb2.ClaimIssueResponse.SerializeToString,
+            ),
+            'Claim': grpc.unary_unary_rpc_method_handler(
+                    servicer.Claim,
+                    request_deserializer=node_dot_devices_dot_devices__pb2.ClaimRequest.FromString,
+                    response_serializer=node_dot_devices_dot_devices__pb2.ClaimResponse.SerializeToString,
+            ),
+            'RotateCertificate': grpc.unary_unary_rpc_method_handler(
+                    servicer.RotateCertificate,
+                    request_deserializer=node_dot_devices_dot_devices__pb2.RotateCertificateRequest.FromString,
+                    response_serializer=node_dot_devices_dot_devices__pb2.Device.SerializeToString,
+            ),
+            'RevokeCertificate': grpc.unary_unary_rpc_method_handler(
+                    servicer.RevokeCertificate,
+                    request_deserializer=node_dot_devices_dot_devices__pb2.RevokeCertificateRequest.FromString,
                     response_serializer=node_dot_devices_dot_devices__pb2.Device.SerializeToString,
             ),
             'RevokeDevicesToken': grpc.unary_unary_rpc_method_handler(
@@ -1363,6 +1446,141 @@ class DevicesService(object):
             _registered_method=True)
 
     @staticmethod
+    def BulkCreate(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/infinimesh.node.v1.DevicesService/BulkCreate',
+            node_dot_devices_dot_devices__pb2.BulkCreateRequest.SerializeToString,
+            node_dot_devices_dot_devices__pb2.BulkCreateResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def IssueClaim(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/infinimesh.node.v1.DevicesService/IssueClaim',
+            node_dot_devices_dot_devices__pb2.ClaimIssueRequest.SerializeToString,
+            node_dot_devices_dot_devices__pb2.ClaimIssueResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Claim(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/infinimesh.node.v1.DevicesService/Claim',
+            node_dot_devices_dot_devices__pb2.ClaimRequest.SerializeToString,
+            node_dot_devices_dot_devices__pb2.ClaimResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def RotateCertificate(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/infinimesh.node.v1.DevicesService/RotateCertificate',
+            node_dot_devices_dot_devices__pb2.RotateCertificateRequest.SerializeToString,
+            node_dot_devices_dot_devices__pb2.Device.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def RevokeCertificate(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/infinimesh.node.v1.DevicesService/RevokeCertificate',
+            node_dot_devices_dot_devices__pb2.RevokeCertificateRequest.SerializeToString,
+            node_dot_devices_dot_devices__pb2.Device.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def RevokeDevicesToken(request,
             target,
             options=(),
@@ -1582,6 +1800,11 @@ class ShadowServiceStub(object):
                 request_serializer=shadow_dot_shadow__pb2.StreamShadowRequest.SerializeToString,
                 response_deserializer=shadow_dot_shadow__pb2.Shadow.FromString,
                 _registered_method=True)
+        self.PatchMany = channel.unary_unary(
+                '/infinimesh.node.v1.ShadowService/PatchMany',
+                request_serializer=shadow_dot_shadow__pb2.PatchManyRequest.SerializeToString,
+                response_deserializer=shadow_dot_shadow__pb2.PatchManyResponse.FromString,
+                _registered_method=True)
 
 
 class ShadowServiceServicer(object):
@@ -1617,6 +1840,12 @@ class ShadowServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def PatchMany(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ShadowServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -1644,6 +1873,11 @@ def add_ShadowServiceServicer_to_server(servicer, server):
                     servicer.StreamShadowSync,
                     request_deserializer=shadow_dot_shadow__pb2.StreamShadowRequest.FromString,
                     response_serializer=shadow_dot_shadow__pb2.Shadow.SerializeToString,
+            ),
+            'PatchMany': grpc.unary_unary_rpc_method_handler(
+                    servicer.PatchMany,
+                    request_deserializer=shadow_dot_shadow__pb2.PatchManyRequest.FromString,
+                    response_serializer=shadow_dot_shadow__pb2.PatchManyResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -1781,6 +2015,722 @@ class ShadowService(object):
             '/infinimesh.node.v1.ShadowService/StreamShadowSync',
             shadow_dot_shadow__pb2.StreamShadowRequest.SerializeToString,
             shadow_dot_shadow__pb2.Shadow.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def PatchMany(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/infinimesh.node.v1.ShadowService/PatchMany',
+            shadow_dot_shadow__pb2.PatchManyRequest.SerializeToString,
+            shadow_dot_shadow__pb2.PatchManyResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+
+class RulesServiceStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.Create = channel.unary_unary(
+                '/infinimesh.node.v1.RulesService/Create',
+                request_serializer=node_dot_rules_dot_rules__pb2.Rule.SerializeToString,
+                response_deserializer=node_dot_rules_dot_rules__pb2.Rule.FromString,
+                _registered_method=True)
+        self.Update = channel.unary_unary(
+                '/infinimesh.node.v1.RulesService/Update',
+                request_serializer=node_dot_rules_dot_rules__pb2.Rule.SerializeToString,
+                response_deserializer=node_dot_rules_dot_rules__pb2.Rule.FromString,
+                _registered_method=True)
+        self.Get = channel.unary_unary(
+                '/infinimesh.node.v1.RulesService/Get',
+                request_serializer=node_dot_rules_dot_rules__pb2.Rule.SerializeToString,
+                response_deserializer=node_dot_rules_dot_rules__pb2.Rule.FromString,
+                _registered_method=True)
+        self.List = channel.unary_unary(
+                '/infinimesh.node.v1.RulesService/List',
+                request_serializer=node_dot_rules_dot_rules__pb2.ListRulesRequest.SerializeToString,
+                response_deserializer=node_dot_rules_dot_rules__pb2.Rules.FromString,
+                _registered_method=True)
+        self.Delete = channel.unary_unary(
+                '/infinimesh.node.v1.RulesService/Delete',
+                request_serializer=node_dot_rules_dot_rules__pb2.Rule.SerializeToString,
+                response_deserializer=node_dot_node__pb2.DeleteResponse.FromString,
+                _registered_method=True)
+        self.ListAlarms = channel.unary_unary(
+                '/infinimesh.node.v1.RulesService/ListAlarms',
+                request_serializer=node_dot_rules_dot_rules__pb2.ListAlarmsRequest.SerializeToString,
+                response_deserializer=node_dot_rules_dot_rules__pb2.Alarms.FromString,
+                _registered_method=True)
+        self.AckAlarm = channel.unary_unary(
+                '/infinimesh.node.v1.RulesService/AckAlarm',
+                request_serializer=node_dot_rules_dot_rules__pb2.AlarmRef.SerializeToString,
+                response_deserializer=node_dot_rules_dot_rules__pb2.Alarm.FromString,
+                _registered_method=True)
+        self.ClearAlarm = channel.unary_unary(
+                '/infinimesh.node.v1.RulesService/ClearAlarm',
+                request_serializer=node_dot_rules_dot_rules__pb2.AlarmRef.SerializeToString,
+                response_deserializer=node_dot_rules_dot_rules__pb2.Alarm.FromString,
+                _registered_method=True)
+
+
+class RulesServiceServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def Create(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Update(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Get(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def List(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Delete(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListAlarms(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def AckAlarm(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ClearAlarm(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_RulesServiceServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'Create': grpc.unary_unary_rpc_method_handler(
+                    servicer.Create,
+                    request_deserializer=node_dot_rules_dot_rules__pb2.Rule.FromString,
+                    response_serializer=node_dot_rules_dot_rules__pb2.Rule.SerializeToString,
+            ),
+            'Update': grpc.unary_unary_rpc_method_handler(
+                    servicer.Update,
+                    request_deserializer=node_dot_rules_dot_rules__pb2.Rule.FromString,
+                    response_serializer=node_dot_rules_dot_rules__pb2.Rule.SerializeToString,
+            ),
+            'Get': grpc.unary_unary_rpc_method_handler(
+                    servicer.Get,
+                    request_deserializer=node_dot_rules_dot_rules__pb2.Rule.FromString,
+                    response_serializer=node_dot_rules_dot_rules__pb2.Rule.SerializeToString,
+            ),
+            'List': grpc.unary_unary_rpc_method_handler(
+                    servicer.List,
+                    request_deserializer=node_dot_rules_dot_rules__pb2.ListRulesRequest.FromString,
+                    response_serializer=node_dot_rules_dot_rules__pb2.Rules.SerializeToString,
+            ),
+            'Delete': grpc.unary_unary_rpc_method_handler(
+                    servicer.Delete,
+                    request_deserializer=node_dot_rules_dot_rules__pb2.Rule.FromString,
+                    response_serializer=node_dot_node__pb2.DeleteResponse.SerializeToString,
+            ),
+            'ListAlarms': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListAlarms,
+                    request_deserializer=node_dot_rules_dot_rules__pb2.ListAlarmsRequest.FromString,
+                    response_serializer=node_dot_rules_dot_rules__pb2.Alarms.SerializeToString,
+            ),
+            'AckAlarm': grpc.unary_unary_rpc_method_handler(
+                    servicer.AckAlarm,
+                    request_deserializer=node_dot_rules_dot_rules__pb2.AlarmRef.FromString,
+                    response_serializer=node_dot_rules_dot_rules__pb2.Alarm.SerializeToString,
+            ),
+            'ClearAlarm': grpc.unary_unary_rpc_method_handler(
+                    servicer.ClearAlarm,
+                    request_deserializer=node_dot_rules_dot_rules__pb2.AlarmRef.FromString,
+                    response_serializer=node_dot_rules_dot_rules__pb2.Alarm.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'infinimesh.node.v1.RulesService', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+    server.add_registered_method_handlers('infinimesh.node.v1.RulesService', rpc_method_handlers)
+
+
+ # This class is part of an EXPERIMENTAL API.
+class RulesService(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def Create(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/infinimesh.node.v1.RulesService/Create',
+            node_dot_rules_dot_rules__pb2.Rule.SerializeToString,
+            node_dot_rules_dot_rules__pb2.Rule.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Update(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/infinimesh.node.v1.RulesService/Update',
+            node_dot_rules_dot_rules__pb2.Rule.SerializeToString,
+            node_dot_rules_dot_rules__pb2.Rule.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Get(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/infinimesh.node.v1.RulesService/Get',
+            node_dot_rules_dot_rules__pb2.Rule.SerializeToString,
+            node_dot_rules_dot_rules__pb2.Rule.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def List(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/infinimesh.node.v1.RulesService/List',
+            node_dot_rules_dot_rules__pb2.ListRulesRequest.SerializeToString,
+            node_dot_rules_dot_rules__pb2.Rules.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Delete(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/infinimesh.node.v1.RulesService/Delete',
+            node_dot_rules_dot_rules__pb2.Rule.SerializeToString,
+            node_dot_node__pb2.DeleteResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListAlarms(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/infinimesh.node.v1.RulesService/ListAlarms',
+            node_dot_rules_dot_rules__pb2.ListAlarmsRequest.SerializeToString,
+            node_dot_rules_dot_rules__pb2.Alarms.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def AckAlarm(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/infinimesh.node.v1.RulesService/AckAlarm',
+            node_dot_rules_dot_rules__pb2.AlarmRef.SerializeToString,
+            node_dot_rules_dot_rules__pb2.Alarm.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ClearAlarm(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/infinimesh.node.v1.RulesService/ClearAlarm',
+            node_dot_rules_dot_rules__pb2.AlarmRef.SerializeToString,
+            node_dot_rules_dot_rules__pb2.Alarm.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+
+class AuditServiceStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.List = channel.unary_unary(
+                '/infinimesh.node.v1.AuditService/List',
+                request_serializer=node_dot_audit_dot_audit__pb2.ListAuditRequest.SerializeToString,
+                response_deserializer=node_dot_audit_dot_audit__pb2.AuditRecords.FromString,
+                _registered_method=True)
+        self.Export = channel.unary_unary(
+                '/infinimesh.node.v1.AuditService/Export',
+                request_serializer=node_dot_audit_dot_audit__pb2.ExportRequest.SerializeToString,
+                response_deserializer=node_dot_audit_dot_audit__pb2.ExportResponse.FromString,
+                _registered_method=True)
+
+
+class AuditServiceServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def List(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Export(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_AuditServiceServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'List': grpc.unary_unary_rpc_method_handler(
+                    servicer.List,
+                    request_deserializer=node_dot_audit_dot_audit__pb2.ListAuditRequest.FromString,
+                    response_serializer=node_dot_audit_dot_audit__pb2.AuditRecords.SerializeToString,
+            ),
+            'Export': grpc.unary_unary_rpc_method_handler(
+                    servicer.Export,
+                    request_deserializer=node_dot_audit_dot_audit__pb2.ExportRequest.FromString,
+                    response_serializer=node_dot_audit_dot_audit__pb2.ExportResponse.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'infinimesh.node.v1.AuditService', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+    server.add_registered_method_handlers('infinimesh.node.v1.AuditService', rpc_method_handlers)
+
+
+ # This class is part of an EXPERIMENTAL API.
+class AuditService(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def List(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/infinimesh.node.v1.AuditService/List',
+            node_dot_audit_dot_audit__pb2.ListAuditRequest.SerializeToString,
+            node_dot_audit_dot_audit__pb2.AuditRecords.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Export(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/infinimesh.node.v1.AuditService/Export',
+            node_dot_audit_dot_audit__pb2.ExportRequest.SerializeToString,
+            node_dot_audit_dot_audit__pb2.ExportResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+
+class GrantsServiceStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.Create = channel.unary_unary(
+                '/infinimesh.node.v1.GrantsService/Create',
+                request_serializer=node_dot_grants_dot_grants__pb2.Grant.SerializeToString,
+                response_deserializer=node_dot_grants_dot_grants__pb2.Grant.FromString,
+                _registered_method=True)
+        self.List = channel.unary_unary(
+                '/infinimesh.node.v1.GrantsService/List',
+                request_serializer=node_dot_grants_dot_grants__pb2.ListGrantsRequest.SerializeToString,
+                response_deserializer=node_dot_grants_dot_grants__pb2.Grants.FromString,
+                _registered_method=True)
+        self.Revoke = channel.unary_unary(
+                '/infinimesh.node.v1.GrantsService/Revoke',
+                request_serializer=node_dot_grants_dot_grants__pb2.Grant.SerializeToString,
+                response_deserializer=node_dot_grants_dot_grants__pb2.Grant.FromString,
+                _registered_method=True)
+        self.ListConsent = channel.unary_unary(
+                '/infinimesh.node.v1.GrantsService/ListConsent',
+                request_serializer=node_dot_grants_dot_grants__pb2.ListConsentRequest.SerializeToString,
+                response_deserializer=node_dot_grants_dot_grants__pb2.Consents.FromString,
+                _registered_method=True)
+
+
+class GrantsServiceServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def Create(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def List(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Revoke(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListConsent(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_GrantsServiceServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'Create': grpc.unary_unary_rpc_method_handler(
+                    servicer.Create,
+                    request_deserializer=node_dot_grants_dot_grants__pb2.Grant.FromString,
+                    response_serializer=node_dot_grants_dot_grants__pb2.Grant.SerializeToString,
+            ),
+            'List': grpc.unary_unary_rpc_method_handler(
+                    servicer.List,
+                    request_deserializer=node_dot_grants_dot_grants__pb2.ListGrantsRequest.FromString,
+                    response_serializer=node_dot_grants_dot_grants__pb2.Grants.SerializeToString,
+            ),
+            'Revoke': grpc.unary_unary_rpc_method_handler(
+                    servicer.Revoke,
+                    request_deserializer=node_dot_grants_dot_grants__pb2.Grant.FromString,
+                    response_serializer=node_dot_grants_dot_grants__pb2.Grant.SerializeToString,
+            ),
+            'ListConsent': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListConsent,
+                    request_deserializer=node_dot_grants_dot_grants__pb2.ListConsentRequest.FromString,
+                    response_serializer=node_dot_grants_dot_grants__pb2.Consents.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'infinimesh.node.v1.GrantsService', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+    server.add_registered_method_handlers('infinimesh.node.v1.GrantsService', rpc_method_handlers)
+
+
+ # This class is part of an EXPERIMENTAL API.
+class GrantsService(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def Create(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/infinimesh.node.v1.GrantsService/Create',
+            node_dot_grants_dot_grants__pb2.Grant.SerializeToString,
+            node_dot_grants_dot_grants__pb2.Grant.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def List(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/infinimesh.node.v1.GrantsService/List',
+            node_dot_grants_dot_grants__pb2.ListGrantsRequest.SerializeToString,
+            node_dot_grants_dot_grants__pb2.Grants.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Revoke(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/infinimesh.node.v1.GrantsService/Revoke',
+            node_dot_grants_dot_grants__pb2.Grant.SerializeToString,
+            node_dot_grants_dot_grants__pb2.Grant.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListConsent(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/infinimesh.node.v1.GrantsService/ListConsent',
+            node_dot_grants_dot_grants__pb2.ListConsentRequest.SerializeToString,
+            node_dot_grants_dot_grants__pb2.Consents.FromString,
             options,
             channel_credentials,
             insecure,

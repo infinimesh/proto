@@ -27,7 +27,7 @@ from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13shadow/shadow.proto\x12\x14infinimesh.shadow.v1\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x88\x01\n\x05State\x12\x38\n\ttimestamp\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\ttimestamp\x12+\n\x04\x64\x61ta\x18\x02 \x01(\x0b\x32\x17.google.protobuf.StructR\x04\x64\x61ta\x12\x18\n\x07version\x18\x03 \x01(\x04R\x07version\"\x86\x01\n\x0f\x43onnectionState\x12\x1c\n\tconnected\x18\x01 \x01(\x08R\tconnected\x12\x38\n\ttimestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\ttimestamp\x12\x1b\n\tclient_id\x18\x03 \x01(\tR\x08\x63lientId\"l\n\nDeviceMeta\x12\x16\n\x06\x64\x65vice\x18\x01 \x01(\tR\x06\x64\x65vice\x12\x14\n\x05title\x18\x02 \x01(\tR\x05title\x12\x1c\n\tnamespace\x18\x03 \x01(\tR\tnamespace\x12\x12\n\x04tags\x18\x04 \x03(\tR\x04tags\"\xa9\x03\n\x06Shadow\x12\x16\n\x06\x64\x65vice\x18\x01 \x01(\tR\x06\x64\x65vice\x12\x37\n\x08reported\x18\x02 \x01(\x0b\x32\x1b.infinimesh.shadow.v1.StateR\x08reported\x12\x35\n\x07\x64\x65sired\x18\x03 \x01(\x0b\x32\x1b.infinimesh.shadow.v1.StateR\x07\x64\x65sired\x12\x45\n\nconnection\x18\x04 \x01(\x0b\x32%.infinimesh.shadow.v1.ConnectionStateR\nconnection\x12\x19\n\x08\x65vent_id\x18\x05 \x01(\x04R\x07\x65ventId\x12\x14\n\x05title\x18\x06 \x01(\tR\x05title\x12\x1c\n\tnamespace\x18\x07 \x01(\tR\tnamespace\x12\x12\n\x04tags\x18\x08 \x03(\tR\x04tags\x12\x37\n\x05\x65vent\x18\t \x01(\x0e\x32!.infinimesh.shadow.v1.ShadowEventR\x05\x65vent\x12\x18\n\x07\x61\x63\x63ount\x18\n \x01(\tR\x07\x61\x63\x63ount\x12\x1a\n\x08sequence\x18\x0b \x01(\x04R\x08sequence\"V\n\nGetRequest\x12\x16\n\x04pool\x18\x01 \x03(\tB\x02\x18\x01R\x04pool\x12\x18\n\x07\x64\x65vices\x18\x02 \x03(\tR\x07\x64\x65vices\x12\x16\n\x06\x64\x65vice\x18\x03 \x01(\tR\x06\x64\x65vice\"E\n\x0bGetResponse\x12\x36\n\x07shadows\x18\x01 \x03(\x0b\x32\x1c.infinimesh.shadow.v1.ShadowR\x07shadows\"v\n\rRemoveRequest\x12\x16\n\x06\x64\x65vice\x18\x01 \x01(\tR\x06\x64\x65vice\x12;\n\tstate_key\x18\x02 \x01(\x0e\x32\x1e.infinimesh.shadow.v1.StateKeyR\x08stateKey\x12\x10\n\x03key\x18\x03 \x01(\tR\x03key\"\xd3\x02\n\x13StreamShadowRequest\x12\x18\n\x07\x64\x65vices\x18\x01 \x03(\tR\x07\x64\x65vices\x12\x1d\n\nonly_delta\x18\x02 \x01(\x08R\tonlyDelta\x12\x12\n\x04sync\x18\x03 \x01(\x08R\x04sync\x12\x1c\n\tnamespace\x18\x04 \x01(\tR\tnamespace\x12\x1e\n\nnamespaces\x18\x05 \x03(\tR\nnamespaces\x12\x18\n\x07\x61\x63\x63ount\x18\x06 \x01(\tR\x07\x61\x63\x63ount\x12:\n\x07\x63\x61talog\x18\x07 \x03(\x0b\x32 .infinimesh.shadow.v1.DeviceMetaR\x07\x63\x61talog\x12\x38\n\x07include\x18\x08 \x03(\x0e\x32\x1e.infinimesh.shadow.v1.StateKeyR\x07include\x12!\n\x0cresume_after\x18\t \x01(\x04R\x0bresumeAfter*>\n\x0bShadowEvent\x12\t\n\x05STATE\x10\x00\x12\x10\n\x0c\x44\x45VICE_ADDED\x10\x01\x12\x12\n\x0e\x44\x45VICE_REMOVED\x10\x02*5\n\x08StateKey\x12\x0c\n\x08REPORTED\x10\x00\x12\x0b\n\x07\x44\x45SIRED\x10\x01\x12\x0e\n\nCONNECTION\x10\x02\x32\xf3\x03\n\rShadowService\x12J\n\x03Get\x12 .infinimesh.shadow.v1.GetRequest\x1a!.infinimesh.shadow.v1.GetResponse\x12\x43\n\x05Patch\x12\x1c.infinimesh.shadow.v1.Shadow\x1a\x1c.infinimesh.shadow.v1.Shadow\x12K\n\x06Remove\x12#.infinimesh.shadow.v1.RemoveRequest\x1a\x1c.infinimesh.shadow.v1.Shadow\x12Y\n\x0cStreamShadow\x12).infinimesh.shadow.v1.StreamShadowRequest\x1a\x1c.infinimesh.shadow.v1.Shadow0\x01\x12]\n\x10StreamShadowSync\x12).infinimesh.shadow.v1.StreamShadowRequest\x1a\x1c.infinimesh.shadow.v1.Shadow0\x01\x12J\n\x12PublishDeviceScope\x12\x1c.infinimesh.shadow.v1.Shadow\x1a\x16.google.protobuf.EmptyB+Z)github.com/infinimesh/proto/shadow;shadowb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13shadow/shadow.proto\x12\x14infinimesh.shadow.v1\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x88\x01\n\x05State\x12\x38\n\ttimestamp\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\ttimestamp\x12+\n\x04\x64\x61ta\x18\x02 \x01(\x0b\x32\x17.google.protobuf.StructR\x04\x64\x61ta\x12\x18\n\x07version\x18\x03 \x01(\x04R\x07version\"\x86\x01\n\x0f\x43onnectionState\x12\x1c\n\tconnected\x18\x01 \x01(\x08R\tconnected\x12\x38\n\ttimestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\ttimestamp\x12\x1b\n\tclient_id\x18\x03 \x01(\tR\x08\x63lientId\"l\n\nDeviceMeta\x12\x16\n\x06\x64\x65vice\x18\x01 \x01(\tR\x06\x64\x65vice\x12\x14\n\x05title\x18\x02 \x01(\tR\x05title\x12\x1c\n\tnamespace\x18\x03 \x01(\tR\tnamespace\x12\x12\n\x04tags\x18\x04 \x03(\tR\x04tags\"\xbb\x03\n\x06Shadow\x12\x16\n\x06\x64\x65vice\x18\x01 \x01(\tR\x06\x64\x65vice\x12\x37\n\x08reported\x18\x02 \x01(\x0b\x32\x1b.infinimesh.shadow.v1.StateR\x08reported\x12\x35\n\x07\x64\x65sired\x18\x03 \x01(\x0b\x32\x1b.infinimesh.shadow.v1.StateR\x07\x64\x65sired\x12\x45\n\nconnection\x18\x04 \x01(\x0b\x32%.infinimesh.shadow.v1.ConnectionStateR\nconnection\x12\x19\n\x08\x65vent_id\x18\x05 \x01(\x04R\x07\x65ventId\x12\x14\n\x05title\x18\x06 \x01(\tR\x05title\x12\x1c\n\tnamespace\x18\x07 \x01(\tR\tnamespace\x12\x12\n\x04tags\x18\x08 \x03(\tR\x04tags\x12\x37\n\x05\x65vent\x18\t \x01(\x0e\x32!.infinimesh.shadow.v1.ShadowEventR\x05\x65vent\x12\x18\n\x07\x61\x63\x63ount\x18\n \x01(\tR\x07\x61\x63\x63ount\x12\x1a\n\x08sequence\x18\x0b \x01(\x04R\x08sequence\x12\x10\n\x03tag\x18\x0c \x01(\tR\x03tag\"\x93\x01\n\x10PatchManyRequest\x12\x18\n\x07\x64\x65vices\x18\x01 \x03(\tR\x07\x64\x65vices\x12\x35\n\x07\x64\x65sired\x18\x02 \x01(\x0b\x32\x1b.infinimesh.shadow.v1.StateR\x07\x64\x65sired\x12\x1c\n\tnamespace\x18\x03 \x01(\tR\tnamespace\x12\x10\n\x03tag\x18\x04 \x01(\tR\x03tag\"-\n\x11PatchManyResponse\x12\x18\n\x07updated\x18\x01 \x01(\x05R\x07updated\"V\n\nGetRequest\x12\x16\n\x04pool\x18\x01 \x03(\tB\x02\x18\x01R\x04pool\x12\x18\n\x07\x64\x65vices\x18\x02 \x03(\tR\x07\x64\x65vices\x12\x16\n\x06\x64\x65vice\x18\x03 \x01(\tR\x06\x64\x65vice\"E\n\x0bGetResponse\x12\x36\n\x07shadows\x18\x01 \x03(\x0b\x32\x1c.infinimesh.shadow.v1.ShadowR\x07shadows\"v\n\rRemoveRequest\x12\x16\n\x06\x64\x65vice\x18\x01 \x01(\tR\x06\x64\x65vice\x12;\n\tstate_key\x18\x02 \x01(\x0e\x32\x1e.infinimesh.shadow.v1.StateKeyR\x08stateKey\x12\x10\n\x03key\x18\x03 \x01(\tR\x03key\"\xd3\x02\n\x13StreamShadowRequest\x12\x18\n\x07\x64\x65vices\x18\x01 \x03(\tR\x07\x64\x65vices\x12\x1d\n\nonly_delta\x18\x02 \x01(\x08R\tonlyDelta\x12\x12\n\x04sync\x18\x03 \x01(\x08R\x04sync\x12\x1c\n\tnamespace\x18\x04 \x01(\tR\tnamespace\x12\x1e\n\nnamespaces\x18\x05 \x03(\tR\nnamespaces\x12\x18\n\x07\x61\x63\x63ount\x18\x06 \x01(\tR\x07\x61\x63\x63ount\x12:\n\x07\x63\x61talog\x18\x07 \x03(\x0b\x32 .infinimesh.shadow.v1.DeviceMetaR\x07\x63\x61talog\x12\x38\n\x07include\x18\x08 \x03(\x0e\x32\x1e.infinimesh.shadow.v1.StateKeyR\x07include\x12!\n\x0cresume_after\x18\t \x01(\x04R\x0bresumeAfter*^\n\x0bShadowEvent\x12\t\n\x05STATE\x10\x00\x12\x10\n\x0c\x44\x45VICE_ADDED\x10\x01\x12\x12\n\x0e\x44\x45VICE_REMOVED\x10\x02\x12\r\n\tTAG_ADDED\x10\x03\x12\x0f\n\x0bTAG_REMOVED\x10\x04*5\n\x08StateKey\x12\x0c\n\x08REPORTED\x10\x00\x12\x0b\n\x07\x44\x45SIRED\x10\x01\x12\x0e\n\nCONNECTION\x10\x02\x32\xd1\x04\n\rShadowService\x12J\n\x03Get\x12 .infinimesh.shadow.v1.GetRequest\x1a!.infinimesh.shadow.v1.GetResponse\x12\x43\n\x05Patch\x12\x1c.infinimesh.shadow.v1.Shadow\x1a\x1c.infinimesh.shadow.v1.Shadow\x12K\n\x06Remove\x12#.infinimesh.shadow.v1.RemoveRequest\x1a\x1c.infinimesh.shadow.v1.Shadow\x12Y\n\x0cStreamShadow\x12).infinimesh.shadow.v1.StreamShadowRequest\x1a\x1c.infinimesh.shadow.v1.Shadow0\x01\x12]\n\x10StreamShadowSync\x12).infinimesh.shadow.v1.StreamShadowRequest\x1a\x1c.infinimesh.shadow.v1.Shadow0\x01\x12J\n\x12PublishDeviceScope\x12\x1c.infinimesh.shadow.v1.Shadow\x1a\x16.google.protobuf.Empty\x12\\\n\tPatchMany\x12&.infinimesh.shadow.v1.PatchManyRequest\x1a\'.infinimesh.shadow.v1.PatchManyResponseB+Z)github.com/infinimesh/proto/shadow;shadowb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -37,10 +37,10 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._serialized_options = b'Z)github.com/infinimesh/proto/shadow;shadow'
   _globals['_GETREQUEST'].fields_by_name['pool']._loaded_options = None
   _globals['_GETREQUEST'].fields_by_name['pool']._serialized_options = b'\030\001'
-  _globals['_SHADOWEVENT']._serialized_start=1572
-  _globals['_SHADOWEVENT']._serialized_end=1634
-  _globals['_STATEKEY']._serialized_start=1636
-  _globals['_STATEKEY']._serialized_end=1689
+  _globals['_SHADOWEVENT']._serialized_start=1787
+  _globals['_SHADOWEVENT']._serialized_end=1881
+  _globals['_STATEKEY']._serialized_start=1883
+  _globals['_STATEKEY']._serialized_end=1936
   _globals['_STATE']._serialized_start=138
   _globals['_STATE']._serialized_end=274
   _globals['_CONNECTIONSTATE']._serialized_start=277
@@ -48,15 +48,19 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_DEVICEMETA']._serialized_start=413
   _globals['_DEVICEMETA']._serialized_end=521
   _globals['_SHADOW']._serialized_start=524
-  _globals['_SHADOW']._serialized_end=949
-  _globals['_GETREQUEST']._serialized_start=951
-  _globals['_GETREQUEST']._serialized_end=1037
-  _globals['_GETRESPONSE']._serialized_start=1039
-  _globals['_GETRESPONSE']._serialized_end=1108
-  _globals['_REMOVEREQUEST']._serialized_start=1110
-  _globals['_REMOVEREQUEST']._serialized_end=1228
-  _globals['_STREAMSHADOWREQUEST']._serialized_start=1231
-  _globals['_STREAMSHADOWREQUEST']._serialized_end=1570
-  _globals['_SHADOWSERVICE']._serialized_start=1692
-  _globals['_SHADOWSERVICE']._serialized_end=2191
+  _globals['_SHADOW']._serialized_end=967
+  _globals['_PATCHMANYREQUEST']._serialized_start=970
+  _globals['_PATCHMANYREQUEST']._serialized_end=1117
+  _globals['_PATCHMANYRESPONSE']._serialized_start=1119
+  _globals['_PATCHMANYRESPONSE']._serialized_end=1164
+  _globals['_GETREQUEST']._serialized_start=1166
+  _globals['_GETREQUEST']._serialized_end=1252
+  _globals['_GETRESPONSE']._serialized_start=1254
+  _globals['_GETRESPONSE']._serialized_end=1323
+  _globals['_REMOVEREQUEST']._serialized_start=1325
+  _globals['_REMOVEREQUEST']._serialized_end=1443
+  _globals['_STREAMSHADOWREQUEST']._serialized_start=1446
+  _globals['_STREAMSHADOWREQUEST']._serialized_end=1785
+  _globals['_SHADOWSERVICE']._serialized_start=1939
+  _globals['_SHADOWSERVICE']._serialized_end=2532
 # @@protoc_insertion_point(module_scope)

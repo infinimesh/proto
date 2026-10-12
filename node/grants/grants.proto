@@ -1,0 +1,68 @@
+/*
+Copyright © 2026 Infinite Devices GmbH
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+syntax = "proto3";
+package infinimesh.node.grants.v1;
+option go_package = "github.com/infinimesh/proto/node/grants;grants";
+
+import "node/access/access.proto";
+
+// Grant is a time-limited access edge from one account to a device or namespace.
+message Grant {
+  string id = 1;
+  string from_account = 2;
+  string to_account = 3;
+  // Device or namespace id.
+  string node = 4;
+  infinimesh.node.access.v1.Level level = 5;
+  // Unix seconds. Required. Access stops at this time.
+  int64 expires_at = 6;
+  string scope = 7;
+  bool revoked = 8;
+}
+
+message Grants {
+  repeated Grant grants = 1;
+  string next_page_token = 2;
+}
+
+message ListGrantsRequest {
+  string node = 1;
+  string account = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+}
+
+// Consent records who granted access to whom, for what scope, and when it was revoked.
+message Consent {
+  string id = 1;
+  string grantor = 2;
+  string grantee = 3;
+  string scope = 4;
+  int64 at = 5;
+  int64 revoked_at = 6;
+  string grant_id = 7;
+}
+
+message Consents {
+  repeated Consent consents = 1;
+  string next_page_token = 2;
+}
+
+message ListConsentRequest {
+  string account = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+}

@@ -64,6 +64,8 @@ const (
 	// ShadowServicePublishDeviceScopeProcedure is the fully-qualified name of the ShadowService's
 	// PublishDeviceScope RPC.
 	ShadowServicePublishDeviceScopeProcedure = "/infinimesh.shadow.v1.ShadowService/PublishDeviceScope"
+	// ShadowServicePatchManyProcedure is the fully-qualified name of the ShadowService's PatchMany RPC.
+	ShadowServicePatchManyProcedure = "/infinimesh.shadow.v1.ShadowService/PatchMany"
 )
 
 // ShadowServiceClient is a client for the infinimesh.shadow.v1.ShadowService service.
@@ -74,6 +76,7 @@ type ShadowServiceClient interface {
 	StreamShadow(context.Context, *connect.Request[shadow.StreamShadowRequest]) (*connect.ServerStreamForClient[shadow.Shadow], error)
 	StreamShadowSync(context.Context, *connect.Request[shadow.StreamShadowRequest]) (*connect.ServerStreamForClient[shadow.Shadow], error)
 	PublishDeviceScope(context.Context, *connect.Request[shadow.Shadow]) (*connect.Response[emptypb.Empty], error)
+	PatchMany(context.Context, *connect.Request[shadow.PatchManyRequest]) (*connect.Response[shadow.PatchManyResponse], error)
 }
 
 // NewShadowServiceClient constructs a client for the infinimesh.shadow.v1.ShadowService service. By
@@ -123,6 +126,12 @@ func NewShadowServiceClient(httpClient connect.HTTPClient, baseURL string, opts 
 			connect.WithSchema(shadowServiceMethods.ByName("PublishDeviceScope")),
 			connect.WithClientOptions(opts...),
 		),
+		patchMany: connect.NewClient[shadow.PatchManyRequest, shadow.PatchManyResponse](
+			httpClient,
+			baseURL+ShadowServicePatchManyProcedure,
+			connect.WithSchema(shadowServiceMethods.ByName("PatchMany")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -134,6 +143,7 @@ type shadowServiceClient struct {
 	streamShadow       *connect.Client[shadow.StreamShadowRequest, shadow.Shadow]
 	streamShadowSync   *connect.Client[shadow.StreamShadowRequest, shadow.Shadow]
 	publishDeviceScope *connect.Client[shadow.Shadow, emptypb.Empty]
+	patchMany          *connect.Client[shadow.PatchManyRequest, shadow.PatchManyResponse]
 }
 
 // Get calls infinimesh.shadow.v1.ShadowService.Get.
@@ -166,6 +176,11 @@ func (c *shadowServiceClient) PublishDeviceScope(ctx context.Context, req *conne
 	return c.publishDeviceScope.CallUnary(ctx, req)
 }
 
+// PatchMany calls infinimesh.shadow.v1.ShadowService.PatchMany.
+func (c *shadowServiceClient) PatchMany(ctx context.Context, req *connect.Request[shadow.PatchManyRequest]) (*connect.Response[shadow.PatchManyResponse], error) {
+	return c.patchMany.CallUnary(ctx, req)
+}
+
 // ShadowServiceHandler is an implementation of the infinimesh.shadow.v1.ShadowService service.
 type ShadowServiceHandler interface {
 	Get(context.Context, *connect.Request[shadow.GetRequest]) (*connect.Response[shadow.GetResponse], error)
@@ -174,6 +189,7 @@ type ShadowServiceHandler interface {
 	StreamShadow(context.Context, *connect.Request[shadow.StreamShadowRequest], *connect.ServerStream[shadow.Shadow]) error
 	StreamShadowSync(context.Context, *connect.Request[shadow.StreamShadowRequest], *connect.ServerStream[shadow.Shadow]) error
 	PublishDeviceScope(context.Context, *connect.Request[shadow.Shadow]) (*connect.Response[emptypb.Empty], error)
+	PatchMany(context.Context, *connect.Request[shadow.PatchManyRequest]) (*connect.Response[shadow.PatchManyResponse], error)
 }
 
 // NewShadowServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -219,6 +235,12 @@ func NewShadowServiceHandler(svc ShadowServiceHandler, opts ...connect.HandlerOp
 		connect.WithSchema(shadowServiceMethods.ByName("PublishDeviceScope")),
 		connect.WithHandlerOptions(opts...),
 	)
+	shadowServicePatchManyHandler := connect.NewUnaryHandler(
+		ShadowServicePatchManyProcedure,
+		svc.PatchMany,
+		connect.WithSchema(shadowServiceMethods.ByName("PatchMany")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/infinimesh.shadow.v1.ShadowService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ShadowServiceGetProcedure:
@@ -233,6 +255,8 @@ func NewShadowServiceHandler(svc ShadowServiceHandler, opts ...connect.HandlerOp
 			shadowServiceStreamShadowSyncHandler.ServeHTTP(w, r)
 		case ShadowServicePublishDeviceScopeProcedure:
 			shadowServicePublishDeviceScopeHandler.ServeHTTP(w, r)
+		case ShadowServicePatchManyProcedure:
+			shadowServicePatchManyHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -264,4 +288,8 @@ func (UnimplementedShadowServiceHandler) StreamShadowSync(context.Context, *conn
 
 func (UnimplementedShadowServiceHandler) PublishDeviceScope(context.Context, *connect.Request[shadow.Shadow]) (*connect.Response[emptypb.Empty], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.shadow.v1.ShadowService.PublishDeviceScope is not implemented"))
+}
+
+func (UnimplementedShadowServiceHandler) PatchMany(context.Context, *connect.Request[shadow.PatchManyRequest]) (*connect.Response[shadow.PatchManyResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.shadow.v1.ShadowService.PatchMany is not implemented"))
 }

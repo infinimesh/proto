@@ -26,6 +26,22 @@ message Namespace {
   optional infinimesh.node.access.v1.Access access = 3;
   optional string plugin = 4;
   google.protobuf.Struct config = 5;
+  OTAConfig ota = 6;
+  Quota quota = 7;
+}
+
+// OTAConfig is read by the OTA addon. backend is hawkBit or mender.
+message OTAConfig {
+  bool enabled = 1;
+  string backend_url = 2;
+  string backend = 3;
+}
+
+// Quota limits a namespace. Zero means no limit.
+message Quota {
+  int32 max_devices = 1;
+  double device_messages_per_second = 2;
+  double namespace_messages_per_second = 3;
 }
 
 message Namespaces {

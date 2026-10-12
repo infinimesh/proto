@@ -18,7 +18,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { GetRequest, GetResponse, RemoveRequest, Shadow, StreamShadowRequest } from "./shadow_pb.js";
+import { GetRequest, GetResponse, PatchManyRequest, PatchManyResponse, RemoveRequest, Shadow, StreamShadowRequest } from "./shadow_pb.js";
 import { Empty, MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -79,6 +79,15 @@ export const ShadowService = {
       name: "PublishDeviceScope",
       I: Shadow,
       O: Empty,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc infinimesh.shadow.v1.ShadowService.PatchMany
+     */
+    patchMany: {
+      name: "PatchMany",
+      I: PatchManyRequest,
+      O: PatchManyResponse,
       kind: MethodKind.Unary,
     },
   }

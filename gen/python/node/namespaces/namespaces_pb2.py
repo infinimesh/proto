@@ -26,7 +26,7 @@ from node.access import access_pb2 as node_dot_access_dot_access__pb2
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n node/namespaces/namespaces.proto\x12\x1dinfinimesh.node.namespaces.v1\x1a\x18node/access/access.proto\x1a\x1cgoogle/protobuf/struct.proto\"\xd9\x01\n\tNamespace\x12\x12\n\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x14\n\x05title\x18\x02 \x01(\tR\x05title\x12>\n\x06\x61\x63\x63\x65ss\x18\x03 \x01(\x0b\x32!.infinimesh.node.access.v1.AccessH\x00R\x06\x61\x63\x63\x65ss\x88\x01\x01\x12\x1b\n\x06plugin\x18\x04 \x01(\tH\x01R\x06plugin\x88\x01\x01\x12/\n\x06\x63onfig\x18\x05 \x01(\x0b\x32\x17.google.protobuf.StructR\x06\x63onfigB\t\n\x07_accessB\t\n\x07_plugin\"~\n\nNamespaces\x12H\n\nnamespaces\x18\x01 \x03(\x0b\x32(.infinimesh.node.namespaces.v1.NamespaceR\nnamespaces\x12&\n\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageTokenB8Z6github.com/infinimesh/proto/node/namespaces;namespacesb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n node/namespaces/namespaces.proto\x12\x1dinfinimesh.node.namespaces.v1\x1a\x18node/access/access.proto\x1a\x1cgoogle/protobuf/struct.proto\"\xd1\x02\n\tNamespace\x12\x12\n\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x14\n\x05title\x18\x02 \x01(\tR\x05title\x12>\n\x06\x61\x63\x63\x65ss\x18\x03 \x01(\x0b\x32!.infinimesh.node.access.v1.AccessH\x00R\x06\x61\x63\x63\x65ss\x88\x01\x01\x12\x1b\n\x06plugin\x18\x04 \x01(\tH\x01R\x06plugin\x88\x01\x01\x12/\n\x06\x63onfig\x18\x05 \x01(\x0b\x32\x17.google.protobuf.StructR\x06\x63onfig\x12:\n\x03ota\x18\x06 \x01(\x0b\x32(.infinimesh.node.namespaces.v1.OTAConfigR\x03ota\x12:\n\x05quota\x18\x07 \x01(\x0b\x32$.infinimesh.node.namespaces.v1.QuotaR\x05quotaB\t\n\x07_accessB\t\n\x07_plugin\"`\n\tOTAConfig\x12\x18\n\x07\x65nabled\x18\x01 \x01(\x08R\x07\x65nabled\x12\x1f\n\x0b\x62\x61\x63kend_url\x18\x02 \x01(\tR\nbackendUrl\x12\x18\n\x07\x62\x61\x63kend\x18\x03 \x01(\tR\x07\x62\x61\x63kend\"\xa8\x01\n\x05Quota\x12\x1f\n\x0bmax_devices\x18\x01 \x01(\x05R\nmaxDevices\x12;\n\x1a\x64\x65vice_messages_per_second\x18\x02 \x01(\x01R\x17\x64\x65viceMessagesPerSecond\x12\x41\n\x1dnamespace_messages_per_second\x18\x03 \x01(\x01R\x1anamespaceMessagesPerSecond\"~\n\nNamespaces\x12H\n\nnamespaces\x18\x01 \x03(\x0b\x32(.infinimesh.node.namespaces.v1.NamespaceR\nnamespaces\x12&\n\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageTokenB8Z6github.com/infinimesh/proto/node/namespaces;namespacesb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -35,7 +35,11 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'Z6github.com/infinimesh/proto/node/namespaces;namespaces'
   _globals['_NAMESPACE']._serialized_start=124
-  _globals['_NAMESPACE']._serialized_end=341
-  _globals['_NAMESPACES']._serialized_start=343
-  _globals['_NAMESPACES']._serialized_end=469
+  _globals['_NAMESPACE']._serialized_end=461
+  _globals['_OTACONFIG']._serialized_start=463
+  _globals['_OTACONFIG']._serialized_end=559
+  _globals['_QUOTA']._serialized_start=562
+  _globals['_QUOTA']._serialized_end=730
+  _globals['_NAMESPACES']._serialized_start=732
+  _globals['_NAMESPACES']._serialized_end=858
 # @@protoc_insertion_point(module_scope)
