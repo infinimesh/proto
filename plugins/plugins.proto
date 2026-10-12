@@ -14,7 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 syntax = "proto3";
-package infinimesh.plugins;
+package infinimesh.plugins.v1;
+option go_package = "github.com/infinimesh/proto/plugins;plugins";
 
 import "google/api/annotations.proto";
 import "node/access/access.proto";
@@ -32,14 +33,16 @@ message Plugin {
     bool public = 5;
     
     optional string namespace = 6; // Required to get not-public Plugin
-    optional infinimesh.node.access.Access access = 7;
+    optional infinimesh.node.access.v1.Access access = 7;
     
     PluginKind kind = 8;
     optional EmbededPluginConf embedded_conf = 9;
 }
 
 message Plugins {
-    repeated Plugin pool = 1;
+    repeated Plugin pool = 1 [deprecated = true];
+    string next_page_token = 2;
+    repeated Plugin plugins = 3;
 }
 
 message EmbededPluginConf {
@@ -48,34 +51,53 @@ message EmbededPluginConf {
 
 message ListRequest {
     optional string namespace = 1;
+    int32 page_size = 2;
+    string page_token = 3;
 }
 
 service PluginsService {
     rpc Get(Plugin) returns (Plugin){
         option (google.api.http) = {
-            get: "/plugins/{uuid}"
-        };
+      get: "/v1/plugins/{uuid}"
+      additional_bindings {
+        get: "/plugins/{uuid}"
+      }
+    };
     };
     rpc List(ListRequest) returns (Plugins) {
         option (google.api.http) = {
-            get: "/plugins"
-        };
+      get: "/v1/plugins"
+      additional_bindings {
+        get: "/plugins"
+      }
+    };
     };
     rpc Create(Plugin) returns (Plugin) {
         option (google.api.http) = {
-            put: "/plugins"
-            body: "*"
-        };
+      post: "/v1/plugins"
+      body: "*"
+      additional_bindings {
+        put: "/plugins"
+        body: "*"
+      }
+    };
     };
     rpc Update(Plugin) returns (Plugin) {
         option (google.api.http) = {
-            post: "/plugins/{uuid}"
-            body: "*"
-        };
+      post: "/v1/plugins/{uuid}"
+      body: "*"
+      additional_bindings {
+        post: "/plugins/{uuid}"
+        body: "*"
+      }
+    };
     };
     rpc Delete(Plugin) returns (Plugin) {
         option (google.api.http) = {
-            delete: "/plugins/{uuid}"
-        };
+      delete: "/v1/plugins/{uuid}"
+      additional_bindings {
+        delete: "/plugins/{uuid}"
+      }
+    };
     };
 }

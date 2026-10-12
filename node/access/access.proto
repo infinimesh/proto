@@ -14,7 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 syntax = "proto3";
-package infinimesh.node.access;
+package infinimesh.node.access.v1;
+option go_package = "github.com/infinimesh/proto/node/access;access";
 
 enum Level {
     NONE = 0;

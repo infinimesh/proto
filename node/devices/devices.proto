@@ -14,7 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 syntax = "proto3";
-package infinimesh.node.devices;
+package infinimesh.node.devices.v1;
+option go_package = "github.com/infinimesh/proto/node/devices;devices";
 
 import "node/access/access.proto";
 import "google/protobuf/struct.proto";
@@ -27,7 +28,7 @@ message Device {
   repeated string tags = 5;
   bool basic_enabled = 6;
   string token = 7;
-  optional infinimesh.node.access.Access access = 8;
+  optional infinimesh.node.access.v1.Access access = 8;
   google.protobuf.Struct config = 9;
 }
 
@@ -39,6 +40,7 @@ message Certificate {
 
 message Devices {
   repeated Device devices = 1;
+  string next_page_token = 2;
 }
 
 message HandsfreeCreate {

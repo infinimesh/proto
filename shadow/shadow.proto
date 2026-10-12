@@ -16,7 +16,8 @@ limitations under the License.
 
 syntax = "proto3";
 
-package infinimesh.shadow;
+package infinimesh.shadow.v1;
+option go_package = "github.com/infinimesh/proto/shadow;shadow";
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/struct.proto";
@@ -26,6 +27,7 @@ import "google/protobuf/timestamp.proto";
 message State {
   google.protobuf.Timestamp timestamp = 1;
   google.protobuf.Struct data = 2;
+  uint64 version = 3;
 }
 
 message ConnectionState {
@@ -58,10 +60,13 @@ message Shadow {
   repeated string tags = 8;
   ShadowEvent event = 9;
   string account = 10;
+  uint64 sequence = 11;
 }
 
 message GetRequest {
-  repeated string pool = 1;
+  repeated string pool = 1 [deprecated = true];
+  repeated string devices = 2;
+  string device = 3;
 }
 
 message GetResponse {
@@ -82,13 +87,19 @@ message RemoveRequest {
 
 message StreamShadowRequest {
   repeated string devices = 1;
+  // When true, each state message is the published change. When false, the stored shadow is sent with that change merged in.
   bool only_delta = 2;
   bool sync = 3;
+  // Stream every device in this namespace that the account can read. Requires an account token.
   string namespace = 4;
+  // Namespaces watched by an account stream. Set by the API, not the client.
   repeated string namespaces = 5;
+  // Authenticated account for a scope stream. Set by the API, not the client.
   string account = 6;
   repeated DeviceMeta catalog = 7;
+  // State sections to send: REPORTED, DESIRED, CONNECTION. Empty sends all three. Membership events are unchanged.
   repeated StateKey include = 8;
+  uint64 resume_after = 9;
 }
 
 service ShadowService {

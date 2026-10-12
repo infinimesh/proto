@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package infinimesh.node.sessions;
+package infinimesh.node.sessions.v1;
+option go_package = "github.com/infinimesh/proto/node/sessions;sessions";
 
-option go_package = "github.com/infinimesh/proto/node/sessions";
 
 import "google/protobuf/timestamp.proto";
 
@@ -16,6 +16,7 @@ message Session {
 
 message Sessions {
   repeated Session sessions = 1;
+  string next_page_token = 2;
 }
 
 message Activity {
