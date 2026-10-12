@@ -31,3 +31,14 @@ jobs:
 
       - name: buf lint, breaking, generate
         run: sh scripts/buf_check.sh
+
+      - name: buf push
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          BUF_TOKEN: ${{ secrets.BUF_TOKEN }}
+        run: |
+          if [ -z "${BUF_TOKEN}" ]; then
+            echo "BUF_TOKEN is unset; skip buf push"
+            exit 0
+          fi
+          buf push
