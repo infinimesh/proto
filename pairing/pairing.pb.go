@@ -222,11 +222,10 @@ const file_pairing_pairing_proto_rawDesc = "" +
 	"\x04AUTH\x10\x01\x12\b\n" +
 	"\x04DATA\x10\x02\x12\v\n" +
 	"\aSUCCESS\x10\x03\x12\t\n" +
-	"\x05ERROR\x10\x042\xd5\x02\n" +
-	"\x0ePairingService\x12\x8f\x01\n" +
-	"\x04Send\x12$.infinimesh.pairing.v1.ControlPacket\x1a$.infinimesh.pairing.v1.ControlPacket\";\x82\xd3\xe4\x93\x025:\x01*Z\x12:\x01*\"\r/v1/handsfreeZ\x0f:\x01*\"\n" +
-	"/handsfree\"\v/v1/pairing\x12\xb0\x01\n" +
-	"\aConnect\x12(.infinimesh.pairing.v1.ConnectionRequest\x1a$.infinimesh.pairing.v1.ControlPacket\"S\x82\xd3\xe4\x93\x02MZ\x1a\x12\x18/v1/handsfree/connectionZ\x17\x12\x15/handsfree/connection\x12\x16/v1/pairing/connection0\x01B-Z+github.com/infinimesh/proto/pairing;pairingb\x06proto3"
+	"\x05ERROR\x10\x042\xf9\x01\n" +
+	"\x0ePairingService\x12j\n" +
+	"\x04Send\x12$.infinimesh.pairing.v1.ControlPacket\x1a$.infinimesh.pairing.v1.ControlPacket\"\x16\x82\xd3\xe4\x93\x02\x10:\x01*\"\v/v1/pairing\x12{\n" +
+	"\aConnect\x12(.infinimesh.pairing.v1.ConnectionRequest\x1a$.infinimesh.pairing.v1.ControlPacket\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/pairing/connection0\x01B-Z+github.com/infinimesh/proto/pairing;pairingb\x06proto3"
 
 var (
 	file_pairing_pairing_proto_rawDescOnce sync.Once
