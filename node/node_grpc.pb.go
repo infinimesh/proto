@@ -25,8 +25,11 @@ import (
 	context "context"
 	access "github.com/infinimesh/proto/node/access"
 	accounts "github.com/infinimesh/proto/node/accounts"
+	audit "github.com/infinimesh/proto/node/audit"
 	devices "github.com/infinimesh/proto/node/devices"
+	grants "github.com/infinimesh/proto/node/grants"
 	namespaces "github.com/infinimesh/proto/node/namespaces"
+	rules "github.com/infinimesh/proto/node/rules"
 	sessions "github.com/infinimesh/proto/node/sessions"
 	shadow "github.com/infinimesh/proto/shadow"
 	grpc "google.golang.org/grpc"
@@ -904,6 +907,11 @@ const (
 	DevicesService_MakeDevicesToken_FullMethodName   = "/infinimesh.node.v1.DevicesService/MakeDevicesToken"
 	DevicesService_GetByToken_FullMethodName         = "/infinimesh.node.v1.DevicesService/GetByToken"
 	DevicesService_GetByFingerprint_FullMethodName   = "/infinimesh.node.v1.DevicesService/GetByFingerprint"
+	DevicesService_BulkCreate_FullMethodName         = "/infinimesh.node.v1.DevicesService/BulkCreate"
+	DevicesService_IssueClaim_FullMethodName         = "/infinimesh.node.v1.DevicesService/IssueClaim"
+	DevicesService_Claim_FullMethodName              = "/infinimesh.node.v1.DevicesService/Claim"
+	DevicesService_RotateCertificate_FullMethodName  = "/infinimesh.node.v1.DevicesService/RotateCertificate"
+	DevicesService_RevokeCertificate_FullMethodName  = "/infinimesh.node.v1.DevicesService/RevokeCertificate"
 	DevicesService_RevokeDevicesToken_FullMethodName = "/infinimesh.node.v1.DevicesService/RevokeDevicesToken"
 )
 
@@ -921,6 +929,11 @@ type DevicesServiceClient interface {
 	MakeDevicesToken(ctx context.Context, in *DevicesTokenRequest, opts ...grpc.CallOption) (*TokenResponse, error)
 	GetByToken(ctx context.Context, in *devices.Device, opts ...grpc.CallOption) (*devices.Device, error)
 	GetByFingerprint(ctx context.Context, in *devices.GetByFingerprintRequest, opts ...grpc.CallOption) (*devices.Device, error)
+	BulkCreate(ctx context.Context, in *devices.BulkCreateRequest, opts ...grpc.CallOption) (*devices.BulkCreateResponse, error)
+	IssueClaim(ctx context.Context, in *devices.ClaimIssueRequest, opts ...grpc.CallOption) (*devices.ClaimIssueResponse, error)
+	Claim(ctx context.Context, in *devices.ClaimRequest, opts ...grpc.CallOption) (*devices.ClaimResponse, error)
+	RotateCertificate(ctx context.Context, in *devices.RotateCertificateRequest, opts ...grpc.CallOption) (*devices.Device, error)
+	RevokeCertificate(ctx context.Context, in *devices.RevokeCertificateRequest, opts ...grpc.CallOption) (*devices.Device, error)
 	RevokeDevicesToken(ctx context.Context, in *RevokeDeviceTokenRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
 }
 
@@ -1032,6 +1045,56 @@ func (c *devicesServiceClient) GetByFingerprint(ctx context.Context, in *devices
 	return out, nil
 }
 
+func (c *devicesServiceClient) BulkCreate(ctx context.Context, in *devices.BulkCreateRequest, opts ...grpc.CallOption) (*devices.BulkCreateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(devices.BulkCreateResponse)
+	err := c.cc.Invoke(ctx, DevicesService_BulkCreate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *devicesServiceClient) IssueClaim(ctx context.Context, in *devices.ClaimIssueRequest, opts ...grpc.CallOption) (*devices.ClaimIssueResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(devices.ClaimIssueResponse)
+	err := c.cc.Invoke(ctx, DevicesService_IssueClaim_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *devicesServiceClient) Claim(ctx context.Context, in *devices.ClaimRequest, opts ...grpc.CallOption) (*devices.ClaimResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(devices.ClaimResponse)
+	err := c.cc.Invoke(ctx, DevicesService_Claim_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *devicesServiceClient) RotateCertificate(ctx context.Context, in *devices.RotateCertificateRequest, opts ...grpc.CallOption) (*devices.Device, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(devices.Device)
+	err := c.cc.Invoke(ctx, DevicesService_RotateCertificate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *devicesServiceClient) RevokeCertificate(ctx context.Context, in *devices.RevokeCertificateRequest, opts ...grpc.CallOption) (*devices.Device, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(devices.Device)
+	err := c.cc.Invoke(ctx, DevicesService_RevokeCertificate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *devicesServiceClient) RevokeDevicesToken(ctx context.Context, in *RevokeDeviceTokenRequest, opts ...grpc.CallOption) (*DeleteResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(DeleteResponse)
@@ -1056,6 +1119,11 @@ type DevicesServiceServer interface {
 	MakeDevicesToken(context.Context, *DevicesTokenRequest) (*TokenResponse, error)
 	GetByToken(context.Context, *devices.Device) (*devices.Device, error)
 	GetByFingerprint(context.Context, *devices.GetByFingerprintRequest) (*devices.Device, error)
+	BulkCreate(context.Context, *devices.BulkCreateRequest) (*devices.BulkCreateResponse, error)
+	IssueClaim(context.Context, *devices.ClaimIssueRequest) (*devices.ClaimIssueResponse, error)
+	Claim(context.Context, *devices.ClaimRequest) (*devices.ClaimResponse, error)
+	RotateCertificate(context.Context, *devices.RotateCertificateRequest) (*devices.Device, error)
+	RevokeCertificate(context.Context, *devices.RevokeCertificateRequest) (*devices.Device, error)
 	RevokeDevicesToken(context.Context, *RevokeDeviceTokenRequest) (*DeleteResponse, error)
 	mustEmbedUnimplementedDevicesServiceServer()
 }
@@ -1096,6 +1164,21 @@ func (UnimplementedDevicesServiceServer) GetByToken(context.Context, *devices.De
 }
 func (UnimplementedDevicesServiceServer) GetByFingerprint(context.Context, *devices.GetByFingerprintRequest) (*devices.Device, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetByFingerprint not implemented")
+}
+func (UnimplementedDevicesServiceServer) BulkCreate(context.Context, *devices.BulkCreateRequest) (*devices.BulkCreateResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method BulkCreate not implemented")
+}
+func (UnimplementedDevicesServiceServer) IssueClaim(context.Context, *devices.ClaimIssueRequest) (*devices.ClaimIssueResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method IssueClaim not implemented")
+}
+func (UnimplementedDevicesServiceServer) Claim(context.Context, *devices.ClaimRequest) (*devices.ClaimResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Claim not implemented")
+}
+func (UnimplementedDevicesServiceServer) RotateCertificate(context.Context, *devices.RotateCertificateRequest) (*devices.Device, error) {
+	return nil, status.Error(codes.Unimplemented, "method RotateCertificate not implemented")
+}
+func (UnimplementedDevicesServiceServer) RevokeCertificate(context.Context, *devices.RevokeCertificateRequest) (*devices.Device, error) {
+	return nil, status.Error(codes.Unimplemented, "method RevokeCertificate not implemented")
 }
 func (UnimplementedDevicesServiceServer) RevokeDevicesToken(context.Context, *RevokeDeviceTokenRequest) (*DeleteResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method RevokeDevicesToken not implemented")
@@ -1301,6 +1384,96 @@ func _DevicesService_GetByFingerprint_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DevicesService_BulkCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(devices.BulkCreateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DevicesServiceServer).BulkCreate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DevicesService_BulkCreate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DevicesServiceServer).BulkCreate(ctx, req.(*devices.BulkCreateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DevicesService_IssueClaim_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(devices.ClaimIssueRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DevicesServiceServer).IssueClaim(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DevicesService_IssueClaim_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DevicesServiceServer).IssueClaim(ctx, req.(*devices.ClaimIssueRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DevicesService_Claim_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(devices.ClaimRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DevicesServiceServer).Claim(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DevicesService_Claim_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DevicesServiceServer).Claim(ctx, req.(*devices.ClaimRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DevicesService_RotateCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(devices.RotateCertificateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DevicesServiceServer).RotateCertificate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DevicesService_RotateCertificate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DevicesServiceServer).RotateCertificate(ctx, req.(*devices.RotateCertificateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DevicesService_RevokeCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(devices.RevokeCertificateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DevicesServiceServer).RevokeCertificate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DevicesService_RevokeCertificate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DevicesServiceServer).RevokeCertificate(ctx, req.(*devices.RevokeCertificateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _DevicesService_RevokeDevicesToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RevokeDeviceTokenRequest)
 	if err := dec(in); err != nil {
@@ -1365,6 +1538,26 @@ var DevicesService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetByFingerprint",
 			Handler:    _DevicesService_GetByFingerprint_Handler,
+		},
+		{
+			MethodName: "BulkCreate",
+			Handler:    _DevicesService_BulkCreate_Handler,
+		},
+		{
+			MethodName: "IssueClaim",
+			Handler:    _DevicesService_IssueClaim_Handler,
+		},
+		{
+			MethodName: "Claim",
+			Handler:    _DevicesService_Claim_Handler,
+		},
+		{
+			MethodName: "RotateCertificate",
+			Handler:    _DevicesService_RotateCertificate_Handler,
+		},
+		{
+			MethodName: "RevokeCertificate",
+			Handler:    _DevicesService_RevokeCertificate_Handler,
 		},
 		{
 			MethodName: "RevokeDevicesToken",
@@ -1559,6 +1752,7 @@ const (
 	ShadowService_Remove_FullMethodName           = "/infinimesh.node.v1.ShadowService/Remove"
 	ShadowService_StreamShadow_FullMethodName     = "/infinimesh.node.v1.ShadowService/StreamShadow"
 	ShadowService_StreamShadowSync_FullMethodName = "/infinimesh.node.v1.ShadowService/StreamShadowSync"
+	ShadowService_PatchMany_FullMethodName        = "/infinimesh.node.v1.ShadowService/PatchMany"
 )
 
 // ShadowServiceClient is the client API for ShadowService service.
@@ -1570,6 +1764,7 @@ type ShadowServiceClient interface {
 	Remove(ctx context.Context, in *shadow.RemoveRequest, opts ...grpc.CallOption) (*shadow.Shadow, error)
 	StreamShadow(ctx context.Context, in *shadow.StreamShadowRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[shadow.Shadow], error)
 	StreamShadowSync(ctx context.Context, in *shadow.StreamShadowRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[shadow.Shadow], error)
+	PatchMany(ctx context.Context, in *shadow.PatchManyRequest, opts ...grpc.CallOption) (*shadow.PatchManyResponse, error)
 }
 
 type shadowServiceClient struct {
@@ -1648,6 +1843,16 @@ func (c *shadowServiceClient) StreamShadowSync(ctx context.Context, in *shadow.S
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type ShadowService_StreamShadowSyncClient = grpc.ServerStreamingClient[shadow.Shadow]
 
+func (c *shadowServiceClient) PatchMany(ctx context.Context, in *shadow.PatchManyRequest, opts ...grpc.CallOption) (*shadow.PatchManyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(shadow.PatchManyResponse)
+	err := c.cc.Invoke(ctx, ShadowService_PatchMany_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ShadowServiceServer is the server API for ShadowService service.
 // All implementations must embed UnimplementedShadowServiceServer
 // for forward compatibility.
@@ -1657,6 +1862,7 @@ type ShadowServiceServer interface {
 	Remove(context.Context, *shadow.RemoveRequest) (*shadow.Shadow, error)
 	StreamShadow(*shadow.StreamShadowRequest, grpc.ServerStreamingServer[shadow.Shadow]) error
 	StreamShadowSync(*shadow.StreamShadowRequest, grpc.ServerStreamingServer[shadow.Shadow]) error
+	PatchMany(context.Context, *shadow.PatchManyRequest) (*shadow.PatchManyResponse, error)
 	mustEmbedUnimplementedShadowServiceServer()
 }
 
@@ -1681,6 +1887,9 @@ func (UnimplementedShadowServiceServer) StreamShadow(*shadow.StreamShadowRequest
 }
 func (UnimplementedShadowServiceServer) StreamShadowSync(*shadow.StreamShadowRequest, grpc.ServerStreamingServer[shadow.Shadow]) error {
 	return status.Error(codes.Unimplemented, "method StreamShadowSync not implemented")
+}
+func (UnimplementedShadowServiceServer) PatchMany(context.Context, *shadow.PatchManyRequest) (*shadow.PatchManyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method PatchMany not implemented")
 }
 func (UnimplementedShadowServiceServer) mustEmbedUnimplementedShadowServiceServer() {}
 func (UnimplementedShadowServiceServer) testEmbeddedByValue()                       {}
@@ -1779,6 +1988,24 @@ func _ShadowService_StreamShadowSync_Handler(srv interface{}, stream grpc.Server
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type ShadowService_StreamShadowSyncServer = grpc.ServerStreamingServer[shadow.Shadow]
 
+func _ShadowService_PatchMany_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(shadow.PatchManyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShadowServiceServer).PatchMany(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShadowService_PatchMany_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShadowServiceServer).PatchMany(ctx, req.(*shadow.PatchManyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ShadowService_ServiceDesc is the grpc.ServiceDesc for ShadowService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1798,6 +2025,10 @@ var ShadowService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "Remove",
 			Handler:    _ShadowService_Remove_Handler,
 		},
+		{
+			MethodName: "PatchMany",
+			Handler:    _ShadowService_PatchMany_Handler,
+		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
@@ -1811,6 +2042,730 @@ var ShadowService_ServiceDesc = grpc.ServiceDesc{
 			ServerStreams: true,
 		},
 	},
+	Metadata: "node/node.proto",
+}
+
+const (
+	RulesService_Create_FullMethodName     = "/infinimesh.node.v1.RulesService/Create"
+	RulesService_Update_FullMethodName     = "/infinimesh.node.v1.RulesService/Update"
+	RulesService_Get_FullMethodName        = "/infinimesh.node.v1.RulesService/Get"
+	RulesService_List_FullMethodName       = "/infinimesh.node.v1.RulesService/List"
+	RulesService_Delete_FullMethodName     = "/infinimesh.node.v1.RulesService/Delete"
+	RulesService_ListAlarms_FullMethodName = "/infinimesh.node.v1.RulesService/ListAlarms"
+	RulesService_AckAlarm_FullMethodName   = "/infinimesh.node.v1.RulesService/AckAlarm"
+	RulesService_ClearAlarm_FullMethodName = "/infinimesh.node.v1.RulesService/ClearAlarm"
+)
+
+// RulesServiceClient is the client API for RulesService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type RulesServiceClient interface {
+	Create(ctx context.Context, in *rules.Rule, opts ...grpc.CallOption) (*rules.Rule, error)
+	Update(ctx context.Context, in *rules.Rule, opts ...grpc.CallOption) (*rules.Rule, error)
+	Get(ctx context.Context, in *rules.Rule, opts ...grpc.CallOption) (*rules.Rule, error)
+	List(ctx context.Context, in *rules.ListRulesRequest, opts ...grpc.CallOption) (*rules.Rules, error)
+	Delete(ctx context.Context, in *rules.Rule, opts ...grpc.CallOption) (*DeleteResponse, error)
+	ListAlarms(ctx context.Context, in *rules.ListAlarmsRequest, opts ...grpc.CallOption) (*rules.Alarms, error)
+	AckAlarm(ctx context.Context, in *rules.AlarmRef, opts ...grpc.CallOption) (*rules.Alarm, error)
+	ClearAlarm(ctx context.Context, in *rules.AlarmRef, opts ...grpc.CallOption) (*rules.Alarm, error)
+}
+
+type rulesServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewRulesServiceClient(cc grpc.ClientConnInterface) RulesServiceClient {
+	return &rulesServiceClient{cc}
+}
+
+func (c *rulesServiceClient) Create(ctx context.Context, in *rules.Rule, opts ...grpc.CallOption) (*rules.Rule, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(rules.Rule)
+	err := c.cc.Invoke(ctx, RulesService_Create_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *rulesServiceClient) Update(ctx context.Context, in *rules.Rule, opts ...grpc.CallOption) (*rules.Rule, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(rules.Rule)
+	err := c.cc.Invoke(ctx, RulesService_Update_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *rulesServiceClient) Get(ctx context.Context, in *rules.Rule, opts ...grpc.CallOption) (*rules.Rule, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(rules.Rule)
+	err := c.cc.Invoke(ctx, RulesService_Get_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *rulesServiceClient) List(ctx context.Context, in *rules.ListRulesRequest, opts ...grpc.CallOption) (*rules.Rules, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(rules.Rules)
+	err := c.cc.Invoke(ctx, RulesService_List_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *rulesServiceClient) Delete(ctx context.Context, in *rules.Rule, opts ...grpc.CallOption) (*DeleteResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteResponse)
+	err := c.cc.Invoke(ctx, RulesService_Delete_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *rulesServiceClient) ListAlarms(ctx context.Context, in *rules.ListAlarmsRequest, opts ...grpc.CallOption) (*rules.Alarms, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(rules.Alarms)
+	err := c.cc.Invoke(ctx, RulesService_ListAlarms_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *rulesServiceClient) AckAlarm(ctx context.Context, in *rules.AlarmRef, opts ...grpc.CallOption) (*rules.Alarm, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(rules.Alarm)
+	err := c.cc.Invoke(ctx, RulesService_AckAlarm_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *rulesServiceClient) ClearAlarm(ctx context.Context, in *rules.AlarmRef, opts ...grpc.CallOption) (*rules.Alarm, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(rules.Alarm)
+	err := c.cc.Invoke(ctx, RulesService_ClearAlarm_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// RulesServiceServer is the server API for RulesService service.
+// All implementations must embed UnimplementedRulesServiceServer
+// for forward compatibility.
+type RulesServiceServer interface {
+	Create(context.Context, *rules.Rule) (*rules.Rule, error)
+	Update(context.Context, *rules.Rule) (*rules.Rule, error)
+	Get(context.Context, *rules.Rule) (*rules.Rule, error)
+	List(context.Context, *rules.ListRulesRequest) (*rules.Rules, error)
+	Delete(context.Context, *rules.Rule) (*DeleteResponse, error)
+	ListAlarms(context.Context, *rules.ListAlarmsRequest) (*rules.Alarms, error)
+	AckAlarm(context.Context, *rules.AlarmRef) (*rules.Alarm, error)
+	ClearAlarm(context.Context, *rules.AlarmRef) (*rules.Alarm, error)
+	mustEmbedUnimplementedRulesServiceServer()
+}
+
+// UnimplementedRulesServiceServer must be embedded to have
+// forward compatible implementations.
+//
+// NOTE: this should be embedded by value instead of pointer to avoid a nil
+// pointer dereference when methods are called.
+type UnimplementedRulesServiceServer struct{}
+
+func (UnimplementedRulesServiceServer) Create(context.Context, *rules.Rule) (*rules.Rule, error) {
+	return nil, status.Error(codes.Unimplemented, "method Create not implemented")
+}
+func (UnimplementedRulesServiceServer) Update(context.Context, *rules.Rule) (*rules.Rule, error) {
+	return nil, status.Error(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedRulesServiceServer) Get(context.Context, *rules.Rule) (*rules.Rule, error) {
+	return nil, status.Error(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedRulesServiceServer) List(context.Context, *rules.ListRulesRequest) (*rules.Rules, error) {
+	return nil, status.Error(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedRulesServiceServer) Delete(context.Context, *rules.Rule) (*DeleteResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedRulesServiceServer) ListAlarms(context.Context, *rules.ListAlarmsRequest) (*rules.Alarms, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListAlarms not implemented")
+}
+func (UnimplementedRulesServiceServer) AckAlarm(context.Context, *rules.AlarmRef) (*rules.Alarm, error) {
+	return nil, status.Error(codes.Unimplemented, "method AckAlarm not implemented")
+}
+func (UnimplementedRulesServiceServer) ClearAlarm(context.Context, *rules.AlarmRef) (*rules.Alarm, error) {
+	return nil, status.Error(codes.Unimplemented, "method ClearAlarm not implemented")
+}
+func (UnimplementedRulesServiceServer) mustEmbedUnimplementedRulesServiceServer() {}
+func (UnimplementedRulesServiceServer) testEmbeddedByValue()                      {}
+
+// UnsafeRulesServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to RulesServiceServer will
+// result in compilation errors.
+type UnsafeRulesServiceServer interface {
+	mustEmbedUnimplementedRulesServiceServer()
+}
+
+func RegisterRulesServiceServer(s grpc.ServiceRegistrar, srv RulesServiceServer) {
+	// If the following call panics, it indicates UnimplementedRulesServiceServer was
+	// embedded by pointer and is nil.  This will cause panics if an
+	// unimplemented method is ever invoked, so we test this at initialization
+	// time to prevent it from happening at runtime later due to I/O.
+	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
+		t.testEmbeddedByValue()
+	}
+	s.RegisterService(&RulesService_ServiceDesc, srv)
+}
+
+func _RulesService_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(rules.Rule)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RulesServiceServer).Create(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RulesService_Create_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RulesServiceServer).Create(ctx, req.(*rules.Rule))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RulesService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(rules.Rule)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RulesServiceServer).Update(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RulesService_Update_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RulesServiceServer).Update(ctx, req.(*rules.Rule))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RulesService_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(rules.Rule)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RulesServiceServer).Get(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RulesService_Get_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RulesServiceServer).Get(ctx, req.(*rules.Rule))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RulesService_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(rules.ListRulesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RulesServiceServer).List(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RulesService_List_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RulesServiceServer).List(ctx, req.(*rules.ListRulesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RulesService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(rules.Rule)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RulesServiceServer).Delete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RulesService_Delete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RulesServiceServer).Delete(ctx, req.(*rules.Rule))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RulesService_ListAlarms_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(rules.ListAlarmsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RulesServiceServer).ListAlarms(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RulesService_ListAlarms_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RulesServiceServer).ListAlarms(ctx, req.(*rules.ListAlarmsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RulesService_AckAlarm_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(rules.AlarmRef)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RulesServiceServer).AckAlarm(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RulesService_AckAlarm_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RulesServiceServer).AckAlarm(ctx, req.(*rules.AlarmRef))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RulesService_ClearAlarm_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(rules.AlarmRef)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RulesServiceServer).ClearAlarm(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: RulesService_ClearAlarm_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RulesServiceServer).ClearAlarm(ctx, req.(*rules.AlarmRef))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// RulesService_ServiceDesc is the grpc.ServiceDesc for RulesService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var RulesService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "infinimesh.node.v1.RulesService",
+	HandlerType: (*RulesServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Create",
+			Handler:    _RulesService_Create_Handler,
+		},
+		{
+			MethodName: "Update",
+			Handler:    _RulesService_Update_Handler,
+		},
+		{
+			MethodName: "Get",
+			Handler:    _RulesService_Get_Handler,
+		},
+		{
+			MethodName: "List",
+			Handler:    _RulesService_List_Handler,
+		},
+		{
+			MethodName: "Delete",
+			Handler:    _RulesService_Delete_Handler,
+		},
+		{
+			MethodName: "ListAlarms",
+			Handler:    _RulesService_ListAlarms_Handler,
+		},
+		{
+			MethodName: "AckAlarm",
+			Handler:    _RulesService_AckAlarm_Handler,
+		},
+		{
+			MethodName: "ClearAlarm",
+			Handler:    _RulesService_ClearAlarm_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "node/node.proto",
+}
+
+const (
+	AuditService_List_FullMethodName   = "/infinimesh.node.v1.AuditService/List"
+	AuditService_Export_FullMethodName = "/infinimesh.node.v1.AuditService/Export"
+)
+
+// AuditServiceClient is the client API for AuditService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type AuditServiceClient interface {
+	List(ctx context.Context, in *audit.ListAuditRequest, opts ...grpc.CallOption) (*audit.AuditRecords, error)
+	Export(ctx context.Context, in *audit.ExportRequest, opts ...grpc.CallOption) (*audit.ExportResponse, error)
+}
+
+type auditServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewAuditServiceClient(cc grpc.ClientConnInterface) AuditServiceClient {
+	return &auditServiceClient{cc}
+}
+
+func (c *auditServiceClient) List(ctx context.Context, in *audit.ListAuditRequest, opts ...grpc.CallOption) (*audit.AuditRecords, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(audit.AuditRecords)
+	err := c.cc.Invoke(ctx, AuditService_List_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *auditServiceClient) Export(ctx context.Context, in *audit.ExportRequest, opts ...grpc.CallOption) (*audit.ExportResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(audit.ExportResponse)
+	err := c.cc.Invoke(ctx, AuditService_Export_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// AuditServiceServer is the server API for AuditService service.
+// All implementations must embed UnimplementedAuditServiceServer
+// for forward compatibility.
+type AuditServiceServer interface {
+	List(context.Context, *audit.ListAuditRequest) (*audit.AuditRecords, error)
+	Export(context.Context, *audit.ExportRequest) (*audit.ExportResponse, error)
+	mustEmbedUnimplementedAuditServiceServer()
+}
+
+// UnimplementedAuditServiceServer must be embedded to have
+// forward compatible implementations.
+//
+// NOTE: this should be embedded by value instead of pointer to avoid a nil
+// pointer dereference when methods are called.
+type UnimplementedAuditServiceServer struct{}
+
+func (UnimplementedAuditServiceServer) List(context.Context, *audit.ListAuditRequest) (*audit.AuditRecords, error) {
+	return nil, status.Error(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedAuditServiceServer) Export(context.Context, *audit.ExportRequest) (*audit.ExportResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method Export not implemented")
+}
+func (UnimplementedAuditServiceServer) mustEmbedUnimplementedAuditServiceServer() {}
+func (UnimplementedAuditServiceServer) testEmbeddedByValue()                      {}
+
+// UnsafeAuditServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to AuditServiceServer will
+// result in compilation errors.
+type UnsafeAuditServiceServer interface {
+	mustEmbedUnimplementedAuditServiceServer()
+}
+
+func RegisterAuditServiceServer(s grpc.ServiceRegistrar, srv AuditServiceServer) {
+	// If the following call panics, it indicates UnimplementedAuditServiceServer was
+	// embedded by pointer and is nil.  This will cause panics if an
+	// unimplemented method is ever invoked, so we test this at initialization
+	// time to prevent it from happening at runtime later due to I/O.
+	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
+		t.testEmbeddedByValue()
+	}
+	s.RegisterService(&AuditService_ServiceDesc, srv)
+}
+
+func _AuditService_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(audit.ListAuditRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuditServiceServer).List(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuditService_List_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuditServiceServer).List(ctx, req.(*audit.ListAuditRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuditService_Export_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(audit.ExportRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuditServiceServer).Export(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuditService_Export_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuditServiceServer).Export(ctx, req.(*audit.ExportRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// AuditService_ServiceDesc is the grpc.ServiceDesc for AuditService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var AuditService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "infinimesh.node.v1.AuditService",
+	HandlerType: (*AuditServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "List",
+			Handler:    _AuditService_List_Handler,
+		},
+		{
+			MethodName: "Export",
+			Handler:    _AuditService_Export_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "node/node.proto",
+}
+
+const (
+	GrantsService_Create_FullMethodName      = "/infinimesh.node.v1.GrantsService/Create"
+	GrantsService_List_FullMethodName        = "/infinimesh.node.v1.GrantsService/List"
+	GrantsService_Revoke_FullMethodName      = "/infinimesh.node.v1.GrantsService/Revoke"
+	GrantsService_ListConsent_FullMethodName = "/infinimesh.node.v1.GrantsService/ListConsent"
+)
+
+// GrantsServiceClient is the client API for GrantsService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type GrantsServiceClient interface {
+	Create(ctx context.Context, in *grants.Grant, opts ...grpc.CallOption) (*grants.Grant, error)
+	List(ctx context.Context, in *grants.ListGrantsRequest, opts ...grpc.CallOption) (*grants.Grants, error)
+	Revoke(ctx context.Context, in *grants.Grant, opts ...grpc.CallOption) (*grants.Grant, error)
+	ListConsent(ctx context.Context, in *grants.ListConsentRequest, opts ...grpc.CallOption) (*grants.Consents, error)
+}
+
+type grantsServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewGrantsServiceClient(cc grpc.ClientConnInterface) GrantsServiceClient {
+	return &grantsServiceClient{cc}
+}
+
+func (c *grantsServiceClient) Create(ctx context.Context, in *grants.Grant, opts ...grpc.CallOption) (*grants.Grant, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(grants.Grant)
+	err := c.cc.Invoke(ctx, GrantsService_Create_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *grantsServiceClient) List(ctx context.Context, in *grants.ListGrantsRequest, opts ...grpc.CallOption) (*grants.Grants, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(grants.Grants)
+	err := c.cc.Invoke(ctx, GrantsService_List_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *grantsServiceClient) Revoke(ctx context.Context, in *grants.Grant, opts ...grpc.CallOption) (*grants.Grant, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(grants.Grant)
+	err := c.cc.Invoke(ctx, GrantsService_Revoke_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *grantsServiceClient) ListConsent(ctx context.Context, in *grants.ListConsentRequest, opts ...grpc.CallOption) (*grants.Consents, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(grants.Consents)
+	err := c.cc.Invoke(ctx, GrantsService_ListConsent_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// GrantsServiceServer is the server API for GrantsService service.
+// All implementations must embed UnimplementedGrantsServiceServer
+// for forward compatibility.
+type GrantsServiceServer interface {
+	Create(context.Context, *grants.Grant) (*grants.Grant, error)
+	List(context.Context, *grants.ListGrantsRequest) (*grants.Grants, error)
+	Revoke(context.Context, *grants.Grant) (*grants.Grant, error)
+	ListConsent(context.Context, *grants.ListConsentRequest) (*grants.Consents, error)
+	mustEmbedUnimplementedGrantsServiceServer()
+}
+
+// UnimplementedGrantsServiceServer must be embedded to have
+// forward compatible implementations.
+//
+// NOTE: this should be embedded by value instead of pointer to avoid a nil
+// pointer dereference when methods are called.
+type UnimplementedGrantsServiceServer struct{}
+
+func (UnimplementedGrantsServiceServer) Create(context.Context, *grants.Grant) (*grants.Grant, error) {
+	return nil, status.Error(codes.Unimplemented, "method Create not implemented")
+}
+func (UnimplementedGrantsServiceServer) List(context.Context, *grants.ListGrantsRequest) (*grants.Grants, error) {
+	return nil, status.Error(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedGrantsServiceServer) Revoke(context.Context, *grants.Grant) (*grants.Grant, error) {
+	return nil, status.Error(codes.Unimplemented, "method Revoke not implemented")
+}
+func (UnimplementedGrantsServiceServer) ListConsent(context.Context, *grants.ListConsentRequest) (*grants.Consents, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListConsent not implemented")
+}
+func (UnimplementedGrantsServiceServer) mustEmbedUnimplementedGrantsServiceServer() {}
+func (UnimplementedGrantsServiceServer) testEmbeddedByValue()                       {}
+
+// UnsafeGrantsServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to GrantsServiceServer will
+// result in compilation errors.
+type UnsafeGrantsServiceServer interface {
+	mustEmbedUnimplementedGrantsServiceServer()
+}
+
+func RegisterGrantsServiceServer(s grpc.ServiceRegistrar, srv GrantsServiceServer) {
+	// If the following call panics, it indicates UnimplementedGrantsServiceServer was
+	// embedded by pointer and is nil.  This will cause panics if an
+	// unimplemented method is ever invoked, so we test this at initialization
+	// time to prevent it from happening at runtime later due to I/O.
+	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
+		t.testEmbeddedByValue()
+	}
+	s.RegisterService(&GrantsService_ServiceDesc, srv)
+}
+
+func _GrantsService_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(grants.Grant)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GrantsServiceServer).Create(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GrantsService_Create_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GrantsServiceServer).Create(ctx, req.(*grants.Grant))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GrantsService_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(grants.ListGrantsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GrantsServiceServer).List(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GrantsService_List_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GrantsServiceServer).List(ctx, req.(*grants.ListGrantsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GrantsService_Revoke_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(grants.Grant)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GrantsServiceServer).Revoke(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GrantsService_Revoke_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GrantsServiceServer).Revoke(ctx, req.(*grants.Grant))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GrantsService_ListConsent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(grants.ListConsentRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GrantsServiceServer).ListConsent(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GrantsService_ListConsent_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GrantsServiceServer).ListConsent(ctx, req.(*grants.ListConsentRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// GrantsService_ServiceDesc is the grpc.ServiceDesc for GrantsService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var GrantsService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "infinimesh.node.v1.GrantsService",
+	HandlerType: (*GrantsServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Create",
+			Handler:    _GrantsService_Create_Handler,
+		},
+		{
+			MethodName: "List",
+			Handler:    _GrantsService_List_Handler,
+		},
+		{
+			MethodName: "Revoke",
+			Handler:    _GrantsService_Revoke_Handler,
+		},
+		{
+			MethodName: "ListConsent",
+			Handler:    _GrantsService_ListConsent_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
 	Metadata: "node/node.proto",
 }
 

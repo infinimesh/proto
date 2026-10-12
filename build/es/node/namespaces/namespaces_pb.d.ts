@@ -51,6 +51,16 @@ export declare class Namespace extends Message<Namespace> {
    */
   config?: Struct;
 
+  /**
+   * @generated from field: infinimesh.node.namespaces.v1.OTAConfig ota = 6;
+   */
+  ota?: OTAConfig;
+
+  /**
+   * @generated from field: infinimesh.node.namespaces.v1.Quota quota = 7;
+   */
+  quota?: Quota;
+
   constructor(data?: PartialMessage<Namespace>);
 
   static readonly runtime: typeof proto3;
@@ -64,6 +74,78 @@ export declare class Namespace extends Message<Namespace> {
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Namespace;
 
   static equals(a: Namespace | PlainMessage<Namespace> | undefined, b: Namespace | PlainMessage<Namespace> | undefined): boolean;
+}
+
+/**
+ * OTAConfig is read by the OTA addon. backend is hawkBit or mender.
+ *
+ * @generated from message infinimesh.node.namespaces.v1.OTAConfig
+ */
+export declare class OTAConfig extends Message<OTAConfig> {
+  /**
+   * @generated from field: bool enabled = 1;
+   */
+  enabled: boolean;
+
+  /**
+   * @generated from field: string backend_url = 2;
+   */
+  backendUrl: string;
+
+  /**
+   * @generated from field: string backend = 3;
+   */
+  backend: string;
+
+  constructor(data?: PartialMessage<OTAConfig>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "infinimesh.node.namespaces.v1.OTAConfig";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): OTAConfig;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): OTAConfig;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): OTAConfig;
+
+  static equals(a: OTAConfig | PlainMessage<OTAConfig> | undefined, b: OTAConfig | PlainMessage<OTAConfig> | undefined): boolean;
+}
+
+/**
+ * Quota limits a namespace. Zero means no limit.
+ *
+ * @generated from message infinimesh.node.namespaces.v1.Quota
+ */
+export declare class Quota extends Message<Quota> {
+  /**
+   * @generated from field: int32 max_devices = 1;
+   */
+  maxDevices: number;
+
+  /**
+   * @generated from field: double device_messages_per_second = 2;
+   */
+  deviceMessagesPerSecond: number;
+
+  /**
+   * @generated from field: double namespace_messages_per_second = 3;
+   */
+  namespaceMessagesPerSecond: number;
+
+  constructor(data?: PartialMessage<Quota>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "infinimesh.node.namespaces.v1.Quota";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): Quota;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): Quota;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): Quota;
+
+  static equals(a: Quota | PlainMessage<Quota> | undefined, b: Quota | PlainMessage<Quota> | undefined): boolean;
 }
 
 /**

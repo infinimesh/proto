@@ -29,6 +29,8 @@ export const ShadowEvent = proto3.makeEnum(
     {no: 0, name: "STATE"},
     {no: 1, name: "DEVICE_ADDED"},
     {no: 2, name: "DEVICE_REMOVED"},
+    {no: 3, name: "TAG_ADDED"},
+    {no: 4, name: "TAG_REMOVED"},
   ],
 );
 
@@ -45,6 +47,11 @@ export const StateKey = proto3.makeEnum(
 );
 
 /**
+ * State is one section of a device shadow.
+ * data.ota, when set, is the over-the-air document:
+ * version (string), url (string), sha256 (string).
+ * Reported state also carries state (string), progress (number), and error (string).
+ *
  * @generated from message infinimesh.shadow.v1.State
  */
 export const State = proto3.makeMessageType(
@@ -98,6 +105,30 @@ export const Shadow = proto3.makeMessageType(
     { no: 9, name: "event", kind: "enum", T: proto3.getEnumType(ShadowEvent) },
     { no: 10, name: "account", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 11, name: "sequence", kind: "scalar", T: 4 /* ScalarType.UINT64 */ },
+    { no: 12, name: "tag", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message infinimesh.shadow.v1.PatchManyRequest
+ */
+export const PatchManyRequest = proto3.makeMessageType(
+  "infinimesh.shadow.v1.PatchManyRequest",
+  () => [
+    { no: 1, name: "devices", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 2, name: "desired", kind: "message", T: State },
+    { no: 3, name: "namespace", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "tag", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message infinimesh.shadow.v1.PatchManyResponse
+ */
+export const PatchManyResponse = proto3.makeMessageType(
+  "infinimesh.shadow.v1.PatchManyResponse",
+  () => [
+    { no: 1, name: "updated", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
   ],
 );
 

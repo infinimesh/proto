@@ -1,4 +1,5 @@
 from node.access import access_pb2 as _access_pb2
+from node.namespaces import namespaces_pb2 as _namespaces_pb2
 from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
@@ -9,7 +10,7 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class Device(_message.Message):
-    __slots__ = ("uuid", "title", "enabled", "certificate", "tags", "basic_enabled", "token", "access", "config")
+    __slots__ = ("uuid", "title", "enabled", "certificate", "tags", "basic_enabled", "token", "access", "config", "quota")
     UUID_FIELD_NUMBER: _ClassVar[int]
     TITLE_FIELD_NUMBER: _ClassVar[int]
     ENABLED_FIELD_NUMBER: _ClassVar[int]
@@ -19,6 +20,7 @@ class Device(_message.Message):
     TOKEN_FIELD_NUMBER: _ClassVar[int]
     ACCESS_FIELD_NUMBER: _ClassVar[int]
     CONFIG_FIELD_NUMBER: _ClassVar[int]
+    QUOTA_FIELD_NUMBER: _ClassVar[int]
     uuid: str
     title: str
     enabled: bool
@@ -28,17 +30,24 @@ class Device(_message.Message):
     token: str
     access: _access_pb2.Access
     config: _struct_pb2.Struct
-    def __init__(self, uuid: _Optional[str] = ..., title: _Optional[str] = ..., enabled: _Optional[bool] = ..., certificate: _Optional[_Union[Certificate, _Mapping]] = ..., tags: _Optional[_Iterable[str]] = ..., basic_enabled: _Optional[bool] = ..., token: _Optional[str] = ..., access: _Optional[_Union[_access_pb2.Access, _Mapping]] = ..., config: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ...) -> None: ...
+    quota: _namespaces_pb2.Quota
+    def __init__(self, uuid: _Optional[str] = ..., title: _Optional[str] = ..., enabled: _Optional[bool] = ..., certificate: _Optional[_Union[Certificate, _Mapping]] = ..., tags: _Optional[_Iterable[str]] = ..., basic_enabled: _Optional[bool] = ..., token: _Optional[str] = ..., access: _Optional[_Union[_access_pb2.Access, _Mapping]] = ..., config: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., quota: _Optional[_Union[_namespaces_pb2.Quota, _Mapping]] = ...) -> None: ...
 
 class Certificate(_message.Message):
-    __slots__ = ("pem_data", "algorithm", "fingerprint")
+    __slots__ = ("pem_data", "algorithm", "fingerprint", "rollover_fingerprint", "revoked", "revoked_fingerprints")
     PEM_DATA_FIELD_NUMBER: _ClassVar[int]
     ALGORITHM_FIELD_NUMBER: _ClassVar[int]
     FINGERPRINT_FIELD_NUMBER: _ClassVar[int]
+    ROLLOVER_FINGERPRINT_FIELD_NUMBER: _ClassVar[int]
+    REVOKED_FIELD_NUMBER: _ClassVar[int]
+    REVOKED_FINGERPRINTS_FIELD_NUMBER: _ClassVar[int]
     pem_data: str
     algorithm: str
     fingerprint: bytes
-    def __init__(self, pem_data: _Optional[str] = ..., algorithm: _Optional[str] = ..., fingerprint: _Optional[bytes] = ...) -> None: ...
+    rollover_fingerprint: bytes
+    revoked: bool
+    revoked_fingerprints: _containers.RepeatedScalarFieldContainer[bytes]
+    def __init__(self, pem_data: _Optional[str] = ..., algorithm: _Optional[str] = ..., fingerprint: _Optional[bytes] = ..., rollover_fingerprint: _Optional[bytes] = ..., revoked: _Optional[bool] = ..., revoked_fingerprints: _Optional[_Iterable[bytes]] = ...) -> None: ...
 
 class Devices(_message.Message):
     __slots__ = ("devices", "next_page_token")
@@ -77,3 +86,63 @@ class GetByFingerprintRequest(_message.Message):
     FINGERPRINT_FIELD_NUMBER: _ClassVar[int]
     fingerprint: bytes
     def __init__(self, fingerprint: _Optional[bytes] = ...) -> None: ...
+
+class BulkCreateRequest(_message.Message):
+    __slots__ = ("namespace", "devices")
+    NAMESPACE_FIELD_NUMBER: _ClassVar[int]
+    DEVICES_FIELD_NUMBER: _ClassVar[int]
+    namespace: str
+    devices: _containers.RepeatedCompositeFieldContainer[Device]
+    def __init__(self, namespace: _Optional[str] = ..., devices: _Optional[_Iterable[_Union[Device, _Mapping]]] = ...) -> None: ...
+
+class BulkCreateResponse(_message.Message):
+    __slots__ = ("devices",)
+    DEVICES_FIELD_NUMBER: _ClassVar[int]
+    devices: _containers.RepeatedCompositeFieldContainer[Device]
+    def __init__(self, devices: _Optional[_Iterable[_Union[Device, _Mapping]]] = ...) -> None: ...
+
+class ClaimIssueRequest(_message.Message):
+    __slots__ = ("namespace", "expires_at")
+    NAMESPACE_FIELD_NUMBER: _ClassVar[int]
+    EXPIRES_AT_FIELD_NUMBER: _ClassVar[int]
+    namespace: str
+    expires_at: int
+    def __init__(self, namespace: _Optional[str] = ..., expires_at: _Optional[int] = ...) -> None: ...
+
+class ClaimIssueResponse(_message.Message):
+    __slots__ = ("token", "expires_at")
+    TOKEN_FIELD_NUMBER: _ClassVar[int]
+    EXPIRES_AT_FIELD_NUMBER: _ClassVar[int]
+    token: str
+    expires_at: int
+    def __init__(self, token: _Optional[str] = ..., expires_at: _Optional[int] = ...) -> None: ...
+
+class ClaimRequest(_message.Message):
+    __slots__ = ("token", "device")
+    TOKEN_FIELD_NUMBER: _ClassVar[int]
+    DEVICE_FIELD_NUMBER: _ClassVar[int]
+    token: str
+    device: Device
+    def __init__(self, token: _Optional[str] = ..., device: _Optional[_Union[Device, _Mapping]] = ...) -> None: ...
+
+class ClaimResponse(_message.Message):
+    __slots__ = ("device",)
+    DEVICE_FIELD_NUMBER: _ClassVar[int]
+    device: Device
+    def __init__(self, device: _Optional[_Union[Device, _Mapping]] = ...) -> None: ...
+
+class RotateCertificateRequest(_message.Message):
+    __slots__ = ("uuid", "certificate")
+    UUID_FIELD_NUMBER: _ClassVar[int]
+    CERTIFICATE_FIELD_NUMBER: _ClassVar[int]
+    uuid: str
+    certificate: Certificate
+    def __init__(self, uuid: _Optional[str] = ..., certificate: _Optional[_Union[Certificate, _Mapping]] = ...) -> None: ...
+
+class RevokeCertificateRequest(_message.Message):
+    __slots__ = ("uuid", "fingerprint")
+    UUID_FIELD_NUMBER: _ClassVar[int]
+    FINGERPRINT_FIELD_NUMBER: _ClassVar[int]
+    uuid: str
+    fingerprint: bytes
+    def __init__(self, uuid: _Optional[str] = ..., fingerprint: _Optional[bytes] = ...) -> None: ...

@@ -24,6 +24,10 @@ import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 
 
+// State is one section of a device shadow.
+// data.ota, when set, is the over-the-air document:
+// version (string), url (string), sha256 (string).
+// Reported state also carries state (string), progress (number), and error (string).
 message State {
   google.protobuf.Timestamp timestamp = 1;
   google.protobuf.Struct data = 2;
@@ -40,6 +44,10 @@ enum ShadowEvent {
   STATE = 0;
   DEVICE_ADDED = 1;
   DEVICE_REMOVED = 2;
+  // A tag was added. tag names it. tags is the full list after the change.
+  TAG_ADDED = 3;
+  // A tag was removed. tag names it. tags is the full list after the change.
+  TAG_REMOVED = 4;
 }
 
 message DeviceMeta {
@@ -61,6 +69,21 @@ message Shadow {
   ShadowEvent event = 9;
   string account = 10;
   uint64 sequence = 11;
+  // Tag that was added or removed when event is TAG_ADDED or TAG_REMOVED.
+  string tag = 12;
+}
+
+message PatchManyRequest {
+  repeated string devices = 1;
+  // Applied as desired state on every device.
+  State desired = 2;
+  // Resolved by the API to devices before the shadow process sees the call.
+  string namespace = 3;
+  string tag = 4;
+}
+
+message PatchManyResponse {
+  int32 updated = 1;
 }
 
 message GetRequest {
@@ -111,4 +134,5 @@ service ShadowService {
   rpc StreamShadowSync(StreamShadowRequest)
       returns (stream Shadow);
   rpc PublishDeviceScope(Shadow) returns (google.protobuf.Empty);
+  rpc PatchMany(PatchManyRequest) returns (PatchManyResponse);
 }

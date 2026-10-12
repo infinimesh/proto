@@ -45,6 +45,8 @@ type Namespace struct {
 	Access        *access.Access         `protobuf:"bytes,3,opt,name=access,proto3,oneof" json:"access,omitempty"`
 	Plugin        *string                `protobuf:"bytes,4,opt,name=plugin,proto3,oneof" json:"plugin,omitempty"`
 	Config        *structpb.Struct       `protobuf:"bytes,5,opt,name=config,proto3" json:"config,omitempty"`
+	Ota           *OTAConfig             `protobuf:"bytes,6,opt,name=ota,proto3" json:"ota,omitempty"`
+	Quota         *Quota                 `protobuf:"bytes,7,opt,name=quota,proto3" json:"quota,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -114,6 +116,142 @@ func (x *Namespace) GetConfig() *structpb.Struct {
 	return nil
 }
 
+func (x *Namespace) GetOta() *OTAConfig {
+	if x != nil {
+		return x.Ota
+	}
+	return nil
+}
+
+func (x *Namespace) GetQuota() *Quota {
+	if x != nil {
+		return x.Quota
+	}
+	return nil
+}
+
+// OTAConfig is read by the OTA addon. backend is hawkBit or mender.
+type OTAConfig struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Enabled       bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	BackendUrl    string                 `protobuf:"bytes,2,opt,name=backend_url,json=backendUrl,proto3" json:"backend_url,omitempty"`
+	Backend       string                 `protobuf:"bytes,3,opt,name=backend,proto3" json:"backend,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OTAConfig) Reset() {
+	*x = OTAConfig{}
+	mi := &file_node_namespaces_namespaces_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OTAConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OTAConfig) ProtoMessage() {}
+
+func (x *OTAConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_node_namespaces_namespaces_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OTAConfig.ProtoReflect.Descriptor instead.
+func (*OTAConfig) Descriptor() ([]byte, []int) {
+	return file_node_namespaces_namespaces_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *OTAConfig) GetEnabled() bool {
+	if x != nil {
+		return x.Enabled
+	}
+	return false
+}
+
+func (x *OTAConfig) GetBackendUrl() string {
+	if x != nil {
+		return x.BackendUrl
+	}
+	return ""
+}
+
+func (x *OTAConfig) GetBackend() string {
+	if x != nil {
+		return x.Backend
+	}
+	return ""
+}
+
+// Quota limits a namespace. Zero means no limit.
+type Quota struct {
+	state                      protoimpl.MessageState `protogen:"open.v1"`
+	MaxDevices                 int32                  `protobuf:"varint,1,opt,name=max_devices,json=maxDevices,proto3" json:"max_devices,omitempty"`
+	DeviceMessagesPerSecond    float64                `protobuf:"fixed64,2,opt,name=device_messages_per_second,json=deviceMessagesPerSecond,proto3" json:"device_messages_per_second,omitempty"`
+	NamespaceMessagesPerSecond float64                `protobuf:"fixed64,3,opt,name=namespace_messages_per_second,json=namespaceMessagesPerSecond,proto3" json:"namespace_messages_per_second,omitempty"`
+	unknownFields              protoimpl.UnknownFields
+	sizeCache                  protoimpl.SizeCache
+}
+
+func (x *Quota) Reset() {
+	*x = Quota{}
+	mi := &file_node_namespaces_namespaces_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Quota) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Quota) ProtoMessage() {}
+
+func (x *Quota) ProtoReflect() protoreflect.Message {
+	mi := &file_node_namespaces_namespaces_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Quota.ProtoReflect.Descriptor instead.
+func (*Quota) Descriptor() ([]byte, []int) {
+	return file_node_namespaces_namespaces_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *Quota) GetMaxDevices() int32 {
+	if x != nil {
+		return x.MaxDevices
+	}
+	return 0
+}
+
+func (x *Quota) GetDeviceMessagesPerSecond() float64 {
+	if x != nil {
+		return x.DeviceMessagesPerSecond
+	}
+	return 0
+}
+
+func (x *Quota) GetNamespaceMessagesPerSecond() float64 {
+	if x != nil {
+		return x.NamespaceMessagesPerSecond
+	}
+	return 0
+}
+
 type Namespaces struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Namespaces    []*Namespace           `protobuf:"bytes,1,rep,name=namespaces,proto3" json:"namespaces,omitempty"`
@@ -124,7 +262,7 @@ type Namespaces struct {
 
 func (x *Namespaces) Reset() {
 	*x = Namespaces{}
-	mi := &file_node_namespaces_namespaces_proto_msgTypes[1]
+	mi := &file_node_namespaces_namespaces_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -136,7 +274,7 @@ func (x *Namespaces) String() string {
 func (*Namespaces) ProtoMessage() {}
 
 func (x *Namespaces) ProtoReflect() protoreflect.Message {
-	mi := &file_node_namespaces_namespaces_proto_msgTypes[1]
+	mi := &file_node_namespaces_namespaces_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -149,7 +287,7 @@ func (x *Namespaces) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Namespaces.ProtoReflect.Descriptor instead.
 func (*Namespaces) Descriptor() ([]byte, []int) {
-	return file_node_namespaces_namespaces_proto_rawDescGZIP(), []int{1}
+	return file_node_namespaces_namespaces_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *Namespaces) GetNamespaces() []*Namespace {
@@ -170,15 +308,27 @@ var File_node_namespaces_namespaces_proto protoreflect.FileDescriptor
 
 const file_node_namespaces_namespaces_proto_rawDesc = "" +
 	"\n" +
-	" node/namespaces/namespaces.proto\x12\x1dinfinimesh.node.namespaces.v1\x1a\x18node/access/access.proto\x1a\x1cgoogle/protobuf/struct.proto\"\xd9\x01\n" +
+	" node/namespaces/namespaces.proto\x12\x1dinfinimesh.node.namespaces.v1\x1a\x18node/access/access.proto\x1a\x1cgoogle/protobuf/struct.proto\"\xd1\x02\n" +
 	"\tNamespace\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12>\n" +
 	"\x06access\x18\x03 \x01(\v2!.infinimesh.node.access.v1.AccessH\x00R\x06access\x88\x01\x01\x12\x1b\n" +
 	"\x06plugin\x18\x04 \x01(\tH\x01R\x06plugin\x88\x01\x01\x12/\n" +
-	"\x06config\x18\x05 \x01(\v2\x17.google.protobuf.StructR\x06configB\t\n" +
+	"\x06config\x18\x05 \x01(\v2\x17.google.protobuf.StructR\x06config\x12:\n" +
+	"\x03ota\x18\x06 \x01(\v2(.infinimesh.node.namespaces.v1.OTAConfigR\x03ota\x12:\n" +
+	"\x05quota\x18\a \x01(\v2$.infinimesh.node.namespaces.v1.QuotaR\x05quotaB\t\n" +
 	"\a_accessB\t\n" +
-	"\a_plugin\"~\n" +
+	"\a_plugin\"`\n" +
+	"\tOTAConfig\x12\x18\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1f\n" +
+	"\vbackend_url\x18\x02 \x01(\tR\n" +
+	"backendUrl\x12\x18\n" +
+	"\abackend\x18\x03 \x01(\tR\abackend\"\xa8\x01\n" +
+	"\x05Quota\x12\x1f\n" +
+	"\vmax_devices\x18\x01 \x01(\x05R\n" +
+	"maxDevices\x12;\n" +
+	"\x1adevice_messages_per_second\x18\x02 \x01(\x01R\x17deviceMessagesPerSecond\x12A\n" +
+	"\x1dnamespace_messages_per_second\x18\x03 \x01(\x01R\x1anamespaceMessagesPerSecond\"~\n" +
 	"\n" +
 	"Namespaces\x12H\n" +
 	"\n" +
@@ -198,22 +348,26 @@ func file_node_namespaces_namespaces_proto_rawDescGZIP() []byte {
 	return file_node_namespaces_namespaces_proto_rawDescData
 }
 
-var file_node_namespaces_namespaces_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_node_namespaces_namespaces_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_node_namespaces_namespaces_proto_goTypes = []any{
 	(*Namespace)(nil),       // 0: infinimesh.node.namespaces.v1.Namespace
-	(*Namespaces)(nil),      // 1: infinimesh.node.namespaces.v1.Namespaces
-	(*access.Access)(nil),   // 2: infinimesh.node.access.v1.Access
-	(*structpb.Struct)(nil), // 3: google.protobuf.Struct
+	(*OTAConfig)(nil),       // 1: infinimesh.node.namespaces.v1.OTAConfig
+	(*Quota)(nil),           // 2: infinimesh.node.namespaces.v1.Quota
+	(*Namespaces)(nil),      // 3: infinimesh.node.namespaces.v1.Namespaces
+	(*access.Access)(nil),   // 4: infinimesh.node.access.v1.Access
+	(*structpb.Struct)(nil), // 5: google.protobuf.Struct
 }
 var file_node_namespaces_namespaces_proto_depIdxs = []int32{
-	2, // 0: infinimesh.node.namespaces.v1.Namespace.access:type_name -> infinimesh.node.access.v1.Access
-	3, // 1: infinimesh.node.namespaces.v1.Namespace.config:type_name -> google.protobuf.Struct
-	0, // 2: infinimesh.node.namespaces.v1.Namespaces.namespaces:type_name -> infinimesh.node.namespaces.v1.Namespace
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	4, // 0: infinimesh.node.namespaces.v1.Namespace.access:type_name -> infinimesh.node.access.v1.Access
+	5, // 1: infinimesh.node.namespaces.v1.Namespace.config:type_name -> google.protobuf.Struct
+	1, // 2: infinimesh.node.namespaces.v1.Namespace.ota:type_name -> infinimesh.node.namespaces.v1.OTAConfig
+	2, // 3: infinimesh.node.namespaces.v1.Namespace.quota:type_name -> infinimesh.node.namespaces.v1.Quota
+	0, // 4: infinimesh.node.namespaces.v1.Namespaces.namespaces:type_name -> infinimesh.node.namespaces.v1.Namespace
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_node_namespaces_namespaces_proto_init() }
@@ -228,7 +382,7 @@ func file_node_namespaces_namespaces_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_node_namespaces_namespaces_proto_rawDesc), len(file_node_namespaces_namespaces_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

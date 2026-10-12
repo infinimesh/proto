@@ -29,6 +29,9 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 import "node/accounts/accounts.proto";
 import "node/access/access.proto";
 import "node/sessions/sessions.proto";
+import "node/rules/rules.proto";
+import "node/audit/audit.proto";
+import "node/grants/grants.proto";
 
 message TokenRequest {
   infinimesh.node.accounts.v1.Credentials auth = 1;
@@ -377,6 +380,56 @@ service DevicesService {
 
   rpc GetByToken(infinimesh.node.devices.v1.Device) returns (infinimesh.node.devices.v1.Device);
   rpc GetByFingerprint(infinimesh.node.devices.v1.GetByFingerprintRequest) returns (infinimesh.node.devices.v1.Device);
+  rpc BulkCreate(infinimesh.node.devices.v1.BulkCreateRequest) returns (infinimesh.node.devices.v1.BulkCreateResponse) {
+    option (google.api.http) = {
+      post: "/v1/devices:bulk"
+      body: "*"
+      additional_bindings {
+        post: "/devices:bulk"
+        body: "*"
+      }
+    };
+  };
+  rpc IssueClaim(infinimesh.node.devices.v1.ClaimIssueRequest) returns (infinimesh.node.devices.v1.ClaimIssueResponse) {
+    option (google.api.http) = {
+      post: "/v1/devices/claim-tokens"
+      body: "*"
+      additional_bindings {
+        post: "/devices/claim-tokens"
+        body: "*"
+      }
+    };
+  };
+  rpc Claim(infinimesh.node.devices.v1.ClaimRequest) returns (infinimesh.node.devices.v1.ClaimResponse) {
+    option (google.api.http) = {
+      post: "/v1/devices:claim"
+      body: "*"
+      additional_bindings {
+        post: "/devices:claim"
+        body: "*"
+      }
+    };
+  };
+  rpc RotateCertificate(infinimesh.node.devices.v1.RotateCertificateRequest) returns (infinimesh.node.devices.v1.Device) {
+    option (google.api.http) = {
+      post: "/v1/devices/{uuid}/certificate:rotate"
+      body: "*"
+      additional_bindings {
+        post: "/devices/{uuid}/certificate:rotate"
+        body: "*"
+      }
+    };
+  };
+  rpc RevokeCertificate(infinimesh.node.devices.v1.RevokeCertificateRequest) returns (infinimesh.node.devices.v1.Device) {
+    option (google.api.http) = {
+      post: "/v1/devices/{uuid}/certificate:revoke"
+      body: "*"
+      additional_bindings {
+        post: "/devices/{uuid}/certificate:revoke"
+        body: "*"
+      }
+    };
+  };
   rpc RevokeDevicesToken(RevokeDeviceTokenRequest) returns (DeleteResponse) {
     option (google.api.http) = {
       post: "/v1/devices/token/revoke"
@@ -459,6 +512,149 @@ service ShadowService {
   }
 
   rpc StreamShadowSync(infinimesh.shadow.v1.StreamShadowRequest) returns (stream infinimesh.shadow.v1.Shadow);
+  rpc PatchMany(infinimesh.shadow.v1.PatchManyRequest) returns (infinimesh.shadow.v1.PatchManyResponse) {
+    option (google.api.http) = {
+      post: "/v1/devices/states:patchMany"
+      body: "*"
+      additional_bindings {
+        post: "/devices/states:patchMany"
+        body: "*"
+      }
+    };
+  };
+}
+
+service RulesService {
+  rpc Create(infinimesh.node.rules.v1.Rule) returns (infinimesh.node.rules.v1.Rule) {
+    option (google.api.http) = {
+      post: "/v1/rules"
+      body: "*"
+      additional_bindings {
+        post: "/rules"
+        body: "*"
+      }
+    };
+  };
+  rpc Update(infinimesh.node.rules.v1.Rule) returns (infinimesh.node.rules.v1.Rule) {
+    option (google.api.http) = {
+      patch: "/v1/rules/{uuid}"
+      body: "*"
+      additional_bindings {
+        patch: "/rules/{uuid}"
+        body: "*"
+      }
+    };
+  };
+  rpc Get(infinimesh.node.rules.v1.Rule) returns (infinimesh.node.rules.v1.Rule) {
+    option (google.api.http) = {
+      get: "/v1/rules/{uuid}"
+      additional_bindings {
+        get: "/rules/{uuid}"
+      }
+    };
+  };
+  rpc List(infinimesh.node.rules.v1.ListRulesRequest) returns (infinimesh.node.rules.v1.Rules) {
+    option (google.api.http) = {
+      get: "/v1/rules"
+      additional_bindings {
+        get: "/rules"
+      }
+    };
+  };
+  rpc Delete(infinimesh.node.rules.v1.Rule) returns (DeleteResponse) {
+    option (google.api.http) = {
+      delete: "/v1/rules/{uuid}"
+      additional_bindings {
+        delete: "/rules/{uuid}"
+      }
+    };
+  };
+  rpc ListAlarms(infinimesh.node.rules.v1.ListAlarmsRequest) returns (infinimesh.node.rules.v1.Alarms) {
+    option (google.api.http) = {
+      get: "/v1/alarms"
+      additional_bindings {
+        get: "/alarms"
+      }
+    };
+  };
+  rpc AckAlarm(infinimesh.node.rules.v1.AlarmRef) returns (infinimesh.node.rules.v1.Alarm) {
+    option (google.api.http) = {
+      post: "/v1/alarms/{rule}/{device}/ack"
+      body: "*"
+      additional_bindings {
+        post: "/alarms/{rule}/{device}/ack"
+        body: "*"
+      }
+    };
+  };
+  rpc ClearAlarm(infinimesh.node.rules.v1.AlarmRef) returns (infinimesh.node.rules.v1.Alarm) {
+    option (google.api.http) = {
+      post: "/v1/alarms/{rule}/{device}/clear"
+      body: "*"
+      additional_bindings {
+        post: "/alarms/{rule}/{device}/clear"
+        body: "*"
+      }
+    };
+  };
+}
+
+service AuditService {
+  rpc List(infinimesh.node.audit.v1.ListAuditRequest) returns (infinimesh.node.audit.v1.AuditRecords) {
+    option (google.api.http) = {
+      get: "/v1/audit"
+      additional_bindings {
+        get: "/audit"
+      }
+    };
+  };
+  rpc Export(infinimesh.node.audit.v1.ExportRequest) returns (infinimesh.node.audit.v1.ExportResponse) {
+    option (google.api.http) = {
+      get: "/v1/devices/{device}/export"
+      additional_bindings {
+        get: "/devices/{device}/export"
+      }
+    };
+  };
+}
+
+service GrantsService {
+  rpc Create(infinimesh.node.grants.v1.Grant) returns (infinimesh.node.grants.v1.Grant) {
+    option (google.api.http) = {
+      post: "/v1/grants"
+      body: "*"
+      additional_bindings {
+        post: "/grants"
+        body: "*"
+      }
+    };
+  };
+  rpc List(infinimesh.node.grants.v1.ListGrantsRequest) returns (infinimesh.node.grants.v1.Grants) {
+    option (google.api.http) = {
+      get: "/v1/grants"
+      additional_bindings {
+        get: "/grants"
+      }
+    };
+  };
+  rpc Revoke(infinimesh.node.grants.v1.Grant) returns (infinimesh.node.grants.v1.Grant) {
+    option (google.api.http) = {
+      post: "/v1/grants/{id}/revoke"
+      body: "*"
+      additional_bindings {
+        post: "/grants/{id}/revoke"
+        body: "*"
+      }
+    };
+  };
+  rpc ListConsent(infinimesh.node.grants.v1.ListConsentRequest) returns (infinimesh.node.grants.v1.Consents) {
+    option (google.api.http) = {
+      get: "/v1/consents"
+      additional_bindings {
+        get: "/consents"
+      }
+    };
+  };
 }
 
 message LDAPProviders {

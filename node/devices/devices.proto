@@ -18,6 +18,7 @@ package infinimesh.node.devices.v1;
 option go_package = "github.com/infinimesh/proto/node/devices;devices";
 
 import "node/access/access.proto";
+import "node/namespaces/namespaces.proto";
 import "google/protobuf/struct.proto";
 
 message Device {
@@ -30,12 +31,18 @@ message Device {
   string token = 7;
   optional infinimesh.node.access.v1.Access access = 8;
   google.protobuf.Struct config = 9;
+  // Filled on GetByFingerprint from the device's namespace. Not stored.
+  infinimesh.node.namespaces.v1.Quota quota = 10;
 }
 
 message Certificate {
   string pem_data = 1;
   string algorithm = 2;
   bytes fingerprint = 3;
+  // Previous fingerprint that stays valid until the next rotation.
+  bytes rollover_fingerprint = 4;
+  bool revoked = 5;
+  repeated bytes revoked_fingerprints = 6;
 }
 
 message Devices {
@@ -60,4 +67,44 @@ message CreateResponse {
 
 message GetByFingerprintRequest {
   bytes fingerprint = 1;
+}
+
+message BulkCreateRequest {
+  string namespace = 1;
+  repeated Device devices = 2;
+}
+
+message BulkCreateResponse {
+  repeated Device devices = 1;
+}
+
+message ClaimIssueRequest {
+  string namespace = 1;
+  // Unix seconds. The factory token stops working at this time.
+  int64 expires_at = 2;
+}
+
+message ClaimIssueResponse {
+  string token = 1;
+  int64 expires_at = 2;
+}
+
+message ClaimRequest {
+  string token = 1;
+  Device device = 2;
+}
+
+message ClaimResponse {
+  Device device = 1;
+}
+
+message RotateCertificateRequest {
+  string uuid = 1;
+  Certificate certificate = 2;
+}
+
+message RevokeCertificateRequest {
+  string uuid = 1;
+  // Empty revokes every fingerprint on the device.
+  bytes fingerprint = 2;
 }

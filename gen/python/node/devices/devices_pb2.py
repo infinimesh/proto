@@ -23,10 +23,11 @@ _sym_db = _symbol_database.Default()
 
 
 from node.access import access_pb2 as node_dot_access_dot_access__pb2
+from node.namespaces import namespaces_pb2 as node_dot_namespaces_dot_namespaces__pb2
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1anode/devices/devices.proto\x12\x1ainfinimesh.node.devices.v1\x1a\x18node/access/access.proto\x1a\x1cgoogle/protobuf/struct.proto\"\xe2\x02\n\x06\x44\x65vice\x12\x12\n\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x14\n\x05title\x18\x02 \x01(\tR\x05title\x12\x18\n\x07\x65nabled\x18\x03 \x01(\x08R\x07\x65nabled\x12I\n\x0b\x63\x65rtificate\x18\x04 \x01(\x0b\x32\'.infinimesh.node.devices.v1.CertificateR\x0b\x63\x65rtificate\x12\x12\n\x04tags\x18\x05 \x03(\tR\x04tags\x12#\n\rbasic_enabled\x18\x06 \x01(\x08R\x0c\x62\x61sicEnabled\x12\x14\n\x05token\x18\x07 \x01(\tR\x05token\x12>\n\x06\x61\x63\x63\x65ss\x18\x08 \x01(\x0b\x32!.infinimesh.node.access.v1.AccessH\x00R\x06\x61\x63\x63\x65ss\x88\x01\x01\x12/\n\x06\x63onfig\x18\t \x01(\x0b\x32\x17.google.protobuf.StructR\x06\x63onfigB\t\n\x07_access\"h\n\x0b\x43\x65rtificate\x12\x19\n\x08pem_data\x18\x01 \x01(\tR\x07pemData\x12\x1c\n\talgorithm\x18\x02 \x01(\tR\talgorithm\x12 \n\x0b\x66ingerprint\x18\x03 \x01(\x0cR\x0b\x66ingerprint\"o\n\x07\x44\x65vices\x12<\n\x07\x64\x65vices\x18\x01 \x03(\x0b\x32\".infinimesh.node.devices.v1.DeviceR\x07\x64\x65vices\x12&\n\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"=\n\rPairingCreate\x12\x12\n\x04\x63ode\x18\x01 \x01(\tR\x04\x63ode\x12\x18\n\x07payload\x18\x02 \x03(\tR\x07payload\"\xae\x01\n\rCreateRequest\x12:\n\x06\x64\x65vice\x18\x01 \x01(\x0b\x32\".infinimesh.node.devices.v1.DeviceR\x06\x64\x65vice\x12\x1c\n\tnamespace\x18\x02 \x01(\tR\tnamespace\x12\x43\n\x07pairing\x18\x03 \x01(\x0b\x32).infinimesh.node.devices.v1.PairingCreateR\x07pairing\"L\n\x0e\x43reateResponse\x12:\n\x06\x64\x65vice\x18\x01 \x01(\x0b\x32\".infinimesh.node.devices.v1.DeviceR\x06\x64\x65vice\";\n\x17GetByFingerprintRequest\x12 \n\x0b\x66ingerprint\x18\x01 \x01(\x0cR\x0b\x66ingerprintB2Z0github.com/infinimesh/proto/node/devices;devicesb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1anode/devices/devices.proto\x12\x1ainfinimesh.node.devices.v1\x1a\x18node/access/access.proto\x1a node/namespaces/namespaces.proto\x1a\x1cgoogle/protobuf/struct.proto\"\x9e\x03\n\x06\x44\x65vice\x12\x12\n\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x14\n\x05title\x18\x02 \x01(\tR\x05title\x12\x18\n\x07\x65nabled\x18\x03 \x01(\x08R\x07\x65nabled\x12I\n\x0b\x63\x65rtificate\x18\x04 \x01(\x0b\x32\'.infinimesh.node.devices.v1.CertificateR\x0b\x63\x65rtificate\x12\x12\n\x04tags\x18\x05 \x03(\tR\x04tags\x12#\n\rbasic_enabled\x18\x06 \x01(\x08R\x0c\x62\x61sicEnabled\x12\x14\n\x05token\x18\x07 \x01(\tR\x05token\x12>\n\x06\x61\x63\x63\x65ss\x18\x08 \x01(\x0b\x32!.infinimesh.node.access.v1.AccessH\x00R\x06\x61\x63\x63\x65ss\x88\x01\x01\x12/\n\x06\x63onfig\x18\t \x01(\x0b\x32\x17.google.protobuf.StructR\x06\x63onfig\x12:\n\x05quota\x18\n \x01(\x0b\x32$.infinimesh.node.namespaces.v1.QuotaR\x05quotaB\t\n\x07_access\"\xe8\x01\n\x0b\x43\x65rtificate\x12\x19\n\x08pem_data\x18\x01 \x01(\tR\x07pemData\x12\x1c\n\talgorithm\x18\x02 \x01(\tR\talgorithm\x12 \n\x0b\x66ingerprint\x18\x03 \x01(\x0cR\x0b\x66ingerprint\x12\x31\n\x14rollover_fingerprint\x18\x04 \x01(\x0cR\x13rolloverFingerprint\x12\x18\n\x07revoked\x18\x05 \x01(\x08R\x07revoked\x12\x31\n\x14revoked_fingerprints\x18\x06 \x03(\x0cR\x13revokedFingerprints\"o\n\x07\x44\x65vices\x12<\n\x07\x64\x65vices\x18\x01 \x03(\x0b\x32\".infinimesh.node.devices.v1.DeviceR\x07\x64\x65vices\x12&\n\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"=\n\rPairingCreate\x12\x12\n\x04\x63ode\x18\x01 \x01(\tR\x04\x63ode\x12\x18\n\x07payload\x18\x02 \x03(\tR\x07payload\"\xae\x01\n\rCreateRequest\x12:\n\x06\x64\x65vice\x18\x01 \x01(\x0b\x32\".infinimesh.node.devices.v1.DeviceR\x06\x64\x65vice\x12\x1c\n\tnamespace\x18\x02 \x01(\tR\tnamespace\x12\x43\n\x07pairing\x18\x03 \x01(\x0b\x32).infinimesh.node.devices.v1.PairingCreateR\x07pairing\"L\n\x0e\x43reateResponse\x12:\n\x06\x64\x65vice\x18\x01 \x01(\x0b\x32\".infinimesh.node.devices.v1.DeviceR\x06\x64\x65vice\";\n\x17GetByFingerprintRequest\x12 \n\x0b\x66ingerprint\x18\x01 \x01(\x0cR\x0b\x66ingerprint\"o\n\x11\x42ulkCreateRequest\x12\x1c\n\tnamespace\x18\x01 \x01(\tR\tnamespace\x12<\n\x07\x64\x65vices\x18\x02 \x03(\x0b\x32\".infinimesh.node.devices.v1.DeviceR\x07\x64\x65vices\"R\n\x12\x42ulkCreateResponse\x12<\n\x07\x64\x65vices\x18\x01 \x03(\x0b\x32\".infinimesh.node.devices.v1.DeviceR\x07\x64\x65vices\"P\n\x11\x43laimIssueRequest\x12\x1c\n\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x1d\n\nexpires_at\x18\x02 \x01(\x03R\texpiresAt\"I\n\x12\x43laimIssueResponse\x12\x14\n\x05token\x18\x01 \x01(\tR\x05token\x12\x1d\n\nexpires_at\x18\x02 \x01(\x03R\texpiresAt\"`\n\x0c\x43laimRequest\x12\x14\n\x05token\x18\x01 \x01(\tR\x05token\x12:\n\x06\x64\x65vice\x18\x02 \x01(\x0b\x32\".infinimesh.node.devices.v1.DeviceR\x06\x64\x65vice\"K\n\rClaimResponse\x12:\n\x06\x64\x65vice\x18\x01 \x01(\x0b\x32\".infinimesh.node.devices.v1.DeviceR\x06\x64\x65vice\"y\n\x18RotateCertificateRequest\x12\x12\n\x04uuid\x18\x01 \x01(\tR\x04uuid\x12I\n\x0b\x63\x65rtificate\x18\x02 \x01(\x0b\x32\'.infinimesh.node.devices.v1.CertificateR\x0b\x63\x65rtificate\"P\n\x18RevokeCertificateRequest\x12\x12\n\x04uuid\x18\x01 \x01(\tR\x04uuid\x12 \n\x0b\x66ingerprint\x18\x02 \x01(\x0cR\x0b\x66ingerprintB2Z0github.com/infinimesh/proto/node/devices;devicesb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -34,18 +35,34 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'node.devices.devices_pb2', 
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'Z0github.com/infinimesh/proto/node/devices;devices'
-  _globals['_DEVICE']._serialized_start=115
-  _globals['_DEVICE']._serialized_end=469
-  _globals['_CERTIFICATE']._serialized_start=471
-  _globals['_CERTIFICATE']._serialized_end=575
-  _globals['_DEVICES']._serialized_start=577
-  _globals['_DEVICES']._serialized_end=688
-  _globals['_PAIRINGCREATE']._serialized_start=690
-  _globals['_PAIRINGCREATE']._serialized_end=751
-  _globals['_CREATEREQUEST']._serialized_start=754
-  _globals['_CREATEREQUEST']._serialized_end=928
-  _globals['_CREATERESPONSE']._serialized_start=930
-  _globals['_CREATERESPONSE']._serialized_end=1006
-  _globals['_GETBYFINGERPRINTREQUEST']._serialized_start=1008
-  _globals['_GETBYFINGERPRINTREQUEST']._serialized_end=1067
+  _globals['_DEVICE']._serialized_start=149
+  _globals['_DEVICE']._serialized_end=563
+  _globals['_CERTIFICATE']._serialized_start=566
+  _globals['_CERTIFICATE']._serialized_end=798
+  _globals['_DEVICES']._serialized_start=800
+  _globals['_DEVICES']._serialized_end=911
+  _globals['_PAIRINGCREATE']._serialized_start=913
+  _globals['_PAIRINGCREATE']._serialized_end=974
+  _globals['_CREATEREQUEST']._serialized_start=977
+  _globals['_CREATEREQUEST']._serialized_end=1151
+  _globals['_CREATERESPONSE']._serialized_start=1153
+  _globals['_CREATERESPONSE']._serialized_end=1229
+  _globals['_GETBYFINGERPRINTREQUEST']._serialized_start=1231
+  _globals['_GETBYFINGERPRINTREQUEST']._serialized_end=1290
+  _globals['_BULKCREATEREQUEST']._serialized_start=1292
+  _globals['_BULKCREATEREQUEST']._serialized_end=1403
+  _globals['_BULKCREATERESPONSE']._serialized_start=1405
+  _globals['_BULKCREATERESPONSE']._serialized_end=1487
+  _globals['_CLAIMISSUEREQUEST']._serialized_start=1489
+  _globals['_CLAIMISSUEREQUEST']._serialized_end=1569
+  _globals['_CLAIMISSUERESPONSE']._serialized_start=1571
+  _globals['_CLAIMISSUERESPONSE']._serialized_end=1644
+  _globals['_CLAIMREQUEST']._serialized_start=1646
+  _globals['_CLAIMREQUEST']._serialized_end=1742
+  _globals['_CLAIMRESPONSE']._serialized_start=1744
+  _globals['_CLAIMRESPONSE']._serialized_end=1819
+  _globals['_ROTATECERTIFICATEREQUEST']._serialized_start=1821
+  _globals['_ROTATECERTIFICATEREQUEST']._serialized_end=1942
+  _globals['_REVOKECERTIFICATEREQUEST']._serialized_start=1944
+  _globals['_REVOKECERTIFICATEREQUEST']._serialized_end=2024
 # @@protoc_insertion_point(module_scope)

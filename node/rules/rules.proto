@@ -1,0 +1,109 @@
+/*
+Copyright © 2026 Infinite Devices GmbH
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+syntax = "proto3";
+package infinimesh.node.rules.v1;
+option go_package = "github.com/infinimesh/proto/node/rules;rules";
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+// Rule is evaluated against each device shadow in its namespace.
+// when and clear are CEL expressions. Names are reported, desired, connected, device, title, tags, and ns.
+message Rule {
+  string uuid = 1;
+  string namespace = 2;
+  string name = 3;
+  string when = 4;
+  string clear = 5;
+  // Shortest time between two raises of the same rule and device, for example 10m.
+  string cooldown = 6;
+  // Fire the actions again this often while the alarm stays raised and unacked, for example 1h.
+  string repeat = 7;
+  bool on_clear = 8;
+  repeated Action actions = 9;
+}
+
+message Action {
+  LogAction log = 1;
+  WebhookAction webhook = 2;
+  MQTTAction mqtt = 3;
+  google.protobuf.Struct desired = 4;
+}
+
+message LogAction {
+  string message = 1;
+}
+
+message WebhookAction {
+  string url = 1;
+  string secret = 2;
+}
+
+message MQTTAction {
+  string topic = 1;
+  uint32 qos = 2;
+  bool retain = 3;
+}
+
+message Rules {
+  repeated Rule rules = 1;
+  string next_page_token = 2;
+}
+
+message ListRulesRequest {
+  string namespace = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+enum AlarmState {
+  RAISED = 0;
+  ACKED = 1;
+  CLEARED = 2;
+}
+
+message Alarm {
+  string rule = 1;
+  string device = 2;
+  string title = 3;
+  AlarmState state = 4;
+  google.protobuf.Timestamp raised_at = 5;
+  google.protobuf.Timestamp fired_at = 6;
+  google.protobuf.Timestamp acked_at = 7;
+  google.protobuf.Timestamp cleared_at = 8;
+  int32 count = 9;
+  string namespace = 10;
+}
+
+message Alarms {
+  repeated Alarm alarms = 1;
+  string next_page_token = 2;
+}
+
+message ListAlarmsRequest {
+  string namespace = 1;
+  string device = 2;
+  AlarmState state = 3;
+  // When true, state is ignored and every alarm is returned.
+  bool any_state = 4;
+  int32 page_size = 5;
+  string page_token = 6;
+}
+
+message AlarmRef {
+  string rule = 1;
+  string device = 2;
+}

@@ -3,6 +3,9 @@ from protoc_gen_openapiv2.options import annotations_pb2 as _annotations_pb2_1
 from node.accounts import accounts_pb2 as _accounts_pb2
 from node.access import access_pb2 as _access_pb2
 from node.sessions import sessions_pb2 as _sessions_pb2
+from node.rules import rules_pb2 as _rules_pb2
+from node.audit import audit_pb2 as _audit_pb2
+from node.grants import grants_pb2 as _grants_pb2
 from node.namespaces import namespaces_pb2 as _namespaces_pb2
 from node.devices import devices_pb2 as _devices_pb2
 from shadow import shadow_pb2 as _shadow_pb2
