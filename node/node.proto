@@ -188,6 +188,8 @@ message DevicesTokenRequest {
   map<string, infinimesh.node.access.Level> devices = 1;
   int64 exp = 2;
   bool post = 3;
+  string namespace = 4;
+  bool stream = 5;
 }
 
 message MoveRequest {
