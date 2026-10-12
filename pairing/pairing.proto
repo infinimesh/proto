@@ -43,25 +43,11 @@ service PairingService {
         option (google.api.http) = {
       post: "/v1/pairing"
       body: "*"
-      additional_bindings {
-        post: "/v1/handsfree"
-        body: "*"
-      }
-      additional_bindings {
-        post: "/handsfree"
-        body: "*"
-      }
     };
     }
     rpc Connect(infinimesh.pairing.v1.ConnectionRequest) returns (stream infinimesh.pairing.v1.ControlPacket) {
         option (google.api.http) = {
       get: "/v1/pairing/connection"
-      additional_bindings {
-        get: "/v1/handsfree/connection"
-      }
-      additional_bindings {
-        get: "/handsfree/connection"
-      }
     };
     }
 }

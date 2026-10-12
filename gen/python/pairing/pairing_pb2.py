@@ -25,7 +25,7 @@ _sym_db = _symbol_database.Default()
 from google.api import annotations_pb2 as google_dot_api_dot_annotations__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15pairing/pairing.proto\x12\x15infinimesh.pairing.v1\x1a\x1cgoogle/api/annotations.proto\"D\n\x11\x43onnectionRequest\x12\x15\n\x06\x61pp_id\x18\x01 \x01(\tR\x05\x61ppId\x12\x18\n\x07payload\x18\x02 \x03(\tR\x07payload\"\x81\x01\n\rControlPacket\x12/\n\x04\x63ode\x18\x01 \x01(\x0e\x32\x1b.infinimesh.pairing.v1.CodeR\x04\x63ode\x12\x18\n\x07payload\x18\x02 \x03(\tR\x07payload\x12\x1a\n\x06\x61pp_id\x18\x03 \x01(\tH\x00R\x05\x61ppId\x88\x01\x01\x42\t\n\x07_app_id*?\n\x04\x43ode\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x08\n\x04\x41UTH\x10\x01\x12\x08\n\x04\x44\x41TA\x10\x02\x12\x0b\n\x07SUCCESS\x10\x03\x12\t\n\x05\x45RROR\x10\x04\x32\xd5\x02\n\x0ePairingService\x12\x8f\x01\n\x04Send\x12$.infinimesh.pairing.v1.ControlPacket\x1a$.infinimesh.pairing.v1.ControlPacket\";\x82\xd3\xe4\x93\x02\x35\"\x0b/v1/pairing:\x01*Z\x12\"\r/v1/handsfree:\x01*Z\x0f\"\n/handsfree:\x01*\x12\xb0\x01\n\x07\x43onnect\x12(.infinimesh.pairing.v1.ConnectionRequest\x1a$.infinimesh.pairing.v1.ControlPacket\"S\x82\xd3\xe4\x93\x02M\x12\x16/v1/pairing/connectionZ\x1a\x12\x18/v1/handsfree/connectionZ\x17\x12\x15/handsfree/connection0\x01\x42-Z+github.com/infinimesh/proto/pairing;pairingb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15pairing/pairing.proto\x12\x15infinimesh.pairing.v1\x1a\x1cgoogle/api/annotations.proto\"D\n\x11\x43onnectionRequest\x12\x15\n\x06\x61pp_id\x18\x01 \x01(\tR\x05\x61ppId\x12\x18\n\x07payload\x18\x02 \x03(\tR\x07payload\"\x81\x01\n\rControlPacket\x12/\n\x04\x63ode\x18\x01 \x01(\x0e\x32\x1b.infinimesh.pairing.v1.CodeR\x04\x63ode\x12\x18\n\x07payload\x18\x02 \x03(\tR\x07payload\x12\x1a\n\x06\x61pp_id\x18\x03 \x01(\tH\x00R\x05\x61ppId\x88\x01\x01\x42\t\n\x07_app_id*?\n\x04\x43ode\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x08\n\x04\x41UTH\x10\x01\x12\x08\n\x04\x44\x41TA\x10\x02\x12\x0b\n\x07SUCCESS\x10\x03\x12\t\n\x05\x45RROR\x10\x04\x32\xf9\x01\n\x0ePairingService\x12j\n\x04Send\x12$.infinimesh.pairing.v1.ControlPacket\x1a$.infinimesh.pairing.v1.ControlPacket\"\x16\x82\xd3\xe4\x93\x02\x10\"\x0b/v1/pairing:\x01*\x12{\n\x07\x43onnect\x12(.infinimesh.pairing.v1.ConnectionRequest\x1a$.infinimesh.pairing.v1.ControlPacket\"\x1e\x82\xd3\xe4\x93\x02\x18\x12\x16/v1/pairing/connection0\x01\x42-Z+github.com/infinimesh/proto/pairing;pairingb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -34,9 +34,9 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'Z+github.com/infinimesh/proto/pairing;pairing'
   _globals['_PAIRINGSERVICE'].methods_by_name['Send']._loaded_options = None
-  _globals['_PAIRINGSERVICE'].methods_by_name['Send']._serialized_options = b'\202\323\344\223\0025\"\013/v1/pairing:\001*Z\022\"\r/v1/handsfree:\001*Z\017\"\n/handsfree:\001*'
+  _globals['_PAIRINGSERVICE'].methods_by_name['Send']._serialized_options = b'\202\323\344\223\002\020\"\013/v1/pairing:\001*'
   _globals['_PAIRINGSERVICE'].methods_by_name['Connect']._loaded_options = None
-  _globals['_PAIRINGSERVICE'].methods_by_name['Connect']._serialized_options = b'\202\323\344\223\002M\022\026/v1/pairing/connectionZ\032\022\030/v1/handsfree/connectionZ\027\022\025/handsfree/connection'
+  _globals['_PAIRINGSERVICE'].methods_by_name['Connect']._serialized_options = b'\202\323\344\223\002\030\022\026/v1/pairing/connection'
   _globals['_CODE']._serialized_start=280
   _globals['_CODE']._serialized_end=343
   _globals['_CONNECTIONREQUEST']._serialized_start=78
@@ -44,5 +44,5 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_CONTROLPACKET']._serialized_start=149
   _globals['_CONTROLPACKET']._serialized_end=278
   _globals['_PAIRINGSERVICE']._serialized_start=346
-  _globals['_PAIRINGSERVICE']._serialized_end=687
+  _globals['_PAIRINGSERVICE']._serialized_end=595
 # @@protoc_insertion_point(module_scope)
