@@ -18,6 +18,7 @@ syntax = "proto3";
 
 package infinimesh.shadow;
 
+import "google/protobuf/empty.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -33,11 +34,30 @@ message ConnectionState {
   string client_id = 3;
 }
 
+enum ShadowEvent {
+  STATE = 0;
+  DEVICE_ADDED = 1;
+  DEVICE_REMOVED = 2;
+}
+
+message DeviceMeta {
+  string device = 1;
+  string title = 2;
+  string namespace = 3;
+  repeated string tags = 4;
+}
+
 message Shadow {
   string device = 1;
   State reported = 2;
   State desired = 3;
   ConnectionState connection = 4;
+  uint64 event_id = 5;
+  string title = 6;
+  string namespace = 7;
+  repeated string tags = 8;
+  ShadowEvent event = 9;
+  string account = 10;
 }
 
 message GetRequest {
@@ -64,6 +84,10 @@ message StreamShadowRequest {
   repeated string devices = 1;
   bool only_delta = 2;
   bool sync = 3;
+  string namespace = 4;
+  repeated string namespaces = 5;
+  string account = 6;
+  repeated DeviceMeta catalog = 7;
 }
 
 service ShadowService {
@@ -74,4 +98,5 @@ service ShadowService {
       returns (stream Shadow);
   rpc StreamShadowSync(StreamShadowRequest)
       returns (stream Shadow);
+  rpc PublishDeviceScope(Shadow) returns (google.protobuf.Empty);
 }

@@ -24,6 +24,7 @@ import (
 	context "context"
 	errors "errors"
 	shadow "github.com/infinimesh/proto/shadow"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	http "net/http"
 	strings "strings"
 )
@@ -60,16 +61,9 @@ const (
 	// ShadowServiceStreamShadowSyncProcedure is the fully-qualified name of the ShadowService's
 	// StreamShadowSync RPC.
 	ShadowServiceStreamShadowSyncProcedure = "/infinimesh.shadow.ShadowService/StreamShadowSync"
-)
-
-// These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
-var (
-	shadowServiceServiceDescriptor                = shadow.File_shadow_shadow_proto.Services().ByName("ShadowService")
-	shadowServiceGetMethodDescriptor              = shadowServiceServiceDescriptor.Methods().ByName("Get")
-	shadowServicePatchMethodDescriptor            = shadowServiceServiceDescriptor.Methods().ByName("Patch")
-	shadowServiceRemoveMethodDescriptor           = shadowServiceServiceDescriptor.Methods().ByName("Remove")
-	shadowServiceStreamShadowMethodDescriptor     = shadowServiceServiceDescriptor.Methods().ByName("StreamShadow")
-	shadowServiceStreamShadowSyncMethodDescriptor = shadowServiceServiceDescriptor.Methods().ByName("StreamShadowSync")
+	// ShadowServicePublishDeviceScopeProcedure is the fully-qualified name of the ShadowService's
+	// PublishDeviceScope RPC.
+	ShadowServicePublishDeviceScopeProcedure = "/infinimesh.shadow.ShadowService/PublishDeviceScope"
 )
 
 // ShadowServiceClient is a client for the infinimesh.shadow.ShadowService service.
@@ -79,6 +73,7 @@ type ShadowServiceClient interface {
 	Remove(context.Context, *connect.Request[shadow.RemoveRequest]) (*connect.Response[shadow.Shadow], error)
 	StreamShadow(context.Context, *connect.Request[shadow.StreamShadowRequest]) (*connect.ServerStreamForClient[shadow.Shadow], error)
 	StreamShadowSync(context.Context, *connect.Request[shadow.StreamShadowRequest]) (*connect.ServerStreamForClient[shadow.Shadow], error)
+	PublishDeviceScope(context.Context, *connect.Request[shadow.Shadow]) (*connect.Response[emptypb.Empty], error)
 }
 
 // NewShadowServiceClient constructs a client for the infinimesh.shadow.ShadowService service. By
@@ -90,35 +85,42 @@ type ShadowServiceClient interface {
 // http://api.acme.com or https://acme.com/grpc).
 func NewShadowServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ShadowServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
+	shadowServiceMethods := shadow.File_shadow_shadow_proto.Services().ByName("ShadowService").Methods()
 	return &shadowServiceClient{
 		get: connect.NewClient[shadow.GetRequest, shadow.GetResponse](
 			httpClient,
 			baseURL+ShadowServiceGetProcedure,
-			connect.WithSchema(shadowServiceGetMethodDescriptor),
+			connect.WithSchema(shadowServiceMethods.ByName("Get")),
 			connect.WithClientOptions(opts...),
 		),
 		patch: connect.NewClient[shadow.Shadow, shadow.Shadow](
 			httpClient,
 			baseURL+ShadowServicePatchProcedure,
-			connect.WithSchema(shadowServicePatchMethodDescriptor),
+			connect.WithSchema(shadowServiceMethods.ByName("Patch")),
 			connect.WithClientOptions(opts...),
 		),
 		remove: connect.NewClient[shadow.RemoveRequest, shadow.Shadow](
 			httpClient,
 			baseURL+ShadowServiceRemoveProcedure,
-			connect.WithSchema(shadowServiceRemoveMethodDescriptor),
+			connect.WithSchema(shadowServiceMethods.ByName("Remove")),
 			connect.WithClientOptions(opts...),
 		),
 		streamShadow: connect.NewClient[shadow.StreamShadowRequest, shadow.Shadow](
 			httpClient,
 			baseURL+ShadowServiceStreamShadowProcedure,
-			connect.WithSchema(shadowServiceStreamShadowMethodDescriptor),
+			connect.WithSchema(shadowServiceMethods.ByName("StreamShadow")),
 			connect.WithClientOptions(opts...),
 		),
 		streamShadowSync: connect.NewClient[shadow.StreamShadowRequest, shadow.Shadow](
 			httpClient,
 			baseURL+ShadowServiceStreamShadowSyncProcedure,
-			connect.WithSchema(shadowServiceStreamShadowSyncMethodDescriptor),
+			connect.WithSchema(shadowServiceMethods.ByName("StreamShadowSync")),
+			connect.WithClientOptions(opts...),
+		),
+		publishDeviceScope: connect.NewClient[shadow.Shadow, emptypb.Empty](
+			httpClient,
+			baseURL+ShadowServicePublishDeviceScopeProcedure,
+			connect.WithSchema(shadowServiceMethods.ByName("PublishDeviceScope")),
 			connect.WithClientOptions(opts...),
 		),
 	}
@@ -126,11 +128,12 @@ func NewShadowServiceClient(httpClient connect.HTTPClient, baseURL string, opts 
 
 // shadowServiceClient implements ShadowServiceClient.
 type shadowServiceClient struct {
-	get              *connect.Client[shadow.GetRequest, shadow.GetResponse]
-	patch            *connect.Client[shadow.Shadow, shadow.Shadow]
-	remove           *connect.Client[shadow.RemoveRequest, shadow.Shadow]
-	streamShadow     *connect.Client[shadow.StreamShadowRequest, shadow.Shadow]
-	streamShadowSync *connect.Client[shadow.StreamShadowRequest, shadow.Shadow]
+	get                *connect.Client[shadow.GetRequest, shadow.GetResponse]
+	patch              *connect.Client[shadow.Shadow, shadow.Shadow]
+	remove             *connect.Client[shadow.RemoveRequest, shadow.Shadow]
+	streamShadow       *connect.Client[shadow.StreamShadowRequest, shadow.Shadow]
+	streamShadowSync   *connect.Client[shadow.StreamShadowRequest, shadow.Shadow]
+	publishDeviceScope *connect.Client[shadow.Shadow, emptypb.Empty]
 }
 
 // Get calls infinimesh.shadow.ShadowService.Get.
@@ -158,6 +161,11 @@ func (c *shadowServiceClient) StreamShadowSync(ctx context.Context, req *connect
 	return c.streamShadowSync.CallServerStream(ctx, req)
 }
 
+// PublishDeviceScope calls infinimesh.shadow.ShadowService.PublishDeviceScope.
+func (c *shadowServiceClient) PublishDeviceScope(ctx context.Context, req *connect.Request[shadow.Shadow]) (*connect.Response[emptypb.Empty], error) {
+	return c.publishDeviceScope.CallUnary(ctx, req)
+}
+
 // ShadowServiceHandler is an implementation of the infinimesh.shadow.ShadowService service.
 type ShadowServiceHandler interface {
 	Get(context.Context, *connect.Request[shadow.GetRequest]) (*connect.Response[shadow.GetResponse], error)
@@ -165,6 +173,7 @@ type ShadowServiceHandler interface {
 	Remove(context.Context, *connect.Request[shadow.RemoveRequest]) (*connect.Response[shadow.Shadow], error)
 	StreamShadow(context.Context, *connect.Request[shadow.StreamShadowRequest], *connect.ServerStream[shadow.Shadow]) error
 	StreamShadowSync(context.Context, *connect.Request[shadow.StreamShadowRequest], *connect.ServerStream[shadow.Shadow]) error
+	PublishDeviceScope(context.Context, *connect.Request[shadow.Shadow]) (*connect.Response[emptypb.Empty], error)
 }
 
 // NewShadowServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -173,34 +182,41 @@ type ShadowServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewShadowServiceHandler(svc ShadowServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	shadowServiceMethods := shadow.File_shadow_shadow_proto.Services().ByName("ShadowService").Methods()
 	shadowServiceGetHandler := connect.NewUnaryHandler(
 		ShadowServiceGetProcedure,
 		svc.Get,
-		connect.WithSchema(shadowServiceGetMethodDescriptor),
+		connect.WithSchema(shadowServiceMethods.ByName("Get")),
 		connect.WithHandlerOptions(opts...),
 	)
 	shadowServicePatchHandler := connect.NewUnaryHandler(
 		ShadowServicePatchProcedure,
 		svc.Patch,
-		connect.WithSchema(shadowServicePatchMethodDescriptor),
+		connect.WithSchema(shadowServiceMethods.ByName("Patch")),
 		connect.WithHandlerOptions(opts...),
 	)
 	shadowServiceRemoveHandler := connect.NewUnaryHandler(
 		ShadowServiceRemoveProcedure,
 		svc.Remove,
-		connect.WithSchema(shadowServiceRemoveMethodDescriptor),
+		connect.WithSchema(shadowServiceMethods.ByName("Remove")),
 		connect.WithHandlerOptions(opts...),
 	)
 	shadowServiceStreamShadowHandler := connect.NewServerStreamHandler(
 		ShadowServiceStreamShadowProcedure,
 		svc.StreamShadow,
-		connect.WithSchema(shadowServiceStreamShadowMethodDescriptor),
+		connect.WithSchema(shadowServiceMethods.ByName("StreamShadow")),
 		connect.WithHandlerOptions(opts...),
 	)
 	shadowServiceStreamShadowSyncHandler := connect.NewServerStreamHandler(
 		ShadowServiceStreamShadowSyncProcedure,
 		svc.StreamShadowSync,
-		connect.WithSchema(shadowServiceStreamShadowSyncMethodDescriptor),
+		connect.WithSchema(shadowServiceMethods.ByName("StreamShadowSync")),
+		connect.WithHandlerOptions(opts...),
+	)
+	shadowServicePublishDeviceScopeHandler := connect.NewUnaryHandler(
+		ShadowServicePublishDeviceScopeProcedure,
+		svc.PublishDeviceScope,
+		connect.WithSchema(shadowServiceMethods.ByName("PublishDeviceScope")),
 		connect.WithHandlerOptions(opts...),
 	)
 	return "/infinimesh.shadow.ShadowService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -215,6 +231,8 @@ func NewShadowServiceHandler(svc ShadowServiceHandler, opts ...connect.HandlerOp
 			shadowServiceStreamShadowHandler.ServeHTTP(w, r)
 		case ShadowServiceStreamShadowSyncProcedure:
 			shadowServiceStreamShadowSyncHandler.ServeHTTP(w, r)
+		case ShadowServicePublishDeviceScopeProcedure:
+			shadowServicePublishDeviceScopeHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -242,4 +260,8 @@ func (UnimplementedShadowServiceHandler) StreamShadow(context.Context, *connect.
 
 func (UnimplementedShadowServiceHandler) StreamShadowSync(context.Context, *connect.Request[shadow.StreamShadowRequest], *connect.ServerStream[shadow.Shadow]) error {
 	return connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.shadow.ShadowService.StreamShadowSync is not implemented"))
+}
+
+func (UnimplementedShadowServiceHandler) PublishDeviceScope(context.Context, *connect.Request[shadow.Shadow]) (*connect.Response[emptypb.Empty], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.shadow.ShadowService.PublishDeviceScope is not implemented"))
 }
