@@ -88,6 +88,7 @@ message StreamShadowRequest {
   repeated string namespaces = 5;
   string account = 6;
   repeated DeviceMeta catalog = 7;
+  repeated StateKey include = 8;
 }
 
 service ShadowService {
