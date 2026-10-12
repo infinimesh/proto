@@ -17,9 +17,9 @@
 // versions:
 // 	protoc-gen-go v1.36.12
 // 	protoc        (unknown)
-// source: handsfree/handsfree.proto
+// source: pairing/pairing.proto
 
-package handsfree
+package pairing
 
 import (
 	_ "google.golang.org/genproto/googleapis/api/annotations"
@@ -76,11 +76,11 @@ func (x Code) String() string {
 }
 
 func (Code) Descriptor() protoreflect.EnumDescriptor {
-	return file_handsfree_handsfree_proto_enumTypes[0].Descriptor()
+	return file_pairing_pairing_proto_enumTypes[0].Descriptor()
 }
 
 func (Code) Type() protoreflect.EnumType {
-	return &file_handsfree_handsfree_proto_enumTypes[0]
+	return &file_pairing_pairing_proto_enumTypes[0]
 }
 
 func (x Code) Number() protoreflect.EnumNumber {
@@ -89,7 +89,7 @@ func (x Code) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use Code.Descriptor instead.
 func (Code) EnumDescriptor() ([]byte, []int) {
-	return file_handsfree_handsfree_proto_rawDescGZIP(), []int{0}
+	return file_pairing_pairing_proto_rawDescGZIP(), []int{0}
 }
 
 type ConnectionRequest struct {
@@ -102,7 +102,7 @@ type ConnectionRequest struct {
 
 func (x *ConnectionRequest) Reset() {
 	*x = ConnectionRequest{}
-	mi := &file_handsfree_handsfree_proto_msgTypes[0]
+	mi := &file_pairing_pairing_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -114,7 +114,7 @@ func (x *ConnectionRequest) String() string {
 func (*ConnectionRequest) ProtoMessage() {}
 
 func (x *ConnectionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_handsfree_handsfree_proto_msgTypes[0]
+	mi := &file_pairing_pairing_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -127,7 +127,7 @@ func (x *ConnectionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConnectionRequest.ProtoReflect.Descriptor instead.
 func (*ConnectionRequest) Descriptor() ([]byte, []int) {
-	return file_handsfree_handsfree_proto_rawDescGZIP(), []int{0}
+	return file_pairing_pairing_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *ConnectionRequest) GetAppId() string {
@@ -146,7 +146,7 @@ func (x *ConnectionRequest) GetPayload() []string {
 
 type ControlPacket struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Code          Code                   `protobuf:"varint,1,opt,name=code,proto3,enum=infinimesh.handsfree.v1.Code" json:"code,omitempty"`
+	Code          Code                   `protobuf:"varint,1,opt,name=code,proto3,enum=infinimesh.pairing.v1.Code" json:"code,omitempty"`
 	Payload       []string               `protobuf:"bytes,2,rep,name=payload,proto3" json:"payload,omitempty"` // payload simply depends on returned code
 	AppId         *string                `protobuf:"bytes,3,opt,name=app_id,json=appId,proto3,oneof" json:"app_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -155,7 +155,7 @@ type ControlPacket struct {
 
 func (x *ControlPacket) Reset() {
 	*x = ControlPacket{}
-	mi := &file_handsfree_handsfree_proto_msgTypes[1]
+	mi := &file_pairing_pairing_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -167,7 +167,7 @@ func (x *ControlPacket) String() string {
 func (*ControlPacket) ProtoMessage() {}
 
 func (x *ControlPacket) ProtoReflect() protoreflect.Message {
-	mi := &file_handsfree_handsfree_proto_msgTypes[1]
+	mi := &file_pairing_pairing_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -180,7 +180,7 @@ func (x *ControlPacket) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ControlPacket.ProtoReflect.Descriptor instead.
 func (*ControlPacket) Descriptor() ([]byte, []int) {
-	return file_handsfree_handsfree_proto_rawDescGZIP(), []int{1}
+	return file_pairing_pairing_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *ControlPacket) GetCode() Code {
@@ -204,16 +204,16 @@ func (x *ControlPacket) GetAppId() string {
 	return ""
 }
 
-var File_handsfree_handsfree_proto protoreflect.FileDescriptor
+var File_pairing_pairing_proto protoreflect.FileDescriptor
 
-const file_handsfree_handsfree_proto_rawDesc = "" +
+const file_pairing_pairing_proto_rawDesc = "" +
 	"\n" +
-	"\x19handsfree/handsfree.proto\x12\x17infinimesh.handsfree.v1\x1a\x1cgoogle/api/annotations.proto\"D\n" +
+	"\x15pairing/pairing.proto\x12\x15infinimesh.pairing.v1\x1a\x1cgoogle/api/annotations.proto\"D\n" +
 	"\x11ConnectionRequest\x12\x15\n" +
 	"\x06app_id\x18\x01 \x01(\tR\x05appId\x12\x18\n" +
-	"\apayload\x18\x02 \x03(\tR\apayload\"\x83\x01\n" +
-	"\rControlPacket\x121\n" +
-	"\x04code\x18\x01 \x01(\x0e2\x1d.infinimesh.handsfree.v1.CodeR\x04code\x12\x18\n" +
+	"\apayload\x18\x02 \x03(\tR\apayload\"\x81\x01\n" +
+	"\rControlPacket\x12/\n" +
+	"\x04code\x18\x01 \x01(\x0e2\x1b.infinimesh.pairing.v1.CodeR\x04code\x12\x18\n" +
 	"\apayload\x18\x02 \x03(\tR\apayload\x12\x1a\n" +
 	"\x06app_id\x18\x03 \x01(\tH\x00R\x05appId\x88\x01\x01B\t\n" +
 	"\a_app_id*?\n" +
@@ -222,37 +222,37 @@ const file_handsfree_handsfree_proto_rawDesc = "" +
 	"\x04AUTH\x10\x01\x12\b\n" +
 	"\x04DATA\x10\x02\x12\v\n" +
 	"\aSUCCESS\x10\x03\x12\t\n" +
-	"\x05ERROR\x10\x042\xb3\x02\n" +
-	"\x10HandsfreeService\x12\x81\x01\n" +
-	"\x04Send\x12&.infinimesh.handsfree.v1.ControlPacket\x1a&.infinimesh.handsfree.v1.ControlPacket\")\x82\xd3\xe4\x93\x02#:\x01*Z\x0f:\x01*\"\n" +
-	"/handsfree\"\r/v1/handsfree\x12\x9a\x01\n" +
-	"\aConnect\x12*.infinimesh.handsfree.v1.ConnectionRequest\x1a&.infinimesh.handsfree.v1.ControlPacket\"9\x82\xd3\xe4\x93\x023Z\x17\x12\x15/handsfree/connection\x12\x18/v1/handsfree/connection0\x01B1Z/github.com/infinimesh/proto/handsfree;handsfreeb\x06proto3"
+	"\x05ERROR\x10\x042\xd5\x02\n" +
+	"\x0ePairingService\x12\x8f\x01\n" +
+	"\x04Send\x12$.infinimesh.pairing.v1.ControlPacket\x1a$.infinimesh.pairing.v1.ControlPacket\";\x82\xd3\xe4\x93\x025:\x01*Z\x12:\x01*\"\r/v1/handsfreeZ\x0f:\x01*\"\n" +
+	"/handsfree\"\v/v1/pairing\x12\xb0\x01\n" +
+	"\aConnect\x12(.infinimesh.pairing.v1.ConnectionRequest\x1a$.infinimesh.pairing.v1.ControlPacket\"S\x82\xd3\xe4\x93\x02MZ\x1a\x12\x18/v1/handsfree/connectionZ\x17\x12\x15/handsfree/connection\x12\x16/v1/pairing/connection0\x01B-Z+github.com/infinimesh/proto/pairing;pairingb\x06proto3"
 
 var (
-	file_handsfree_handsfree_proto_rawDescOnce sync.Once
-	file_handsfree_handsfree_proto_rawDescData []byte
+	file_pairing_pairing_proto_rawDescOnce sync.Once
+	file_pairing_pairing_proto_rawDescData []byte
 )
 
-func file_handsfree_handsfree_proto_rawDescGZIP() []byte {
-	file_handsfree_handsfree_proto_rawDescOnce.Do(func() {
-		file_handsfree_handsfree_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_handsfree_handsfree_proto_rawDesc), len(file_handsfree_handsfree_proto_rawDesc)))
+func file_pairing_pairing_proto_rawDescGZIP() []byte {
+	file_pairing_pairing_proto_rawDescOnce.Do(func() {
+		file_pairing_pairing_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_pairing_pairing_proto_rawDesc), len(file_pairing_pairing_proto_rawDesc)))
 	})
-	return file_handsfree_handsfree_proto_rawDescData
+	return file_pairing_pairing_proto_rawDescData
 }
 
-var file_handsfree_handsfree_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_handsfree_handsfree_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_handsfree_handsfree_proto_goTypes = []any{
-	(Code)(0),                 // 0: infinimesh.handsfree.v1.Code
-	(*ConnectionRequest)(nil), // 1: infinimesh.handsfree.v1.ConnectionRequest
-	(*ControlPacket)(nil),     // 2: infinimesh.handsfree.v1.ControlPacket
+var file_pairing_pairing_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_pairing_pairing_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_pairing_pairing_proto_goTypes = []any{
+	(Code)(0),                 // 0: infinimesh.pairing.v1.Code
+	(*ConnectionRequest)(nil), // 1: infinimesh.pairing.v1.ConnectionRequest
+	(*ControlPacket)(nil),     // 2: infinimesh.pairing.v1.ControlPacket
 }
-var file_handsfree_handsfree_proto_depIdxs = []int32{
-	0, // 0: infinimesh.handsfree.v1.ControlPacket.code:type_name -> infinimesh.handsfree.v1.Code
-	2, // 1: infinimesh.handsfree.v1.HandsfreeService.Send:input_type -> infinimesh.handsfree.v1.ControlPacket
-	1, // 2: infinimesh.handsfree.v1.HandsfreeService.Connect:input_type -> infinimesh.handsfree.v1.ConnectionRequest
-	2, // 3: infinimesh.handsfree.v1.HandsfreeService.Send:output_type -> infinimesh.handsfree.v1.ControlPacket
-	2, // 4: infinimesh.handsfree.v1.HandsfreeService.Connect:output_type -> infinimesh.handsfree.v1.ControlPacket
+var file_pairing_pairing_proto_depIdxs = []int32{
+	0, // 0: infinimesh.pairing.v1.ControlPacket.code:type_name -> infinimesh.pairing.v1.Code
+	2, // 1: infinimesh.pairing.v1.PairingService.Send:input_type -> infinimesh.pairing.v1.ControlPacket
+	1, // 2: infinimesh.pairing.v1.PairingService.Connect:input_type -> infinimesh.pairing.v1.ConnectionRequest
+	2, // 3: infinimesh.pairing.v1.PairingService.Send:output_type -> infinimesh.pairing.v1.ControlPacket
+	2, // 4: infinimesh.pairing.v1.PairingService.Connect:output_type -> infinimesh.pairing.v1.ControlPacket
 	3, // [3:5] is the sub-list for method output_type
 	1, // [1:3] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
@@ -260,28 +260,28 @@ var file_handsfree_handsfree_proto_depIdxs = []int32{
 	0, // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_handsfree_handsfree_proto_init() }
-func file_handsfree_handsfree_proto_init() {
-	if File_handsfree_handsfree_proto != nil {
+func init() { file_pairing_pairing_proto_init() }
+func file_pairing_pairing_proto_init() {
+	if File_pairing_pairing_proto != nil {
 		return
 	}
-	file_handsfree_handsfree_proto_msgTypes[1].OneofWrappers = []any{}
+	file_pairing_pairing_proto_msgTypes[1].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_handsfree_handsfree_proto_rawDesc), len(file_handsfree_handsfree_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_pairing_pairing_proto_rawDesc), len(file_pairing_pairing_proto_rawDesc)),
 			NumEnums:      1,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_handsfree_handsfree_proto_goTypes,
-		DependencyIndexes: file_handsfree_handsfree_proto_depIdxs,
-		EnumInfos:         file_handsfree_handsfree_proto_enumTypes,
-		MessageInfos:      file_handsfree_handsfree_proto_msgTypes,
+		GoTypes:           file_pairing_pairing_proto_goTypes,
+		DependencyIndexes: file_pairing_pairing_proto_depIdxs,
+		EnumInfos:         file_pairing_pairing_proto_enumTypes,
+		MessageInfos:      file_pairing_pairing_proto_msgTypes,
 	}.Build()
-	File_handsfree_handsfree_proto = out.File
-	file_handsfree_handsfree_proto_goTypes = nil
-	file_handsfree_handsfree_proto_depIdxs = nil
+	File_pairing_pairing_proto = out.File
+	file_pairing_pairing_proto_goTypes = nil
+	file_pairing_pairing_proto_depIdxs = nil
 }

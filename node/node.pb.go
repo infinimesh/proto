@@ -22,6 +22,7 @@
 package node
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	access "github.com/infinimesh/proto/node/access"
 	accounts "github.com/infinimesh/proto/node/accounts"
 	devices "github.com/infinimesh/proto/node/devices"
@@ -953,7 +954,7 @@ var File_node_node_proto protoreflect.FileDescriptor
 
 const file_node_node_proto_rawDesc = "" +
 	"\n" +
-	"\x0fnode/node.proto\x12\x12infinimesh.node.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1cnode/accounts/accounts.proto\x1a\x18node/access/access.proto\x1a\x1cnode/sessions/sessions.proto\x1a node/namespaces/namespaces.proto\x1a\x1anode/devices/devices.proto\x1a\x13shadow/shadow.proto\"\x9c\x02\n" +
+	"\x0fnode/node.proto\x12\x12infinimesh.node.v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1cnode/accounts/accounts.proto\x1a\x18node/access/access.proto\x1a\x1cnode/sessions/sessions.proto\x1a node/namespaces/namespaces.proto\x1a\x1anode/devices/devices.proto\x1a\x13shadow/shadow.proto\"\x9c\x02\n" +
 	"\fTokenRequest\x12<\n" +
 	"\x04auth\x18\x01 \x01(\v2(.infinimesh.node.accounts.v1.CredentialsR\x04auth\x12\x14\n" +
 	"\x03exp\x18\x02 \x01(\x03B\x02\x18\x01R\x03exp\x12\x17\n" +
@@ -1070,7 +1071,8 @@ const file_node_node_proto_rawDesc = "" +
 	"\x10StreamShadowSync\x12).infinimesh.shadow.v1.StreamShadowRequest\x1a\x1c.infinimesh.shadow.v1.Shadow0\x012\x8b\x01\n" +
 	"\x0fInternalService\x12x\n" +
 	"\x10GetLDAPProviders\x12 .infinimesh.node.v1.EmptyMessage\x1a!.infinimesh.node.v1.LDAPProviders\"\x1f\x82\xd3\xe4\x93\x02\x19Z\n" +
-	"\x12\b/i/ldapp\x12\v/v1/i/ldappB'Z%github.com/infinimesh/proto/node;nodeb\x06proto3"
+	"\x12\b/i/ldapp\x12\v/v1/i/ldappBC\x92A\x19\x12\x17\n" +
+	"\x0eInfinimesh API2\x051.0.0Z%github.com/infinimesh/proto/node;nodeb\x06proto3"
 
 var (
 	file_node_node_proto_rawDescOnce sync.Once

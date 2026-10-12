@@ -43,7 +43,7 @@ message Devices {
   string next_page_token = 2;
 }
 
-message HandsfreeCreate {
+message PairingCreate {
   string code = 1;
   repeated string payload = 2;
 }
@@ -51,7 +51,7 @@ message HandsfreeCreate {
 message CreateRequest {
   Device device = 1;
   string namespace = 2; // Namespace to put device under
-  HandsfreeCreate handsfree = 3;
+  PairingCreate pairing = 3;
 }
 
 message CreateResponse {

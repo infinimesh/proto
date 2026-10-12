@@ -258,7 +258,7 @@ func (x *Devices) GetNextPageToken() string {
 	return ""
 }
 
-type HandsfreeCreate struct {
+type PairingCreate struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
 	Payload       []string               `protobuf:"bytes,2,rep,name=payload,proto3" json:"payload,omitempty"`
@@ -266,20 +266,20 @@ type HandsfreeCreate struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *HandsfreeCreate) Reset() {
-	*x = HandsfreeCreate{}
+func (x *PairingCreate) Reset() {
+	*x = PairingCreate{}
 	mi := &file_node_devices_devices_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *HandsfreeCreate) String() string {
+func (x *PairingCreate) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*HandsfreeCreate) ProtoMessage() {}
+func (*PairingCreate) ProtoMessage() {}
 
-func (x *HandsfreeCreate) ProtoReflect() protoreflect.Message {
+func (x *PairingCreate) ProtoReflect() protoreflect.Message {
 	mi := &file_node_devices_devices_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -291,19 +291,19 @@ func (x *HandsfreeCreate) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use HandsfreeCreate.ProtoReflect.Descriptor instead.
-func (*HandsfreeCreate) Descriptor() ([]byte, []int) {
+// Deprecated: Use PairingCreate.ProtoReflect.Descriptor instead.
+func (*PairingCreate) Descriptor() ([]byte, []int) {
 	return file_node_devices_devices_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *HandsfreeCreate) GetCode() string {
+func (x *PairingCreate) GetCode() string {
 	if x != nil {
 		return x.Code
 	}
 	return ""
 }
 
-func (x *HandsfreeCreate) GetPayload() []string {
+func (x *PairingCreate) GetPayload() []string {
 	if x != nil {
 		return x.Payload
 	}
@@ -314,7 +314,7 @@ type CreateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Device        *Device                `protobuf:"bytes,1,opt,name=device,proto3" json:"device,omitempty"`
 	Namespace     string                 `protobuf:"bytes,2,opt,name=namespace,proto3" json:"namespace,omitempty"` // Namespace to put device under
-	Handsfree     *HandsfreeCreate       `protobuf:"bytes,3,opt,name=handsfree,proto3" json:"handsfree,omitempty"`
+	Pairing       *PairingCreate         `protobuf:"bytes,3,opt,name=pairing,proto3" json:"pairing,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -363,9 +363,9 @@ func (x *CreateRequest) GetNamespace() string {
 	return ""
 }
 
-func (x *CreateRequest) GetHandsfree() *HandsfreeCreate {
+func (x *CreateRequest) GetPairing() *PairingCreate {
 	if x != nil {
-		return x.Handsfree
+		return x.Pairing
 	}
 	return nil
 }
@@ -480,14 +480,14 @@ const file_node_devices_devices_proto_rawDesc = "" +
 	"\vfingerprint\x18\x03 \x01(\fR\vfingerprint\"o\n" +
 	"\aDevices\x12<\n" +
 	"\adevices\x18\x01 \x03(\v2\".infinimesh.node.devices.v1.DeviceR\adevices\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"?\n" +
-	"\x0fHandsfreeCreate\x12\x12\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"=\n" +
+	"\rPairingCreate\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\tR\x04code\x12\x18\n" +
-	"\apayload\x18\x02 \x03(\tR\apayload\"\xb4\x01\n" +
+	"\apayload\x18\x02 \x03(\tR\apayload\"\xae\x01\n" +
 	"\rCreateRequest\x12:\n" +
 	"\x06device\x18\x01 \x01(\v2\".infinimesh.node.devices.v1.DeviceR\x06device\x12\x1c\n" +
-	"\tnamespace\x18\x02 \x01(\tR\tnamespace\x12I\n" +
-	"\thandsfree\x18\x03 \x01(\v2+.infinimesh.node.devices.v1.HandsfreeCreateR\thandsfree\"L\n" +
+	"\tnamespace\x18\x02 \x01(\tR\tnamespace\x12C\n" +
+	"\apairing\x18\x03 \x01(\v2).infinimesh.node.devices.v1.PairingCreateR\apairing\"L\n" +
 	"\x0eCreateResponse\x12:\n" +
 	"\x06device\x18\x01 \x01(\v2\".infinimesh.node.devices.v1.DeviceR\x06device\";\n" +
 	"\x17GetByFingerprintRequest\x12 \n" +
@@ -510,7 +510,7 @@ var file_node_devices_devices_proto_goTypes = []any{
 	(*Device)(nil),                  // 0: infinimesh.node.devices.v1.Device
 	(*Certificate)(nil),             // 1: infinimesh.node.devices.v1.Certificate
 	(*Devices)(nil),                 // 2: infinimesh.node.devices.v1.Devices
-	(*HandsfreeCreate)(nil),         // 3: infinimesh.node.devices.v1.HandsfreeCreate
+	(*PairingCreate)(nil),           // 3: infinimesh.node.devices.v1.PairingCreate
 	(*CreateRequest)(nil),           // 4: infinimesh.node.devices.v1.CreateRequest
 	(*CreateResponse)(nil),          // 5: infinimesh.node.devices.v1.CreateResponse
 	(*GetByFingerprintRequest)(nil), // 6: infinimesh.node.devices.v1.GetByFingerprintRequest
@@ -523,7 +523,7 @@ var file_node_devices_devices_proto_depIdxs = []int32{
 	8, // 2: infinimesh.node.devices.v1.Device.config:type_name -> google.protobuf.Struct
 	0, // 3: infinimesh.node.devices.v1.Devices.devices:type_name -> infinimesh.node.devices.v1.Device
 	0, // 4: infinimesh.node.devices.v1.CreateRequest.device:type_name -> infinimesh.node.devices.v1.Device
-	3, // 5: infinimesh.node.devices.v1.CreateRequest.handsfree:type_name -> infinimesh.node.devices.v1.HandsfreeCreate
+	3, // 5: infinimesh.node.devices.v1.CreateRequest.pairing:type_name -> infinimesh.node.devices.v1.PairingCreate
 	0, // 6: infinimesh.node.devices.v1.CreateResponse.device:type_name -> infinimesh.node.devices.v1.Device
 	7, // [7:7] is the sub-list for method output_type
 	7, // [7:7] is the sub-list for method input_type

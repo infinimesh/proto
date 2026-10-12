@@ -17,9 +17,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.6.2
 // - protoc             (unknown)
-// source: handsfree/handsfree.proto
+// source: pairing/pairing.proto
 
-package handsfree
+package pairing
 
 import (
 	context "context"
@@ -34,39 +34,39 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	HandsfreeService_Send_FullMethodName    = "/infinimesh.handsfree.v1.HandsfreeService/Send"
-	HandsfreeService_Connect_FullMethodName = "/infinimesh.handsfree.v1.HandsfreeService/Connect"
+	PairingService_Send_FullMethodName    = "/infinimesh.pairing.v1.PairingService/Send"
+	PairingService_Connect_FullMethodName = "/infinimesh.pairing.v1.PairingService/Connect"
 )
 
-// HandsfreeServiceClient is the client API for HandsfreeService service.
+// PairingServiceClient is the client API for PairingService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type HandsfreeServiceClient interface {
+type PairingServiceClient interface {
 	Send(ctx context.Context, in *ControlPacket, opts ...grpc.CallOption) (*ControlPacket, error)
 	Connect(ctx context.Context, in *ConnectionRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ControlPacket], error)
 }
 
-type handsfreeServiceClient struct {
+type pairingServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewHandsfreeServiceClient(cc grpc.ClientConnInterface) HandsfreeServiceClient {
-	return &handsfreeServiceClient{cc}
+func NewPairingServiceClient(cc grpc.ClientConnInterface) PairingServiceClient {
+	return &pairingServiceClient{cc}
 }
 
-func (c *handsfreeServiceClient) Send(ctx context.Context, in *ControlPacket, opts ...grpc.CallOption) (*ControlPacket, error) {
+func (c *pairingServiceClient) Send(ctx context.Context, in *ControlPacket, opts ...grpc.CallOption) (*ControlPacket, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ControlPacket)
-	err := c.cc.Invoke(ctx, HandsfreeService_Send_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, PairingService_Send_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *handsfreeServiceClient) Connect(ctx context.Context, in *ConnectionRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ControlPacket], error) {
+func (c *pairingServiceClient) Connect(ctx context.Context, in *ConnectionRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ControlPacket], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &HandsfreeService_ServiceDesc.Streams[0], HandsfreeService_Connect_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &PairingService_ServiceDesc.Streams[0], PairingService_Connect_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -81,98 +81,98 @@ func (c *handsfreeServiceClient) Connect(ctx context.Context, in *ConnectionRequ
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type HandsfreeService_ConnectClient = grpc.ServerStreamingClient[ControlPacket]
+type PairingService_ConnectClient = grpc.ServerStreamingClient[ControlPacket]
 
-// HandsfreeServiceServer is the server API for HandsfreeService service.
-// All implementations must embed UnimplementedHandsfreeServiceServer
+// PairingServiceServer is the server API for PairingService service.
+// All implementations must embed UnimplementedPairingServiceServer
 // for forward compatibility.
-type HandsfreeServiceServer interface {
+type PairingServiceServer interface {
 	Send(context.Context, *ControlPacket) (*ControlPacket, error)
 	Connect(*ConnectionRequest, grpc.ServerStreamingServer[ControlPacket]) error
-	mustEmbedUnimplementedHandsfreeServiceServer()
+	mustEmbedUnimplementedPairingServiceServer()
 }
 
-// UnimplementedHandsfreeServiceServer must be embedded to have
+// UnimplementedPairingServiceServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedHandsfreeServiceServer struct{}
+type UnimplementedPairingServiceServer struct{}
 
-func (UnimplementedHandsfreeServiceServer) Send(context.Context, *ControlPacket) (*ControlPacket, error) {
+func (UnimplementedPairingServiceServer) Send(context.Context, *ControlPacket) (*ControlPacket, error) {
 	return nil, status.Error(codes.Unimplemented, "method Send not implemented")
 }
-func (UnimplementedHandsfreeServiceServer) Connect(*ConnectionRequest, grpc.ServerStreamingServer[ControlPacket]) error {
+func (UnimplementedPairingServiceServer) Connect(*ConnectionRequest, grpc.ServerStreamingServer[ControlPacket]) error {
 	return status.Error(codes.Unimplemented, "method Connect not implemented")
 }
-func (UnimplementedHandsfreeServiceServer) mustEmbedUnimplementedHandsfreeServiceServer() {}
-func (UnimplementedHandsfreeServiceServer) testEmbeddedByValue()                          {}
+func (UnimplementedPairingServiceServer) mustEmbedUnimplementedPairingServiceServer() {}
+func (UnimplementedPairingServiceServer) testEmbeddedByValue()                        {}
 
-// UnsafeHandsfreeServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to HandsfreeServiceServer will
+// UnsafePairingServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to PairingServiceServer will
 // result in compilation errors.
-type UnsafeHandsfreeServiceServer interface {
-	mustEmbedUnimplementedHandsfreeServiceServer()
+type UnsafePairingServiceServer interface {
+	mustEmbedUnimplementedPairingServiceServer()
 }
 
-func RegisterHandsfreeServiceServer(s grpc.ServiceRegistrar, srv HandsfreeServiceServer) {
-	// If the following call panics, it indicates UnimplementedHandsfreeServiceServer was
+func RegisterPairingServiceServer(s grpc.ServiceRegistrar, srv PairingServiceServer) {
+	// If the following call panics, it indicates UnimplementedPairingServiceServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&HandsfreeService_ServiceDesc, srv)
+	s.RegisterService(&PairingService_ServiceDesc, srv)
 }
 
-func _HandsfreeService_Send_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _PairingService_Send_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ControlPacket)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(HandsfreeServiceServer).Send(ctx, in)
+		return srv.(PairingServiceServer).Send(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: HandsfreeService_Send_FullMethodName,
+		FullMethod: PairingService_Send_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(HandsfreeServiceServer).Send(ctx, req.(*ControlPacket))
+		return srv.(PairingServiceServer).Send(ctx, req.(*ControlPacket))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _HandsfreeService_Connect_Handler(srv interface{}, stream grpc.ServerStream) error {
+func _PairingService_Connect_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(ConnectionRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(HandsfreeServiceServer).Connect(m, &grpc.GenericServerStream[ConnectionRequest, ControlPacket]{ServerStream: stream})
+	return srv.(PairingServiceServer).Connect(m, &grpc.GenericServerStream[ConnectionRequest, ControlPacket]{ServerStream: stream})
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type HandsfreeService_ConnectServer = grpc.ServerStreamingServer[ControlPacket]
+type PairingService_ConnectServer = grpc.ServerStreamingServer[ControlPacket]
 
-// HandsfreeService_ServiceDesc is the grpc.ServiceDesc for HandsfreeService service.
+// PairingService_ServiceDesc is the grpc.ServiceDesc for PairingService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var HandsfreeService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "infinimesh.handsfree.v1.HandsfreeService",
-	HandlerType: (*HandsfreeServiceServer)(nil),
+var PairingService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "infinimesh.pairing.v1.PairingService",
+	HandlerType: (*PairingServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Send",
-			Handler:    _HandsfreeService_Send_Handler,
+			Handler:    _PairingService_Send_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
 			StreamName:    "Connect",
-			Handler:       _HandsfreeService_Connect_Handler,
+			Handler:       _PairingService_Connect_Handler,
 			ServerStreams: true,
 		},
 	},
-	Metadata: "handsfree/handsfree.proto",
+	Metadata: "pairing/pairing.proto",
 }

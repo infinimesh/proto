@@ -1,0 +1,13 @@
+{
+  "name": "infinimesh-proto",
+  "version": "3.1.4-0",
+  "type": "module",
+  "description": "Generated Connect and protobuf-es API",
+  "files": [
+    "build/es"
+  ],
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@bufbuild/protobuf": "^1.6.0"
+  }
+}

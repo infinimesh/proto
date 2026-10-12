@@ -18,6 +18,14 @@ package infinimesh.node.v1;
 option go_package = "github.com/infinimesh/proto/node;node";
 
 import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Infinimesh API";
+    version: "1.0.0";
+  };
+};
 import "node/accounts/accounts.proto";
 import "node/access/access.proto";
 import "node/sessions/sessions.proto";
