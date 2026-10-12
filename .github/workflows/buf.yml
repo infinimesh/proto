@@ -1,0 +1,33 @@
+name: Buf
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    name: lint, breaking, generate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Install buf
+        run: |
+          curl -sSL -o /usr/local/bin/buf \
+            "https://github.com/bufbuild/buf/releases/download/v1.55.1/buf-$(uname -s)-$(uname -m)"
+          chmod +x /usr/local/bin/buf
+          buf --version
+
+      - name: buf lint, breaking, generate
+        run: sh scripts/buf_check.sh

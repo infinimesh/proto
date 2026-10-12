@@ -37,7 +37,7 @@ const _ = connect.IsAtLeastVersion1_13_0
 
 const (
 	// PluginsServiceName is the fully-qualified name of the PluginsService service.
-	PluginsServiceName = "infinimesh.plugins.PluginsService"
+	PluginsServiceName = "infinimesh.plugins.v1.PluginsService"
 )
 
 // These constants are the fully-qualified names of the RPCs defined in this package. They're
@@ -49,28 +49,18 @@ const (
 // period.
 const (
 	// PluginsServiceGetProcedure is the fully-qualified name of the PluginsService's Get RPC.
-	PluginsServiceGetProcedure = "/infinimesh.plugins.PluginsService/Get"
+	PluginsServiceGetProcedure = "/infinimesh.plugins.v1.PluginsService/Get"
 	// PluginsServiceListProcedure is the fully-qualified name of the PluginsService's List RPC.
-	PluginsServiceListProcedure = "/infinimesh.plugins.PluginsService/List"
+	PluginsServiceListProcedure = "/infinimesh.plugins.v1.PluginsService/List"
 	// PluginsServiceCreateProcedure is the fully-qualified name of the PluginsService's Create RPC.
-	PluginsServiceCreateProcedure = "/infinimesh.plugins.PluginsService/Create"
+	PluginsServiceCreateProcedure = "/infinimesh.plugins.v1.PluginsService/Create"
 	// PluginsServiceUpdateProcedure is the fully-qualified name of the PluginsService's Update RPC.
-	PluginsServiceUpdateProcedure = "/infinimesh.plugins.PluginsService/Update"
+	PluginsServiceUpdateProcedure = "/infinimesh.plugins.v1.PluginsService/Update"
 	// PluginsServiceDeleteProcedure is the fully-qualified name of the PluginsService's Delete RPC.
-	PluginsServiceDeleteProcedure = "/infinimesh.plugins.PluginsService/Delete"
+	PluginsServiceDeleteProcedure = "/infinimesh.plugins.v1.PluginsService/Delete"
 )
 
-// These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
-var (
-	pluginsServiceServiceDescriptor      = plugins.File_plugins_plugins_proto.Services().ByName("PluginsService")
-	pluginsServiceGetMethodDescriptor    = pluginsServiceServiceDescriptor.Methods().ByName("Get")
-	pluginsServiceListMethodDescriptor   = pluginsServiceServiceDescriptor.Methods().ByName("List")
-	pluginsServiceCreateMethodDescriptor = pluginsServiceServiceDescriptor.Methods().ByName("Create")
-	pluginsServiceUpdateMethodDescriptor = pluginsServiceServiceDescriptor.Methods().ByName("Update")
-	pluginsServiceDeleteMethodDescriptor = pluginsServiceServiceDescriptor.Methods().ByName("Delete")
-)
-
-// PluginsServiceClient is a client for the infinimesh.plugins.PluginsService service.
+// PluginsServiceClient is a client for the infinimesh.plugins.v1.PluginsService service.
 type PluginsServiceClient interface {
 	Get(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error)
 	List(context.Context, *connect.Request[plugins.ListRequest]) (*connect.Response[plugins.Plugins], error)
@@ -79,44 +69,45 @@ type PluginsServiceClient interface {
 	Delete(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error)
 }
 
-// NewPluginsServiceClient constructs a client for the infinimesh.plugins.PluginsService service. By
-// default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses,
-// and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
+// NewPluginsServiceClient constructs a client for the infinimesh.plugins.v1.PluginsService service.
+// By default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped
+// responses, and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
 // connect.WithGRPC() or connect.WithGRPCWeb() options.
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
 func NewPluginsServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) PluginsServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
+	pluginsServiceMethods := plugins.File_plugins_plugins_proto.Services().ByName("PluginsService").Methods()
 	return &pluginsServiceClient{
 		get: connect.NewClient[plugins.Plugin, plugins.Plugin](
 			httpClient,
 			baseURL+PluginsServiceGetProcedure,
-			connect.WithSchema(pluginsServiceGetMethodDescriptor),
+			connect.WithSchema(pluginsServiceMethods.ByName("Get")),
 			connect.WithClientOptions(opts...),
 		),
 		list: connect.NewClient[plugins.ListRequest, plugins.Plugins](
 			httpClient,
 			baseURL+PluginsServiceListProcedure,
-			connect.WithSchema(pluginsServiceListMethodDescriptor),
+			connect.WithSchema(pluginsServiceMethods.ByName("List")),
 			connect.WithClientOptions(opts...),
 		),
 		create: connect.NewClient[plugins.Plugin, plugins.Plugin](
 			httpClient,
 			baseURL+PluginsServiceCreateProcedure,
-			connect.WithSchema(pluginsServiceCreateMethodDescriptor),
+			connect.WithSchema(pluginsServiceMethods.ByName("Create")),
 			connect.WithClientOptions(opts...),
 		),
 		update: connect.NewClient[plugins.Plugin, plugins.Plugin](
 			httpClient,
 			baseURL+PluginsServiceUpdateProcedure,
-			connect.WithSchema(pluginsServiceUpdateMethodDescriptor),
+			connect.WithSchema(pluginsServiceMethods.ByName("Update")),
 			connect.WithClientOptions(opts...),
 		),
 		delete: connect.NewClient[plugins.Plugin, plugins.Plugin](
 			httpClient,
 			baseURL+PluginsServiceDeleteProcedure,
-			connect.WithSchema(pluginsServiceDeleteMethodDescriptor),
+			connect.WithSchema(pluginsServiceMethods.ByName("Delete")),
 			connect.WithClientOptions(opts...),
 		),
 	}
@@ -131,32 +122,32 @@ type pluginsServiceClient struct {
 	delete *connect.Client[plugins.Plugin, plugins.Plugin]
 }
 
-// Get calls infinimesh.plugins.PluginsService.Get.
+// Get calls infinimesh.plugins.v1.PluginsService.Get.
 func (c *pluginsServiceClient) Get(ctx context.Context, req *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error) {
 	return c.get.CallUnary(ctx, req)
 }
 
-// List calls infinimesh.plugins.PluginsService.List.
+// List calls infinimesh.plugins.v1.PluginsService.List.
 func (c *pluginsServiceClient) List(ctx context.Context, req *connect.Request[plugins.ListRequest]) (*connect.Response[plugins.Plugins], error) {
 	return c.list.CallUnary(ctx, req)
 }
 
-// Create calls infinimesh.plugins.PluginsService.Create.
+// Create calls infinimesh.plugins.v1.PluginsService.Create.
 func (c *pluginsServiceClient) Create(ctx context.Context, req *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error) {
 	return c.create.CallUnary(ctx, req)
 }
 
-// Update calls infinimesh.plugins.PluginsService.Update.
+// Update calls infinimesh.plugins.v1.PluginsService.Update.
 func (c *pluginsServiceClient) Update(ctx context.Context, req *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error) {
 	return c.update.CallUnary(ctx, req)
 }
 
-// Delete calls infinimesh.plugins.PluginsService.Delete.
+// Delete calls infinimesh.plugins.v1.PluginsService.Delete.
 func (c *pluginsServiceClient) Delete(ctx context.Context, req *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error) {
 	return c.delete.CallUnary(ctx, req)
 }
 
-// PluginsServiceHandler is an implementation of the infinimesh.plugins.PluginsService service.
+// PluginsServiceHandler is an implementation of the infinimesh.plugins.v1.PluginsService service.
 type PluginsServiceHandler interface {
 	Get(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error)
 	List(context.Context, *connect.Request[plugins.ListRequest]) (*connect.Response[plugins.Plugins], error)
@@ -171,37 +162,38 @@ type PluginsServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewPluginsServiceHandler(svc PluginsServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	pluginsServiceMethods := plugins.File_plugins_plugins_proto.Services().ByName("PluginsService").Methods()
 	pluginsServiceGetHandler := connect.NewUnaryHandler(
 		PluginsServiceGetProcedure,
 		svc.Get,
-		connect.WithSchema(pluginsServiceGetMethodDescriptor),
+		connect.WithSchema(pluginsServiceMethods.ByName("Get")),
 		connect.WithHandlerOptions(opts...),
 	)
 	pluginsServiceListHandler := connect.NewUnaryHandler(
 		PluginsServiceListProcedure,
 		svc.List,
-		connect.WithSchema(pluginsServiceListMethodDescriptor),
+		connect.WithSchema(pluginsServiceMethods.ByName("List")),
 		connect.WithHandlerOptions(opts...),
 	)
 	pluginsServiceCreateHandler := connect.NewUnaryHandler(
 		PluginsServiceCreateProcedure,
 		svc.Create,
-		connect.WithSchema(pluginsServiceCreateMethodDescriptor),
+		connect.WithSchema(pluginsServiceMethods.ByName("Create")),
 		connect.WithHandlerOptions(opts...),
 	)
 	pluginsServiceUpdateHandler := connect.NewUnaryHandler(
 		PluginsServiceUpdateProcedure,
 		svc.Update,
-		connect.WithSchema(pluginsServiceUpdateMethodDescriptor),
+		connect.WithSchema(pluginsServiceMethods.ByName("Update")),
 		connect.WithHandlerOptions(opts...),
 	)
 	pluginsServiceDeleteHandler := connect.NewUnaryHandler(
 		PluginsServiceDeleteProcedure,
 		svc.Delete,
-		connect.WithSchema(pluginsServiceDeleteMethodDescriptor),
+		connect.WithSchema(pluginsServiceMethods.ByName("Delete")),
 		connect.WithHandlerOptions(opts...),
 	)
-	return "/infinimesh.plugins.PluginsService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	return "/infinimesh.plugins.v1.PluginsService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case PluginsServiceGetProcedure:
 			pluginsServiceGetHandler.ServeHTTP(w, r)
@@ -223,21 +215,21 @@ func NewPluginsServiceHandler(svc PluginsServiceHandler, opts ...connect.Handler
 type UnimplementedPluginsServiceHandler struct{}
 
 func (UnimplementedPluginsServiceHandler) Get(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.plugins.PluginsService.Get is not implemented"))
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.plugins.v1.PluginsService.Get is not implemented"))
 }
 
 func (UnimplementedPluginsServiceHandler) List(context.Context, *connect.Request[plugins.ListRequest]) (*connect.Response[plugins.Plugins], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.plugins.PluginsService.List is not implemented"))
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.plugins.v1.PluginsService.List is not implemented"))
 }
 
 func (UnimplementedPluginsServiceHandler) Create(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.plugins.PluginsService.Create is not implemented"))
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.plugins.v1.PluginsService.Create is not implemented"))
 }
 
 func (UnimplementedPluginsServiceHandler) Update(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.plugins.PluginsService.Update is not implemented"))
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.plugins.v1.PluginsService.Update is not implemented"))
 }
 
 func (UnimplementedPluginsServiceHandler) Delete(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.plugins.PluginsService.Delete is not implemented"))
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.plugins.v1.PluginsService.Delete is not implemented"))
 }

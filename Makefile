@@ -1,4 +1,4 @@
-.PHONY: fmt fmt-check race test-fuzz code-ql code-ql-summary code-ql-gate commit-check
+.PHONY: fmt fmt-check race test-fuzz code-ql code-ql-summary code-ql-gate commit-check generate buf-check
 
 fmt: ## Format Go files that gofmt would change
 	@unformatted=$$(find . -name '*.go' -not -path './vendor/*' -not -path '*/node_modules/*' -not -path './.tmp/*' -print | xargs gofmt -l); \
@@ -45,3 +45,9 @@ code-ql-gate: code-ql ## Fail if CodeQL reports any error findings
 
 commit-check: fmt race test-fuzz code-ql-gate ## Format, race, fuzz, and CodeQL
 	@echo "commit-check passed."
+
+generate: ## Regenerate Go, gRPC, Connect, gateway, and OpenAPI from the proto files
+	sh scripts/generate.sh
+
+buf-check: ## Lint, check breaking changes, and fail if generated files drift
+	sh scripts/buf_check.sh

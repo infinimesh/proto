@@ -15,7 +15,8 @@ limitations under the License.
 */
 
 syntax = "proto3";
-package infinimesh.handsfree;
+package infinimesh.handsfree.v1;
+option go_package = "github.com/infinimesh/proto/handsfree;handsfree";
 import "google/api/annotations.proto";
 
 message ConnectionRequest {
@@ -38,15 +39,22 @@ message ControlPacket {
 }
 
 service HandsfreeService {
-    rpc Send(infinimesh.handsfree.ControlPacket) returns (infinimesh.handsfree.ControlPacket) {
+    rpc Send(infinimesh.handsfree.v1.ControlPacket) returns (infinimesh.handsfree.v1.ControlPacket) {
         option (google.api.http) = {
-            post: "/handsfree"
-            body: "*"
-        };
+      post: "/v1/handsfree"
+      body: "*"
+      additional_bindings {
+        post: "/handsfree"
+        body: "*"
+      }
+    };
     }
-    rpc Connect(infinimesh.handsfree.ConnectionRequest) returns (stream infinimesh.handsfree.ControlPacket) {
+    rpc Connect(infinimesh.handsfree.v1.ConnectionRequest) returns (stream infinimesh.handsfree.v1.ControlPacket) {
         option (google.api.http) = {
-            get: "/handsfree/connection"
-        };
+      get: "/v1/handsfree/connection"
+      additional_bindings {
+        get: "/handsfree/connection"
+      }
+    };
     }
 }

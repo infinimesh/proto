@@ -37,7 +37,7 @@ const _ = connect.IsAtLeastVersion1_13_0
 
 const (
 	// HandsfreeServiceName is the fully-qualified name of the HandsfreeService service.
-	HandsfreeServiceName = "infinimesh.handsfree.HandsfreeService"
+	HandsfreeServiceName = "infinimesh.handsfree.v1.HandsfreeService"
 )
 
 // These constants are the fully-qualified names of the RPCs defined in this package. They're
@@ -49,26 +49,19 @@ const (
 // period.
 const (
 	// HandsfreeServiceSendProcedure is the fully-qualified name of the HandsfreeService's Send RPC.
-	HandsfreeServiceSendProcedure = "/infinimesh.handsfree.HandsfreeService/Send"
+	HandsfreeServiceSendProcedure = "/infinimesh.handsfree.v1.HandsfreeService/Send"
 	// HandsfreeServiceConnectProcedure is the fully-qualified name of the HandsfreeService's Connect
 	// RPC.
-	HandsfreeServiceConnectProcedure = "/infinimesh.handsfree.HandsfreeService/Connect"
+	HandsfreeServiceConnectProcedure = "/infinimesh.handsfree.v1.HandsfreeService/Connect"
 )
 
-// These variables are the protoreflect.Descriptor objects for the RPCs defined in this package.
-var (
-	handsfreeServiceServiceDescriptor       = handsfree.File_handsfree_handsfree_proto.Services().ByName("HandsfreeService")
-	handsfreeServiceSendMethodDescriptor    = handsfreeServiceServiceDescriptor.Methods().ByName("Send")
-	handsfreeServiceConnectMethodDescriptor = handsfreeServiceServiceDescriptor.Methods().ByName("Connect")
-)
-
-// HandsfreeServiceClient is a client for the infinimesh.handsfree.HandsfreeService service.
+// HandsfreeServiceClient is a client for the infinimesh.handsfree.v1.HandsfreeService service.
 type HandsfreeServiceClient interface {
 	Send(context.Context, *connect.Request[handsfree.ControlPacket]) (*connect.Response[handsfree.ControlPacket], error)
 	Connect(context.Context, *connect.Request[handsfree.ConnectionRequest]) (*connect.ServerStreamForClient[handsfree.ControlPacket], error)
 }
 
-// NewHandsfreeServiceClient constructs a client for the infinimesh.handsfree.HandsfreeService
+// NewHandsfreeServiceClient constructs a client for the infinimesh.handsfree.v1.HandsfreeService
 // service. By default, it uses the Connect protocol with the binary Protobuf Codec, asks for
 // gzipped responses, and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply
 // the connect.WithGRPC() or connect.WithGRPCWeb() options.
@@ -77,17 +70,18 @@ type HandsfreeServiceClient interface {
 // http://api.acme.com or https://acme.com/grpc).
 func NewHandsfreeServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) HandsfreeServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
+	handsfreeServiceMethods := handsfree.File_handsfree_handsfree_proto.Services().ByName("HandsfreeService").Methods()
 	return &handsfreeServiceClient{
 		send: connect.NewClient[handsfree.ControlPacket, handsfree.ControlPacket](
 			httpClient,
 			baseURL+HandsfreeServiceSendProcedure,
-			connect.WithSchema(handsfreeServiceSendMethodDescriptor),
+			connect.WithSchema(handsfreeServiceMethods.ByName("Send")),
 			connect.WithClientOptions(opts...),
 		),
 		connect: connect.NewClient[handsfree.ConnectionRequest, handsfree.ControlPacket](
 			httpClient,
 			baseURL+HandsfreeServiceConnectProcedure,
-			connect.WithSchema(handsfreeServiceConnectMethodDescriptor),
+			connect.WithSchema(handsfreeServiceMethods.ByName("Connect")),
 			connect.WithClientOptions(opts...),
 		),
 	}
@@ -99,17 +93,17 @@ type handsfreeServiceClient struct {
 	connect *connect.Client[handsfree.ConnectionRequest, handsfree.ControlPacket]
 }
 
-// Send calls infinimesh.handsfree.HandsfreeService.Send.
+// Send calls infinimesh.handsfree.v1.HandsfreeService.Send.
 func (c *handsfreeServiceClient) Send(ctx context.Context, req *connect.Request[handsfree.ControlPacket]) (*connect.Response[handsfree.ControlPacket], error) {
 	return c.send.CallUnary(ctx, req)
 }
 
-// Connect calls infinimesh.handsfree.HandsfreeService.Connect.
+// Connect calls infinimesh.handsfree.v1.HandsfreeService.Connect.
 func (c *handsfreeServiceClient) Connect(ctx context.Context, req *connect.Request[handsfree.ConnectionRequest]) (*connect.ServerStreamForClient[handsfree.ControlPacket], error) {
 	return c.connect.CallServerStream(ctx, req)
 }
 
-// HandsfreeServiceHandler is an implementation of the infinimesh.handsfree.HandsfreeService
+// HandsfreeServiceHandler is an implementation of the infinimesh.handsfree.v1.HandsfreeService
 // service.
 type HandsfreeServiceHandler interface {
 	Send(context.Context, *connect.Request[handsfree.ControlPacket]) (*connect.Response[handsfree.ControlPacket], error)
@@ -122,19 +116,20 @@ type HandsfreeServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewHandsfreeServiceHandler(svc HandsfreeServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	handsfreeServiceMethods := handsfree.File_handsfree_handsfree_proto.Services().ByName("HandsfreeService").Methods()
 	handsfreeServiceSendHandler := connect.NewUnaryHandler(
 		HandsfreeServiceSendProcedure,
 		svc.Send,
-		connect.WithSchema(handsfreeServiceSendMethodDescriptor),
+		connect.WithSchema(handsfreeServiceMethods.ByName("Send")),
 		connect.WithHandlerOptions(opts...),
 	)
 	handsfreeServiceConnectHandler := connect.NewServerStreamHandler(
 		HandsfreeServiceConnectProcedure,
 		svc.Connect,
-		connect.WithSchema(handsfreeServiceConnectMethodDescriptor),
+		connect.WithSchema(handsfreeServiceMethods.ByName("Connect")),
 		connect.WithHandlerOptions(opts...),
 	)
-	return "/infinimesh.handsfree.HandsfreeService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	return "/infinimesh.handsfree.v1.HandsfreeService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case HandsfreeServiceSendProcedure:
 			handsfreeServiceSendHandler.ServeHTTP(w, r)
@@ -150,9 +145,9 @@ func NewHandsfreeServiceHandler(svc HandsfreeServiceHandler, opts ...connect.Han
 type UnimplementedHandsfreeServiceHandler struct{}
 
 func (UnimplementedHandsfreeServiceHandler) Send(context.Context, *connect.Request[handsfree.ControlPacket]) (*connect.Response[handsfree.ControlPacket], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.handsfree.HandsfreeService.Send is not implemented"))
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.handsfree.v1.HandsfreeService.Send is not implemented"))
 }
 
 func (UnimplementedHandsfreeServiceHandler) Connect(context.Context, *connect.Request[handsfree.ConnectionRequest], *connect.ServerStream[handsfree.ControlPacket]) error {
-	return connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.handsfree.HandsfreeService.Connect is not implemented"))
+	return connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.handsfree.v1.HandsfreeService.Connect is not implemented"))
 }

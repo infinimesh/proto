@@ -14,7 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 syntax = "proto3";
-package infinimesh.node.namespaces;
+package infinimesh.node.namespaces.v1;
+option go_package = "github.com/infinimesh/proto/node/namespaces;namespaces";
 
 import "node/access/access.proto";
 import "google/protobuf/struct.proto";
@@ -22,11 +23,12 @@ import "google/protobuf/struct.proto";
 message Namespace {
   string uuid = 1;
   string title = 2;
-  optional infinimesh.node.access.Access access = 3;
+  optional infinimesh.node.access.v1.Access access = 3;
   optional string plugin = 4;
   google.protobuf.Struct config = 5;
 }
 
 message Namespaces {
   repeated Namespace namespaces = 1;
+  string next_page_token = 2;
 }

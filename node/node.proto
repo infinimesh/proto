@@ -14,7 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 syntax = "proto3";
-package infinimesh.node;
+package infinimesh.node.v1;
+option go_package = "github.com/infinimesh/proto/node;node";
 
 import "google/api/annotations.proto";
 import "node/accounts/accounts.proto";
@@ -22,11 +23,13 @@ import "node/access/access.proto";
 import "node/sessions/sessions.proto";
 
 message TokenRequest {
-  infinimesh.node.accounts.Credentials auth = 1;
-  int64 exp = 2;
+  infinimesh.node.accounts.v1.Credentials auth = 1;
+  int64 exp = 2 [deprecated = true];
   optional string uuid = 3;
-  optional bool inf = 4;
+  optional bool inf = 4 [deprecated = true];
   optional string client = 5;
+  int64 expires_at = 6;
+  optional bool infinite = 7;
 }
 
 message TokenResponse {
@@ -35,7 +38,7 @@ message TokenResponse {
 
 message SetCredentialsRequest {
   string uuid = 1;
-  infinimesh.node.accounts.Credentials credentials = 2;
+  infinimesh.node.accounts.v1.Credentials credentials = 2;
 }
 
 message GetCredentialsRequest {
@@ -43,7 +46,7 @@ message GetCredentialsRequest {
 }
 
 message GetCredentialsResponse {
-  repeated infinimesh.node.accounts.Credentials credentials = 1;
+  repeated infinimesh.node.accounts.v1.Credentials credentials = 1;
 }
 
 message DeleteCredentialsRequest {
@@ -55,71 +58,114 @@ message SetCredentialsResponse {}
 message DeleteResponse {}
 message EmptyMessage {}
 
+message ListRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+}
+
 service AccountsService {
   rpc Token(TokenRequest) returns (TokenResponse) {
     option (google.api.http) = {
-      post: "/token"
+      post: "/v1/token"
       body: "*"
+      additional_bindings {
+        post: "/token"
+        body: "*"
+      }
     };
   };
 
-  rpc Get(infinimesh.node.accounts.Account) returns (infinimesh.node.accounts.Account) {
+  rpc Get(infinimesh.node.accounts.v1.Account) returns (infinimesh.node.accounts.v1.Account) {
     option (google.api.http) = {
-      get: "/accounts/{uuid}"
+      get: "/v1/accounts/{uuid}"
+      additional_bindings {
+        get: "/accounts/{uuid}"
+      }
     };
   };
-  rpc List(EmptyMessage) returns (infinimesh.node.accounts.Accounts) {
+  rpc List(ListRequest) returns (infinimesh.node.accounts.v1.Accounts) {
     option (google.api.http) = {
-      get: "/accounts"
+      get: "/v1/accounts"
+      additional_bindings {
+        get: "/accounts"
+      }
     };
   };
 
-  rpc Create(infinimesh.node.accounts.CreateRequest) returns (infinimesh.node.accounts.CreateResponse) {
+  rpc Create(infinimesh.node.accounts.v1.CreateRequest) returns (infinimesh.node.accounts.v1.CreateResponse) {
     option (google.api.http) = {
-      put: "/accounts"
+      post: "/v1/accounts"
       body: "*"
+      additional_bindings {
+        put: "/accounts"
+        body: "*"
+      }
     };
   };
-  rpc Update(infinimesh.node.accounts.Account) returns (infinimesh.node.accounts.Account) {
+  rpc Update(infinimesh.node.accounts.v1.Account) returns (infinimesh.node.accounts.v1.Account) {
     option (google.api.http) = {
-      patch: "/accounts/{uuid}"
+      patch: "/v1/accounts/{uuid}"
       body: "*"
+      additional_bindings {
+        patch: "/accounts/{uuid}"
+        body: "*"
+      }
     };
   };
-  rpc Toggle(infinimesh.node.accounts.Account) returns (infinimesh.node.accounts.Account) {
+  rpc Toggle(infinimesh.node.accounts.v1.Account) returns (infinimesh.node.accounts.v1.Account) {
     option (google.api.http) = {
-      post: "/accounts/{uuid}/toggle"
+      post: "/v1/accounts/{uuid}/toggle"
       body: "*"
+      additional_bindings {
+        post: "/accounts/{uuid}/toggle"
+        body: "*"
+      }
     };
   };  
 
-  rpc Delete(infinimesh.node.accounts.Account) returns (DeleteResponse) {
+  rpc Delete(infinimesh.node.accounts.v1.Account) returns (DeleteResponse) {
     option (google.api.http) = {
-      delete: "/accounts/{uuid}"
+      delete: "/v1/accounts/{uuid}"
+      additional_bindings {
+        delete: "/accounts/{uuid}"
+      }
     };
   };
-  rpc Deletables(infinimesh.node.accounts.Account) returns (infinimesh.node.access.Nodes) {
+  rpc Deletables(infinimesh.node.accounts.v1.Account) returns (infinimesh.node.access.v1.Nodes) {
     option (google.api.http) = {
-      get: "/accounts/{uuid}/deletables"
+      get: "/v1/accounts/{uuid}/deletables"
+      additional_bindings {
+        get: "/accounts/{uuid}/deletables"
+      }
     };
   };
 
   rpc SetCredentials(SetCredentialsRequest) returns (SetCredentialsResponse) {
     option (google.api.http) = {
-      post: "/accounts/{uuid}/credentials"
+      post: "/v1/accounts/{uuid}/credentials"
       body: "*"
+      additional_bindings {
+        post: "/accounts/{uuid}/credentials"
+        body: "*"
+      }
     };
   };
 
   rpc GetCredentials(GetCredentialsRequest) returns (GetCredentialsResponse) {
     option (google.api.http) = {
-      get: "/accounts/{uuid}/credentials"
+      get: "/v1/accounts/{uuid}/credentials"
+      additional_bindings {
+        get: "/accounts/{uuid}/credentials"
+      }
     };
   };
 
   rpc DeleteCredentials(DeleteCredentialsRequest) returns (DeleteResponse) {
     option (google.api.http) = {
-      delete: "/accounts/{uuid}/credentials/{type}"
+      delete: "/v1/accounts/{uuid}/credentials/{type}"
+      additional_bindings {
+        delete: "/accounts/{uuid}/credentials/{type}"
+      }
     };
   };
 }
@@ -129,55 +175,82 @@ import "node/namespaces/namespaces.proto";
 message JoinRequest {
   string namespace = 1;
   string account = 2;
-  infinimesh.node.access.Level access = 3;
+  infinimesh.node.access.v1.Level access = 3;
 }
 
 service NamespacesService {
-  rpc Get(infinimesh.node.namespaces.Namespace) returns (infinimesh.node.namespaces.Namespace) {
+  rpc Get(infinimesh.node.namespaces.v1.Namespace) returns (infinimesh.node.namespaces.v1.Namespace) {
     option (google.api.http) = {
-      get: "/namespaces/{uuid}"
+      get: "/v1/namespaces/{uuid}"
+      additional_bindings {
+        get: "/namespaces/{uuid}"
+      }
     };
   };
-  rpc List(EmptyMessage) returns (infinimesh.node.namespaces.Namespaces) {
+  rpc List(ListRequest) returns (infinimesh.node.namespaces.v1.Namespaces) {
     option (google.api.http) = {
-      get: "/namespaces"
+      get: "/v1/namespaces"
+      additional_bindings {
+        get: "/namespaces"
+      }
     };
   };
 
-  rpc Create(infinimesh.node.namespaces.Namespace) returns (infinimesh.node.namespaces.Namespace) {
+  rpc Create(infinimesh.node.namespaces.v1.Namespace) returns (infinimesh.node.namespaces.v1.Namespace) {
     option (google.api.http) = {
-      put: "/namespaces"
+      post: "/v1/namespaces"
       body: "*"
+      additional_bindings {
+        put: "/namespaces"
+        body: "*"
+      }
     };
   };
-  rpc Update(infinimesh.node.namespaces.Namespace) returns (infinimesh.node.namespaces.Namespace) {
+  rpc Update(infinimesh.node.namespaces.v1.Namespace) returns (infinimesh.node.namespaces.v1.Namespace) {
     option (google.api.http) = {
-      patch: "/namespaces/{uuid}"
+      patch: "/v1/namespaces/{uuid}"
       body: "*"
+      additional_bindings {
+        patch: "/namespaces/{uuid}"
+        body: "*"
+      }
     };
   };
-  rpc Delete(infinimesh.node.namespaces.Namespace) returns (DeleteResponse) {
+  rpc Delete(infinimesh.node.namespaces.v1.Namespace) returns (DeleteResponse) {
     option (google.api.http) = {
-      delete: "/namespaces/{uuid}"
+      delete: "/v1/namespaces/{uuid}"
+      additional_bindings {
+        delete: "/namespaces/{uuid}"
+      }
     };
   };
-  rpc Deletables(infinimesh.node.namespaces.Namespace) returns (infinimesh.node.access.Nodes) {
+  rpc Deletables(infinimesh.node.namespaces.v1.Namespace) returns (infinimesh.node.access.v1.Nodes) {
     option (google.api.http) = {
-      get: "/namespaces/{uuid}/deletables"
+      get: "/v1/namespaces/{uuid}/deletables"
+      additional_bindings {
+        get: "/namespaces/{uuid}/deletables"
+      }
     };
   };
 
   // Accounts having access to this namespace
-  rpc Joins(infinimesh.node.namespaces.Namespace) returns (infinimesh.node.accounts.Accounts) {
+  rpc Joins(infinimesh.node.namespaces.v1.Namespace) returns (infinimesh.node.accounts.v1.Accounts) {
     option (google.api.http) = {
-      get: "/namespaces/{uuid}/joins"
+      get: "/v1/namespaces/{uuid}/joins"
+      additional_bindings {
+        get: "/namespaces/{uuid}/joins"
+      }
     };
   }
   // Sets Access to this namespace for the given account(deletes if level is set to NONE(0))
-  rpc Join(JoinRequest) returns (infinimesh.node.accounts.Accounts) {
+  rpc Join(JoinRequest) returns (infinimesh.node.accounts.v1.Accounts) {
     option (google.api.http) = {
-      post: "/namespaces/{namespace}/join"
+      post: "/v1/namespaces/{namespace}/join"
       body: "*"
+      additional_bindings {
+        post: "/namespaces/{namespace}/join"
+        body: "*"
+      }
     };
   }
 }
@@ -185,11 +258,17 @@ service NamespacesService {
 import "node/devices/devices.proto";
 
 message DevicesTokenRequest {
-  map<string, infinimesh.node.access.Level> devices = 1;
-  int64 exp = 2;
+  map<string, infinimesh.node.access.v1.Level> devices = 1;
+  int64 exp = 2 [deprecated = true];
   bool post = 3;
   string namespace = 4;
   bool stream = 5;
+  int64 expires_at = 6;
+}
+
+message RevokeDeviceTokenRequest {
+  string id = 1;
+  string token = 2;
 }
 
 message MoveRequest {
@@ -199,84 +278,134 @@ message MoveRequest {
 
 message QueryRequest {
   string namespace = 1;
+  int32 page_size = 2;
+  string page_token = 3;
 }
 
 message JoinGeneralRequest {
   string node = 1;
   string join = 2;
-  infinimesh.node.access.Level access = 3;
+  infinimesh.node.access.v1.Level access = 3;
 }
 
 service DevicesService {
-  rpc Get(infinimesh.node.devices.Device) returns (infinimesh.node.devices.Device) {
+  rpc Get(infinimesh.node.devices.v1.Device) returns (infinimesh.node.devices.v1.Device) {
     option (google.api.http) = {
-      get: "/devices/{uuid}"
+      get: "/v1/devices/{uuid}"
+      additional_bindings {
+        get: "/devices/{uuid}"
+      }
     };
   };
-  rpc List(QueryRequest) returns (infinimesh.node.devices.Devices) {
+  rpc List(QueryRequest) returns (infinimesh.node.devices.v1.Devices) {
     option (google.api.http) = {
-      get: "/devices"
-    };
-  };
-
-  rpc Create(infinimesh.node.devices.CreateRequest) returns (infinimesh.node.devices.CreateResponse) {
-    option (google.api.http) = {
-      put: "/devices"
-      body: "*"
-    };
-  };
-  rpc Update(infinimesh.node.devices.Device) returns (infinimesh.node.devices.Device) {
-    option (google.api.http) = {
-      patch: "/devices/{uuid}"
-      body: "*"
-    };
-  };
-  rpc Delete(infinimesh.node.devices.Device) returns (DeleteResponse) {
-    option (google.api.http) = {
-      delete: "/devices/{uuid}"
+      get: "/v1/devices"
+      additional_bindings {
+        get: "/devices"
+      }
     };
   };
 
-  rpc Toggle(infinimesh.node.devices.Device) returns (infinimesh.node.devices.Device) {
+  rpc Create(infinimesh.node.devices.v1.CreateRequest) returns (infinimesh.node.devices.v1.CreateResponse) {
     option (google.api.http) = {
-      post: "/devices/{uuid}/toggle"
+      post: "/v1/devices"
       body: "*"
+      additional_bindings {
+        put: "/devices"
+        body: "*"
+      }
     };
   };
-  rpc ToggleBasic(infinimesh.node.devices.Device) returns (infinimesh.node.devices.Device) {
+  rpc Update(infinimesh.node.devices.v1.Device) returns (infinimesh.node.devices.v1.Device) {
     option (google.api.http) = {
-      post: "/devices/{uuid}/toggle/basic"
+      patch: "/v1/devices/{uuid}"
       body: "*"
+      additional_bindings {
+        patch: "/devices/{uuid}"
+        body: "*"
+      }
+    };
+  };
+  rpc Delete(infinimesh.node.devices.v1.Device) returns (DeleteResponse) {
+    option (google.api.http) = {
+      delete: "/v1/devices/{uuid}"
+      additional_bindings {
+        delete: "/devices/{uuid}"
+      }
+    };
+  };
+
+  rpc Toggle(infinimesh.node.devices.v1.Device) returns (infinimesh.node.devices.v1.Device) {
+    option (google.api.http) = {
+      post: "/v1/devices/{uuid}/toggle"
+      body: "*"
+      additional_bindings {
+        post: "/devices/{uuid}/toggle"
+        body: "*"
+      }
+    };
+  };
+  rpc ToggleBasic(infinimesh.node.devices.v1.Device) returns (infinimesh.node.devices.v1.Device) {
+    option (google.api.http) = {
+      post: "/v1/devices/{uuid}/toggle/basic"
+      body: "*"
+      additional_bindings {
+        post: "/devices/{uuid}/toggle/basic"
+        body: "*"
+      }
     };
   };
 
   rpc MakeDevicesToken(DevicesTokenRequest) returns (TokenResponse) {
     option (google.api.http) = {
-      post: "/devices/token"
+      post: "/v1/devices/token"
       body: "*"
+      additional_bindings {
+        post: "/devices/token"
+        body: "*"
+      }
     };
   };
 
-  rpc GetByToken(infinimesh.node.devices.Device) returns (infinimesh.node.devices.Device);
-  rpc GetByFingerprint(infinimesh.node.devices.GetByFingerprintRequest) returns (infinimesh.node.devices.Device);
+  rpc GetByToken(infinimesh.node.devices.v1.Device) returns (infinimesh.node.devices.v1.Device);
+  rpc GetByFingerprint(infinimesh.node.devices.v1.GetByFingerprintRequest) returns (infinimesh.node.devices.v1.Device);
+  rpc RevokeDevicesToken(RevokeDeviceTokenRequest) returns (DeleteResponse) {
+    option (google.api.http) = {
+      post: "/v1/devices/token/revoke"
+      body: "*"
+      additional_bindings {
+        post: "/devices/token/revoke"
+        body: "*"
+      }
+    };
+  };
 }
 
 service SessionsService {
-  rpc Get(EmptyMessage) returns (infinimesh.node.sessions.Sessions) {
+  rpc Get(ListRequest) returns (infinimesh.node.sessions.v1.Sessions) {
     option (google.api.http) = {
-      get: "/sessions"
+      get: "/v1/sessions"
+      additional_bindings {
+        get: "/sessions"
+      }
     };
   };
 
-  rpc GetActivity(EmptyMessage) returns (infinimesh.node.sessions.Activity) {
+  rpc GetActivity(EmptyMessage) returns (infinimesh.node.sessions.v1.Activity) {
     option (google.api.http) = {
-      get: "/sessions/activity"
+      get: "/v1/sessions/activity"
+      additional_bindings {
+        get: "/sessions/activity"
+      }
     };
   };
 
-  rpc Revoke(infinimesh.node.sessions.Session) returns (DeleteResponse) {
+  rpc Revoke(infinimesh.node.sessions.v1.Session) returns (DeleteResponse) {
     option (google.api.http) = {
-      delete: "/sessions/{id}"
+      delete: "/v1/sessions/{id}"
+      additional_bindings {
+        delete: "/sessions/{id}"
+      }
     };
   };
 }
@@ -284,30 +413,44 @@ service SessionsService {
 import "shadow/shadow.proto";
 
 service ShadowService {
-  rpc Get(infinimesh.shadow.GetRequest) returns (infinimesh.shadow.GetResponse) {
+  rpc Get(infinimesh.shadow.v1.GetRequest) returns (infinimesh.shadow.v1.GetResponse) {
     option (google.api.http) = {
-      get: "/devices/states"
+      get: "/v1/devices/{device}/state"
+      additional_bindings {
+        get: "/devices/states"
+      }
     };
   };
-  rpc Patch(infinimesh.shadow.Shadow) returns (infinimesh.shadow.Shadow) {
+  rpc Patch(infinimesh.shadow.v1.Shadow) returns (infinimesh.shadow.v1.Shadow) {
     option (google.api.http) = {
-      post: "/devices/states"
+      post: "/v1/devices/{device}/state"
       body: "*"
+      additional_bindings {
+        post: "/devices/states"
+        body: "*"
+      }
     };
   };
-  rpc Remove(infinimesh.shadow.RemoveRequest) returns (infinimesh.shadow.Shadow) {
+  rpc Remove(infinimesh.shadow.v1.RemoveRequest) returns (infinimesh.shadow.v1.Shadow) {
     option (google.api.http) = {
-      post: "/devices/states/remove"
+      post: "/v1/devices/{device}/state:remove"
       body: "*"
+      additional_bindings {
+        post: "/devices/states/remove"
+        body: "*"
+      }
     };
   };
-  rpc StreamShadow(infinimesh.shadow.StreamShadowRequest) returns (stream infinimesh.shadow.Shadow) {
+  rpc StreamShadow(infinimesh.shadow.v1.StreamShadowRequest) returns (stream infinimesh.shadow.v1.Shadow) {
     option (google.api.http) = {
-      get: "/devices/states/stream"
+      get: "/v1/devices/states/stream"
+      additional_bindings {
+        get: "/devices/states/stream"
+      }
     };
   }
 
-  rpc StreamShadowSync(infinimesh.shadow.StreamShadowRequest) returns (stream infinimesh.shadow.Shadow);
+  rpc StreamShadowSync(infinimesh.shadow.v1.StreamShadowRequest) returns (stream infinimesh.shadow.v1.Shadow);
 }
 
 message LDAPProviders {
@@ -317,7 +460,10 @@ message LDAPProviders {
 service InternalService { // not revenue
   rpc GetLDAPProviders(EmptyMessage) returns (LDAPProviders) {
     option (google.api.http) = {
-      get: "/i/ldapp"
+      get: "/v1/i/ldapp"
+      additional_bindings {
+        get: "/i/ldapp"
+      }
     };
   }
 }

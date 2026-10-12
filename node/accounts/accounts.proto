@@ -14,7 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 syntax = "proto3";
-package infinimesh.node.accounts;
+package infinimesh.node.accounts.v1;
+option go_package = "github.com/infinimesh/proto/node/accounts;accounts";
 
 import "node/access/access.proto";
 
@@ -28,7 +29,7 @@ message Account {
   string title = 2;
   bool enabled = 3;
   string default_namespace = 4;
-  optional infinimesh.node.access.Access access = 5;
+  optional infinimesh.node.access.v1.Access access = 5;
 }
 
 message CreateRequest {
@@ -44,4 +45,5 @@ message CreateResponse {
 
 message Accounts {
   repeated Account accounts = 1;
+  string next_page_token = 2;
 }
