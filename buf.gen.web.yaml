@@ -1,0 +1,8 @@
+version: v1
+plugins:
+  - plugin: buf.build/bufbuild/es:v1.6.0
+    out: build/es
+    opt: target=js+dts
+  - plugin: buf.build/connectrpc/es:v1.3.0
+    out: build/es
+    opt: target=js+dts

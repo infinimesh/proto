@@ -10,3 +10,5 @@ go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@v2.31.
 
 export PATH="$(go env GOPATH)/bin:${PATH}"
 buf generate
+buf generate --template buf.gen.web.yaml
+buf generate --template buf.gen.python.yaml

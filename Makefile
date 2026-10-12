@@ -46,7 +46,7 @@ code-ql-gate: code-ql ## Fail if CodeQL reports any error findings
 commit-check: fmt race test-fuzz code-ql-gate ## Format, race, fuzz, and CodeQL
 	@echo "commit-check passed."
 
-generate: ## Regenerate Go, gRPC, Connect, gateway, and OpenAPI from the proto files
+generate: ## Regenerate Go, gRPC, Connect, gateway, OpenAPI, TypeScript, and Python from the proto files
 	sh scripts/generate.sh
 
 buf-check: ## Lint, check breaking changes, and fail if generated files drift
