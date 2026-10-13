@@ -96,6 +96,8 @@ message Alarms {
 message ListAlarmsRequest {
   string namespace = 1;
   string device = 2;
+  // RAISED is the default and returns raised and acknowledged alarms.
+  // ACKED returns acknowledged alarms. CLEARED returns cleared alarms.
   AlarmState state = 3;
   // When true, state is ignored and every alarm is returned.
   bool any_state = 4;

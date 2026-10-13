@@ -48,6 +48,9 @@ export const Plugin = proto3.makeMessageType(
     { no: 7, name: "access", kind: "message", T: Access, opt: true },
     { no: 8, name: "kind", kind: "enum", T: proto3.getEnumType(PluginKind) },
     { no: 9, name: "embedded_conf", kind: "message", T: EmbededPluginConf, opt: true },
+    { no: 10, name: "provider", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 11, name: "token_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 12, name: "token", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 

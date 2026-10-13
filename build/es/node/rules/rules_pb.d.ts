@@ -414,6 +414,9 @@ export declare class ListAlarmsRequest extends Message<ListAlarmsRequest> {
   device: string;
 
   /**
+   * RAISED is the default and returns raised and acknowledged alarms.
+   * ACKED returns acknowledged alarms. CLEARED returns cleared alarms.
+   *
    * @generated from field: infinimesh.node.rules.v1.AlarmState state = 3;
    */
   state: AlarmState;

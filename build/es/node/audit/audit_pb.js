@@ -23,7 +23,7 @@ import { Device } from "../devices/devices_pb.js";
 import { Shadow } from "../../shadow/shadow_pb.js";
 
 /**
- * AuditRecord is one audit log row. action is read, create, token, or ota_assign.
+ * AuditRecord is one audit log row. action is read, create, token, ota_assign, alarm_ack, or alarm_clear.
  * The collection is append-only.
  *
  * @generated from message infinimesh.node.audit.v1.AuditRecord
@@ -37,6 +37,7 @@ export const AuditRecord = proto3.makeMessageType(
     { no: 4, name: "token_id", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 5, name: "at", kind: "message", T: Timestamp },
     { no: 6, name: "action", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 7, name: "namespace", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 
@@ -61,6 +62,7 @@ export const ListAuditRequest = proto3.makeMessageType(
     { no: 2, name: "account", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "page_size", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
     { no: 4, name: "page_token", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "namespace", kind: "scalar", T: 9 /* ScalarType.STRING */ },
   ],
 );
 

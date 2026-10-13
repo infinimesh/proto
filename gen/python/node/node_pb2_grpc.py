@@ -1852,7 +1852,8 @@ class ShadowServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def AssignOTA(self, request, context):
-        """AssignOTA sets desired.data.ota.version. Header x-infinimesh-ota-provider must equal the namespace provider when that provider is hawkbit, mender, or webhook.
+        """AssignOTA sets desired.data.ota.version. A manage-level account may call it when the namespace provider is none.
+        hawkbit, mender, and webhook require the bearer token returned when the OTA plugin was created.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')

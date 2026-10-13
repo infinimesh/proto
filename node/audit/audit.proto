@@ -21,7 +21,7 @@ import "google/protobuf/timestamp.proto";
 import "node/devices/devices.proto";
 import "shadow/shadow.proto";
 
-// AuditRecord is one audit log row. action is read, create, token, or ota_assign.
+// AuditRecord is one audit log row. action is read, create, token, ota_assign, alarm_ack, or alarm_clear.
 // The collection is append-only.
 message AuditRecord {
   string id = 1;
@@ -31,6 +31,7 @@ message AuditRecord {
   string token_id = 4;
   google.protobuf.Timestamp at = 5;
   string action = 6;
+  string namespace = 7;
 }
 
 message AuditRecords {
@@ -43,6 +44,7 @@ message ListAuditRequest {
   string account = 2;
   int32 page_size = 3;
   string page_token = 4;
+  string namespace = 5;
 }
 
 message ExportRequest {

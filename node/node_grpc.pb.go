@@ -1766,7 +1766,8 @@ type ShadowServiceClient interface {
 	StreamShadow(ctx context.Context, in *shadow.StreamShadowRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[shadow.Shadow], error)
 	StreamShadowSync(ctx context.Context, in *shadow.StreamShadowRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[shadow.Shadow], error)
 	PatchMany(ctx context.Context, in *shadow.PatchManyRequest, opts ...grpc.CallOption) (*shadow.PatchManyResponse, error)
-	// AssignOTA sets desired.data.ota.version. Header x-infinimesh-ota-provider must equal the namespace provider when that provider is hawkbit, mender, or webhook.
+	// AssignOTA sets desired.data.ota.version. A manage-level account may call it when the namespace provider is none.
+	// hawkbit, mender, and webhook require the bearer token returned when the OTA plugin was created.
 	AssignOTA(ctx context.Context, in *shadow.AssignOTARequest, opts ...grpc.CallOption) (*shadow.AssignOTAResponse, error)
 }
 
@@ -1876,7 +1877,8 @@ type ShadowServiceServer interface {
 	StreamShadow(*shadow.StreamShadowRequest, grpc.ServerStreamingServer[shadow.Shadow]) error
 	StreamShadowSync(*shadow.StreamShadowRequest, grpc.ServerStreamingServer[shadow.Shadow]) error
 	PatchMany(context.Context, *shadow.PatchManyRequest) (*shadow.PatchManyResponse, error)
-	// AssignOTA sets desired.data.ota.version. Header x-infinimesh-ota-provider must equal the namespace provider when that provider is hawkbit, mender, or webhook.
+	// AssignOTA sets desired.data.ota.version. A manage-level account may call it when the namespace provider is none.
+	// hawkbit, mender, and webhook require the bearer token returned when the OTA plugin was created.
 	AssignOTA(context.Context, *shadow.AssignOTARequest) (*shadow.AssignOTAResponse, error)
 	mustEmbedUnimplementedShadowServiceServer()
 }

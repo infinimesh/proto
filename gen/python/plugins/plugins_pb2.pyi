@@ -19,7 +19,7 @@ EMBEDDED: PluginKind
 OTA: PluginKind
 
 class Plugin(_message.Message):
-    __slots__ = ("uuid", "logo", "title", "description", "public", "namespace", "access", "kind", "embedded_conf")
+    __slots__ = ("uuid", "logo", "title", "description", "public", "namespace", "access", "kind", "embedded_conf", "provider", "token_id", "token")
     UUID_FIELD_NUMBER: _ClassVar[int]
     LOGO_FIELD_NUMBER: _ClassVar[int]
     TITLE_FIELD_NUMBER: _ClassVar[int]
@@ -29,6 +29,9 @@ class Plugin(_message.Message):
     ACCESS_FIELD_NUMBER: _ClassVar[int]
     KIND_FIELD_NUMBER: _ClassVar[int]
     EMBEDDED_CONF_FIELD_NUMBER: _ClassVar[int]
+    PROVIDER_FIELD_NUMBER: _ClassVar[int]
+    TOKEN_ID_FIELD_NUMBER: _ClassVar[int]
+    TOKEN_FIELD_NUMBER: _ClassVar[int]
     uuid: str
     logo: str
     title: str
@@ -38,7 +41,10 @@ class Plugin(_message.Message):
     access: _access_pb2.Access
     kind: PluginKind
     embedded_conf: EmbededPluginConf
-    def __init__(self, uuid: _Optional[str] = ..., logo: _Optional[str] = ..., title: _Optional[str] = ..., description: _Optional[str] = ..., public: _Optional[bool] = ..., namespace: _Optional[str] = ..., access: _Optional[_Union[_access_pb2.Access, _Mapping]] = ..., kind: _Optional[_Union[PluginKind, str]] = ..., embedded_conf: _Optional[_Union[EmbededPluginConf, _Mapping]] = ...) -> None: ...
+    provider: str
+    token_id: str
+    token: str
+    def __init__(self, uuid: _Optional[str] = ..., logo: _Optional[str] = ..., title: _Optional[str] = ..., description: _Optional[str] = ..., public: _Optional[bool] = ..., namespace: _Optional[str] = ..., access: _Optional[_Union[_access_pb2.Access, _Mapping]] = ..., kind: _Optional[_Union[PluginKind, str]] = ..., embedded_conf: _Optional[_Union[EmbededPluginConf, _Mapping]] = ..., provider: _Optional[str] = ..., token_id: _Optional[str] = ..., token: _Optional[str] = ...) -> None: ...
 
 class Plugins(_message.Message):
     __slots__ = ("pool", "next_page_token", "plugins")

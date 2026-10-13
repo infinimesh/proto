@@ -89,16 +89,22 @@ func (PluginKind) EnumDescriptor() ([]byte, []int) {
 }
 
 type Plugin struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	Logo          string                 `protobuf:"bytes,2,opt,name=logo,proto3" json:"logo,omitempty"` // Plugin logo url in format supported by <img> tag
-	Title         string                 `protobuf:"bytes,3,opt,name=title,proto3" json:"title,omitempty"`
-	Description   string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
-	Public        bool                   `protobuf:"varint,5,opt,name=public,proto3" json:"public,omitempty"`
-	Namespace     *string                `protobuf:"bytes,6,opt,name=namespace,proto3,oneof" json:"namespace,omitempty"` // Required to get not-public Plugin
-	Access        *access.Access         `protobuf:"bytes,7,opt,name=access,proto3,oneof" json:"access,omitempty"`
-	Kind          PluginKind             `protobuf:"varint,8,opt,name=kind,proto3,enum=infinimesh.plugins.v1.PluginKind" json:"kind,omitempty"`
-	EmbeddedConf  *EmbededPluginConf     `protobuf:"bytes,9,opt,name=embedded_conf,json=embeddedConf,proto3,oneof" json:"embedded_conf,omitempty"`
+	state        protoimpl.MessageState `protogen:"open.v1"`
+	Uuid         string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Logo         string                 `protobuf:"bytes,2,opt,name=logo,proto3" json:"logo,omitempty"` // Plugin logo url in format supported by <img> tag
+	Title        string                 `protobuf:"bytes,3,opt,name=title,proto3" json:"title,omitempty"`
+	Description  string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	Public       bool                   `protobuf:"varint,5,opt,name=public,proto3" json:"public,omitempty"`
+	Namespace    *string                `protobuf:"bytes,6,opt,name=namespace,proto3,oneof" json:"namespace,omitempty"` // Required to get not-public Plugin
+	Access       *access.Access         `protobuf:"bytes,7,opt,name=access,proto3,oneof" json:"access,omitempty"`
+	Kind         PluginKind             `protobuf:"varint,8,opt,name=kind,proto3,enum=infinimesh.plugins.v1.PluginKind" json:"kind,omitempty"`
+	EmbeddedConf *EmbededPluginConf     `protobuf:"bytes,9,opt,name=embedded_conf,json=embeddedConf,proto3,oneof" json:"embedded_conf,omitempty"`
+	// provider is hawkbit, mender, or webhook. Required when kind is OTA.
+	Provider string `protobuf:"bytes,10,opt,name=provider,proto3" json:"provider,omitempty"`
+	// token_id is the jti of the addon token. It is not the secret.
+	TokenId string `protobuf:"bytes,11,opt,name=token_id,json=tokenId,proto3" json:"token_id,omitempty"`
+	// token is the addon bearer token. Create returns it once. It is not stored.
+	Token         string `protobuf:"bytes,12,opt,name=token,proto3" json:"token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -194,6 +200,27 @@ func (x *Plugin) GetEmbeddedConf() *EmbededPluginConf {
 		return x.EmbeddedConf
 	}
 	return nil
+}
+
+func (x *Plugin) GetProvider() string {
+	if x != nil {
+		return x.Provider
+	}
+	return ""
+}
+
+func (x *Plugin) GetTokenId() string {
+	if x != nil {
+		return x.TokenId
+	}
+	return ""
+}
+
+func (x *Plugin) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
 }
 
 type Plugins struct {
@@ -366,7 +393,7 @@ var File_plugins_plugins_proto protoreflect.FileDescriptor
 
 const file_plugins_plugins_proto_rawDesc = "" +
 	"\n" +
-	"\x15plugins/plugins.proto\x12\x15infinimesh.plugins.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x18node/access/access.proto\"\x99\x03\n" +
+	"\x15plugins/plugins.proto\x12\x15infinimesh.plugins.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x18node/access/access.proto\"\xe6\x03\n" +
 	"\x06Plugin\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x12\n" +
 	"\x04logo\x18\x02 \x01(\tR\x04logo\x12\x14\n" +
@@ -376,7 +403,11 @@ const file_plugins_plugins_proto_rawDesc = "" +
 	"\tnamespace\x18\x06 \x01(\tH\x00R\tnamespace\x88\x01\x01\x12>\n" +
 	"\x06access\x18\a \x01(\v2!.infinimesh.node.access.v1.AccessH\x01R\x06access\x88\x01\x01\x125\n" +
 	"\x04kind\x18\b \x01(\x0e2!.infinimesh.plugins.v1.PluginKindR\x04kind\x12R\n" +
-	"\rembedded_conf\x18\t \x01(\v2(.infinimesh.plugins.v1.EmbededPluginConfH\x02R\fembeddedConf\x88\x01\x01B\f\n" +
+	"\rembedded_conf\x18\t \x01(\v2(.infinimesh.plugins.v1.EmbededPluginConfH\x02R\fembeddedConf\x88\x01\x01\x12\x1a\n" +
+	"\bprovider\x18\n" +
+	" \x01(\tR\bprovider\x12\x19\n" +
+	"\btoken_id\x18\v \x01(\tR\atokenId\x12\x14\n" +
+	"\x05token\x18\f \x01(\tR\x05tokenB\f\n" +
 	"\n" +
 	"_namespaceB\t\n" +
 	"\a_accessB\x10\n" +

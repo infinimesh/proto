@@ -99,6 +99,27 @@ export declare class Plugin extends Message<Plugin> {
    */
   embeddedConf?: EmbededPluginConf;
 
+  /**
+   * provider is hawkbit, mender, or webhook. Required when kind is OTA.
+   *
+   * @generated from field: string provider = 10;
+   */
+  provider: string;
+
+  /**
+   * token_id is the jti of the addon token. It is not the secret.
+   *
+   * @generated from field: string token_id = 11;
+   */
+  tokenId: string;
+
+  /**
+   * token is the addon bearer token. Create returns it once. It is not stored.
+   *
+   * @generated from field: string token = 12;
+   */
+  token: string;
+
   constructor(data?: PartialMessage<Plugin>);
 
   static readonly runtime: typeof proto3;
