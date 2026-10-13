@@ -530,7 +530,8 @@ service ShadowService {
       description: "Example body: {\"namespace\":\"plant\",\"tag\":\"line-a\",\"desired\":{\"data\":{\"ota\":{\"version\":\"1.4.0\"}}}}. results has one entry per device. A non-empty error means that device was not updated.";
     };
   };
-  // AssignOTA sets desired.data.ota.version. Header x-infinimesh-ota-provider must equal the namespace provider when that provider is hawkbit, mender, or webhook.
+  // AssignOTA sets desired.data.ota.version. A manage-level account may call it when the namespace provider is none.
+  // hawkbit, mender, and webhook require the bearer token returned when the OTA plugin was created.
   rpc AssignOTA(infinimesh.shadow.v1.AssignOTARequest) returns (infinimesh.shadow.v1.AssignOTAResponse) {
     option (google.api.http) = {
       post: "/v1/devices/ota:assign"
@@ -542,14 +543,7 @@ service ShadowService {
     };
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
       summary: "Assign an OTA target version";
-      description: "Sets desired.data.ota.version and updated_at. Example body: {\"namespace\":\"plant\",\"version\":\"1.4.0\"}. A tag: {\"namespace\":\"plant\",\"tag\":\"line-a\",\"version\":\"1.4.0\"}. A device list: {\"devices\":[\"dev-1\",\"dev-2\"],\"version\":\"1.4.0\"}. results has one entry per device. Header x-infinimesh-ota-provider must match Namespace.ota.provider when that provider is hawkbit, mender, or webhook. Each success is an audit row with action ota_assign.";
-      parameters: {
-        headers: {
-          name: "x-infinimesh-ota-provider";
-          description: "Must equal the namespace OTA provider when that provider is hawkbit, mender, or webhook. Omit it when the provider is none.";
-          type: STRING;
-        }
-      }
+      description: "Sets desired.data.ota.version and updated_at. A manage-level account token is accepted when the namespace provider is none. Example body: {\"namespace\":\"plant\",\"version\":\"1.4.0\"}. A tag: {\"namespace\":\"plant\",\"tag\":\"line-a\",\"version\":\"1.4.0\"}. A device list: {\"devices\":[\"dev-1\",\"dev-2\"],\"version\":\"1.4.0\"}. results has one entry per device. When the namespace provider is hawkbit, mender, or webhook, the caller is the OTA plugin bearer token from plugin create, not an account token. Each success is an audit row with action ota_assign.";
     };
   };
 }

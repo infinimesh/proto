@@ -707,7 +707,9 @@ type ListAlarmsRequest struct {
 	state     protoimpl.MessageState `protogen:"open.v1"`
 	Namespace string                 `protobuf:"bytes,1,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	Device    string                 `protobuf:"bytes,2,opt,name=device,proto3" json:"device,omitempty"`
-	State     AlarmState             `protobuf:"varint,3,opt,name=state,proto3,enum=infinimesh.node.rules.v1.AlarmState" json:"state,omitempty"`
+	// RAISED is the default and returns raised and acknowledged alarms.
+	// ACKED returns acknowledged alarms. CLEARED returns cleared alarms.
+	State AlarmState `protobuf:"varint,3,opt,name=state,proto3,enum=infinimesh.node.rules.v1.AlarmState" json:"state,omitempty"`
 	// When true, state is ignored and every alarm is returned.
 	AnyState      bool   `protobuf:"varint,4,opt,name=any_state,json=anyState,proto3" json:"any_state,omitempty"`
 	PageSize      int32  `protobuf:"varint,5,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`

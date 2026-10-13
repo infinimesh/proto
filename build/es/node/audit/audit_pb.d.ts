@@ -24,7 +24,7 @@ import type { Device } from "../devices/devices_pb.js";
 import type { Shadow } from "../../shadow/shadow_pb.js";
 
 /**
- * AuditRecord is one audit log row. action is read, create, token, or ota_assign.
+ * AuditRecord is one audit log row. action is read, create, token, ota_assign, alarm_ack, or alarm_clear.
  * The collection is append-only.
  *
  * @generated from message infinimesh.node.audit.v1.AuditRecord
@@ -61,6 +61,11 @@ export declare class AuditRecord extends Message<AuditRecord> {
    * @generated from field: string action = 6;
    */
   action: string;
+
+  /**
+   * @generated from field: string namespace = 7;
+   */
+  namespace: string;
 
   constructor(data?: PartialMessage<AuditRecord>);
 
@@ -129,6 +134,11 @@ export declare class ListAuditRequest extends Message<ListAuditRequest> {
    * @generated from field: string page_token = 4;
    */
   pageToken: string;
+
+  /**
+   * @generated from field: string namespace = 5;
+   */
+  namespace: string;
 
   constructor(data?: PartialMessage<ListAuditRequest>);
 

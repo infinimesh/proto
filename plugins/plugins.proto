@@ -39,6 +39,12 @@ message Plugin {
     
     PluginKind kind = 8;
     optional EmbededPluginConf embedded_conf = 9;
+    // provider is hawkbit, mender, or webhook. Required when kind is OTA.
+    string provider = 10;
+    // token_id is the jti of the addon token. It is not the secret.
+    string token_id = 11;
+    // token is the addon bearer token. Create returns it once. It is not stored.
+    string token = 12;
 }
 
 message Plugins {

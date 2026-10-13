@@ -39,7 +39,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// AuditRecord is one audit log row. action is read, create, token, or ota_assign.
+// AuditRecord is one audit log row. action is read, create, token, ota_assign, alarm_ack, or alarm_clear.
 // The collection is append-only.
 type AuditRecord struct {
 	state   protoimpl.MessageState `protogen:"open.v1"`
@@ -50,6 +50,7 @@ type AuditRecord struct {
 	TokenId       string                 `protobuf:"bytes,4,opt,name=token_id,json=tokenId,proto3" json:"token_id,omitempty"`
 	At            *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=at,proto3" json:"at,omitempty"`
 	Action        string                 `protobuf:"bytes,6,opt,name=action,proto3" json:"action,omitempty"`
+	Namespace     string                 `protobuf:"bytes,7,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -126,6 +127,13 @@ func (x *AuditRecord) GetAction() string {
 	return ""
 }
 
+func (x *AuditRecord) GetNamespace() string {
+	if x != nil {
+		return x.Namespace
+	}
+	return ""
+}
+
 type AuditRecords struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Records       []*AuditRecord         `protobuf:"bytes,1,rep,name=records,proto3" json:"records,omitempty"`
@@ -184,6 +192,7 @@ type ListAuditRequest struct {
 	Account       string                 `protobuf:"bytes,2,opt,name=account,proto3" json:"account,omitempty"`
 	PageSize      int32                  `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	PageToken     string                 `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Namespace     string                 `protobuf:"bytes,5,opt,name=namespace,proto3" json:"namespace,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -242,6 +251,13 @@ func (x *ListAuditRequest) GetPageSize() int32 {
 func (x *ListAuditRequest) GetPageToken() string {
 	if x != nil {
 		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListAuditRequest) GetNamespace() string {
+	if x != nil {
+		return x.Namespace
 	}
 	return ""
 }
@@ -355,23 +371,25 @@ var File_node_audit_audit_proto protoreflect.FileDescriptor
 
 const file_node_audit_audit_proto_rawDesc = "" +
 	"\n" +
-	"\x16node/audit/audit.proto\x12\x18infinimesh.node.audit.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1anode/devices/devices.proto\x1a\x13shadow/shadow.proto\"\xae\x01\n" +
+	"\x16node/audit/audit.proto\x12\x18infinimesh.node.audit.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1anode/devices/devices.proto\x1a\x13shadow/shadow.proto\"\xcc\x01\n" +
 	"\vAuditRecord\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\aaccount\x18\x02 \x01(\tR\aaccount\x12\x16\n" +
 	"\x06device\x18\x03 \x01(\tR\x06device\x12\x19\n" +
 	"\btoken_id\x18\x04 \x01(\tR\atokenId\x12*\n" +
 	"\x02at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x02at\x12\x16\n" +
-	"\x06action\x18\x06 \x01(\tR\x06action\"w\n" +
+	"\x06action\x18\x06 \x01(\tR\x06action\x12\x1c\n" +
+	"\tnamespace\x18\a \x01(\tR\tnamespace\"w\n" +
 	"\fAuditRecords\x12?\n" +
 	"\arecords\x18\x01 \x03(\v2%.infinimesh.node.audit.v1.AuditRecordR\arecords\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x80\x01\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x9e\x01\n" +
 	"\x10ListAuditRequest\x12\x16\n" +
 	"\x06device\x18\x01 \x01(\tR\x06device\x12\x18\n" +
 	"\aaccount\x18\x02 \x01(\tR\aaccount\x12\x1b\n" +
 	"\tpage_size\x18\x03 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x04 \x01(\tR\tpageToken\"'\n" +
+	"page_token\x18\x04 \x01(\tR\tpageToken\x12\x1c\n" +
+	"\tnamespace\x18\x05 \x01(\tR\tnamespace\"'\n" +
 	"\rExportRequest\x12\x16\n" +
 	"\x06device\x18\x01 \x01(\tR\x06device\"\x9c\x01\n" +
 	"\x0eExportResponse\x12:\n" +
