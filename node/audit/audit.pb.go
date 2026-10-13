@@ -39,7 +39,8 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// AuditRecord is one read of device state. The collection is append-only.
+// AuditRecord is one audit log row. action is read, create, token, or ota_assign.
+// The collection is append-only.
 type AuditRecord struct {
 	state   protoimpl.MessageState `protogen:"open.v1"`
 	Id      string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`

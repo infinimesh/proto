@@ -181,6 +181,8 @@ const (
 	ShadowServiceStreamShadowSyncProcedure = "/infinimesh.node.v1.ShadowService/StreamShadowSync"
 	// ShadowServicePatchManyProcedure is the fully-qualified name of the ShadowService's PatchMany RPC.
 	ShadowServicePatchManyProcedure = "/infinimesh.node.v1.ShadowService/PatchMany"
+	// ShadowServiceAssignOTAProcedure is the fully-qualified name of the ShadowService's AssignOTA RPC.
+	ShadowServiceAssignOTAProcedure = "/infinimesh.node.v1.ShadowService/AssignOTA"
 	// RulesServiceCreateProcedure is the fully-qualified name of the RulesService's Create RPC.
 	RulesServiceCreateProcedure = "/infinimesh.node.v1.RulesService/Create"
 	// RulesServiceUpdateProcedure is the fully-qualified name of the RulesService's Update RPC.
@@ -1392,6 +1394,8 @@ type ShadowServiceClient interface {
 	StreamShadow(context.Context, *connect.Request[shadow.StreamShadowRequest]) (*connect.ServerStreamForClient[shadow.Shadow], error)
 	StreamShadowSync(context.Context, *connect.Request[shadow.StreamShadowRequest]) (*connect.ServerStreamForClient[shadow.Shadow], error)
 	PatchMany(context.Context, *connect.Request[shadow.PatchManyRequest]) (*connect.Response[shadow.PatchManyResponse], error)
+	// AssignOTA sets desired.data.ota.version. Header x-infinimesh-ota-provider must equal the namespace provider when that provider is hawkbit, mender, or webhook.
+	AssignOTA(context.Context, *connect.Request[shadow.AssignOTARequest]) (*connect.Response[shadow.AssignOTAResponse], error)
 }
 
 // NewShadowServiceClient constructs a client for the infinimesh.node.v1.ShadowService service. By
@@ -1441,6 +1445,12 @@ func NewShadowServiceClient(httpClient connect.HTTPClient, baseURL string, opts 
 			connect.WithSchema(shadowServiceMethods.ByName("PatchMany")),
 			connect.WithClientOptions(opts...),
 		),
+		assignOTA: connect.NewClient[shadow.AssignOTARequest, shadow.AssignOTAResponse](
+			httpClient,
+			baseURL+ShadowServiceAssignOTAProcedure,
+			connect.WithSchema(shadowServiceMethods.ByName("AssignOTA")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -1452,6 +1462,7 @@ type shadowServiceClient struct {
 	streamShadow     *connect.Client[shadow.StreamShadowRequest, shadow.Shadow]
 	streamShadowSync *connect.Client[shadow.StreamShadowRequest, shadow.Shadow]
 	patchMany        *connect.Client[shadow.PatchManyRequest, shadow.PatchManyResponse]
+	assignOTA        *connect.Client[shadow.AssignOTARequest, shadow.AssignOTAResponse]
 }
 
 // Get calls infinimesh.node.v1.ShadowService.Get.
@@ -1484,6 +1495,11 @@ func (c *shadowServiceClient) PatchMany(ctx context.Context, req *connect.Reques
 	return c.patchMany.CallUnary(ctx, req)
 }
 
+// AssignOTA calls infinimesh.node.v1.ShadowService.AssignOTA.
+func (c *shadowServiceClient) AssignOTA(ctx context.Context, req *connect.Request[shadow.AssignOTARequest]) (*connect.Response[shadow.AssignOTAResponse], error) {
+	return c.assignOTA.CallUnary(ctx, req)
+}
+
 // ShadowServiceHandler is an implementation of the infinimesh.node.v1.ShadowService service.
 type ShadowServiceHandler interface {
 	Get(context.Context, *connect.Request[shadow.GetRequest]) (*connect.Response[shadow.GetResponse], error)
@@ -1492,6 +1508,8 @@ type ShadowServiceHandler interface {
 	StreamShadow(context.Context, *connect.Request[shadow.StreamShadowRequest], *connect.ServerStream[shadow.Shadow]) error
 	StreamShadowSync(context.Context, *connect.Request[shadow.StreamShadowRequest], *connect.ServerStream[shadow.Shadow]) error
 	PatchMany(context.Context, *connect.Request[shadow.PatchManyRequest]) (*connect.Response[shadow.PatchManyResponse], error)
+	// AssignOTA sets desired.data.ota.version. Header x-infinimesh-ota-provider must equal the namespace provider when that provider is hawkbit, mender, or webhook.
+	AssignOTA(context.Context, *connect.Request[shadow.AssignOTARequest]) (*connect.Response[shadow.AssignOTAResponse], error)
 }
 
 // NewShadowServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -1537,6 +1555,12 @@ func NewShadowServiceHandler(svc ShadowServiceHandler, opts ...connect.HandlerOp
 		connect.WithSchema(shadowServiceMethods.ByName("PatchMany")),
 		connect.WithHandlerOptions(opts...),
 	)
+	shadowServiceAssignOTAHandler := connect.NewUnaryHandler(
+		ShadowServiceAssignOTAProcedure,
+		svc.AssignOTA,
+		connect.WithSchema(shadowServiceMethods.ByName("AssignOTA")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/infinimesh.node.v1.ShadowService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ShadowServiceGetProcedure:
@@ -1551,6 +1575,8 @@ func NewShadowServiceHandler(svc ShadowServiceHandler, opts ...connect.HandlerOp
 			shadowServiceStreamShadowSyncHandler.ServeHTTP(w, r)
 		case ShadowServicePatchManyProcedure:
 			shadowServicePatchManyHandler.ServeHTTP(w, r)
+		case ShadowServiceAssignOTAProcedure:
+			shadowServiceAssignOTAHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -1582,6 +1608,10 @@ func (UnimplementedShadowServiceHandler) StreamShadowSync(context.Context, *conn
 
 func (UnimplementedShadowServiceHandler) PatchMany(context.Context, *connect.Request[shadow.PatchManyRequest]) (*connect.Response[shadow.PatchManyResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.ShadowService.PatchMany is not implemented"))
+}
+
+func (UnimplementedShadowServiceHandler) AssignOTA(context.Context, *connect.Request[shadow.AssignOTARequest]) (*connect.Response[shadow.AssignOTAResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.node.v1.ShadowService.AssignOTA is not implemented"))
 }
 
 // RulesServiceClient is a client for the infinimesh.node.v1.RulesService service.

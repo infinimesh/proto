@@ -22,12 +22,15 @@ option go_package = "github.com/infinimesh/proto/shadow;shadow";
 import "google/protobuf/empty.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
 
 
 // State is one section of a device shadow.
-// data.ota, when set, is the over-the-air document:
-// version (string), url (string), sha256 (string).
-// Reported state also carries state (string), progress (number), and error (string).
+// data.ota, when present, is an object. A patch may set any subset of these fields:
+// version (string), url (string), sha256 (64 lowercase hex characters),
+// size (number, zero or greater), status (idle, downloading, installing, success, or failed),
+// error (string), updated_at (RFC3339). Any other key is rejected, including state and progress.
+// A null data.ota clears the document.
 message State {
   google.protobuf.Timestamp timestamp = 1;
   google.protobuf.Struct data = 2;
@@ -48,6 +51,10 @@ enum ShadowEvent {
   TAG_ADDED = 3;
   // A tag was removed. tag names it. tags is the full list after the change.
   TAG_REMOVED = 4;
+  // desired.data.ota.version changed.
+  OTA_TARGET_SET = 5;
+  // reported.data.ota.status changed.
+  OTA_STATUS_CHANGED = 6;
 }
 
 message DeviceMeta {
@@ -74,6 +81,9 @@ message Shadow {
 }
 
 message PatchManyRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    example: "{\"namespace\":\"plant\",\"tag\":\"line-a\",\"desired\":{\"data\":{\"ota\":{\"version\":\"1.4.0\",\"updated_at\":\"2026-10-13T12:00:00Z\"}}}}"
+  };
   repeated string devices = 1;
   // Applied as desired state on every device.
   State desired = 2;
@@ -82,8 +92,39 @@ message PatchManyRequest {
   string tag = 4;
 }
 
+message DevicePatchResult {
+  string device = 1;
+  // Empty when the patch was stored.
+  string error = 2;
+}
+
 message PatchManyResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    example: "{\"updated\":1,\"results\":[{\"device\":\"dev-1\"},{\"device\":\"dev-2\",\"error\":\"ota status must be idle, downloading, installing, success, or failed\"}]}"
+  };
   int32 updated = 1;
+  repeated DevicePatchResult results = 2;
+}
+
+// AssignOTARequest sets desired.data.ota.version on each selected device.
+message AssignOTARequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    example: "{\"namespace\":\"plant\",\"version\":\"1.4.0\"}"
+  };
+  // Every manageable device in this namespace. Combine with tag to narrow the set.
+  string namespace = 1;
+  string tag = 2;
+  // When set, only these devices are assigned. Each one is listed in results.
+  repeated string devices = 3;
+  string version = 4;
+}
+
+message AssignOTAResponse {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    example: "{\"updated\":2,\"results\":[{\"device\":\"dev-1\"},{\"device\":\"dev-2\"}]}"
+  };
+  int32 updated = 1;
+  repeated DevicePatchResult results = 2;
 }
 
 message GetRequest {

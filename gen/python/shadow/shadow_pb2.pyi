@@ -3,6 +3,7 @@ import datetime
 from google.protobuf import empty_pb2 as _empty_pb2
 from google.protobuf import struct_pb2 as _struct_pb2
 from google.protobuf import timestamp_pb2 as _timestamp_pb2
+from protoc_gen_openapiv2.options import annotations_pb2 as _annotations_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf.internal import enum_type_wrapper as _enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
@@ -19,6 +20,8 @@ class ShadowEvent(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     DEVICE_REMOVED: _ClassVar[ShadowEvent]
     TAG_ADDED: _ClassVar[ShadowEvent]
     TAG_REMOVED: _ClassVar[ShadowEvent]
+    OTA_TARGET_SET: _ClassVar[ShadowEvent]
+    OTA_STATUS_CHANGED: _ClassVar[ShadowEvent]
 
 class StateKey(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -30,6 +33,8 @@ DEVICE_ADDED: ShadowEvent
 DEVICE_REMOVED: ShadowEvent
 TAG_ADDED: ShadowEvent
 TAG_REMOVED: ShadowEvent
+OTA_TARGET_SET: ShadowEvent
+OTA_STATUS_CHANGED: ShadowEvent
 REPORTED: StateKey
 DESIRED: StateKey
 CONNECTION: StateKey
@@ -106,11 +111,41 @@ class PatchManyRequest(_message.Message):
     tag: str
     def __init__(self, devices: _Optional[_Iterable[str]] = ..., desired: _Optional[_Union[State, _Mapping]] = ..., namespace: _Optional[str] = ..., tag: _Optional[str] = ...) -> None: ...
 
+class DevicePatchResult(_message.Message):
+    __slots__ = ("device", "error")
+    DEVICE_FIELD_NUMBER: _ClassVar[int]
+    ERROR_FIELD_NUMBER: _ClassVar[int]
+    device: str
+    error: str
+    def __init__(self, device: _Optional[str] = ..., error: _Optional[str] = ...) -> None: ...
+
 class PatchManyResponse(_message.Message):
-    __slots__ = ("updated",)
+    __slots__ = ("updated", "results")
     UPDATED_FIELD_NUMBER: _ClassVar[int]
+    RESULTS_FIELD_NUMBER: _ClassVar[int]
     updated: int
-    def __init__(self, updated: _Optional[int] = ...) -> None: ...
+    results: _containers.RepeatedCompositeFieldContainer[DevicePatchResult]
+    def __init__(self, updated: _Optional[int] = ..., results: _Optional[_Iterable[_Union[DevicePatchResult, _Mapping]]] = ...) -> None: ...
+
+class AssignOTARequest(_message.Message):
+    __slots__ = ("namespace", "tag", "devices", "version")
+    NAMESPACE_FIELD_NUMBER: _ClassVar[int]
+    TAG_FIELD_NUMBER: _ClassVar[int]
+    DEVICES_FIELD_NUMBER: _ClassVar[int]
+    VERSION_FIELD_NUMBER: _ClassVar[int]
+    namespace: str
+    tag: str
+    devices: _containers.RepeatedScalarFieldContainer[str]
+    version: str
+    def __init__(self, namespace: _Optional[str] = ..., tag: _Optional[str] = ..., devices: _Optional[_Iterable[str]] = ..., version: _Optional[str] = ...) -> None: ...
+
+class AssignOTAResponse(_message.Message):
+    __slots__ = ("updated", "results")
+    UPDATED_FIELD_NUMBER: _ClassVar[int]
+    RESULTS_FIELD_NUMBER: _ClassVar[int]
+    updated: int
+    results: _containers.RepeatedCompositeFieldContainer[DevicePatchResult]
+    def __init__(self, updated: _Optional[int] = ..., results: _Optional[_Iterable[_Union[DevicePatchResult, _Mapping]]] = ...) -> None: ...
 
 class GetRequest(_message.Message):
     __slots__ = ("pool", "devices", "device")

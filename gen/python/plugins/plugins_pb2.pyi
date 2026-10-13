@@ -13,8 +13,10 @@ class PluginKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
     UNKNOWN: _ClassVar[PluginKind]
     EMBEDDED: _ClassVar[PluginKind]
+    OTA: _ClassVar[PluginKind]
 UNKNOWN: PluginKind
 EMBEDDED: PluginKind
+OTA: PluginKind
 
 class Plugin(_message.Message):
     __slots__ = ("uuid", "logo", "title", "description", "public", "namespace", "access", "kind", "embedded_conf")

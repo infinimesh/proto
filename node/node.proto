@@ -226,6 +226,10 @@ service NamespacesService {
         body: "*"
       }
     };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Update a namespace, including its OTA provider";
+      description: "Example body: {\"uuid\":\"ns-1\",\"ota\":{\"enabled\":true,\"provider\":\"webhook\",\"webhookUrl\":\"https://ota.example/hook\"}}. provider is none, hawkbit, mender, or webhook. enabled can be true only when a plugin of kind OTA is registered. addonRegistered is ignored on write.";
+    };
   };
   rpc Delete(infinimesh.node.namespaces.v1.Namespace) returns (DeleteResponse) {
     option (google.api.http) = {
@@ -519,6 +523,32 @@ service ShadowService {
       additional_bindings {
         post: "/devices/states:patchMany"
         body: "*"
+      }
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Patch desired state on many devices";
+      description: "Example body: {\"namespace\":\"plant\",\"tag\":\"line-a\",\"desired\":{\"data\":{\"ota\":{\"version\":\"1.4.0\"}}}}. results has one entry per device. A non-empty error means that device was not updated.";
+    };
+  };
+  // AssignOTA sets desired.data.ota.version. Header x-infinimesh-ota-provider must equal the namespace provider when that provider is hawkbit, mender, or webhook.
+  rpc AssignOTA(infinimesh.shadow.v1.AssignOTARequest) returns (infinimesh.shadow.v1.AssignOTAResponse) {
+    option (google.api.http) = {
+      post: "/v1/devices/ota:assign"
+      body: "*"
+      additional_bindings {
+        post: "/devices/ota:assign"
+        body: "*"
+      }
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Assign an OTA target version";
+      description: "Sets desired.data.ota.version and updated_at. Example body: {\"namespace\":\"plant\",\"version\":\"1.4.0\"}. A tag: {\"namespace\":\"plant\",\"tag\":\"line-a\",\"version\":\"1.4.0\"}. A device list: {\"devices\":[\"dev-1\",\"dev-2\"],\"version\":\"1.4.0\"}. results has one entry per device. Header x-infinimesh-ota-provider must match Namespace.ota.provider when that provider is hawkbit, mender, or webhook. Each success is an audit row with action ota_assign.";
+      parameters: {
+        headers: {
+          name: "x-infinimesh-ota-provider";
+          description: "Must equal the namespace OTA provider when that provider is hawkbit, mender, or webhook. Omit it when the provider is none.";
+          type: STRING;
+        }
       }
     };
   };

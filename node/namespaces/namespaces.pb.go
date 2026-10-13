@@ -22,6 +22,7 @@
 package namespaces
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	access "github.com/infinimesh/proto/node/access"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -130,14 +131,25 @@ func (x *Namespace) GetQuota() *Quota {
 	return nil
 }
 
-// OTAConfig is read by the OTA addon. backend is hawkBit or mender.
+// OTAConfig names who may write desired.ota.
+// enabled can be set only when an OTA addon is registered: a plugin of kind OTA
+// that is public, or whose namespace is this namespace.
+// provider is none, hawkbit, mender, or webhook. Empty is none.
+// webhook_url is required when provider is webhook.
+// backend_url and backend are ignored.
+// addon_registered is set on read and ignored on write.
 type OTAConfig struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Enabled       bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
-	BackendUrl    string                 `protobuf:"bytes,2,opt,name=backend_url,json=backendUrl,proto3" json:"backend_url,omitempty"`
-	Backend       string                 `protobuf:"bytes,3,opt,name=backend,proto3" json:"backend,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state   protoimpl.MessageState `protogen:"open.v1"`
+	Enabled bool                   `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
+	// Deprecated: Marked as deprecated in node/namespaces/namespaces.proto.
+	BackendUrl string `protobuf:"bytes,2,opt,name=backend_url,json=backendUrl,proto3" json:"backend_url,omitempty"`
+	// Deprecated: Marked as deprecated in node/namespaces/namespaces.proto.
+	Backend         string `protobuf:"bytes,3,opt,name=backend,proto3" json:"backend,omitempty"`
+	Provider        string `protobuf:"bytes,4,opt,name=provider,proto3" json:"provider,omitempty"`
+	WebhookUrl      string `protobuf:"bytes,5,opt,name=webhook_url,json=webhookUrl,proto3" json:"webhook_url,omitempty"`
+	AddonRegistered bool   `protobuf:"varint,6,opt,name=addon_registered,json=addonRegistered,proto3" json:"addon_registered,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *OTAConfig) Reset() {
@@ -177,6 +189,7 @@ func (x *OTAConfig) GetEnabled() bool {
 	return false
 }
 
+// Deprecated: Marked as deprecated in node/namespaces/namespaces.proto.
 func (x *OTAConfig) GetBackendUrl() string {
 	if x != nil {
 		return x.BackendUrl
@@ -184,11 +197,33 @@ func (x *OTAConfig) GetBackendUrl() string {
 	return ""
 }
 
+// Deprecated: Marked as deprecated in node/namespaces/namespaces.proto.
 func (x *OTAConfig) GetBackend() string {
 	if x != nil {
 		return x.Backend
 	}
 	return ""
+}
+
+func (x *OTAConfig) GetProvider() string {
+	if x != nil {
+		return x.Provider
+	}
+	return ""
+}
+
+func (x *OTAConfig) GetWebhookUrl() string {
+	if x != nil {
+		return x.WebhookUrl
+	}
+	return ""
+}
+
+func (x *OTAConfig) GetAddonRegistered() bool {
+	if x != nil {
+		return x.AddonRegistered
+	}
+	return false
 }
 
 // Quota limits a namespace. Zero means no limit.
@@ -308,7 +343,7 @@ var File_node_namespaces_namespaces_proto protoreflect.FileDescriptor
 
 const file_node_namespaces_namespaces_proto_rawDesc = "" +
 	"\n" +
-	" node/namespaces/namespaces.proto\x12\x1dinfinimesh.node.namespaces.v1\x1a\x18node/access/access.proto\x1a\x1cgoogle/protobuf/struct.proto\"\xd1\x02\n" +
+	" node/namespaces/namespaces.proto\x12\x1dinfinimesh.node.namespaces.v1\x1a\x18node/access/access.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xd1\x02\n" +
 	"\tNamespace\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12>\n" +
@@ -318,12 +353,16 @@ const file_node_namespaces_namespaces_proto_rawDesc = "" +
 	"\x03ota\x18\x06 \x01(\v2(.infinimesh.node.namespaces.v1.OTAConfigR\x03ota\x12:\n" +
 	"\x05quota\x18\a \x01(\v2$.infinimesh.node.namespaces.v1.QuotaR\x05quotaB\t\n" +
 	"\a_accessB\t\n" +
-	"\a_plugin\"`\n" +
+	"\a_plugin\"\xa4\x02\n" +
 	"\tOTAConfig\x12\x18\n" +
-	"\aenabled\x18\x01 \x01(\bR\aenabled\x12\x1f\n" +
-	"\vbackend_url\x18\x02 \x01(\tR\n" +
-	"backendUrl\x12\x18\n" +
-	"\abackend\x18\x03 \x01(\tR\abackend\"\xa8\x01\n" +
+	"\aenabled\x18\x01 \x01(\bR\aenabled\x12#\n" +
+	"\vbackend_url\x18\x02 \x01(\tB\x02\x18\x01R\n" +
+	"backendUrl\x12\x1c\n" +
+	"\abackend\x18\x03 \x01(\tB\x02\x18\x01R\abackend\x12\x1a\n" +
+	"\bprovider\x18\x04 \x01(\tR\bprovider\x12\x1f\n" +
+	"\vwebhook_url\x18\x05 \x01(\tR\n" +
+	"webhookUrl\x12)\n" +
+	"\x10addon_registered\x18\x06 \x01(\bR\x0faddonRegistered:R\x92AO2M{\"enabled\":true,\"provider\":\"webhook\",\"webhookUrl\":\"https://ota.example/hook\"}\"\xa8\x01\n" +
 	"\x05Quota\x12\x1f\n" +
 	"\vmax_devices\x18\x01 \x01(\x05R\n" +
 	"maxDevices\x12;\n" +

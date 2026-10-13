@@ -53,6 +53,20 @@ export declare enum ShadowEvent {
    * @generated from enum value: TAG_REMOVED = 4;
    */
   TAG_REMOVED = 4,
+
+  /**
+   * desired.data.ota.version changed.
+   *
+   * @generated from enum value: OTA_TARGET_SET = 5;
+   */
+  OTA_TARGET_SET = 5,
+
+  /**
+   * reported.data.ota.status changed.
+   *
+   * @generated from enum value: OTA_STATUS_CHANGED = 6;
+   */
+  OTA_STATUS_CHANGED = 6,
 }
 
 /**
@@ -77,9 +91,11 @@ export declare enum StateKey {
 
 /**
  * State is one section of a device shadow.
- * data.ota, when set, is the over-the-air document:
- * version (string), url (string), sha256 (string).
- * Reported state also carries state (string), progress (number), and error (string).
+ * data.ota, when present, is an object. A patch may set any subset of these fields:
+ * version (string), url (string), sha256 (64 lowercase hex characters),
+ * size (number, zero or greater), status (idle, downloading, installing, success, or failed),
+ * error (string), updated_at (RFC3339). Any other key is rejected, including state and progress.
+ * A null data.ota clears the document.
  *
  * @generated from message infinimesh.shadow.v1.State
  */
@@ -312,6 +328,37 @@ export declare class PatchManyRequest extends Message<PatchManyRequest> {
 }
 
 /**
+ * @generated from message infinimesh.shadow.v1.DevicePatchResult
+ */
+export declare class DevicePatchResult extends Message<DevicePatchResult> {
+  /**
+   * @generated from field: string device = 1;
+   */
+  device: string;
+
+  /**
+   * Empty when the patch was stored.
+   *
+   * @generated from field: string error = 2;
+   */
+  error: string;
+
+  constructor(data?: PartialMessage<DevicePatchResult>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "infinimesh.shadow.v1.DevicePatchResult";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): DevicePatchResult;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): DevicePatchResult;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): DevicePatchResult;
+
+  static equals(a: DevicePatchResult | PlainMessage<DevicePatchResult> | undefined, b: DevicePatchResult | PlainMessage<DevicePatchResult> | undefined): boolean;
+}
+
+/**
  * @generated from message infinimesh.shadow.v1.PatchManyResponse
  */
 export declare class PatchManyResponse extends Message<PatchManyResponse> {
@@ -319,6 +366,11 @@ export declare class PatchManyResponse extends Message<PatchManyResponse> {
    * @generated from field: int32 updated = 1;
    */
   updated: number;
+
+  /**
+   * @generated from field: repeated infinimesh.shadow.v1.DevicePatchResult results = 2;
+   */
+  results: DevicePatchResult[];
 
   constructor(data?: PartialMessage<PatchManyResponse>);
 
@@ -333,6 +385,80 @@ export declare class PatchManyResponse extends Message<PatchManyResponse> {
   static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): PatchManyResponse;
 
   static equals(a: PatchManyResponse | PlainMessage<PatchManyResponse> | undefined, b: PatchManyResponse | PlainMessage<PatchManyResponse> | undefined): boolean;
+}
+
+/**
+ * AssignOTARequest sets desired.data.ota.version on each selected device.
+ *
+ * @generated from message infinimesh.shadow.v1.AssignOTARequest
+ */
+export declare class AssignOTARequest extends Message<AssignOTARequest> {
+  /**
+   * Every manageable device in this namespace. Combine with tag to narrow the set.
+   *
+   * @generated from field: string namespace = 1;
+   */
+  namespace: string;
+
+  /**
+   * @generated from field: string tag = 2;
+   */
+  tag: string;
+
+  /**
+   * When set, only these devices are assigned. Each one is listed in results.
+   *
+   * @generated from field: repeated string devices = 3;
+   */
+  devices: string[];
+
+  /**
+   * @generated from field: string version = 4;
+   */
+  version: string;
+
+  constructor(data?: PartialMessage<AssignOTARequest>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "infinimesh.shadow.v1.AssignOTARequest";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AssignOTARequest;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AssignOTARequest;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AssignOTARequest;
+
+  static equals(a: AssignOTARequest | PlainMessage<AssignOTARequest> | undefined, b: AssignOTARequest | PlainMessage<AssignOTARequest> | undefined): boolean;
+}
+
+/**
+ * @generated from message infinimesh.shadow.v1.AssignOTAResponse
+ */
+export declare class AssignOTAResponse extends Message<AssignOTAResponse> {
+  /**
+   * @generated from field: int32 updated = 1;
+   */
+  updated: number;
+
+  /**
+   * @generated from field: repeated infinimesh.shadow.v1.DevicePatchResult results = 2;
+   */
+  results: DevicePatchResult[];
+
+  constructor(data?: PartialMessage<AssignOTAResponse>);
+
+  static readonly runtime: typeof proto3;
+  static readonly typeName = "infinimesh.shadow.v1.AssignOTAResponse";
+  static readonly fields: FieldList;
+
+  static fromBinary(bytes: Uint8Array, options?: Partial<BinaryReadOptions>): AssignOTAResponse;
+
+  static fromJson(jsonValue: JsonValue, options?: Partial<JsonReadOptions>): AssignOTAResponse;
+
+  static fromJsonString(jsonString: string, options?: Partial<JsonReadOptions>): AssignOTAResponse;
+
+  static equals(a: AssignOTAResponse | PlainMessage<AssignOTAResponse> | undefined, b: AssignOTAResponse | PlainMessage<AssignOTAResponse> | undefined): boolean;
 }
 
 /**

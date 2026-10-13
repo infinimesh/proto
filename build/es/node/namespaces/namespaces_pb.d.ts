@@ -77,7 +77,13 @@ export declare class Namespace extends Message<Namespace> {
 }
 
 /**
- * OTAConfig is read by the OTA addon. backend is hawkBit or mender.
+ * OTAConfig names who may write desired.ota.
+ * enabled can be set only when an OTA addon is registered: a plugin of kind OTA
+ * that is public, or whose namespace is this namespace.
+ * provider is none, hawkbit, mender, or webhook. Empty is none.
+ * webhook_url is required when provider is webhook.
+ * backend_url and backend are ignored.
+ * addon_registered is set on read and ignored on write.
  *
  * @generated from message infinimesh.node.namespaces.v1.OTAConfig
  */
@@ -88,14 +94,31 @@ export declare class OTAConfig extends Message<OTAConfig> {
   enabled: boolean;
 
   /**
-   * @generated from field: string backend_url = 2;
+   * @generated from field: string backend_url = 2 [deprecated = true];
+   * @deprecated
    */
   backendUrl: string;
 
   /**
-   * @generated from field: string backend = 3;
+   * @generated from field: string backend = 3 [deprecated = true];
+   * @deprecated
    */
   backend: string;
+
+  /**
+   * @generated from field: string provider = 4;
+   */
+  provider: string;
+
+  /**
+   * @generated from field: string webhook_url = 5;
+   */
+  webhookUrl: string;
+
+  /**
+   * @generated from field: bool addon_registered = 6;
+   */
+  addonRegistered: boolean;
 
   constructor(data?: PartialMessage<OTAConfig>);
 

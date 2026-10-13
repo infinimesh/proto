@@ -29,6 +29,7 @@ export const PluginKind = proto3.makeEnum(
   [
     {no: 0, name: "UNKNOWN"},
     {no: 1, name: "EMBEDDED"},
+    {no: 2, name: "OTA"},
   ],
 );
 

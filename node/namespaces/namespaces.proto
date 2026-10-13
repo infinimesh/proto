@@ -19,6 +19,7 @@ option go_package = "github.com/infinimesh/proto/node/namespaces;namespaces";
 
 import "node/access/access.proto";
 import "google/protobuf/struct.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
 
 message Namespace {
   string uuid = 1;
@@ -30,11 +31,23 @@ message Namespace {
   Quota quota = 7;
 }
 
-// OTAConfig is read by the OTA addon. backend is hawkBit or mender.
+// OTAConfig names who may write desired.ota.
+// enabled can be set only when an OTA addon is registered: a plugin of kind OTA
+// that is public, or whose namespace is this namespace.
+// provider is none, hawkbit, mender, or webhook. Empty is none.
+// webhook_url is required when provider is webhook.
+// backend_url and backend are ignored.
+// addon_registered is set on read and ignored on write.
 message OTAConfig {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    example: "{\"enabled\":true,\"provider\":\"webhook\",\"webhookUrl\":\"https://ota.example/hook\"}"
+  };
   bool enabled = 1;
-  string backend_url = 2;
-  string backend = 3;
+  string backend_url = 2 [deprecated = true];
+  string backend = 3 [deprecated = true];
+  string provider = 4;
+  string webhook_url = 5;
+  bool addon_registered = 6;
 }
 
 // Quota limits a namespace. Zero means no limit.
