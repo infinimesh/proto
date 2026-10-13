@@ -37,6 +37,13 @@ export declare enum PluginKind {
    * @generated from enum value: EMBEDDED = 1;
    */
   EMBEDDED = 1,
+
+  /**
+   * An OTA addon. Registering one lets a namespace turn OTA on.
+   *
+   * @generated from enum value: OTA = 2;
+   */
+  OTA = 2,
 }
 
 /**

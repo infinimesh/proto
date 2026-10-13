@@ -21,7 +21,8 @@ import "google/protobuf/timestamp.proto";
 import "node/devices/devices.proto";
 import "shadow/shadow.proto";
 
-// AuditRecord is one read of device state. The collection is append-only.
+// AuditRecord is one audit log row. action is read, create, token, or ota_assign.
+// The collection is append-only.
 message AuditRecord {
   string id = 1;
   string account = 2;

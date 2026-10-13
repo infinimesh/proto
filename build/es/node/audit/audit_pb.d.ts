@@ -24,7 +24,8 @@ import type { Device } from "../devices/devices_pb.js";
 import type { Shadow } from "../../shadow/shadow_pb.js";
 
 /**
- * AuditRecord is one read of device state. The collection is append-only.
+ * AuditRecord is one audit log row. action is read, create, token, or ota_assign.
+ * The collection is append-only.
  *
  * @generated from message infinimesh.node.audit.v1.AuditRecord
  */

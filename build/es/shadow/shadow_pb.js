@@ -31,6 +31,8 @@ export const ShadowEvent = proto3.makeEnum(
     {no: 2, name: "DEVICE_REMOVED"},
     {no: 3, name: "TAG_ADDED"},
     {no: 4, name: "TAG_REMOVED"},
+    {no: 5, name: "OTA_TARGET_SET"},
+    {no: 6, name: "OTA_STATUS_CHANGED"},
   ],
 );
 
@@ -48,9 +50,11 @@ export const StateKey = proto3.makeEnum(
 
 /**
  * State is one section of a device shadow.
- * data.ota, when set, is the over-the-air document:
- * version (string), url (string), sha256 (string).
- * Reported state also carries state (string), progress (number), and error (string).
+ * data.ota, when present, is an object. A patch may set any subset of these fields:
+ * version (string), url (string), sha256 (64 lowercase hex characters),
+ * size (number, zero or greater), status (idle, downloading, installing, success, or failed),
+ * error (string), updated_at (RFC3339). Any other key is rejected, including state and progress.
+ * A null data.ota clears the document.
  *
  * @generated from message infinimesh.shadow.v1.State
  */
@@ -123,12 +127,50 @@ export const PatchManyRequest = proto3.makeMessageType(
 );
 
 /**
+ * @generated from message infinimesh.shadow.v1.DevicePatchResult
+ */
+export const DevicePatchResult = proto3.makeMessageType(
+  "infinimesh.shadow.v1.DevicePatchResult",
+  () => [
+    { no: 1, name: "device", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "error", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
  * @generated from message infinimesh.shadow.v1.PatchManyResponse
  */
 export const PatchManyResponse = proto3.makeMessageType(
   "infinimesh.shadow.v1.PatchManyResponse",
   () => [
     { no: 1, name: "updated", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 2, name: "results", kind: "message", T: DevicePatchResult, repeated: true },
+  ],
+);
+
+/**
+ * AssignOTARequest sets desired.data.ota.version on each selected device.
+ *
+ * @generated from message infinimesh.shadow.v1.AssignOTARequest
+ */
+export const AssignOTARequest = proto3.makeMessageType(
+  "infinimesh.shadow.v1.AssignOTARequest",
+  () => [
+    { no: 1, name: "namespace", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 2, name: "tag", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 3, name: "devices", kind: "scalar", T: 9 /* ScalarType.STRING */, repeated: true },
+    { no: 4, name: "version", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+  ],
+);
+
+/**
+ * @generated from message infinimesh.shadow.v1.AssignOTAResponse
+ */
+export const AssignOTAResponse = proto3.makeMessageType(
+  "infinimesh.shadow.v1.AssignOTAResponse",
+  () => [
+    { no: 1, name: "updated", kind: "scalar", T: 5 /* ScalarType.INT32 */ },
+    { no: 2, name: "results", kind: "message", T: DevicePatchResult, repeated: true },
   ],
 );
 

@@ -1753,6 +1753,7 @@ const (
 	ShadowService_StreamShadow_FullMethodName     = "/infinimesh.node.v1.ShadowService/StreamShadow"
 	ShadowService_StreamShadowSync_FullMethodName = "/infinimesh.node.v1.ShadowService/StreamShadowSync"
 	ShadowService_PatchMany_FullMethodName        = "/infinimesh.node.v1.ShadowService/PatchMany"
+	ShadowService_AssignOTA_FullMethodName        = "/infinimesh.node.v1.ShadowService/AssignOTA"
 )
 
 // ShadowServiceClient is the client API for ShadowService service.
@@ -1765,6 +1766,8 @@ type ShadowServiceClient interface {
 	StreamShadow(ctx context.Context, in *shadow.StreamShadowRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[shadow.Shadow], error)
 	StreamShadowSync(ctx context.Context, in *shadow.StreamShadowRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[shadow.Shadow], error)
 	PatchMany(ctx context.Context, in *shadow.PatchManyRequest, opts ...grpc.CallOption) (*shadow.PatchManyResponse, error)
+	// AssignOTA sets desired.data.ota.version. Header x-infinimesh-ota-provider must equal the namespace provider when that provider is hawkbit, mender, or webhook.
+	AssignOTA(ctx context.Context, in *shadow.AssignOTARequest, opts ...grpc.CallOption) (*shadow.AssignOTAResponse, error)
 }
 
 type shadowServiceClient struct {
@@ -1853,6 +1856,16 @@ func (c *shadowServiceClient) PatchMany(ctx context.Context, in *shadow.PatchMan
 	return out, nil
 }
 
+func (c *shadowServiceClient) AssignOTA(ctx context.Context, in *shadow.AssignOTARequest, opts ...grpc.CallOption) (*shadow.AssignOTAResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(shadow.AssignOTAResponse)
+	err := c.cc.Invoke(ctx, ShadowService_AssignOTA_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ShadowServiceServer is the server API for ShadowService service.
 // All implementations must embed UnimplementedShadowServiceServer
 // for forward compatibility.
@@ -1863,6 +1876,8 @@ type ShadowServiceServer interface {
 	StreamShadow(*shadow.StreamShadowRequest, grpc.ServerStreamingServer[shadow.Shadow]) error
 	StreamShadowSync(*shadow.StreamShadowRequest, grpc.ServerStreamingServer[shadow.Shadow]) error
 	PatchMany(context.Context, *shadow.PatchManyRequest) (*shadow.PatchManyResponse, error)
+	// AssignOTA sets desired.data.ota.version. Header x-infinimesh-ota-provider must equal the namespace provider when that provider is hawkbit, mender, or webhook.
+	AssignOTA(context.Context, *shadow.AssignOTARequest) (*shadow.AssignOTAResponse, error)
 	mustEmbedUnimplementedShadowServiceServer()
 }
 
@@ -1890,6 +1905,9 @@ func (UnimplementedShadowServiceServer) StreamShadowSync(*shadow.StreamShadowReq
 }
 func (UnimplementedShadowServiceServer) PatchMany(context.Context, *shadow.PatchManyRequest) (*shadow.PatchManyResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method PatchMany not implemented")
+}
+func (UnimplementedShadowServiceServer) AssignOTA(context.Context, *shadow.AssignOTARequest) (*shadow.AssignOTAResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AssignOTA not implemented")
 }
 func (UnimplementedShadowServiceServer) mustEmbedUnimplementedShadowServiceServer() {}
 func (UnimplementedShadowServiceServer) testEmbeddedByValue()                       {}
@@ -2006,6 +2024,24 @@ func _ShadowService_PatchMany_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ShadowService_AssignOTA_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(shadow.AssignOTARequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ShadowServiceServer).AssignOTA(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ShadowService_AssignOTA_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ShadowServiceServer).AssignOTA(ctx, req.(*shadow.AssignOTARequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ShadowService_ServiceDesc is the grpc.ServiceDesc for ShadowService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2028,6 +2064,10 @@ var ShadowService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "PatchMany",
 			Handler:    _ShadowService_PatchMany_Handler,
+		},
+		{
+			MethodName: "AssignOTA",
+			Handler:    _ShadowService_AssignOTA_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

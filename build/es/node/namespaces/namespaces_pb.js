@@ -38,7 +38,13 @@ export const Namespace = proto3.makeMessageType(
 );
 
 /**
- * OTAConfig is read by the OTA addon. backend is hawkBit or mender.
+ * OTAConfig names who may write desired.ota.
+ * enabled can be set only when an OTA addon is registered: a plugin of kind OTA
+ * that is public, or whose namespace is this namespace.
+ * provider is none, hawkbit, mender, or webhook. Empty is none.
+ * webhook_url is required when provider is webhook.
+ * backend_url and backend are ignored.
+ * addon_registered is set on read and ignored on write.
  *
  * @generated from message infinimesh.node.namespaces.v1.OTAConfig
  */
@@ -48,6 +54,9 @@ export const OTAConfig = proto3.makeMessageType(
     { no: 1, name: "enabled", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
     { no: 2, name: "backend_url", kind: "scalar", T: 9 /* ScalarType.STRING */ },
     { no: 3, name: "backend", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 4, name: "provider", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 5, name: "webhook_url", kind: "scalar", T: 9 /* ScalarType.STRING */ },
+    { no: 6, name: "addon_registered", kind: "scalar", T: 8 /* ScalarType.BOOL */ },
   ],
 );
 

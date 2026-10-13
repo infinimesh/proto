@@ -22,6 +22,7 @@
 package shadow
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
@@ -49,6 +50,10 @@ const (
 	ShadowEvent_TAG_ADDED ShadowEvent = 3
 	// A tag was removed. tag names it. tags is the full list after the change.
 	ShadowEvent_TAG_REMOVED ShadowEvent = 4
+	// desired.data.ota.version changed.
+	ShadowEvent_OTA_TARGET_SET ShadowEvent = 5
+	// reported.data.ota.status changed.
+	ShadowEvent_OTA_STATUS_CHANGED ShadowEvent = 6
 )
 
 // Enum value maps for ShadowEvent.
@@ -59,13 +64,17 @@ var (
 		2: "DEVICE_REMOVED",
 		3: "TAG_ADDED",
 		4: "TAG_REMOVED",
+		5: "OTA_TARGET_SET",
+		6: "OTA_STATUS_CHANGED",
 	}
 	ShadowEvent_value = map[string]int32{
-		"STATE":          0,
-		"DEVICE_ADDED":   1,
-		"DEVICE_REMOVED": 2,
-		"TAG_ADDED":      3,
-		"TAG_REMOVED":    4,
+		"STATE":              0,
+		"DEVICE_ADDED":       1,
+		"DEVICE_REMOVED":     2,
+		"TAG_ADDED":          3,
+		"TAG_REMOVED":        4,
+		"OTA_TARGET_SET":     5,
+		"OTA_STATUS_CHANGED": 6,
 	}
 )
 
@@ -146,9 +155,11 @@ func (StateKey) EnumDescriptor() ([]byte, []int) {
 }
 
 // State is one section of a device shadow.
-// data.ota, when set, is the over-the-air document:
-// version (string), url (string), sha256 (string).
-// Reported state also carries state (string), progress (number), and error (string).
+// data.ota, when present, is an object. A patch may set any subset of these fields:
+// version (string), url (string), sha256 (64 lowercase hex characters),
+// size (number, zero or greater), status (idle, downloading, installing, success, or failed),
+// error (string), updated_at (RFC3339). Any other key is rejected, including state and progress.
+// A null data.ota clears the document.
 type State struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Timestamp     *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
@@ -540,16 +551,70 @@ func (x *PatchManyRequest) GetTag() string {
 	return ""
 }
 
+type DevicePatchResult struct {
+	state  protoimpl.MessageState `protogen:"open.v1"`
+	Device string                 `protobuf:"bytes,1,opt,name=device,proto3" json:"device,omitempty"`
+	// Empty when the patch was stored.
+	Error         string `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DevicePatchResult) Reset() {
+	*x = DevicePatchResult{}
+	mi := &file_shadow_shadow_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DevicePatchResult) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DevicePatchResult) ProtoMessage() {}
+
+func (x *DevicePatchResult) ProtoReflect() protoreflect.Message {
+	mi := &file_shadow_shadow_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DevicePatchResult.ProtoReflect.Descriptor instead.
+func (*DevicePatchResult) Descriptor() ([]byte, []int) {
+	return file_shadow_shadow_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *DevicePatchResult) GetDevice() string {
+	if x != nil {
+		return x.Device
+	}
+	return ""
+}
+
+func (x *DevicePatchResult) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
 type PatchManyResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Updated       int32                  `protobuf:"varint,1,opt,name=updated,proto3" json:"updated,omitempty"`
+	Results       []*DevicePatchResult   `protobuf:"bytes,2,rep,name=results,proto3" json:"results,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *PatchManyResponse) Reset() {
 	*x = PatchManyResponse{}
-	mi := &file_shadow_shadow_proto_msgTypes[5]
+	mi := &file_shadow_shadow_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -561,7 +626,7 @@ func (x *PatchManyResponse) String() string {
 func (*PatchManyResponse) ProtoMessage() {}
 
 func (x *PatchManyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_shadow_shadow_proto_msgTypes[5]
+	mi := &file_shadow_shadow_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -574,7 +639,7 @@ func (x *PatchManyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PatchManyResponse.ProtoReflect.Descriptor instead.
 func (*PatchManyResponse) Descriptor() ([]byte, []int) {
-	return file_shadow_shadow_proto_rawDescGZIP(), []int{5}
+	return file_shadow_shadow_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *PatchManyResponse) GetUpdated() int32 {
@@ -582,6 +647,136 @@ func (x *PatchManyResponse) GetUpdated() int32 {
 		return x.Updated
 	}
 	return 0
+}
+
+func (x *PatchManyResponse) GetResults() []*DevicePatchResult {
+	if x != nil {
+		return x.Results
+	}
+	return nil
+}
+
+// AssignOTARequest sets desired.data.ota.version on each selected device.
+type AssignOTARequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Every manageable device in this namespace. Combine with tag to narrow the set.
+	Namespace string `protobuf:"bytes,1,opt,name=namespace,proto3" json:"namespace,omitempty"`
+	Tag       string `protobuf:"bytes,2,opt,name=tag,proto3" json:"tag,omitempty"`
+	// When set, only these devices are assigned. Each one is listed in results.
+	Devices       []string `protobuf:"bytes,3,rep,name=devices,proto3" json:"devices,omitempty"`
+	Version       string   `protobuf:"bytes,4,opt,name=version,proto3" json:"version,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AssignOTARequest) Reset() {
+	*x = AssignOTARequest{}
+	mi := &file_shadow_shadow_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AssignOTARequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AssignOTARequest) ProtoMessage() {}
+
+func (x *AssignOTARequest) ProtoReflect() protoreflect.Message {
+	mi := &file_shadow_shadow_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AssignOTARequest.ProtoReflect.Descriptor instead.
+func (*AssignOTARequest) Descriptor() ([]byte, []int) {
+	return file_shadow_shadow_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *AssignOTARequest) GetNamespace() string {
+	if x != nil {
+		return x.Namespace
+	}
+	return ""
+}
+
+func (x *AssignOTARequest) GetTag() string {
+	if x != nil {
+		return x.Tag
+	}
+	return ""
+}
+
+func (x *AssignOTARequest) GetDevices() []string {
+	if x != nil {
+		return x.Devices
+	}
+	return nil
+}
+
+func (x *AssignOTARequest) GetVersion() string {
+	if x != nil {
+		return x.Version
+	}
+	return ""
+}
+
+type AssignOTAResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Updated       int32                  `protobuf:"varint,1,opt,name=updated,proto3" json:"updated,omitempty"`
+	Results       []*DevicePatchResult   `protobuf:"bytes,2,rep,name=results,proto3" json:"results,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AssignOTAResponse) Reset() {
+	*x = AssignOTAResponse{}
+	mi := &file_shadow_shadow_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AssignOTAResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AssignOTAResponse) ProtoMessage() {}
+
+func (x *AssignOTAResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_shadow_shadow_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AssignOTAResponse.ProtoReflect.Descriptor instead.
+func (*AssignOTAResponse) Descriptor() ([]byte, []int) {
+	return file_shadow_shadow_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *AssignOTAResponse) GetUpdated() int32 {
+	if x != nil {
+		return x.Updated
+	}
+	return 0
+}
+
+func (x *AssignOTAResponse) GetResults() []*DevicePatchResult {
+	if x != nil {
+		return x.Results
+	}
+	return nil
 }
 
 type GetRequest struct {
@@ -596,7 +791,7 @@ type GetRequest struct {
 
 func (x *GetRequest) Reset() {
 	*x = GetRequest{}
-	mi := &file_shadow_shadow_proto_msgTypes[6]
+	mi := &file_shadow_shadow_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -608,7 +803,7 @@ func (x *GetRequest) String() string {
 func (*GetRequest) ProtoMessage() {}
 
 func (x *GetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_shadow_shadow_proto_msgTypes[6]
+	mi := &file_shadow_shadow_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -621,7 +816,7 @@ func (x *GetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRequest.ProtoReflect.Descriptor instead.
 func (*GetRequest) Descriptor() ([]byte, []int) {
-	return file_shadow_shadow_proto_rawDescGZIP(), []int{6}
+	return file_shadow_shadow_proto_rawDescGZIP(), []int{9}
 }
 
 // Deprecated: Marked as deprecated in shadow/shadow.proto.
@@ -655,7 +850,7 @@ type GetResponse struct {
 
 func (x *GetResponse) Reset() {
 	*x = GetResponse{}
-	mi := &file_shadow_shadow_proto_msgTypes[7]
+	mi := &file_shadow_shadow_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -667,7 +862,7 @@ func (x *GetResponse) String() string {
 func (*GetResponse) ProtoMessage() {}
 
 func (x *GetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_shadow_shadow_proto_msgTypes[7]
+	mi := &file_shadow_shadow_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -680,7 +875,7 @@ func (x *GetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetResponse.ProtoReflect.Descriptor instead.
 func (*GetResponse) Descriptor() ([]byte, []int) {
-	return file_shadow_shadow_proto_rawDescGZIP(), []int{7}
+	return file_shadow_shadow_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *GetResponse) GetShadows() []*Shadow {
@@ -701,7 +896,7 @@ type RemoveRequest struct {
 
 func (x *RemoveRequest) Reset() {
 	*x = RemoveRequest{}
-	mi := &file_shadow_shadow_proto_msgTypes[8]
+	mi := &file_shadow_shadow_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -713,7 +908,7 @@ func (x *RemoveRequest) String() string {
 func (*RemoveRequest) ProtoMessage() {}
 
 func (x *RemoveRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_shadow_shadow_proto_msgTypes[8]
+	mi := &file_shadow_shadow_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -726,7 +921,7 @@ func (x *RemoveRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RemoveRequest.ProtoReflect.Descriptor instead.
 func (*RemoveRequest) Descriptor() ([]byte, []int) {
-	return file_shadow_shadow_proto_rawDescGZIP(), []int{8}
+	return file_shadow_shadow_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *RemoveRequest) GetDevice() string {
@@ -772,7 +967,7 @@ type StreamShadowRequest struct {
 
 func (x *StreamShadowRequest) Reset() {
 	*x = StreamShadowRequest{}
-	mi := &file_shadow_shadow_proto_msgTypes[9]
+	mi := &file_shadow_shadow_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -784,7 +979,7 @@ func (x *StreamShadowRequest) String() string {
 func (*StreamShadowRequest) ProtoMessage() {}
 
 func (x *StreamShadowRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_shadow_shadow_proto_msgTypes[9]
+	mi := &file_shadow_shadow_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -797,7 +992,7 @@ func (x *StreamShadowRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StreamShadowRequest.ProtoReflect.Descriptor instead.
 func (*StreamShadowRequest) Descriptor() ([]byte, []int) {
-	return file_shadow_shadow_proto_rawDescGZIP(), []int{9}
+	return file_shadow_shadow_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *StreamShadowRequest) GetDevices() []string {
@@ -867,7 +1062,7 @@ var File_shadow_shadow_proto protoreflect.FileDescriptor
 
 const file_shadow_shadow_proto_rawDesc = "" +
 	"\n" +
-	"\x13shadow/shadow.proto\x12\x14infinimesh.shadow.v1\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x88\x01\n" +
+	"\x13shadow/shadow.proto\x12\x14infinimesh.shadow.v1\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x88\x01\n" +
 	"\x05State\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12+\n" +
 	"\x04data\x18\x02 \x01(\v2\x17.google.protobuf.StructR\x04data\x12\x18\n" +
@@ -897,14 +1092,26 @@ const file_shadow_shadow_proto_rawDesc = "" +
 	"\aaccount\x18\n" +
 	" \x01(\tR\aaccount\x12\x1a\n" +
 	"\bsequence\x18\v \x01(\x04R\bsequence\x12\x10\n" +
-	"\x03tag\x18\f \x01(\tR\x03tag\"\x93\x01\n" +
+	"\x03tag\x18\f \x01(\tR\x03tag\"\x91\x02\n" +
 	"\x10PatchManyRequest\x12\x18\n" +
 	"\adevices\x18\x01 \x03(\tR\adevices\x125\n" +
 	"\adesired\x18\x02 \x01(\v2\x1b.infinimesh.shadow.v1.StateR\adesired\x12\x1c\n" +
 	"\tnamespace\x18\x03 \x01(\tR\tnamespace\x12\x10\n" +
-	"\x03tag\x18\x04 \x01(\tR\x03tag\"-\n" +
+	"\x03tag\x18\x04 \x01(\tR\x03tag:|\x92Ay2w{\"namespace\":\"plant\",\"tag\":\"line-a\",\"desired\":{\"data\":{\"ota\":{\"version\":\"1.4.0\",\"updated_at\":\"2026-10-13T12:00:00Z\"}}}}\"A\n" +
+	"\x11DevicePatchResult\x12\x16\n" +
+	"\x06device\x18\x01 \x01(\tR\x06device\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05error\"\x88\x02\n" +
 	"\x11PatchManyResponse\x12\x18\n" +
-	"\aupdated\x18\x01 \x01(\x05R\aupdated\"V\n" +
+	"\aupdated\x18\x01 \x01(\x05R\aupdated\x12A\n" +
+	"\aresults\x18\x02 \x03(\v2'.infinimesh.shadow.v1.DevicePatchResultR\aresults:\x95\x01\x92A\x91\x012\x8e\x01{\"updated\":1,\"results\":[{\"device\":\"dev-1\"},{\"device\":\"dev-2\",\"error\":\"ota status must be idle, downloading, installing, success, or failed\"}]}\"\xa4\x01\n" +
+	"\x10AssignOTARequest\x12\x1c\n" +
+	"\tnamespace\x18\x01 \x01(\tR\tnamespace\x12\x10\n" +
+	"\x03tag\x18\x02 \x01(\tR\x03tag\x12\x18\n" +
+	"\adevices\x18\x03 \x03(\tR\adevices\x12\x18\n" +
+	"\aversion\x18\x04 \x01(\tR\aversion:,\x92A)2'{\"namespace\":\"plant\",\"version\":\"1.4.0\"}\"\xb6\x01\n" +
+	"\x11AssignOTAResponse\x12\x18\n" +
+	"\aupdated\x18\x01 \x01(\x05R\aupdated\x12A\n" +
+	"\aresults\x18\x02 \x03(\v2'.infinimesh.shadow.v1.DevicePatchResultR\aresults:D\x92AA2?{\"updated\":2,\"results\":[{\"device\":\"dev-1\"},{\"device\":\"dev-2\"}]}\"V\n" +
 	"\n" +
 	"GetRequest\x12\x16\n" +
 	"\x04pool\x18\x01 \x03(\tB\x02\x18\x01R\x04pool\x12\x18\n" +
@@ -928,13 +1135,15 @@ const file_shadow_shadow_proto_rawDesc = "" +
 	"\aaccount\x18\x06 \x01(\tR\aaccount\x12:\n" +
 	"\acatalog\x18\a \x03(\v2 .infinimesh.shadow.v1.DeviceMetaR\acatalog\x128\n" +
 	"\ainclude\x18\b \x03(\x0e2\x1e.infinimesh.shadow.v1.StateKeyR\ainclude\x12!\n" +
-	"\fresume_after\x18\t \x01(\x04R\vresumeAfter*^\n" +
+	"\fresume_after\x18\t \x01(\x04R\vresumeAfter*\x8a\x01\n" +
 	"\vShadowEvent\x12\t\n" +
 	"\x05STATE\x10\x00\x12\x10\n" +
 	"\fDEVICE_ADDED\x10\x01\x12\x12\n" +
 	"\x0eDEVICE_REMOVED\x10\x02\x12\r\n" +
 	"\tTAG_ADDED\x10\x03\x12\x0f\n" +
-	"\vTAG_REMOVED\x10\x04*5\n" +
+	"\vTAG_REMOVED\x10\x04\x12\x12\n" +
+	"\x0eOTA_TARGET_SET\x10\x05\x12\x16\n" +
+	"\x12OTA_STATUS_CHANGED\x10\x06*5\n" +
 	"\bStateKey\x12\f\n" +
 	"\bREPORTED\x10\x00\x12\v\n" +
 	"\aDESIRED\x10\x01\x12\x0e\n" +
@@ -962,7 +1171,7 @@ func file_shadow_shadow_proto_rawDescGZIP() []byte {
 }
 
 var file_shadow_shadow_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_shadow_shadow_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_shadow_shadow_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_shadow_shadow_proto_goTypes = []any{
 	(ShadowEvent)(0),              // 0: infinimesh.shadow.v1.ShadowEvent
 	(StateKey)(0),                 // 1: infinimesh.shadow.v1.StateKey
@@ -971,47 +1180,52 @@ var file_shadow_shadow_proto_goTypes = []any{
 	(*DeviceMeta)(nil),            // 4: infinimesh.shadow.v1.DeviceMeta
 	(*Shadow)(nil),                // 5: infinimesh.shadow.v1.Shadow
 	(*PatchManyRequest)(nil),      // 6: infinimesh.shadow.v1.PatchManyRequest
-	(*PatchManyResponse)(nil),     // 7: infinimesh.shadow.v1.PatchManyResponse
-	(*GetRequest)(nil),            // 8: infinimesh.shadow.v1.GetRequest
-	(*GetResponse)(nil),           // 9: infinimesh.shadow.v1.GetResponse
-	(*RemoveRequest)(nil),         // 10: infinimesh.shadow.v1.RemoveRequest
-	(*StreamShadowRequest)(nil),   // 11: infinimesh.shadow.v1.StreamShadowRequest
-	(*timestamppb.Timestamp)(nil), // 12: google.protobuf.Timestamp
-	(*structpb.Struct)(nil),       // 13: google.protobuf.Struct
-	(*emptypb.Empty)(nil),         // 14: google.protobuf.Empty
+	(*DevicePatchResult)(nil),     // 7: infinimesh.shadow.v1.DevicePatchResult
+	(*PatchManyResponse)(nil),     // 8: infinimesh.shadow.v1.PatchManyResponse
+	(*AssignOTARequest)(nil),      // 9: infinimesh.shadow.v1.AssignOTARequest
+	(*AssignOTAResponse)(nil),     // 10: infinimesh.shadow.v1.AssignOTAResponse
+	(*GetRequest)(nil),            // 11: infinimesh.shadow.v1.GetRequest
+	(*GetResponse)(nil),           // 12: infinimesh.shadow.v1.GetResponse
+	(*RemoveRequest)(nil),         // 13: infinimesh.shadow.v1.RemoveRequest
+	(*StreamShadowRequest)(nil),   // 14: infinimesh.shadow.v1.StreamShadowRequest
+	(*timestamppb.Timestamp)(nil), // 15: google.protobuf.Timestamp
+	(*structpb.Struct)(nil),       // 16: google.protobuf.Struct
+	(*emptypb.Empty)(nil),         // 17: google.protobuf.Empty
 }
 var file_shadow_shadow_proto_depIdxs = []int32{
-	12, // 0: infinimesh.shadow.v1.State.timestamp:type_name -> google.protobuf.Timestamp
-	13, // 1: infinimesh.shadow.v1.State.data:type_name -> google.protobuf.Struct
-	12, // 2: infinimesh.shadow.v1.ConnectionState.timestamp:type_name -> google.protobuf.Timestamp
+	15, // 0: infinimesh.shadow.v1.State.timestamp:type_name -> google.protobuf.Timestamp
+	16, // 1: infinimesh.shadow.v1.State.data:type_name -> google.protobuf.Struct
+	15, // 2: infinimesh.shadow.v1.ConnectionState.timestamp:type_name -> google.protobuf.Timestamp
 	2,  // 3: infinimesh.shadow.v1.Shadow.reported:type_name -> infinimesh.shadow.v1.State
 	2,  // 4: infinimesh.shadow.v1.Shadow.desired:type_name -> infinimesh.shadow.v1.State
 	3,  // 5: infinimesh.shadow.v1.Shadow.connection:type_name -> infinimesh.shadow.v1.ConnectionState
 	0,  // 6: infinimesh.shadow.v1.Shadow.event:type_name -> infinimesh.shadow.v1.ShadowEvent
 	2,  // 7: infinimesh.shadow.v1.PatchManyRequest.desired:type_name -> infinimesh.shadow.v1.State
-	5,  // 8: infinimesh.shadow.v1.GetResponse.shadows:type_name -> infinimesh.shadow.v1.Shadow
-	1,  // 9: infinimesh.shadow.v1.RemoveRequest.state_key:type_name -> infinimesh.shadow.v1.StateKey
-	4,  // 10: infinimesh.shadow.v1.StreamShadowRequest.catalog:type_name -> infinimesh.shadow.v1.DeviceMeta
-	1,  // 11: infinimesh.shadow.v1.StreamShadowRequest.include:type_name -> infinimesh.shadow.v1.StateKey
-	8,  // 12: infinimesh.shadow.v1.ShadowService.Get:input_type -> infinimesh.shadow.v1.GetRequest
-	5,  // 13: infinimesh.shadow.v1.ShadowService.Patch:input_type -> infinimesh.shadow.v1.Shadow
-	10, // 14: infinimesh.shadow.v1.ShadowService.Remove:input_type -> infinimesh.shadow.v1.RemoveRequest
-	11, // 15: infinimesh.shadow.v1.ShadowService.StreamShadow:input_type -> infinimesh.shadow.v1.StreamShadowRequest
-	11, // 16: infinimesh.shadow.v1.ShadowService.StreamShadowSync:input_type -> infinimesh.shadow.v1.StreamShadowRequest
-	5,  // 17: infinimesh.shadow.v1.ShadowService.PublishDeviceScope:input_type -> infinimesh.shadow.v1.Shadow
-	6,  // 18: infinimesh.shadow.v1.ShadowService.PatchMany:input_type -> infinimesh.shadow.v1.PatchManyRequest
-	9,  // 19: infinimesh.shadow.v1.ShadowService.Get:output_type -> infinimesh.shadow.v1.GetResponse
-	5,  // 20: infinimesh.shadow.v1.ShadowService.Patch:output_type -> infinimesh.shadow.v1.Shadow
-	5,  // 21: infinimesh.shadow.v1.ShadowService.Remove:output_type -> infinimesh.shadow.v1.Shadow
-	5,  // 22: infinimesh.shadow.v1.ShadowService.StreamShadow:output_type -> infinimesh.shadow.v1.Shadow
-	5,  // 23: infinimesh.shadow.v1.ShadowService.StreamShadowSync:output_type -> infinimesh.shadow.v1.Shadow
-	14, // 24: infinimesh.shadow.v1.ShadowService.PublishDeviceScope:output_type -> google.protobuf.Empty
-	7,  // 25: infinimesh.shadow.v1.ShadowService.PatchMany:output_type -> infinimesh.shadow.v1.PatchManyResponse
-	19, // [19:26] is the sub-list for method output_type
-	12, // [12:19] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	7,  // 8: infinimesh.shadow.v1.PatchManyResponse.results:type_name -> infinimesh.shadow.v1.DevicePatchResult
+	7,  // 9: infinimesh.shadow.v1.AssignOTAResponse.results:type_name -> infinimesh.shadow.v1.DevicePatchResult
+	5,  // 10: infinimesh.shadow.v1.GetResponse.shadows:type_name -> infinimesh.shadow.v1.Shadow
+	1,  // 11: infinimesh.shadow.v1.RemoveRequest.state_key:type_name -> infinimesh.shadow.v1.StateKey
+	4,  // 12: infinimesh.shadow.v1.StreamShadowRequest.catalog:type_name -> infinimesh.shadow.v1.DeviceMeta
+	1,  // 13: infinimesh.shadow.v1.StreamShadowRequest.include:type_name -> infinimesh.shadow.v1.StateKey
+	11, // 14: infinimesh.shadow.v1.ShadowService.Get:input_type -> infinimesh.shadow.v1.GetRequest
+	5,  // 15: infinimesh.shadow.v1.ShadowService.Patch:input_type -> infinimesh.shadow.v1.Shadow
+	13, // 16: infinimesh.shadow.v1.ShadowService.Remove:input_type -> infinimesh.shadow.v1.RemoveRequest
+	14, // 17: infinimesh.shadow.v1.ShadowService.StreamShadow:input_type -> infinimesh.shadow.v1.StreamShadowRequest
+	14, // 18: infinimesh.shadow.v1.ShadowService.StreamShadowSync:input_type -> infinimesh.shadow.v1.StreamShadowRequest
+	5,  // 19: infinimesh.shadow.v1.ShadowService.PublishDeviceScope:input_type -> infinimesh.shadow.v1.Shadow
+	6,  // 20: infinimesh.shadow.v1.ShadowService.PatchMany:input_type -> infinimesh.shadow.v1.PatchManyRequest
+	12, // 21: infinimesh.shadow.v1.ShadowService.Get:output_type -> infinimesh.shadow.v1.GetResponse
+	5,  // 22: infinimesh.shadow.v1.ShadowService.Patch:output_type -> infinimesh.shadow.v1.Shadow
+	5,  // 23: infinimesh.shadow.v1.ShadowService.Remove:output_type -> infinimesh.shadow.v1.Shadow
+	5,  // 24: infinimesh.shadow.v1.ShadowService.StreamShadow:output_type -> infinimesh.shadow.v1.Shadow
+	5,  // 25: infinimesh.shadow.v1.ShadowService.StreamShadowSync:output_type -> infinimesh.shadow.v1.Shadow
+	17, // 26: infinimesh.shadow.v1.ShadowService.PublishDeviceScope:output_type -> google.protobuf.Empty
+	8,  // 27: infinimesh.shadow.v1.ShadowService.PatchMany:output_type -> infinimesh.shadow.v1.PatchManyResponse
+	21, // [21:28] is the sub-list for method output_type
+	14, // [14:21] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_shadow_shadow_proto_init() }
@@ -1025,7 +1239,7 @@ func file_shadow_shadow_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_shadow_shadow_proto_rawDesc), len(file_shadow_shadow_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   10,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

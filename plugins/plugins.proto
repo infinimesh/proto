@@ -23,6 +23,8 @@ import "node/access/access.proto";
 enum PluginKind {
     UNKNOWN = 0;
     EMBEDDED = 1; // Plugin will be embedded into Console as Page
+    // An OTA addon. Registering one lets a namespace turn OTA on.
+    OTA = 2;
 }
 
 message Plugin {

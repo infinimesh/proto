@@ -43,6 +43,8 @@ type PluginKind int32
 const (
 	PluginKind_UNKNOWN  PluginKind = 0
 	PluginKind_EMBEDDED PluginKind = 1 // Plugin will be embedded into Console as Page
+	// An OTA addon. Registering one lets a namespace turn OTA on.
+	PluginKind_OTA PluginKind = 2
 )
 
 // Enum value maps for PluginKind.
@@ -50,10 +52,12 @@ var (
 	PluginKind_name = map[int32]string{
 		0: "UNKNOWN",
 		1: "EMBEDDED",
+		2: "OTA",
 	}
 	PluginKind_value = map[string]int32{
 		"UNKNOWN":  0,
 		"EMBEDDED": 1,
+		"OTA":      2,
 	}
 )
 
@@ -389,11 +393,12 @@ const file_plugins_plugins_proto_rawDesc = "" +
 	"\n" +
 	"page_token\x18\x03 \x01(\tR\tpageTokenB\f\n" +
 	"\n" +
-	"_namespace*'\n" +
+	"_namespace*0\n" +
 	"\n" +
 	"PluginKind\x12\v\n" +
 	"\aUNKNOWN\x10\x00\x12\f\n" +
-	"\bEMBEDDED\x10\x012\xd4\x04\n" +
+	"\bEMBEDDED\x10\x01\x12\a\n" +
+	"\x03OTA\x10\x022\xd4\x04\n" +
 	"\x0ePluginsService\x12r\n" +
 	"\x03Get\x12\x1d.infinimesh.plugins.v1.Plugin\x1a\x1d.infinimesh.plugins.v1.Plugin\"-\x82\xd3\xe4\x93\x02'Z\x11\x12\x0f/plugins/{uuid}\x12\x12/v1/plugins/{uuid}\x12k\n" +
 	"\x04List\x12\".infinimesh.plugins.v1.ListRequest\x1a\x1e.infinimesh.plugins.v1.Plugins\"\x1f\x82\xd3\xe4\x93\x02\x19Z\n" +

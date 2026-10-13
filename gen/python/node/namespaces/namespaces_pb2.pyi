@@ -1,5 +1,6 @@
 from node.access import access_pb2 as _access_pb2
 from google.protobuf import struct_pb2 as _struct_pb2
+from protoc_gen_openapiv2.options import annotations_pb2 as _annotations_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
@@ -27,14 +28,20 @@ class Namespace(_message.Message):
     def __init__(self, uuid: _Optional[str] = ..., title: _Optional[str] = ..., access: _Optional[_Union[_access_pb2.Access, _Mapping]] = ..., plugin: _Optional[str] = ..., config: _Optional[_Union[_struct_pb2.Struct, _Mapping]] = ..., ota: _Optional[_Union[OTAConfig, _Mapping]] = ..., quota: _Optional[_Union[Quota, _Mapping]] = ...) -> None: ...
 
 class OTAConfig(_message.Message):
-    __slots__ = ("enabled", "backend_url", "backend")
+    __slots__ = ("enabled", "backend_url", "backend", "provider", "webhook_url", "addon_registered")
     ENABLED_FIELD_NUMBER: _ClassVar[int]
     BACKEND_URL_FIELD_NUMBER: _ClassVar[int]
     BACKEND_FIELD_NUMBER: _ClassVar[int]
+    PROVIDER_FIELD_NUMBER: _ClassVar[int]
+    WEBHOOK_URL_FIELD_NUMBER: _ClassVar[int]
+    ADDON_REGISTERED_FIELD_NUMBER: _ClassVar[int]
     enabled: bool
     backend_url: str
     backend: str
-    def __init__(self, enabled: _Optional[bool] = ..., backend_url: _Optional[str] = ..., backend: _Optional[str] = ...) -> None: ...
+    provider: str
+    webhook_url: str
+    addon_registered: bool
+    def __init__(self, enabled: _Optional[bool] = ..., backend_url: _Optional[str] = ..., backend: _Optional[str] = ..., provider: _Optional[str] = ..., webhook_url: _Optional[str] = ..., addon_registered: _Optional[bool] = ...) -> None: ...
 
 class Quota(_message.Message):
     __slots__ = ("max_devices", "device_messages_per_second", "namespace_messages_per_second")

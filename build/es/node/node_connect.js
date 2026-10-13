@@ -25,7 +25,7 @@ import { Nodes } from "./access/access_pb.js";
 import { Namespace, Namespaces } from "./namespaces/namespaces_pb.js";
 import { BulkCreateRequest, BulkCreateResponse, ClaimIssueRequest, ClaimIssueResponse, ClaimRequest, ClaimResponse, CreateRequest as CreateRequest$1, CreateResponse as CreateResponse$1, Device, Devices, GetByFingerprintRequest, RevokeCertificateRequest, RotateCertificateRequest } from "./devices/devices_pb.js";
 import { Activity, Session, Sessions } from "./sessions/sessions_pb.js";
-import { GetRequest, GetResponse, PatchManyRequest, PatchManyResponse, RemoveRequest, Shadow, StreamShadowRequest } from "../shadow/shadow_pb.js";
+import { AssignOTARequest, AssignOTAResponse, GetRequest, GetResponse, PatchManyRequest, PatchManyResponse, RemoveRequest, Shadow, StreamShadowRequest } from "../shadow/shadow_pb.js";
 import { Alarm, AlarmRef, Alarms, ListAlarmsRequest, ListRulesRequest, Rule, Rules } from "./rules/rules_pb.js";
 import { AuditRecords, ExportRequest, ExportResponse, ListAuditRequest } from "./audit/audit_pb.js";
 import { Consents, Grant, Grants, ListConsentRequest, ListGrantsRequest } from "./grants/grants_pb.js";
@@ -470,6 +470,17 @@ export const ShadowService = {
       name: "PatchMany",
       I: PatchManyRequest,
       O: PatchManyResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * AssignOTA sets desired.data.ota.version. Header x-infinimesh-ota-provider must equal the namespace provider when that provider is hawkbit, mender, or webhook.
+     *
+     * @generated from rpc infinimesh.node.v1.ShadowService.AssignOTA
+     */
+    assignOTA: {
+      name: "AssignOTA",
+      I: AssignOTARequest,
+      O: AssignOTAResponse,
       kind: MethodKind.Unary,
     },
   }
