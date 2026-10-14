@@ -108,4 +108,16 @@ service PluginsService {
       }
     };
     };
+    // RotateToken issues a new addon bearer for an OTA plugin. The previous jti is denied.
+    // The plugin stays registered. The new token is returned once and is not stored.
+    rpc RotateToken(Plugin) returns (Plugin) {
+        option (google.api.http) = {
+      post: "/v1/plugins/{uuid}/token:rotate"
+      body: "*"
+      additional_bindings {
+        post: "/plugins/{uuid}/token:rotate"
+        body: "*"
+      }
+    };
+    };
 }

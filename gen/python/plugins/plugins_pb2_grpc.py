@@ -39,6 +39,11 @@ class PluginsServiceStub(object):
                 request_serializer=plugins_dot_plugins__pb2.Plugin.SerializeToString,
                 response_deserializer=plugins_dot_plugins__pb2.Plugin.FromString,
                 _registered_method=True)
+        self.RotateToken = channel.unary_unary(
+                '/infinimesh.plugins.v1.PluginsService/RotateToken',
+                request_serializer=plugins_dot_plugins__pb2.Plugin.SerializeToString,
+                response_deserializer=plugins_dot_plugins__pb2.Plugin.FromString,
+                _registered_method=True)
 
 
 class PluginsServiceServicer(object):
@@ -74,6 +79,14 @@ class PluginsServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def RotateToken(self, request, context):
+        """RotateToken issues a new addon bearer for an OTA plugin. The previous jti is denied.
+        The plugin stays registered. The new token is returned once and is not stored.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_PluginsServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -99,6 +112,11 @@ def add_PluginsServiceServicer_to_server(servicer, server):
             ),
             'Delete': grpc.unary_unary_rpc_method_handler(
                     servicer.Delete,
+                    request_deserializer=plugins_dot_plugins__pb2.Plugin.FromString,
+                    response_serializer=plugins_dot_plugins__pb2.Plugin.SerializeToString,
+            ),
+            'RotateToken': grpc.unary_unary_rpc_method_handler(
+                    servicer.RotateToken,
                     request_deserializer=plugins_dot_plugins__pb2.Plugin.FromString,
                     response_serializer=plugins_dot_plugins__pb2.Plugin.SerializeToString,
             ),
@@ -236,6 +254,33 @@ class PluginsService(object):
             request,
             target,
             '/infinimesh.plugins.v1.PluginsService/Delete',
+            plugins_dot_plugins__pb2.Plugin.SerializeToString,
+            plugins_dot_plugins__pb2.Plugin.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def RotateToken(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/infinimesh.plugins.v1.PluginsService/RotateToken',
             plugins_dot_plugins__pb2.Plugin.SerializeToString,
             plugins_dot_plugins__pb2.Plugin.FromString,
             options,

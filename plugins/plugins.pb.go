@@ -429,14 +429,15 @@ const file_plugins_plugins_proto_rawDesc = "" +
 	"PluginKind\x12\v\n" +
 	"\aUNKNOWN\x10\x00\x12\f\n" +
 	"\bEMBEDDED\x10\x01\x12\a\n" +
-	"\x03OTA\x10\x022\xd4\x04\n" +
+	"\x03OTA\x10\x022\xf1\x05\n" +
 	"\x0ePluginsService\x12r\n" +
 	"\x03Get\x12\x1d.infinimesh.plugins.v1.Plugin\x1a\x1d.infinimesh.plugins.v1.Plugin\"-\x82\xd3\xe4\x93\x02'Z\x11\x12\x0f/plugins/{uuid}\x12\x12/v1/plugins/{uuid}\x12k\n" +
 	"\x04List\x12\".infinimesh.plugins.v1.ListRequest\x1a\x1e.infinimesh.plugins.v1.Plugins\"\x1f\x82\xd3\xe4\x93\x02\x19Z\n" +
 	"\x12\b/plugins\x12\v/v1/plugins\x12m\n" +
 	"\x06Create\x12\x1d.infinimesh.plugins.v1.Plugin\x1a\x1d.infinimesh.plugins.v1.Plugin\"%\x82\xd3\xe4\x93\x02\x1f:\x01*Z\r:\x01*\x1a\b/plugins\"\v/v1/plugins\x12{\n" +
 	"\x06Update\x12\x1d.infinimesh.plugins.v1.Plugin\x1a\x1d.infinimesh.plugins.v1.Plugin\"3\x82\xd3\xe4\x93\x02-:\x01*Z\x14:\x01*\"\x0f/plugins/{uuid}\"\x12/v1/plugins/{uuid}\x12u\n" +
-	"\x06Delete\x12\x1d.infinimesh.plugins.v1.Plugin\x1a\x1d.infinimesh.plugins.v1.Plugin\"-\x82\xd3\xe4\x93\x02'Z\x11*\x0f/plugins/{uuid}*\x12/v1/plugins/{uuid}B-Z+github.com/infinimesh/proto/plugins;pluginsb\x06proto3"
+	"\x06Delete\x12\x1d.infinimesh.plugins.v1.Plugin\x1a\x1d.infinimesh.plugins.v1.Plugin\"-\x82\xd3\xe4\x93\x02'Z\x11*\x0f/plugins/{uuid}*\x12/v1/plugins/{uuid}\x12\x9a\x01\n" +
+	"\vRotateToken\x12\x1d.infinimesh.plugins.v1.Plugin\x1a\x1d.infinimesh.plugins.v1.Plugin\"M\x82\xd3\xe4\x93\x02G:\x01*Z!:\x01*\"\x1c/plugins/{uuid}/token:rotate\"\x1f/v1/plugins/{uuid}/token:rotateB-Z+github.com/infinimesh/proto/plugins;pluginsb\x06proto3"
 
 var (
 	file_plugins_plugins_proto_rawDescOnce sync.Once
@@ -471,13 +472,15 @@ var file_plugins_plugins_proto_depIdxs = []int32{
 	1,  // 7: infinimesh.plugins.v1.PluginsService.Create:input_type -> infinimesh.plugins.v1.Plugin
 	1,  // 8: infinimesh.plugins.v1.PluginsService.Update:input_type -> infinimesh.plugins.v1.Plugin
 	1,  // 9: infinimesh.plugins.v1.PluginsService.Delete:input_type -> infinimesh.plugins.v1.Plugin
-	1,  // 10: infinimesh.plugins.v1.PluginsService.Get:output_type -> infinimesh.plugins.v1.Plugin
-	2,  // 11: infinimesh.plugins.v1.PluginsService.List:output_type -> infinimesh.plugins.v1.Plugins
-	1,  // 12: infinimesh.plugins.v1.PluginsService.Create:output_type -> infinimesh.plugins.v1.Plugin
-	1,  // 13: infinimesh.plugins.v1.PluginsService.Update:output_type -> infinimesh.plugins.v1.Plugin
-	1,  // 14: infinimesh.plugins.v1.PluginsService.Delete:output_type -> infinimesh.plugins.v1.Plugin
-	10, // [10:15] is the sub-list for method output_type
-	5,  // [5:10] is the sub-list for method input_type
+	1,  // 10: infinimesh.plugins.v1.PluginsService.RotateToken:input_type -> infinimesh.plugins.v1.Plugin
+	1,  // 11: infinimesh.plugins.v1.PluginsService.Get:output_type -> infinimesh.plugins.v1.Plugin
+	2,  // 12: infinimesh.plugins.v1.PluginsService.List:output_type -> infinimesh.plugins.v1.Plugins
+	1,  // 13: infinimesh.plugins.v1.PluginsService.Create:output_type -> infinimesh.plugins.v1.Plugin
+	1,  // 14: infinimesh.plugins.v1.PluginsService.Update:output_type -> infinimesh.plugins.v1.Plugin
+	1,  // 15: infinimesh.plugins.v1.PluginsService.Delete:output_type -> infinimesh.plugins.v1.Plugin
+	1,  // 16: infinimesh.plugins.v1.PluginsService.RotateToken:output_type -> infinimesh.plugins.v1.Plugin
+	11, // [11:17] is the sub-list for method output_type
+	5,  // [5:11] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
 	5,  // [5:5] is the sub-list for extension extendee
 	0,  // [0:5] is the sub-list for field type_name

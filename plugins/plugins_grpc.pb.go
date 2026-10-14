@@ -34,11 +34,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	PluginsService_Get_FullMethodName    = "/infinimesh.plugins.v1.PluginsService/Get"
-	PluginsService_List_FullMethodName   = "/infinimesh.plugins.v1.PluginsService/List"
-	PluginsService_Create_FullMethodName = "/infinimesh.plugins.v1.PluginsService/Create"
-	PluginsService_Update_FullMethodName = "/infinimesh.plugins.v1.PluginsService/Update"
-	PluginsService_Delete_FullMethodName = "/infinimesh.plugins.v1.PluginsService/Delete"
+	PluginsService_Get_FullMethodName         = "/infinimesh.plugins.v1.PluginsService/Get"
+	PluginsService_List_FullMethodName        = "/infinimesh.plugins.v1.PluginsService/List"
+	PluginsService_Create_FullMethodName      = "/infinimesh.plugins.v1.PluginsService/Create"
+	PluginsService_Update_FullMethodName      = "/infinimesh.plugins.v1.PluginsService/Update"
+	PluginsService_Delete_FullMethodName      = "/infinimesh.plugins.v1.PluginsService/Delete"
+	PluginsService_RotateToken_FullMethodName = "/infinimesh.plugins.v1.PluginsService/RotateToken"
 )
 
 // PluginsServiceClient is the client API for PluginsService service.
@@ -50,6 +51,9 @@ type PluginsServiceClient interface {
 	Create(ctx context.Context, in *Plugin, opts ...grpc.CallOption) (*Plugin, error)
 	Update(ctx context.Context, in *Plugin, opts ...grpc.CallOption) (*Plugin, error)
 	Delete(ctx context.Context, in *Plugin, opts ...grpc.CallOption) (*Plugin, error)
+	// RotateToken issues a new addon bearer for an OTA plugin. The previous jti is denied.
+	// The plugin stays registered. The new token is returned once and is not stored.
+	RotateToken(ctx context.Context, in *Plugin, opts ...grpc.CallOption) (*Plugin, error)
 }
 
 type pluginsServiceClient struct {
@@ -110,6 +114,16 @@ func (c *pluginsServiceClient) Delete(ctx context.Context, in *Plugin, opts ...g
 	return out, nil
 }
 
+func (c *pluginsServiceClient) RotateToken(ctx context.Context, in *Plugin, opts ...grpc.CallOption) (*Plugin, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Plugin)
+	err := c.cc.Invoke(ctx, PluginsService_RotateToken_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PluginsServiceServer is the server API for PluginsService service.
 // All implementations must embed UnimplementedPluginsServiceServer
 // for forward compatibility.
@@ -119,6 +133,9 @@ type PluginsServiceServer interface {
 	Create(context.Context, *Plugin) (*Plugin, error)
 	Update(context.Context, *Plugin) (*Plugin, error)
 	Delete(context.Context, *Plugin) (*Plugin, error)
+	// RotateToken issues a new addon bearer for an OTA plugin. The previous jti is denied.
+	// The plugin stays registered. The new token is returned once and is not stored.
+	RotateToken(context.Context, *Plugin) (*Plugin, error)
 	mustEmbedUnimplementedPluginsServiceServer()
 }
 
@@ -143,6 +160,9 @@ func (UnimplementedPluginsServiceServer) Update(context.Context, *Plugin) (*Plug
 }
 func (UnimplementedPluginsServiceServer) Delete(context.Context, *Plugin) (*Plugin, error) {
 	return nil, status.Error(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedPluginsServiceServer) RotateToken(context.Context, *Plugin) (*Plugin, error) {
+	return nil, status.Error(codes.Unimplemented, "method RotateToken not implemented")
 }
 func (UnimplementedPluginsServiceServer) mustEmbedUnimplementedPluginsServiceServer() {}
 func (UnimplementedPluginsServiceServer) testEmbeddedByValue()                        {}
@@ -255,6 +275,24 @@ func _PluginsService_Delete_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PluginsService_RotateToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Plugin)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PluginsServiceServer).RotateToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PluginsService_RotateToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PluginsServiceServer).RotateToken(ctx, req.(*Plugin))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PluginsService_ServiceDesc is the grpc.ServiceDesc for PluginsService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -281,6 +319,10 @@ var PluginsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Delete",
 			Handler:    _PluginsService_Delete_Handler,
+		},
+		{
+			MethodName: "RotateToken",
+			Handler:    _PluginsService_RotateToken_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
