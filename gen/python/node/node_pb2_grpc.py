@@ -1810,6 +1810,11 @@ class ShadowServiceStub(object):
                 request_serializer=shadow_dot_shadow__pb2.AssignOTARequest.SerializeToString,
                 response_deserializer=shadow_dot_shadow__pb2.AssignOTAResponse.FromString,
                 _registered_method=True)
+        self.RequestOTA = channel.unary_unary(
+                '/infinimesh.node.v1.ShadowService/RequestOTA',
+                request_serializer=shadow_dot_shadow__pb2.AssignOTARequest.SerializeToString,
+                response_deserializer=shadow_dot_shadow__pb2.AssignOTAResponse.FromString,
+                _registered_method=True)
 
 
 class ShadowServiceServicer(object):
@@ -1859,6 +1864,14 @@ class ShadowServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def RequestOTA(self, request, context):
+        """RequestOTA stores desired.data.ota.requested_version. A manage-level account may call it.
+        It does not change desired.data.ota.version. hawkbit, mender, and webhook keep that field addon-only.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ShadowServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -1894,6 +1907,11 @@ def add_ShadowServiceServicer_to_server(servicer, server):
             ),
             'AssignOTA': grpc.unary_unary_rpc_method_handler(
                     servicer.AssignOTA,
+                    request_deserializer=shadow_dot_shadow__pb2.AssignOTARequest.FromString,
+                    response_serializer=shadow_dot_shadow__pb2.AssignOTAResponse.SerializeToString,
+            ),
+            'RequestOTA': grpc.unary_unary_rpc_method_handler(
+                    servicer.RequestOTA,
                     request_deserializer=shadow_dot_shadow__pb2.AssignOTARequest.FromString,
                     response_serializer=shadow_dot_shadow__pb2.AssignOTAResponse.SerializeToString,
             ),
@@ -2085,6 +2103,33 @@ class ShadowService(object):
             request,
             target,
             '/infinimesh.node.v1.ShadowService/AssignOTA',
+            shadow_dot_shadow__pb2.AssignOTARequest.SerializeToString,
+            shadow_dot_shadow__pb2.AssignOTAResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def RequestOTA(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/infinimesh.node.v1.ShadowService/RequestOTA',
             shadow_dot_shadow__pb2.AssignOTARequest.SerializeToString,
             shadow_dot_shadow__pb2.AssignOTAResponse.FromString,
             options,

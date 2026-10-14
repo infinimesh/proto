@@ -67,6 +67,13 @@ export declare enum ShadowEvent {
    * @generated from enum value: OTA_STATUS_CHANGED = 6;
    */
   OTA_STATUS_CHANGED = 6,
+
+  /**
+   * desired.data.ota.requested_version changed.
+   *
+   * @generated from enum value: OTA_REQUESTED = 7;
+   */
+  OTA_REQUESTED = 7,
 }
 
 /**
@@ -92,7 +99,7 @@ export declare enum StateKey {
 /**
  * State is one section of a device shadow.
  * data.ota, when present, is an object. A patch may set any subset of these fields:
- * version (string), url (string), sha256 (64 lowercase hex characters),
+ * version (string), requested_version (string), url (string), sha256 (64 lowercase hex characters),
  * size (number, zero or greater), status (idle, downloading, installing, success, or failed),
  * error (string), updated_at (RFC3339). Any other key is rejected, including state and progress.
  * A null data.ota clears the document.

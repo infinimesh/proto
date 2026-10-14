@@ -54,6 +54,8 @@ const (
 	ShadowEvent_OTA_TARGET_SET ShadowEvent = 5
 	// reported.data.ota.status changed.
 	ShadowEvent_OTA_STATUS_CHANGED ShadowEvent = 6
+	// desired.data.ota.requested_version changed.
+	ShadowEvent_OTA_REQUESTED ShadowEvent = 7
 )
 
 // Enum value maps for ShadowEvent.
@@ -66,6 +68,7 @@ var (
 		4: "TAG_REMOVED",
 		5: "OTA_TARGET_SET",
 		6: "OTA_STATUS_CHANGED",
+		7: "OTA_REQUESTED",
 	}
 	ShadowEvent_value = map[string]int32{
 		"STATE":              0,
@@ -75,6 +78,7 @@ var (
 		"TAG_REMOVED":        4,
 		"OTA_TARGET_SET":     5,
 		"OTA_STATUS_CHANGED": 6,
+		"OTA_REQUESTED":      7,
 	}
 )
 
@@ -156,7 +160,7 @@ func (StateKey) EnumDescriptor() ([]byte, []int) {
 
 // State is one section of a device shadow.
 // data.ota, when present, is an object. A patch may set any subset of these fields:
-// version (string), url (string), sha256 (64 lowercase hex characters),
+// version (string), requested_version (string), url (string), sha256 (64 lowercase hex characters),
 // size (number, zero or greater), status (idle, downloading, installing, success, or failed),
 // error (string), updated_at (RFC3339). Any other key is rejected, including state and progress.
 // A null data.ota clears the document.
@@ -1135,7 +1139,7 @@ const file_shadow_shadow_proto_rawDesc = "" +
 	"\aaccount\x18\x06 \x01(\tR\aaccount\x12:\n" +
 	"\acatalog\x18\a \x03(\v2 .infinimesh.shadow.v1.DeviceMetaR\acatalog\x128\n" +
 	"\ainclude\x18\b \x03(\x0e2\x1e.infinimesh.shadow.v1.StateKeyR\ainclude\x12!\n" +
-	"\fresume_after\x18\t \x01(\x04R\vresumeAfter*\x8a\x01\n" +
+	"\fresume_after\x18\t \x01(\x04R\vresumeAfter*\x9d\x01\n" +
 	"\vShadowEvent\x12\t\n" +
 	"\x05STATE\x10\x00\x12\x10\n" +
 	"\fDEVICE_ADDED\x10\x01\x12\x12\n" +
@@ -1143,7 +1147,8 @@ const file_shadow_shadow_proto_rawDesc = "" +
 	"\tTAG_ADDED\x10\x03\x12\x0f\n" +
 	"\vTAG_REMOVED\x10\x04\x12\x12\n" +
 	"\x0eOTA_TARGET_SET\x10\x05\x12\x16\n" +
-	"\x12OTA_STATUS_CHANGED\x10\x06*5\n" +
+	"\x12OTA_STATUS_CHANGED\x10\x06\x12\x11\n" +
+	"\rOTA_REQUESTED\x10\a*5\n" +
 	"\bStateKey\x12\f\n" +
 	"\bREPORTED\x10\x00\x12\v\n" +
 	"\aDESIRED\x10\x01\x12\x0e\n" +

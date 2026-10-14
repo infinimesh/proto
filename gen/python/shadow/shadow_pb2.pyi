@@ -22,6 +22,7 @@ class ShadowEvent(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     TAG_REMOVED: _ClassVar[ShadowEvent]
     OTA_TARGET_SET: _ClassVar[ShadowEvent]
     OTA_STATUS_CHANGED: _ClassVar[ShadowEvent]
+    OTA_REQUESTED: _ClassVar[ShadowEvent]
 
 class StateKey(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -35,6 +36,7 @@ TAG_ADDED: ShadowEvent
 TAG_REMOVED: ShadowEvent
 OTA_TARGET_SET: ShadowEvent
 OTA_STATUS_CHANGED: ShadowEvent
+OTA_REQUESTED: ShadowEvent
 REPORTED: StateKey
 DESIRED: StateKey
 CONNECTION: StateKey

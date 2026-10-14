@@ -484,6 +484,18 @@ export const ShadowService = {
       O: AssignOTAResponse,
       kind: MethodKind.Unary,
     },
+    /**
+     * RequestOTA stores desired.data.ota.requested_version. A manage-level account may call it.
+     * It does not change desired.data.ota.version. hawkbit, mender, and webhook keep that field addon-only.
+     *
+     * @generated from rpc infinimesh.node.v1.ShadowService.RequestOTA
+     */
+    requestOTA: {
+      name: "RequestOTA",
+      I: AssignOTARequest,
+      O: AssignOTAResponse,
+      kind: MethodKind.Unary,
+    },
   }
 };
 

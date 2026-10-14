@@ -1072,7 +1072,7 @@ const file_node_node_proto_rawDesc = "" +
 	"\x0fSessionsService\x12p\n" +
 	"\x03Get\x12\x1f.infinimesh.node.v1.ListRequest\x1a%.infinimesh.node.sessions.v1.Sessions\"!\x82\xd3\xe4\x93\x02\x1bZ\v\x12\t/sessions\x12\f/v1/sessions\x12\x8b\x01\n" +
 	"\vGetActivity\x12 .infinimesh.node.v1.EmptyMessage\x1a%.infinimesh.node.sessions.v1.Activity\"3\x82\xd3\xe4\x93\x02-Z\x14\x12\x12/sessions/activity\x12\x15/v1/sessions/activity\x12\x7f\n" +
-	"\x06Revoke\x12$.infinimesh.node.sessions.v1.Session\x1a\".infinimesh.node.v1.DeleteResponse\"+\x82\xd3\xe4\x93\x02%Z\x10*\x0e/sessions/{id}*\x11/v1/sessions/{id}2\x8f\x0e\n" +
+	"\x06Revoke\x12$.infinimesh.node.sessions.v1.Session\x1a\".infinimesh.node.v1.DeleteResponse\"+\x82\xd3\xe4\x93\x02%Z\x10*\x0e/sessions/{id}*\x11/v1/sessions/{id}2\x89\x12\n" +
 	"\rShadowService\x12\x81\x01\n" +
 	"\x03Get\x12 .infinimesh.shadow.v1.GetRequest\x1a!.infinimesh.shadow.v1.GetResponse\"5\x82\xd3\xe4\x93\x02/Z\x11\x12\x0f/devices/states\x12\x1a/v1/devices/{device}/state\x12\x80\x01\n" +
 	"\x05Patch\x12\x1c.infinimesh.shadow.v1.Shadow\x1a\x1c.infinimesh.shadow.v1.Shadow\";\x82\xd3\xe4\x93\x025:\x01*Z\x14:\x01*\"\x0f/devices/states\"\x1a/v1/devices/{device}/state\x12\x96\x01\n" +
@@ -1080,7 +1080,9 @@ const file_node_node_proto_rawDesc = "" +
 	"\fStreamShadow\x12).infinimesh.shadow.v1.StreamShadowRequest\x1a\x1c.infinimesh.shadow.v1.Shadow\";\x82\xd3\xe4\x93\x025Z\x18\x12\x16/devices/states/stream\x12\x19/v1/devices/states/stream0\x01\x12]\n" +
 	"\x10StreamShadowSync\x12).infinimesh.shadow.v1.StreamShadowRequest\x1a\x1c.infinimesh.shadow.v1.Shadow0\x01\x12\x8b\x03\n" +
 	"\tPatchMany\x12&.infinimesh.shadow.v1.PatchManyRequest\x1a'.infinimesh.shadow.v1.PatchManyResponse\"\xac\x02\x92A\xe1\x01\x12#Patch desired state on many devices\x1a\xb9\x01Example body: {\"namespace\":\"plant\",\"tag\":\"line-a\",\"desired\":{\"data\":{\"ota\":{\"version\":\"1.4.0\"}}}}. results has one entry per device. A non-empty error means that device was not updated.\x82\xd3\xe4\x93\x02A:\x01*Z\x1e:\x01*\"\x19/devices/states:patchMany\"\x1c/v1/devices/states:patchMany\x12\xd7\x05\n" +
-	"\tAssignOTA\x12&.infinimesh.shadow.v1.AssignOTARequest\x1a'.infinimesh.shadow.v1.AssignOTAResponse\"\xf8\x04\x92A\xb9\x04\x12\x1cAssign an OTA target version\x1a\x98\x04Sets desired.data.ota.version and updated_at. A manage-level account token is accepted when the namespace provider is none. Example body: {\"namespace\":\"plant\",\"version\":\"1.4.0\"}. A tag: {\"namespace\":\"plant\",\"tag\":\"line-a\",\"version\":\"1.4.0\"}. A device list: {\"devices\":[\"dev-1\",\"dev-2\"],\"version\":\"1.4.0\"}. results has one entry per device. When the namespace provider is hawkbit, mender, or webhook, the caller is the OTA plugin bearer token from plugin create, not an account token. Each success is an audit row with action ota_assign.\x82\xd3\xe4\x93\x025:\x01*Z\x18:\x01*\"\x13/devices/ota:assign\"\x16/v1/devices/ota:assign2\x93\b\n" +
+	"\tAssignOTA\x12&.infinimesh.shadow.v1.AssignOTARequest\x1a'.infinimesh.shadow.v1.AssignOTAResponse\"\xf8\x04\x92A\xb9\x04\x12\x1cAssign an OTA target version\x1a\x98\x04Sets desired.data.ota.version and updated_at. A manage-level account token is accepted when the namespace provider is none. Example body: {\"namespace\":\"plant\",\"version\":\"1.4.0\"}. A tag: {\"namespace\":\"plant\",\"tag\":\"line-a\",\"version\":\"1.4.0\"}. A device list: {\"devices\":[\"dev-1\",\"dev-2\"],\"version\":\"1.4.0\"}. results has one entry per device. When the namespace provider is hawkbit, mender, or webhook, the caller is the OTA plugin bearer token from plugin create, not an account token. Each success is an audit row with action ota_assign.\x82\xd3\xe4\x93\x025:\x01*Z\x18:\x01*\"\x13/devices/ota:assign\"\x16/v1/devices/ota:assign\x12\xf7\x03\n" +
+	"\n" +
+	"RequestOTA\x12&.infinimesh.shadow.v1.AssignOTARequest\x1a'.infinimesh.shadow.v1.AssignOTAResponse\"\x97\x03\x92A\xd6\x02\x12\x16Ask for an OTA version\x1a\xbb\x02Sets desired.data.ota.requested_version and updated_at. A manage-level account token is the caller. Example body: {\"namespace\":\"plant\",\"version\":\"1.4.0\"}. results has one entry per device. desired.data.ota.version is unchanged. Each success is an audit row with action ota_request. A change publishes OTA_REQUESTED.\x82\xd3\xe4\x93\x027:\x01*Z\x19:\x01*\"\x14/devices/ota:request\"\x17/v1/devices/ota:request2\x93\b\n" +
 	"\fRulesService\x12k\n" +
 	"\x06Create\x12\x1e.infinimesh.node.rules.v1.Rule\x1a\x1e.infinimesh.node.rules.v1.Rule\"!\x82\xd3\xe4\x93\x02\x1b:\x01*Z\v:\x01*\"\x06/rules\"\t/v1/rules\x12y\n" +
 	"\x06Update\x12\x1e.infinimesh.node.rules.v1.Rule\x1a\x1e.infinimesh.node.rules.v1.Rule\"/\x82\xd3\xe4\x93\x02):\x01*Z\x12:\x01*2\r/rules/{uuid}2\x10/v1/rules/{uuid}\x12p\n" +
@@ -1246,83 +1248,85 @@ var file_node_node_proto_depIdxs = []int32{
 	36, // 50: infinimesh.node.v1.ShadowService.StreamShadowSync:input_type -> infinimesh.shadow.v1.StreamShadowRequest
 	37, // 51: infinimesh.node.v1.ShadowService.PatchMany:input_type -> infinimesh.shadow.v1.PatchManyRequest
 	38, // 52: infinimesh.node.v1.ShadowService.AssignOTA:input_type -> infinimesh.shadow.v1.AssignOTARequest
-	39, // 53: infinimesh.node.v1.RulesService.Create:input_type -> infinimesh.node.rules.v1.Rule
-	39, // 54: infinimesh.node.v1.RulesService.Update:input_type -> infinimesh.node.rules.v1.Rule
-	39, // 55: infinimesh.node.v1.RulesService.Get:input_type -> infinimesh.node.rules.v1.Rule
-	40, // 56: infinimesh.node.v1.RulesService.List:input_type -> infinimesh.node.rules.v1.ListRulesRequest
-	39, // 57: infinimesh.node.v1.RulesService.Delete:input_type -> infinimesh.node.rules.v1.Rule
-	41, // 58: infinimesh.node.v1.RulesService.ListAlarms:input_type -> infinimesh.node.rules.v1.ListAlarmsRequest
-	42, // 59: infinimesh.node.v1.RulesService.AckAlarm:input_type -> infinimesh.node.rules.v1.AlarmRef
-	42, // 60: infinimesh.node.v1.RulesService.ClearAlarm:input_type -> infinimesh.node.rules.v1.AlarmRef
-	43, // 61: infinimesh.node.v1.AuditService.List:input_type -> infinimesh.node.audit.v1.ListAuditRequest
-	44, // 62: infinimesh.node.v1.AuditService.Export:input_type -> infinimesh.node.audit.v1.ExportRequest
-	45, // 63: infinimesh.node.v1.GrantsService.Create:input_type -> infinimesh.node.grants.v1.Grant
-	46, // 64: infinimesh.node.v1.GrantsService.List:input_type -> infinimesh.node.grants.v1.ListGrantsRequest
-	45, // 65: infinimesh.node.v1.GrantsService.Revoke:input_type -> infinimesh.node.grants.v1.Grant
-	47, // 66: infinimesh.node.v1.GrantsService.ListConsent:input_type -> infinimesh.node.grants.v1.ListConsentRequest
-	8,  // 67: infinimesh.node.v1.InternalService.GetLDAPProviders:input_type -> infinimesh.node.v1.EmptyMessage
-	1,  // 68: infinimesh.node.v1.AccountsService.Token:output_type -> infinimesh.node.v1.TokenResponse
-	21, // 69: infinimesh.node.v1.AccountsService.Get:output_type -> infinimesh.node.accounts.v1.Account
-	48, // 70: infinimesh.node.v1.AccountsService.List:output_type -> infinimesh.node.accounts.v1.Accounts
-	49, // 71: infinimesh.node.v1.AccountsService.Create:output_type -> infinimesh.node.accounts.v1.CreateResponse
-	21, // 72: infinimesh.node.v1.AccountsService.Update:output_type -> infinimesh.node.accounts.v1.Account
-	21, // 73: infinimesh.node.v1.AccountsService.Toggle:output_type -> infinimesh.node.accounts.v1.Account
-	7,  // 74: infinimesh.node.v1.AccountsService.Delete:output_type -> infinimesh.node.v1.DeleteResponse
-	50, // 75: infinimesh.node.v1.AccountsService.Deletables:output_type -> infinimesh.node.access.v1.Nodes
-	6,  // 76: infinimesh.node.v1.AccountsService.SetCredentials:output_type -> infinimesh.node.v1.SetCredentialsResponse
-	4,  // 77: infinimesh.node.v1.AccountsService.GetCredentials:output_type -> infinimesh.node.v1.GetCredentialsResponse
-	7,  // 78: infinimesh.node.v1.AccountsService.DeleteCredentials:output_type -> infinimesh.node.v1.DeleteResponse
-	23, // 79: infinimesh.node.v1.NamespacesService.Get:output_type -> infinimesh.node.namespaces.v1.Namespace
-	51, // 80: infinimesh.node.v1.NamespacesService.List:output_type -> infinimesh.node.namespaces.v1.Namespaces
-	23, // 81: infinimesh.node.v1.NamespacesService.Create:output_type -> infinimesh.node.namespaces.v1.Namespace
-	23, // 82: infinimesh.node.v1.NamespacesService.Update:output_type -> infinimesh.node.namespaces.v1.Namespace
-	7,  // 83: infinimesh.node.v1.NamespacesService.Delete:output_type -> infinimesh.node.v1.DeleteResponse
-	50, // 84: infinimesh.node.v1.NamespacesService.Deletables:output_type -> infinimesh.node.access.v1.Nodes
-	48, // 85: infinimesh.node.v1.NamespacesService.Joins:output_type -> infinimesh.node.accounts.v1.Accounts
-	48, // 86: infinimesh.node.v1.NamespacesService.Join:output_type -> infinimesh.node.accounts.v1.Accounts
-	24, // 87: infinimesh.node.v1.DevicesService.Get:output_type -> infinimesh.node.devices.v1.Device
-	52, // 88: infinimesh.node.v1.DevicesService.List:output_type -> infinimesh.node.devices.v1.Devices
-	53, // 89: infinimesh.node.v1.DevicesService.Create:output_type -> infinimesh.node.devices.v1.CreateResponse
-	24, // 90: infinimesh.node.v1.DevicesService.Update:output_type -> infinimesh.node.devices.v1.Device
-	7,  // 91: infinimesh.node.v1.DevicesService.Delete:output_type -> infinimesh.node.v1.DeleteResponse
-	24, // 92: infinimesh.node.v1.DevicesService.Toggle:output_type -> infinimesh.node.devices.v1.Device
-	24, // 93: infinimesh.node.v1.DevicesService.ToggleBasic:output_type -> infinimesh.node.devices.v1.Device
-	1,  // 94: infinimesh.node.v1.DevicesService.MakeDevicesToken:output_type -> infinimesh.node.v1.TokenResponse
-	24, // 95: infinimesh.node.v1.DevicesService.GetByToken:output_type -> infinimesh.node.devices.v1.Device
-	24, // 96: infinimesh.node.v1.DevicesService.GetByFingerprint:output_type -> infinimesh.node.devices.v1.Device
-	54, // 97: infinimesh.node.v1.DevicesService.BulkCreate:output_type -> infinimesh.node.devices.v1.BulkCreateResponse
-	55, // 98: infinimesh.node.v1.DevicesService.IssueClaim:output_type -> infinimesh.node.devices.v1.ClaimIssueResponse
-	56, // 99: infinimesh.node.v1.DevicesService.Claim:output_type -> infinimesh.node.devices.v1.ClaimResponse
-	24, // 100: infinimesh.node.v1.DevicesService.RotateCertificate:output_type -> infinimesh.node.devices.v1.Device
-	24, // 101: infinimesh.node.v1.DevicesService.RevokeCertificate:output_type -> infinimesh.node.devices.v1.Device
-	7,  // 102: infinimesh.node.v1.DevicesService.RevokeDevicesToken:output_type -> infinimesh.node.v1.DeleteResponse
-	57, // 103: infinimesh.node.v1.SessionsService.Get:output_type -> infinimesh.node.sessions.v1.Sessions
-	58, // 104: infinimesh.node.v1.SessionsService.GetActivity:output_type -> infinimesh.node.sessions.v1.Activity
-	7,  // 105: infinimesh.node.v1.SessionsService.Revoke:output_type -> infinimesh.node.v1.DeleteResponse
-	59, // 106: infinimesh.node.v1.ShadowService.Get:output_type -> infinimesh.shadow.v1.GetResponse
-	34, // 107: infinimesh.node.v1.ShadowService.Patch:output_type -> infinimesh.shadow.v1.Shadow
-	34, // 108: infinimesh.node.v1.ShadowService.Remove:output_type -> infinimesh.shadow.v1.Shadow
-	34, // 109: infinimesh.node.v1.ShadowService.StreamShadow:output_type -> infinimesh.shadow.v1.Shadow
-	34, // 110: infinimesh.node.v1.ShadowService.StreamShadowSync:output_type -> infinimesh.shadow.v1.Shadow
-	60, // 111: infinimesh.node.v1.ShadowService.PatchMany:output_type -> infinimesh.shadow.v1.PatchManyResponse
-	61, // 112: infinimesh.node.v1.ShadowService.AssignOTA:output_type -> infinimesh.shadow.v1.AssignOTAResponse
-	39, // 113: infinimesh.node.v1.RulesService.Create:output_type -> infinimesh.node.rules.v1.Rule
-	39, // 114: infinimesh.node.v1.RulesService.Update:output_type -> infinimesh.node.rules.v1.Rule
-	39, // 115: infinimesh.node.v1.RulesService.Get:output_type -> infinimesh.node.rules.v1.Rule
-	62, // 116: infinimesh.node.v1.RulesService.List:output_type -> infinimesh.node.rules.v1.Rules
-	7,  // 117: infinimesh.node.v1.RulesService.Delete:output_type -> infinimesh.node.v1.DeleteResponse
-	63, // 118: infinimesh.node.v1.RulesService.ListAlarms:output_type -> infinimesh.node.rules.v1.Alarms
-	64, // 119: infinimesh.node.v1.RulesService.AckAlarm:output_type -> infinimesh.node.rules.v1.Alarm
-	64, // 120: infinimesh.node.v1.RulesService.ClearAlarm:output_type -> infinimesh.node.rules.v1.Alarm
-	65, // 121: infinimesh.node.v1.AuditService.List:output_type -> infinimesh.node.audit.v1.AuditRecords
-	66, // 122: infinimesh.node.v1.AuditService.Export:output_type -> infinimesh.node.audit.v1.ExportResponse
-	45, // 123: infinimesh.node.v1.GrantsService.Create:output_type -> infinimesh.node.grants.v1.Grant
-	67, // 124: infinimesh.node.v1.GrantsService.List:output_type -> infinimesh.node.grants.v1.Grants
-	45, // 125: infinimesh.node.v1.GrantsService.Revoke:output_type -> infinimesh.node.grants.v1.Grant
-	68, // 126: infinimesh.node.v1.GrantsService.ListConsent:output_type -> infinimesh.node.grants.v1.Consents
-	16, // 127: infinimesh.node.v1.InternalService.GetLDAPProviders:output_type -> infinimesh.node.v1.LDAPProviders
-	68, // [68:128] is the sub-list for method output_type
-	8,  // [8:68] is the sub-list for method input_type
+	38, // 53: infinimesh.node.v1.ShadowService.RequestOTA:input_type -> infinimesh.shadow.v1.AssignOTARequest
+	39, // 54: infinimesh.node.v1.RulesService.Create:input_type -> infinimesh.node.rules.v1.Rule
+	39, // 55: infinimesh.node.v1.RulesService.Update:input_type -> infinimesh.node.rules.v1.Rule
+	39, // 56: infinimesh.node.v1.RulesService.Get:input_type -> infinimesh.node.rules.v1.Rule
+	40, // 57: infinimesh.node.v1.RulesService.List:input_type -> infinimesh.node.rules.v1.ListRulesRequest
+	39, // 58: infinimesh.node.v1.RulesService.Delete:input_type -> infinimesh.node.rules.v1.Rule
+	41, // 59: infinimesh.node.v1.RulesService.ListAlarms:input_type -> infinimesh.node.rules.v1.ListAlarmsRequest
+	42, // 60: infinimesh.node.v1.RulesService.AckAlarm:input_type -> infinimesh.node.rules.v1.AlarmRef
+	42, // 61: infinimesh.node.v1.RulesService.ClearAlarm:input_type -> infinimesh.node.rules.v1.AlarmRef
+	43, // 62: infinimesh.node.v1.AuditService.List:input_type -> infinimesh.node.audit.v1.ListAuditRequest
+	44, // 63: infinimesh.node.v1.AuditService.Export:input_type -> infinimesh.node.audit.v1.ExportRequest
+	45, // 64: infinimesh.node.v1.GrantsService.Create:input_type -> infinimesh.node.grants.v1.Grant
+	46, // 65: infinimesh.node.v1.GrantsService.List:input_type -> infinimesh.node.grants.v1.ListGrantsRequest
+	45, // 66: infinimesh.node.v1.GrantsService.Revoke:input_type -> infinimesh.node.grants.v1.Grant
+	47, // 67: infinimesh.node.v1.GrantsService.ListConsent:input_type -> infinimesh.node.grants.v1.ListConsentRequest
+	8,  // 68: infinimesh.node.v1.InternalService.GetLDAPProviders:input_type -> infinimesh.node.v1.EmptyMessage
+	1,  // 69: infinimesh.node.v1.AccountsService.Token:output_type -> infinimesh.node.v1.TokenResponse
+	21, // 70: infinimesh.node.v1.AccountsService.Get:output_type -> infinimesh.node.accounts.v1.Account
+	48, // 71: infinimesh.node.v1.AccountsService.List:output_type -> infinimesh.node.accounts.v1.Accounts
+	49, // 72: infinimesh.node.v1.AccountsService.Create:output_type -> infinimesh.node.accounts.v1.CreateResponse
+	21, // 73: infinimesh.node.v1.AccountsService.Update:output_type -> infinimesh.node.accounts.v1.Account
+	21, // 74: infinimesh.node.v1.AccountsService.Toggle:output_type -> infinimesh.node.accounts.v1.Account
+	7,  // 75: infinimesh.node.v1.AccountsService.Delete:output_type -> infinimesh.node.v1.DeleteResponse
+	50, // 76: infinimesh.node.v1.AccountsService.Deletables:output_type -> infinimesh.node.access.v1.Nodes
+	6,  // 77: infinimesh.node.v1.AccountsService.SetCredentials:output_type -> infinimesh.node.v1.SetCredentialsResponse
+	4,  // 78: infinimesh.node.v1.AccountsService.GetCredentials:output_type -> infinimesh.node.v1.GetCredentialsResponse
+	7,  // 79: infinimesh.node.v1.AccountsService.DeleteCredentials:output_type -> infinimesh.node.v1.DeleteResponse
+	23, // 80: infinimesh.node.v1.NamespacesService.Get:output_type -> infinimesh.node.namespaces.v1.Namespace
+	51, // 81: infinimesh.node.v1.NamespacesService.List:output_type -> infinimesh.node.namespaces.v1.Namespaces
+	23, // 82: infinimesh.node.v1.NamespacesService.Create:output_type -> infinimesh.node.namespaces.v1.Namespace
+	23, // 83: infinimesh.node.v1.NamespacesService.Update:output_type -> infinimesh.node.namespaces.v1.Namespace
+	7,  // 84: infinimesh.node.v1.NamespacesService.Delete:output_type -> infinimesh.node.v1.DeleteResponse
+	50, // 85: infinimesh.node.v1.NamespacesService.Deletables:output_type -> infinimesh.node.access.v1.Nodes
+	48, // 86: infinimesh.node.v1.NamespacesService.Joins:output_type -> infinimesh.node.accounts.v1.Accounts
+	48, // 87: infinimesh.node.v1.NamespacesService.Join:output_type -> infinimesh.node.accounts.v1.Accounts
+	24, // 88: infinimesh.node.v1.DevicesService.Get:output_type -> infinimesh.node.devices.v1.Device
+	52, // 89: infinimesh.node.v1.DevicesService.List:output_type -> infinimesh.node.devices.v1.Devices
+	53, // 90: infinimesh.node.v1.DevicesService.Create:output_type -> infinimesh.node.devices.v1.CreateResponse
+	24, // 91: infinimesh.node.v1.DevicesService.Update:output_type -> infinimesh.node.devices.v1.Device
+	7,  // 92: infinimesh.node.v1.DevicesService.Delete:output_type -> infinimesh.node.v1.DeleteResponse
+	24, // 93: infinimesh.node.v1.DevicesService.Toggle:output_type -> infinimesh.node.devices.v1.Device
+	24, // 94: infinimesh.node.v1.DevicesService.ToggleBasic:output_type -> infinimesh.node.devices.v1.Device
+	1,  // 95: infinimesh.node.v1.DevicesService.MakeDevicesToken:output_type -> infinimesh.node.v1.TokenResponse
+	24, // 96: infinimesh.node.v1.DevicesService.GetByToken:output_type -> infinimesh.node.devices.v1.Device
+	24, // 97: infinimesh.node.v1.DevicesService.GetByFingerprint:output_type -> infinimesh.node.devices.v1.Device
+	54, // 98: infinimesh.node.v1.DevicesService.BulkCreate:output_type -> infinimesh.node.devices.v1.BulkCreateResponse
+	55, // 99: infinimesh.node.v1.DevicesService.IssueClaim:output_type -> infinimesh.node.devices.v1.ClaimIssueResponse
+	56, // 100: infinimesh.node.v1.DevicesService.Claim:output_type -> infinimesh.node.devices.v1.ClaimResponse
+	24, // 101: infinimesh.node.v1.DevicesService.RotateCertificate:output_type -> infinimesh.node.devices.v1.Device
+	24, // 102: infinimesh.node.v1.DevicesService.RevokeCertificate:output_type -> infinimesh.node.devices.v1.Device
+	7,  // 103: infinimesh.node.v1.DevicesService.RevokeDevicesToken:output_type -> infinimesh.node.v1.DeleteResponse
+	57, // 104: infinimesh.node.v1.SessionsService.Get:output_type -> infinimesh.node.sessions.v1.Sessions
+	58, // 105: infinimesh.node.v1.SessionsService.GetActivity:output_type -> infinimesh.node.sessions.v1.Activity
+	7,  // 106: infinimesh.node.v1.SessionsService.Revoke:output_type -> infinimesh.node.v1.DeleteResponse
+	59, // 107: infinimesh.node.v1.ShadowService.Get:output_type -> infinimesh.shadow.v1.GetResponse
+	34, // 108: infinimesh.node.v1.ShadowService.Patch:output_type -> infinimesh.shadow.v1.Shadow
+	34, // 109: infinimesh.node.v1.ShadowService.Remove:output_type -> infinimesh.shadow.v1.Shadow
+	34, // 110: infinimesh.node.v1.ShadowService.StreamShadow:output_type -> infinimesh.shadow.v1.Shadow
+	34, // 111: infinimesh.node.v1.ShadowService.StreamShadowSync:output_type -> infinimesh.shadow.v1.Shadow
+	60, // 112: infinimesh.node.v1.ShadowService.PatchMany:output_type -> infinimesh.shadow.v1.PatchManyResponse
+	61, // 113: infinimesh.node.v1.ShadowService.AssignOTA:output_type -> infinimesh.shadow.v1.AssignOTAResponse
+	61, // 114: infinimesh.node.v1.ShadowService.RequestOTA:output_type -> infinimesh.shadow.v1.AssignOTAResponse
+	39, // 115: infinimesh.node.v1.RulesService.Create:output_type -> infinimesh.node.rules.v1.Rule
+	39, // 116: infinimesh.node.v1.RulesService.Update:output_type -> infinimesh.node.rules.v1.Rule
+	39, // 117: infinimesh.node.v1.RulesService.Get:output_type -> infinimesh.node.rules.v1.Rule
+	62, // 118: infinimesh.node.v1.RulesService.List:output_type -> infinimesh.node.rules.v1.Rules
+	7,  // 119: infinimesh.node.v1.RulesService.Delete:output_type -> infinimesh.node.v1.DeleteResponse
+	63, // 120: infinimesh.node.v1.RulesService.ListAlarms:output_type -> infinimesh.node.rules.v1.Alarms
+	64, // 121: infinimesh.node.v1.RulesService.AckAlarm:output_type -> infinimesh.node.rules.v1.Alarm
+	64, // 122: infinimesh.node.v1.RulesService.ClearAlarm:output_type -> infinimesh.node.rules.v1.Alarm
+	65, // 123: infinimesh.node.v1.AuditService.List:output_type -> infinimesh.node.audit.v1.AuditRecords
+	66, // 124: infinimesh.node.v1.AuditService.Export:output_type -> infinimesh.node.audit.v1.ExportResponse
+	45, // 125: infinimesh.node.v1.GrantsService.Create:output_type -> infinimesh.node.grants.v1.Grant
+	67, // 126: infinimesh.node.v1.GrantsService.List:output_type -> infinimesh.node.grants.v1.Grants
+	45, // 127: infinimesh.node.v1.GrantsService.Revoke:output_type -> infinimesh.node.grants.v1.Grant
+	68, // 128: infinimesh.node.v1.GrantsService.ListConsent:output_type -> infinimesh.node.grants.v1.Consents
+	16, // 129: infinimesh.node.v1.InternalService.GetLDAPProviders:output_type -> infinimesh.node.v1.LDAPProviders
+	69, // [69:130] is the sub-list for method output_type
+	8,  // [8:69] is the sub-list for method input_type
 	8,  // [8:8] is the sub-list for extension type_name
 	8,  // [8:8] is the sub-list for extension extendee
 	0,  // [0:8] is the sub-list for field type_name
