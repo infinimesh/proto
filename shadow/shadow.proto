@@ -27,7 +27,7 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 
 // State is one section of a device shadow.
 // data.ota, when present, is an object. A patch may set any subset of these fields:
-// version (string), url (string), sha256 (64 lowercase hex characters),
+// version (string), requested_version (string), url (string), sha256 (64 lowercase hex characters),
 // size (number, zero or greater), status (idle, downloading, installing, success, or failed),
 // error (string), updated_at (RFC3339). Any other key is rejected, including state and progress.
 // A null data.ota clears the document.
@@ -55,6 +55,8 @@ enum ShadowEvent {
   OTA_TARGET_SET = 5;
   // reported.data.ota.status changed.
   OTA_STATUS_CHANGED = 6;
+  // desired.data.ota.requested_version changed.
+  OTA_REQUESTED = 7;
 }
 
 message DeviceMeta {
