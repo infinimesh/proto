@@ -72,6 +72,18 @@ export const PluginsService = {
       O: Plugin,
       kind: MethodKind.Unary,
     },
+    /**
+     * RotateToken issues a new addon bearer for an OTA plugin. The previous jti is denied.
+     * The plugin stays registered. The new token is returned once and is not stored.
+     *
+     * @generated from rpc infinimesh.plugins.v1.PluginsService.RotateToken
+     */
+    rotateToken: {
+      name: "RotateToken",
+      I: Plugin,
+      O: Plugin,
+      kind: MethodKind.Unary,
+    },
   }
 };
 

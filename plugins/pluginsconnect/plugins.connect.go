@@ -58,6 +58,9 @@ const (
 	PluginsServiceUpdateProcedure = "/infinimesh.plugins.v1.PluginsService/Update"
 	// PluginsServiceDeleteProcedure is the fully-qualified name of the PluginsService's Delete RPC.
 	PluginsServiceDeleteProcedure = "/infinimesh.plugins.v1.PluginsService/Delete"
+	// PluginsServiceRotateTokenProcedure is the fully-qualified name of the PluginsService's
+	// RotateToken RPC.
+	PluginsServiceRotateTokenProcedure = "/infinimesh.plugins.v1.PluginsService/RotateToken"
 )
 
 // PluginsServiceClient is a client for the infinimesh.plugins.v1.PluginsService service.
@@ -67,6 +70,9 @@ type PluginsServiceClient interface {
 	Create(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error)
 	Update(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error)
 	Delete(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error)
+	// RotateToken issues a new addon bearer for an OTA plugin. The previous jti is denied.
+	// The plugin stays registered. The new token is returned once and is not stored.
+	RotateToken(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error)
 }
 
 // NewPluginsServiceClient constructs a client for the infinimesh.plugins.v1.PluginsService service.
@@ -110,16 +116,23 @@ func NewPluginsServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 			connect.WithSchema(pluginsServiceMethods.ByName("Delete")),
 			connect.WithClientOptions(opts...),
 		),
+		rotateToken: connect.NewClient[plugins.Plugin, plugins.Plugin](
+			httpClient,
+			baseURL+PluginsServiceRotateTokenProcedure,
+			connect.WithSchema(pluginsServiceMethods.ByName("RotateToken")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // pluginsServiceClient implements PluginsServiceClient.
 type pluginsServiceClient struct {
-	get    *connect.Client[plugins.Plugin, plugins.Plugin]
-	list   *connect.Client[plugins.ListRequest, plugins.Plugins]
-	create *connect.Client[plugins.Plugin, plugins.Plugin]
-	update *connect.Client[plugins.Plugin, plugins.Plugin]
-	delete *connect.Client[plugins.Plugin, plugins.Plugin]
+	get         *connect.Client[plugins.Plugin, plugins.Plugin]
+	list        *connect.Client[plugins.ListRequest, plugins.Plugins]
+	create      *connect.Client[plugins.Plugin, plugins.Plugin]
+	update      *connect.Client[plugins.Plugin, plugins.Plugin]
+	delete      *connect.Client[plugins.Plugin, plugins.Plugin]
+	rotateToken *connect.Client[plugins.Plugin, plugins.Plugin]
 }
 
 // Get calls infinimesh.plugins.v1.PluginsService.Get.
@@ -147,6 +160,11 @@ func (c *pluginsServiceClient) Delete(ctx context.Context, req *connect.Request[
 	return c.delete.CallUnary(ctx, req)
 }
 
+// RotateToken calls infinimesh.plugins.v1.PluginsService.RotateToken.
+func (c *pluginsServiceClient) RotateToken(ctx context.Context, req *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error) {
+	return c.rotateToken.CallUnary(ctx, req)
+}
+
 // PluginsServiceHandler is an implementation of the infinimesh.plugins.v1.PluginsService service.
 type PluginsServiceHandler interface {
 	Get(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error)
@@ -154,6 +172,9 @@ type PluginsServiceHandler interface {
 	Create(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error)
 	Update(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error)
 	Delete(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error)
+	// RotateToken issues a new addon bearer for an OTA plugin. The previous jti is denied.
+	// The plugin stays registered. The new token is returned once and is not stored.
+	RotateToken(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error)
 }
 
 // NewPluginsServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -193,6 +214,12 @@ func NewPluginsServiceHandler(svc PluginsServiceHandler, opts ...connect.Handler
 		connect.WithSchema(pluginsServiceMethods.ByName("Delete")),
 		connect.WithHandlerOptions(opts...),
 	)
+	pluginsServiceRotateTokenHandler := connect.NewUnaryHandler(
+		PluginsServiceRotateTokenProcedure,
+		svc.RotateToken,
+		connect.WithSchema(pluginsServiceMethods.ByName("RotateToken")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/infinimesh.plugins.v1.PluginsService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case PluginsServiceGetProcedure:
@@ -205,6 +232,8 @@ func NewPluginsServiceHandler(svc PluginsServiceHandler, opts ...connect.Handler
 			pluginsServiceUpdateHandler.ServeHTTP(w, r)
 		case PluginsServiceDeleteProcedure:
 			pluginsServiceDeleteHandler.ServeHTTP(w, r)
+		case PluginsServiceRotateTokenProcedure:
+			pluginsServiceRotateTokenHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -232,4 +261,8 @@ func (UnimplementedPluginsServiceHandler) Update(context.Context, *connect.Reque
 
 func (UnimplementedPluginsServiceHandler) Delete(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.plugins.v1.PluginsService.Delete is not implemented"))
+}
+
+func (UnimplementedPluginsServiceHandler) RotateToken(context.Context, *connect.Request[plugins.Plugin]) (*connect.Response[plugins.Plugin], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("infinimesh.plugins.v1.PluginsService.RotateToken is not implemented"))
 }
