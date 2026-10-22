@@ -2,6 +2,8 @@ module github.com/infinimesh/proto
 
 go 1.27.2
 
+toolchain go1.27.3
+
 require (
 	connectrpc.com/connect v1.21.1
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.32.0
